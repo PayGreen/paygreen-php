@@ -1,0 +1,12 @@
+{
+  "name": "paygreen/paygreen-sdk",
+  "description": "PayGreen PHP SDK",
+  "type": "library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "PayGreen",
+      "homepage": "https://paygreen.io/"
+    }
+  ]
+}
