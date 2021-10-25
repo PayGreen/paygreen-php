@@ -8,5 +8,10 @@
       "name": "PayGreen",
       "homepage": "https://paygreen.io/"
     }
-  ]
+  ],
+  "autoload": {
+    "psr-4": {
+      "PayGreenSdk\\": "lib/PayGreenSdk"
+    }
+  }
 }
