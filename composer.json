@@ -20,7 +20,8 @@
     }
   },
   "require-dev": {
-    "phpunit/phpunit": "^5.7.27"
+    "phpunit/phpunit": "^5.7.27",
+    "symfony/var-dumper": "3.4.47"
   },
   "require": {
     "psr/http-client": "^1.0",
