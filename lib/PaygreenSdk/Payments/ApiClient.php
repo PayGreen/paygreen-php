@@ -53,9 +53,12 @@ class ApiClient extends HttpClient
         $ttl = ''
     ) {
         try {
-            $url = $this->parseUrlParameters('/api/{ui}/payins/transaction/cash', array(
-                'ui' => $this->environment->getPublicKey()
-            ));
+            $url = $this->parseUrlParameters(
+                $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',
+                array(
+                    'ui' => $this->environment->getPublicKey()
+                )
+            );
 
             $response = $this->client->post($url, array(
                 'json' => array(
@@ -124,7 +127,6 @@ class ApiClient extends HttpClient
     private function initClient()
     {
         $this->client = new Client(array(
-            'base_uri' => $this->getBaseUri(),
             'defaults' => array(
                 'headers' => array(
                     'Content-Type' => 'application/json',
