@@ -1,0 +1,25 @@
+{
+  "name": "paygreen/paygreen-sdk",
+  "description": "PayGreen PHP SDK",
+  "type": "library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "PayGreen",
+      "homepage": "https://paygreen.io/"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Paygreen\\Sdk\\": "lib/PaygreenSdk"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7.27"
+  }
+}
