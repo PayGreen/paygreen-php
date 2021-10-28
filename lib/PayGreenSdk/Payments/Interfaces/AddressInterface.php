@@ -1,6 +1,6 @@
 <?php
 
-namespace PayGreenSdk\Payments\Interfaces;
+namespace Paygreen\Sdk\Payments\Interfaces;
 
 interface AddressInterface
 {

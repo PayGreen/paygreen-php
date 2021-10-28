@@ -1,6 +1,6 @@
 <?php
 
-namespace PayGreenSdk\Core\Components;
+namespace Paygreen\Sdk\Core\Components;
 
 use InvalidArgumentException;
 

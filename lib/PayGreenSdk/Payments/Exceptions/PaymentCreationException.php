@@ -1,6 +1,6 @@
 <?php
 
-namespace PayGreenSdk\Payments\Exceptions;
+namespace Paygreen\Sdk\Payments\Exceptions;
 
 class PaymentCreationException extends \Exception
 {

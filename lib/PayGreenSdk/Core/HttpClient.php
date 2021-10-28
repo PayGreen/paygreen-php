@@ -1,10 +1,9 @@
 <?php
 
-namespace PayGreenSdk\Core;
-
+namespace Paygreen\Sdk\Core;
 
 use GuzzleHttp\Client;
-use PayGreenSdk\Core\Components\Environment;
+use Paygreen\Sdk\Core\Components\Environment;
 
 class HttpClient
 {

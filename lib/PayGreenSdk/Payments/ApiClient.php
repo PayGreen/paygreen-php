@@ -1,14 +1,14 @@
 <?php
 
-namespace PayGreenSdk\Payments;
+namespace Paygreen\Sdk\Payments;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
-use PayGreenSdk\Core\Components\Environment;
-use PayGreenSdk\Core\HttpClient;
-use PayGreenSdk\Payments\Exceptions\PaymentCreationException;
-use PayGreenSdk\Payments\Interfaces\OrderInterface;
+use Paygreen\Sdk\Core\Components\Environment;
+use Paygreen\Sdk\Core\HttpClient;
+use Paygreen\Sdk\Payments\Exceptions\PaymentCreationException;
+use Paygreen\Sdk\Payments\Interfaces\OrderInterface;
 
 class ApiClient extends HttpClient
 {
