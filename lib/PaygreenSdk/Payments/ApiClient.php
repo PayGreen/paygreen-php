@@ -2,11 +2,12 @@
 
 namespace Paygreen\Sdk\Payments;
 
+use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\Response;
 use Paygreen\Sdk\Core\Components\Environment;
 use Paygreen\Sdk\Core\HttpClient;
+use Paygreen\Sdk\Core\Logger;
 use Paygreen\Sdk\Payments\Exceptions\PaymentCreationException;
 use Paygreen\Sdk\Payments\Interfaces\OrderInterface;
 
@@ -53,6 +54,8 @@ class ApiClient extends HttpClient
         $ttl = ''
     ) {
         try {
+            Logger::info("Create '$paymentType' cash payment with an amount of '$amount'.");
+
             $url = $this->parseUrlParameters(
                 $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',
                 [
@@ -99,11 +102,15 @@ class ApiClient extends HttpClient
                 ]
             ]);
 
+            if ($response->getStatusCode() !== 200) {
+                throw new PaymentCreationException(
+                    "An error occurred while creating a payment task for order '{$order->getReference()}'."
+                );
+            }
+
             return json_decode($response->getBody()->getContents(), true);
-        } catch (ClientException $exception) {
-            throw new PaymentCreationException(
-                "An error occurred while creating a payment task for order '{$order->getReference()}'."
-            );
+        } catch (Exception $exception) {
+            Logger::error($exception->getMessage(), $exception);
         }
     }
 
