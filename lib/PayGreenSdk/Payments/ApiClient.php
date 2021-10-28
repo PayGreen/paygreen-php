@@ -53,7 +53,7 @@ class ApiClient extends HttpClient
         $ttl = ''
     ) {
         try {
-            $url = $this->parseUrl('/api/{ui}/payins/transaction/cash', array(
+            $url = $this->parseUrlParameters('/api/{ui}/payins/transaction/cash', array(
                 'ui' => $this->environment->getPublicKey()
             ));
 
