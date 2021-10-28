@@ -10,7 +10,7 @@ use Monolog\Handler\StreamHandler;
 abstract class Logger
 {
     const DATE_FORMAT = "Y-m-d H:i:s";
-    const LOG_FORMAT = "[%datetime%] | %level_name% | %message% | Data: \n %context%\n";
+    const LOG_FORMAT = "[%datetime%] | %level_name% | %message% |\n Data: %context%\n";
 
     /**
      * @param string $message
