@@ -48,56 +48,56 @@ class ApiClient extends HttpClient
         $paymentType = 'CB',
         $currency = 'EUR',
         $returnedUrl = '',
-        $metadata = array(),
-        $eligibleAmount = array(),
+        $metadata = [],
+        $eligibleAmount = [],
         $ttl = ''
     ) {
         try {
             $url = $this->parseUrlParameters(
                 $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',
-                array(
+                [
                     'ui' => $this->environment->getPublicKey()
-                )
+                ]
             );
 
-            $response = $this->client->post($url, array(
-                'json' => array(
+            $response = $this->client->post($url, [
+                'json' => [
                     'orderId' => 'PG-' . $order->getReference(),
                     'amount' => $amount,
                     'currency' => $currency,
                     'paymentType' => $paymentType,
                     'notifiedUrl' => $notifiedUrl,
                     'returnedUrl' => $returnedUrl,
-                    'buyer' => (object) array(
+                    'buyer' => (object) [
                         'id' => $order->getCustomer()->getId(),
                         'lastName' => $order->getCustomer()->getLastName(),
                         'firstName' => $order->getCustomer()->getFirstName(),
                         'country' => $order->getCustomer()->getCountryCode()
-                    ),
-                    'shippingAddress' => (object) array(
+                    ],
+                    'shippingAddress' => (object) [
                         'lastName' => $order->getShippingAddress()->getLastName(),
                         'firstName' => $order->getShippingAddress()->getFirstName(),
                         'address' => $order->getShippingAddress()->getStreet(),
                         'zipCode' => $order->getShippingAddress()->getZipCode(),
                         'city' => $order->getShippingAddress()->getCity(),
                         'country' => $order->getShippingAddress()->getCountryCode()
-                    ),
-                    'billingAddress' => (object) array(
+                    ],
+                    'billingAddress' => (object) [
                         'lastName' => $order->getBillingAddress()->getLastName(),
                         'firstName' => $order->getBillingAddress()->getFirstName(),
                         'address' => $order->getBillingAddress()->getStreet(),
                         'zipCode' => $order->getBillingAddress()->getZipCode(),
                         'city' => $order->getBillingAddress()->getCity(),
                         'country' => $order->getBillingAddress()->getCountryCode()
-                    ),
+                    ],
                     'metadata' => $metadata,
                     'eligibleAmount' => $eligibleAmount,
                     'ttl' => $ttl
-                ),
-                'headers' => array(
+                ],
+                'headers' => [
                     'Authorization' => 'Bearer ' . $this->environment->getPrivateKey()
-                )
-            ));
+                ]
+            ]);
 
             return json_decode($response->getBody()->getContents(), true);
         } catch (ClientException $exception) {
@@ -126,14 +126,14 @@ class ApiClient extends HttpClient
      */
     private function initClient()
     {
-        $this->client = new Client(array(
-            'defaults' => array(
-                'headers' => array(
+        $this->client = new Client([
+            'defaults' => [
+                'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
                     'User-Agent' => $this->buildUserAgentHeader()
-                )
-            )
-        ));
+                ]
+            ]
+        ]);
     }
 }

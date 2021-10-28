@@ -17,7 +17,7 @@ abstract class Logger
      * @param array $data
      * @throws Exception
      */
-    static public function debug($message, $data = array())
+    static public function debug($message, $data = [])
     {
         self::log('debug', $message, $data);
     }
@@ -27,7 +27,7 @@ abstract class Logger
      * @param array $data
      * @throws Exception
      */
-    static public function info($message, $data = array())
+    static public function info($message, $data = [])
     {
         self::log('info', $message, $data);
     }
@@ -37,7 +37,7 @@ abstract class Logger
      * @param array $data
      * @throws Exception
      */
-    static public function notice($message, $data = array())
+    static public function notice($message, $data = [])
     {
         self::log('notice', $message, $data);
     }
@@ -47,7 +47,7 @@ abstract class Logger
      * @param array $data
      * @throws Exception
      */
-    static public function warning($message, $data = array())
+    static public function warning($message, $data = [])
     {
         self::log('warning', $message, $data);
     }
@@ -57,7 +57,7 @@ abstract class Logger
      * @param array $data
      * @throws Exception
      */
-    static public function error($message, $data = array())
+    static public function error($message, $data = [])
     {
         self::log('error', $message, $data);
     }
@@ -67,7 +67,7 @@ abstract class Logger
      * @param array $data
      * @throws Exception
      */
-    static public function critical($message, $data = array())
+    static public function critical($message, $data = [])
     {
         self::log('critical', $message, $data);
     }
