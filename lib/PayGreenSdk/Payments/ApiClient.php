@@ -5,6 +5,10 @@ namespace PayGreenSdk\Payments;
 use GuzzleHttp\Client;
 use PayGreenSdk\Core\Components\Environment;
 use PayGreenSdk\Core\HttpClient;
+use PayGreenSdk\Payments\Exceptions\PaymentCreationException;
+use PayGreenSdk\Payments\Interfaces\OrderInterface;
+use Psr\Http\Client\ClientExceptionInterface;
+use Psr\Http\Message\ResponseInterface;
 
 class ApiClient extends HttpClient
 {
@@ -22,6 +26,82 @@ class ApiClient extends HttpClient
         parent::__construct($environment);
 
         $this->initClient();
+    }
+
+    /**
+     * @param OrderInterface $order
+     * @param int $amount
+     * @param string $notifiedUrl
+     * @param string $currency
+     * @param string $paymentType
+     * @param string $returnedUrl
+     * @param array $metadata
+     * @param array $eligibleAmount
+     * @param string $ttl
+     * @return ResponseInterface
+     * @throws PaymentCreationException
+     */
+    public function createCash(
+        OrderInterface $order,
+        $amount,
+        $notifiedUrl,
+        $paymentType = 'CB',
+        $currency = 'EUR',
+        $returnedUrl = '',
+        $metadata = array(),
+        $eligibleAmount = array(),
+        $ttl = ''
+    ) {
+        try {
+            $url = $this->parseUrl('/api/{ui}/payins/transaction/cash', array(
+                'ui' => $this->environment->getPublicKey()
+            ));
+
+            $response = $this->client->post($url, array(
+                'json' => array(
+                    'orderId' => 'PG-' . $order->getReference(),
+                    'amount' => $amount,
+                    'currency' => $currency,
+                    'paymentType' => $paymentType,
+                    'notifiedUrl' => $notifiedUrl,
+                    'returnedUrl' => $returnedUrl,
+                    'buyer' => (object) array(
+                        'id' => $order->getCustomer()->getId(),
+                        'lastName' => $order->getCustomer()->getLastName(),
+                        'firstName' => $order->getCustomer()->getFirstName(),
+                        'country' => $order->getCustomer()->getCountryCode()
+                    ),
+                    'shippingAddress' => (object) array(
+                        'lastName' => $order->getShippingAddress()->getLastName(),
+                        'firstName' => $order->getShippingAddress()->getFirstName(),
+                        'address' => $order->getShippingAddress()->getStreet(),
+                        'zipCode' => $order->getShippingAddress()->getZipCode(),
+                        'city' => $order->getShippingAddress()->getCity(),
+                        'country' => $order->getShippingAddress()->getCountryCode()
+                    ),
+                    'billingAddress' => (object) array(
+                        'lastName' => $order->getBillingAddress()->getLastName(),
+                        'firstName' => $order->getBillingAddress()->getFirstName(),
+                        'address' => $order->getBillingAddress()->getStreet(),
+                        'zipCode' => $order->getBillingAddress()->getZipCode(),
+                        'city' => $order->getBillingAddress()->getCity(),
+                        'country' => $order->getBillingAddress()->getCountryCode()
+                    ),
+                    'metadata' => $metadata,
+                    'eligibleAmount' => $eligibleAmount,
+                    'ttl' => $ttl
+                ),
+                'headers' => array(
+                    'Authorization' => 'Bearer ' . $this->environment->getPrivateKey()
+                )
+            ));
+
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (ClientExceptionInterface $exception) {
+            throw new PaymentCreationException(
+                "An error occurred while creating a payment task for order '{$order->getReference()}'."
+            );
+        }
     }
 
     /**
