@@ -20,7 +20,7 @@ final class EnvironmentTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $environment = new Environment('public_key', 'private_key', 'INVALID_ENVIRONMENT');
+        new Environment('public_key', 'private_key', 'INVALID_ENVIRONMENT');
     }
 
     public function testEnvironmentFormat()
