@@ -28,6 +28,7 @@
     "guzzlehttp/guzzle": "^6.5.5",
     "symfony/dotenv": "^3.4.47",
     "ext-json": "*",
-    "monolog/monolog": "^1.26.1"
+    "monolog/monolog": "^1.26.1",
+    "symfony/config": "3.4.47"
   }
 }
