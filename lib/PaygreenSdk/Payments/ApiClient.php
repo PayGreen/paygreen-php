@@ -41,6 +41,7 @@ class ApiClient extends HttpClient
      * @param string $ttl
      * @return Response
      * @throws PaymentCreationException
+     * @throws Exception
      */
     public function createCash(
         OrderInterface $order,
@@ -53,65 +54,61 @@ class ApiClient extends HttpClient
         $eligibleAmount = [],
         $ttl = ''
     ) {
-        try {
-            Logger::info("Create '$paymentType' cash payment with an amount of '$amount'.");
+        Logger::info("Create '$paymentType' cash payment with an amount of '$amount'.");
 
-            $url = $this->parseUrlParameters(
-                $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',
-                [
-                    'ui' => $this->environment->getPublicKey()
-                ]
-            );
+        $url = $this->parseUrlParameters(
+            $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',
+            [
+                'ui' => $this->environment->getPublicKey()
+            ]
+        );
 
-            $response = $this->client->post($url, [
-                'json' => [
-                    'orderId' => 'PG-' . $order->getReference(),
-                    'amount' => $amount,
-                    'currency' => $currency,
-                    'paymentType' => $paymentType,
-                    'notifiedUrl' => $notifiedUrl,
-                    'returnedUrl' => $returnedUrl,
-                    'buyer' => (object) [
-                        'id' => $order->getCustomer()->getId(),
-                        'lastName' => $order->getCustomer()->getLastName(),
-                        'firstName' => $order->getCustomer()->getFirstName(),
-                        'country' => $order->getCustomer()->getCountryCode()
-                    ],
-                    'shippingAddress' => (object) [
-                        'lastName' => $order->getShippingAddress()->getLastName(),
-                        'firstName' => $order->getShippingAddress()->getFirstName(),
-                        'address' => $order->getShippingAddress()->getStreet(),
-                        'zipCode' => $order->getShippingAddress()->getZipCode(),
-                        'city' => $order->getShippingAddress()->getCity(),
-                        'country' => $order->getShippingAddress()->getCountryCode()
-                    ],
-                    'billingAddress' => (object) [
-                        'lastName' => $order->getBillingAddress()->getLastName(),
-                        'firstName' => $order->getBillingAddress()->getFirstName(),
-                        'address' => $order->getBillingAddress()->getStreet(),
-                        'zipCode' => $order->getBillingAddress()->getZipCode(),
-                        'city' => $order->getBillingAddress()->getCity(),
-                        'country' => $order->getBillingAddress()->getCountryCode()
-                    ],
-                    'metadata' => $metadata,
-                    'eligibleAmount' => $eligibleAmount,
-                    'ttl' => $ttl
+        $response = $this->client->post($url, [
+            'json' => [
+                'orderId' => 'PG-' . $order->getReference(),
+                'amount' => $amount,
+                'currency' => $currency,
+                'paymentType' => $paymentType,
+                'notifiedUrl' => $notifiedUrl,
+                'returnedUrl' => $returnedUrl,
+                'buyer' => (object) [
+                    'id' => $order->getCustomer()->getId(),
+                    'lastName' => $order->getCustomer()->getLastName(),
+                    'firstName' => $order->getCustomer()->getFirstName(),
+                    'country' => $order->getCustomer()->getCountryCode()
                 ],
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->environment->getPrivateKey()
-                ]
-            ]);
+                'shippingAddress' => (object) [
+                    'lastName' => $order->getShippingAddress()->getLastName(),
+                    'firstName' => $order->getShippingAddress()->getFirstName(),
+                    'address' => $order->getShippingAddress()->getStreet(),
+                    'zipCode' => $order->getShippingAddress()->getZipCode(),
+                    'city' => $order->getShippingAddress()->getCity(),
+                    'country' => $order->getShippingAddress()->getCountryCode()
+                ],
+                'billingAddress' => (object) [
+                    'lastName' => $order->getBillingAddress()->getLastName(),
+                    'firstName' => $order->getBillingAddress()->getFirstName(),
+                    'address' => $order->getBillingAddress()->getStreet(),
+                    'zipCode' => $order->getBillingAddress()->getZipCode(),
+                    'city' => $order->getBillingAddress()->getCity(),
+                    'country' => $order->getBillingAddress()->getCountryCode()
+                ],
+                'metadata' => $metadata,
+                'eligibleAmount' => $eligibleAmount,
+                'ttl' => $ttl
+            ],
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->environment->getPrivateKey()
+            ]
+        ]);
 
-            if ($response->getStatusCode() !== 200) {
-                throw new PaymentCreationException(
-                    "An error occurred while creating a payment task for order '{$order->getReference()}'."
-                );
-            }
-
-            return json_decode($response->getBody()->getContents(), true);
-        } catch (Exception $exception) {
-            Logger::error($exception->getMessage(), $exception);
+        if ($response->getStatusCode() !== 200) {
+            throw new PaymentCreationException(
+                "An error occurred while creating a payment task for order '{$order->getReference()}'."
+            );
         }
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
