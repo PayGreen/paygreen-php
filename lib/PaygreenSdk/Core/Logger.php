@@ -10,7 +10,7 @@ use Monolog\Handler\StreamHandler;
 abstract class Logger
 {
     const DATE_FORMAT = "Y-m-d H:i:s";
-    const LOG_FORMAT = "[%datetime%] | %level_name% | %message% |\n Data: %context%\n";
+    const LOG_FORMAT = "[%datetime%] | %level_name% | %message% \n %context% \n";
 
     /**
      * @param string $message
@@ -91,6 +91,10 @@ abstract class Logger
         $handler = new StreamHandler($path, MonologLogger::DEBUG);
         $handler->setFormatter($formatter);
         $logger->pushHandler($handler);
+
+        if (!is_array($data)) {
+            $data = [$data];
+        }
 
         $logger->$level($message, $data);
     }
