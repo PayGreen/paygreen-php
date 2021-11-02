@@ -5,27 +5,27 @@ variables:
   DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
 
 stages:
-#  - build
+  - build
   - test
   - deploy
 
-#build:
-#  stage: build
-#  script:
-#    - docker-compose build
-#  rules:
-#    - if: $CI_COMMIT_BRANCH
-#      exists:
-#        - Dockerfile
+image: docker:latest
+services:
+  - docker:20.10-dind
+
+build:
+  stage: build
+  script:
+    - docker build -t php .
+  artifacts:
+    paths:
+      - /var/lib/docker
 
 test:
-  image: docker/compose:latest
-  services:
-    - docker:20.10-dind
   stage: test
   script:
-    - docker-compose up -d
-    - docker-compose exec php vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
+    - docker run --name php -d php
+    - docker exec php vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
 
 publish:
   image: curlimages/curl:latest
