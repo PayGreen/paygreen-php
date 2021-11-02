@@ -25,6 +25,7 @@ build:
         - Dockerfile
 
 test:
+  image: docker:latest
   stage: test
   script:
     - docker run -d $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
