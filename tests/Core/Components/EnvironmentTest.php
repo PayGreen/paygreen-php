@@ -23,13 +23,23 @@ final class EnvironmentTest extends TestCase
         new Environment('public_key', 'private_key', 'INVALID_ENVIRONMENT');
     }
 
-    public function testEnvironmentFormat()
+    public function testEnvironmentAccessors()
     {
         $environment = new Environment('public_key', 'private_key', 'production');
 
         $this->assertEquals(
             Environment::ENVIRONMENT_PRODUCTION,
             $environment->getEnvironment()
+        );
+
+        $this->assertEquals(
+            'public_key',
+            $environment->getPublicKey()
+        );
+
+        $this->assertEquals(
+            'private_key',
+            $environment->getPrivateKey()
         );
     }
 }

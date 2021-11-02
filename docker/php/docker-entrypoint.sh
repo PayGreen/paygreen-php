@@ -8,6 +8,6 @@ fi
 
 composer install --prefer-dist --no-progress --no-interaction
 
-vendor/bin/phpunit tests
+# vendor/bin/phpunit tests
 
 exec docker-php-entrypoint "$@"
