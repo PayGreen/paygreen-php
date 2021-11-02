@@ -1,4 +1,4 @@
 /vendor
 /.idea
 /.env
-/logs
+/var/logs/*.log
