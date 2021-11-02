@@ -7,7 +7,7 @@ Start docker stack:
 docker-compose up -d
 ```
 
-Execute tests:
+Run tests:
 ```shell
 docker-compose exec php vendor/bin/phpunit tests
 ```
