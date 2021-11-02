@@ -33,6 +33,8 @@ RUN set -eux; \
 	composer install --prefer-dist --no-scripts --no-progress; \
 	composer clear-cache
 
+RUN ls -lah
+
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
 
