@@ -1,10 +1,9 @@
 <?php
 
-namespace PayGreenSdk\Core;
-
+namespace Paygreen\Sdk\Core;
 
 use GuzzleHttp\Client;
-use PayGreenSdk\Core\Components\Environment;
+use Paygreen\Sdk\Core\Components\Environment;
 
 class HttpClient
 {
@@ -44,7 +43,7 @@ class HttpClient
      * @param string $url
      * @return string
      */
-    protected function parseUrl($url, $parameters)
+    protected function parseUrlParameters($url, $parameters)
     {
         if (preg_match_all('/({(?<keys>[A-Z-_]+)})/i', $url, $results)) {
             foreach ($results['keys'] as $key) {
