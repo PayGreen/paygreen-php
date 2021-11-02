@@ -5,25 +5,16 @@ variables:
   DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
 
 stages:
-  - build
   - test
   - deploy
 
-image: docker:latest
-services:
-  - docker:20.10-dind
-
-build:
-  stage: build
-  script:
-    - docker build -t php .
-  artifacts:
-    paths:
-      - /var/lib/docker
-
 test:
   stage: test
+  image: docker:latest
+  services:
+    - docker:20.10-dind
   script:
+    - docker build -t php .
     - docker run --name php -d php
     - docker exec php vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
 
