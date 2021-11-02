@@ -9,26 +9,23 @@ stages:
   - test
   - deploy
 
+image: docker:latest
+
 build:
-  image: docker:latest
   stage: build
   services:
     - docker:20.10-dind
-  before_script:
-    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build --cache-from $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG -t $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG .
-    - docker push $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG
+    - docker-compose build
   rules:
     - if: $CI_COMMIT_BRANCH
       exists:
         - Dockerfile
 
 test:
-  image: docker:latest
   stage: test
   script:
-    - docker run -d $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
+    - docker-compose up -d
 
 publish:
   image: curlimages/curl:latest
