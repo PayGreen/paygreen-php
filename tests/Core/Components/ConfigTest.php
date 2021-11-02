@@ -17,7 +17,7 @@ final class ConfigTest extends TestCase
     public function testCanGetConfig()
     {
         $config = new Config();
-        $config['configKey'] = 'configValue';
+        $config->getBag()->merge(['configKey' => 'configValue']);
 
         $this->assertEquals('configValue', $config['configKey']);
     }

@@ -10,7 +10,7 @@ final class BagTest extends TestCase
     public function testCanGetData()
     {
         $bag = new Bag();
-        $bag['key'] = 'value';
+        $bag->merge(['key' => 'value']);
 
         $this->assertEquals('value', $bag['key']);
     }
