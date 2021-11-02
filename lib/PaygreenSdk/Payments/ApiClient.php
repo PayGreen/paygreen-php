@@ -10,14 +10,22 @@ use Paygreen\Sdk\Core\HttpClient;
 use Paygreen\Sdk\Core\Logger;
 use Paygreen\Sdk\Payments\Exceptions\PaymentCreationException;
 use Paygreen\Sdk\Payments\Interfaces\OrderInterface;
+use Psr\Log\LoggerInterface;
 
 class ApiClient extends HttpClient
 {
     const API_BASE_URL_SANDBOX = 'https://sandbox.paygreen.fr';
     const API_BASE_URL_PROD = 'https://paygreen.fr';
 
-    public function __construct()
+    /** @var LoggerInterface */
+    private $logger;
+
+    public function __construct(LoggerInterface $logger = null)
     {
+        if ($logger === null) {
+            $this->logger = new Logger('payment');
+        }
+
         $environment = new Environment(
             getenv('PAYGREEN_PUBLIC_KEY'),
             getenv('PAYGREEN_PRIVATE_KEY'),
@@ -54,7 +62,7 @@ class ApiClient extends HttpClient
         $eligibleAmount = [],
         $ttl = ''
     ) {
-        Logger::info("Create '$paymentType' cash payment with an amount of '$amount'.");
+        $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
 
         $url = $this->parseUrlParameters(
             $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',

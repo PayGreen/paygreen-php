@@ -4,106 +4,97 @@ namespace Paygreen\Sdk\Core;
 
 use Exception;
 use Monolog\Formatter\LineFormatter;
-use Monolog\Logger as MonologLogger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger as MonologLogger;
+use Psr\Log\LoggerInterface;
 
-abstract class Logger
+class Logger implements LoggerInterface
 {
+    const LOG_BASE_PATH = "/var/logs";
     const DATE_FORMAT = "Y-m-d H:i:s";
     const LOG_FORMAT = "[%datetime%] | %level_name% | %message% \n %context% \n";
 
-    /**
-     * @param string $message
-     * @param array $data
-     * @throws Exception
-     */
-    static public function debug($message, $data = [])
-    {
-        self::log('debug', $message, $data);
-    }
+    /** @var MonologLogger */
+    private $logger;
 
     /**
-     * @param string $message
-     * @param array $data
      * @throws Exception
      */
-    static public function info($message, $data = [])
+    public function __construct($area = 'sdk')
     {
-        self::log('info', $message, $data);
-    }
-
-    /**
-     * @param string $message
-     * @param array $data
-     * @throws Exception
-     */
-    static public function notice($message, $data = [])
-    {
-        self::log('notice', $message, $data);
-    }
-
-    /**
-     * @param string $message
-     * @param array $data
-     * @throws Exception
-     */
-    static public function warning($message, $data = [])
-    {
-        self::log('warning', $message, $data);
-    }
-
-    /**
-     * @param string $message
-     * @param array $data
-     * @throws Exception
-     */
-    static public function error($message, $data = [])
-    {
-        self::log('error', $message, $data);
-    }
-
-    /**
-     * @param string $message
-     * @param array $data
-     * @throws Exception
-     */
-    static public function critical($message, $data = [])
-    {
-        self::log('critical', $message, $data);
-    }
-
-    /**
-     * @param string $level
-     * @param string $message
-     * @param array $data
-     * @throws Exception
-     */
-    static private function log($level, $message, $data)
-    {
-        $logger = new MonologLogger('sdk');
+        $this->logger = new MonologLogger($area);
         $formatter = new LineFormatter(self::LOG_FORMAT, self::DATE_FORMAT);
-        $path = $_SERVER['DOCUMENT_ROOT'] . '/logs/sdk.log';
+        $path = $_SERVER['DOCUMENT_ROOT'] . self::LOG_BASE_PATH . DIRECTORY_SEPARATOR . $area . '.log';
 
         if (!file_exists($path)) {
-            self::createLogFile($path);
+            $this->createLogFile($path);
         }
 
         $handler = new StreamHandler($path, MonologLogger::DEBUG);
         $handler->setFormatter($formatter);
-        $logger->pushHandler($handler);
+        $this->logger->pushHandler($handler);
+    }
 
-        if (!is_array($data)) {
-            $data = [$data];
+    /**
+     * @throws Exception
+     */
+    public function emergency($message, array $context = [])
+    {
+        $this->log('emergency', $message, $context);
+    }
+
+    public function alert($message, array $context = [])
+    {
+        $this->log('alert', $message, $context);
+    }
+
+    public function critical($message, array $context = [])
+    {
+        $this->log('critical', $message, $context);
+    }
+
+    public function error($message, array $context = [])
+    {
+        $this->log('error', $message, $context);
+    }
+
+    public function warning($message, array $context = [])
+    {
+        $this->log('warning', $message, $context);
+    }
+
+    public function notice($message, array $context = [])
+    {
+        $this->log('notice', $message, $context);
+    }
+
+    public function info($message, array $context = [])
+    {
+        $this->log('info', $message, $context);
+    }
+
+    public function debug($message, array $context = [])
+    {
+        $this->log('debug', $message, $context);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function log($level, $message, array $context = [])
+    {
+        if (!is_array($context)) {
+            $context = [$context];
         }
 
-        $logger->$level($message, $data);
+        $this->logger->$level($message, $context);
     }
 
     /**
      * @param string $path
      * @return void
      */
-    static private function createLogFile($path)
+    private function createLogFile($path)
     {
         $logFolderPath = pathinfo($path, PATHINFO_DIRNAME);
 

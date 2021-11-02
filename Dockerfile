@@ -25,14 +25,13 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 WORKDIR /srv/paygreen
 
-COPY composer.json composer.lock ./
+COPY composer.json composer.lock phpunit.xml.dist ./
 COPY lib lib/
 COPY tests tests/
 
 RUN set -eux; \
 	composer install --prefer-dist --no-scripts --no-progress; \
 	composer clear-cache
-
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
