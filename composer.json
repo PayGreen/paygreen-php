@@ -1,0 +1,34 @@
+{
+  "name": "paygreen/paygreen-sdk",
+  "description": "PayGreen PHP SDK",
+  "type": "library",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "PayGreen",
+      "homepage": "https://paygreen.io/"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Paygreen\\Sdk\\": "lib/PaygreenSdk"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Paygreen\\Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.7.27",
+    "symfony/var-dumper": "^3.4.47"
+  },
+  "require": {
+    "psr/http-client": "^1.0",
+    "guzzlehttp/guzzle": "^6.5.5",
+    "symfony/dotenv": "^3.4.47",
+    "ext-json": "*",
+    "monolog/monolog": "^1.26.1",
+    "symfony/config": "3.4.47"
+  }
+}
