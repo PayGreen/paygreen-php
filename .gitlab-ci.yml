@@ -17,7 +17,7 @@ build:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
   script:
-    - docker build -t $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG .
+    - docker build --cache-from $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG -t $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG .
     - docker push $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG
   rules:
     - if: $CI_COMMIT_BRANCH
@@ -26,10 +26,8 @@ build:
 
 test:
   stage: test
-  image: $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG
   script:
-    - ls -lah
-    - vendor/bin/phpunit tests --configuration phpunit.xml --coverage-text --colors=never
+    - docker run -d $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
 
 publish:
   image: curlimages/curl:latest
