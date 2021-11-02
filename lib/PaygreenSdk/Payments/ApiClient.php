@@ -27,9 +27,9 @@ class ApiClient extends HttpClient
         }
 
         $environment = new Environment(
-            getenv('PAYGREEN_PUBLIC_KEY'),
-            getenv('PAYGREEN_PRIVATE_KEY'),
-            getenv('PAYGREEN_API_SERVER')
+            getenv('PG_PAYMENT_PUBLIC_KEY'),
+            getenv('PG_PAYMENT_PRIVATE_KEY'),
+            getenv('PG_PAYMENT_API_SERVER')
         );
 
         parent::__construct($environment);
