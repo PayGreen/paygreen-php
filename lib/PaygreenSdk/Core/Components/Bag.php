@@ -66,7 +66,7 @@ class Bag implements ArrayAccess
     }
 
     /**
-     * @param string $name
+     * @param $var
      * @return mixed|null
      */
     public function offsetGet($var)
