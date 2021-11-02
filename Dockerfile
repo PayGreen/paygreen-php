@@ -2,6 +2,19 @@ ARG PHP_VERSION=5.6
 
 FROM php:${PHP_VERSION}-fpm-alpine AS php
 
+RUN set -eux; \
+    apk add --no-cache \
+        $PHPIZE_DEPS \
+    	; \
+    pecl install \
+        xdebug-2.5.5 \
+    	; \
+    docker-php-ext-install -j$(nproc) \
+        json \
+        ; \
+    docker-php-ext-enable \
+        xdebug
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
