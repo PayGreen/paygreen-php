@@ -1,5 +1,8 @@
 variables:
   DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs/client"
+  DOCKER_TLS_VERIFY: 1
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
 
 stages:
   - build
@@ -7,6 +10,9 @@ stages:
   - deploy
 
 image: docker/compose:latest
+services:
+  - docker:20.10-dind
+
 
 build:
   stage: build
