@@ -1,9 +1,9 @@
 <?php
 
-namespace Paygreen\Tests;
+namespace Paygreen\Tests\Core\Components;
 
 use InvalidArgumentException;
-use PayGreenSdk\Core\Components\Environment;
+use Paygreen\Sdk\Core\Components\Environment;
 use PHPUnit\Framework\TestCase;
 
 final class EnvironmentTest extends TestCase
@@ -20,7 +20,7 @@ final class EnvironmentTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $environment = new Environment('public_key', 'private_key', 'INVALID_ENVIRONMENT');
+        new Environment('public_key', 'private_key', 'INVALID_ENVIRONMENT');
     }
 
     public function testEnvironmentFormat()
