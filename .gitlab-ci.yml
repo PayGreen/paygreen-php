@@ -28,6 +28,7 @@ test:
   stage: test
   image: $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG
   script:
+    - ls -lah
     - vendor/bin/phpunit tests --configuration phpunit.xml --coverage-text --colors=never
 
 publish:
