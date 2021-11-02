@@ -26,7 +26,7 @@ build:
 
 test:
   stage: test
-  image: php:test
+  image: $CI_REGISTRY_IMAGE/php:$CI_COMMIT_REF_SLUG
   script:
     - vendor/bin/phpunit tests --configuration phpunit.xml --coverage-text --colors=never
 
@@ -48,4 +48,3 @@ publish:
         echo "Could not create package - Code $code - $body";
         exit 1;
       fi
-
