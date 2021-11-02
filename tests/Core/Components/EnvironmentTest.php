@@ -28,11 +28,6 @@ final class EnvironmentTest extends TestCase
         $environment = new Environment('public_key', 'private_key', 'production');
 
         $this->assertEquals(
-            Environment::ENVIRONMENT_PRODUCTION,
-            $environment->getEnvironment()
-        );
-
-        $this->assertEquals(
             'public_key',
             $environment->getPublicKey()
         );
@@ -40,6 +35,11 @@ final class EnvironmentTest extends TestCase
         $this->assertEquals(
             'private_key',
             $environment->getPrivateKey()
+        );
+
+        $this->assertEquals(
+            Environment::ENVIRONMENT_PRODUCTION,
+            $environment->getEnvironment()
         );
     }
 }
