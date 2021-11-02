@@ -1,0 +1,7 @@
+payment:
+  requests:
+    v2:
+      create_cash:
+        method: "POST"
+        url: "/api/{ui}/payins/transaction/cash"
+        private: true
