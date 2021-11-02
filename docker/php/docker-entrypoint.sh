@@ -8,6 +8,6 @@ fi
 
 composer install --prefer-dist --no-progress --no-interaction
 
-vendor/bin/phpunit --configuration phpunit.xml --coverage-text --colors=never
+vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
 
 exec docker-php-entrypoint "$@"
