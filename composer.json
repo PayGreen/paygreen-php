@@ -31,6 +31,6 @@
     "symfony/dotenv": "^3.4.47",
     "symfony/config": "3.4.47",
     "monolog/monolog": "^1.26.1",
-    "php-http/httplug": "^2.2"
+    "php-http/httplug": "1.1.0"
   }
 }
