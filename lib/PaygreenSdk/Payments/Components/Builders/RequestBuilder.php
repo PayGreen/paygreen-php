@@ -2,6 +2,7 @@
 
 namespace Paygreen\Sdk\Payments\Components\Builders;
 
+use Exception;
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Components\Config;
 use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
@@ -36,6 +37,7 @@ class RequestBuilder
      * @param array $body
      * @param bool $private
      * @return RequestInterface
+     * @throws Exception
      */
     public function buildRequest(
         $name,
@@ -44,6 +46,10 @@ class RequestBuilder
         $private = true
     ) {
         $requestConfig = $this->config[$name];
+
+       if ($requestConfig === null) {
+           throw new Exception("Request config '$name' not found.");
+       }
 
         $url = $this->baseUri . $this->parseUrlParameters($requestConfig['url'], $options);
 

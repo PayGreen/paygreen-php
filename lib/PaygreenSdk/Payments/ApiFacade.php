@@ -2,6 +2,7 @@
 
 namespace Paygreen\Sdk\Payments;
 
+use Exception;
 use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
 use Paygreen\Sdk\Core\Components\Environment;
 use Paygreen\Sdk\Core\HttpClient;
@@ -60,6 +61,7 @@ class ApiFacade
      * @throws PaymentCreationException
      * @throws InvalidApiVersion
      * @throws HttpClientException
+     * @throws Exception
      */
     public function createCash(
         OrderInterface $order,
