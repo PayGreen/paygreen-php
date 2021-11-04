@@ -24,13 +24,14 @@
     "symfony/var-dumper": "^3.4.47"
   },
   "require": {
-    "php": ">5.6",
+    "php": ">=5.6",
     "ext-json": "*",
-    "guzzlehttp/guzzle": "^6.5.5",
-    "psr/log": "1.1.4",
+    "psr/log": "^1.1.4",
     "symfony/dotenv": "^3.4.47",
-    "symfony/config": "3.4.47",
+    "symfony/yaml": "^3.4.47",
     "monolog/monolog": "^1.26.1",
-    "php-http/httplug": "1.1.0"
+    "php-http/curl-client": "^1.7.1",
+    "guzzlehttp/psr7": "^1.8.3",
+    "php-http/message": "^1.7.2"
   }
 }
