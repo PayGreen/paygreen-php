@@ -133,6 +133,8 @@ class ApiFacade
         try {
             /** @var ResponseInterface $response */
             $response = $this->sendRequest($request);
+            
+            $this->logger->info('Cash payment successfully created.');
 
             return json_decode($response->getBody()->getContents(), true);
         } catch (Exception $exception) {
