@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Sdk\Payments\Interfaces;
+namespace Paygreen\Sdk\Payment\Model;
 
 interface CustomerInterface
 {
@@ -18,6 +18,16 @@ interface CustomerInterface
      * @return string
      */
     public function getLastName();
+
+    /*
+     * @return string
+     */
+    public function getEmail();
+
+    /*
+     * @return string
+     */
+    public function getCompanyName();
 
     /**
      * @return string

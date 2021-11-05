@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Sdk\Core\Components;
+namespace Paygreen\Sdk\Core\Component;
 
 use InvalidArgumentException;
 
@@ -18,16 +18,21 @@ class Environment
     /** @var string */
     private $environment;
 
+    /** @var int */
+    private $apiVersion;
+
     /**
      * @param string $publicKey
      * @param string $privateKey
      * @param string $environment
+     * @param int|string $apiVersion
      */
-    public function __construct($publicKey, $privateKey, $environment)
+    public function __construct($publicKey, $privateKey, $environment, $apiVersion)
     {
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
         $this->environment = strtoupper($environment);
+        $this->apiVersion = (int) $apiVersion;
 
         $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX];
 
@@ -58,5 +63,13 @@ class Environment
     public function getEnvironment()
     {
         return $this->environment;
+    }
+
+    /**
+     * @return int
+     */
+    public function getApiVersion()
+    {
+        return $this->apiVersion;
     }
 }

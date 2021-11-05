@@ -1,8 +1,8 @@
 <?php
 
 namespace Paygreen\Tests\Core\Components;
-use Paygreen\Sdk\Core\Components\Bag;
-use Paygreen\Sdk\Core\Components\Config;
+use Paygreen\Sdk\Core\Component\Bag;
+use Paygreen\Sdk\Core\Component\Config;
 use PHPUnit\Framework\TestCase;
 
 final class ConfigTest extends TestCase

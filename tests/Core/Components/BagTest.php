@@ -2,7 +2,7 @@
 
 namespace Paygreen\Tests\Core\Components;
 
-use Paygreen\Sdk\Core\Components\Bag;
+use Paygreen\Sdk\Core\Component\Bag;
 use PHPUnit\Framework\TestCase;
 
 final class BagTest extends TestCase

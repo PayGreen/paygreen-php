@@ -1,8 +1,8 @@
 <?php
 
-namespace Paygreen\Sdk\Core\Components;
+namespace Paygreen\Sdk\Core\Component;
 
-use Paygreen\Sdk\Core\Tools\Collection;
+use Paygreen\Sdk\Core\Tool\Collection;
 use ArrayAccess;
 use Exception;
 
