@@ -11,22 +11,29 @@
   ],
   "autoload": {
     "psr-4": {
-      "PayGreenSdk\\": "lib/PayGreenSdk"
+      "Paygreen\\Sdk\\": "lib/PaygreenSdk"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Paygreen\\Tests\\": "tests/"
     }
   },
   "require-dev": {
     "phpunit/phpunit": "^5.7.27",
-    "symfony/var-dumper": "3.4.47"
+    "symfony/var-dumper": "^3.4.47",
+    "php-http/curl-client": "^1.7.1"
   },
   "require": {
-    "psr/http-client": "^1.0",
-    "guzzlehttp/guzzle": "^7.4",
-    "symfony/dotenv": "3.4.47",
-    "ext-json": "*"
+    "php": ">=5.6",
+    "ext-json": "*",
+    "ext-curl": "*",
+    "psr/log": "^1.1.4",
+    "symfony/dotenv": "^3.4.47",
+    "symfony/yaml": "^3.4.47",
+    "monolog/monolog": "^1.26.1",
+    "guzzlehttp/psr7": "^1.8.3",
+    "php-http/message": "^1.7.2",
+    "php-http/httplug": "^1.0"
   }
 }
