@@ -94,7 +94,9 @@ class ApiFacade
                 'id' => $order->getCustomer()->getId(),
                 'lastName' => $order->getCustomer()->getLastName(),
                 'firstName' => $order->getCustomer()->getFirstName(),
-                'country' => $order->getCustomer()->getCountryCode()
+                'email' => $order->getCustomer()->getEmail(),
+                'country' => $order->getCustomer()->getCountryCode(),
+                'companyName' => $order->getCustomer()->getCompanyName()
             ],
             'shippingAddress' => (object) [
                 'lastName' => $order->getShippingAddress()->getLastName(),
