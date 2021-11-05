@@ -3,8 +3,10 @@
 namespace Paygreen\Sdk\Payments\Components\Builders;
 
 use Exception;
+use LogicException;
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Components\Config;
+use Paygreen\Sdk\Core\Components\Environment;
 use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
 use Psr\Http\Message\RequestInterface;
 
@@ -13,22 +15,21 @@ class RequestBuilder
     /** @var array */
     private $config = [];
 
-    /** @var string */
-    private $privateKey;
+    /** @var Environment */
+    private $environment;
 
     /** @var string */
     private $baseUri;
 
     /**
-     * @param int $apiVersion
-     * @param string $privateKey
+     * @param Environment
      * @throws InvalidApiVersion
      */
-    public function __construct($apiVersion, $privateKey, $baseUri)
+    public function __construct(Environment $environment)
     {
-        $this->loadRequestsConfig($apiVersion);
-        $this->privateKey = $privateKey;
-        $this->baseUri = $baseUri;
+        $this->loadConfig($environment->getApiVersion());
+        $this->environment = $environment;
+        $this->baseUri = $this->getBaseUri();
     }
 
     /**
@@ -45,11 +46,11 @@ class RequestBuilder
         array $body = [],
         $private = true
     ) {
-        $requestConfig = $this->config[$name];
+        $requestConfig = $this->config['requests'][$name];
 
-       if ($requestConfig === null) {
+        if ($requestConfig === null) {
            throw new Exception("Request config '$name' not found.");
-       }
+        }
 
         $url = $this->baseUri . $this->parseUrlParameters($requestConfig['url'], $options);
 
@@ -60,7 +61,7 @@ class RequestBuilder
         ];
 
         if ($private) {
-            $headers['Authorization'] = 'Bearer ' . $this->privateKey;
+            $headers['Authorization'] = 'Bearer ' . $this->environment->getPrivateKey();
         }
 
         foreach ($body as $key => $item) {
@@ -84,7 +85,7 @@ class RequestBuilder
         if (preg_match_all('/({(?<keys>[A-Z-_]+)})/i', $url, $results)) {
             foreach ($results['keys'] as $key) {
                 if (!array_key_exists($key, $parameters)) {
-                    throw new \LogicException("Unable to retrieve parameter : '$key'.");
+                    throw new LogicException("Unable to retrieve parameter : '$key'.");
                 }
 
                 $url = preg_replace('/{' . $key . '}/i', $parameters[$key], $url);
@@ -92,6 +93,20 @@ class RequestBuilder
         }
 
         return $url;
+    }
+
+    /**
+     * @return string
+     */
+    private function getBaseUri()
+    {
+        if ($this->environment->getEnvironment() === 'SANDBOX') {
+            $baseUri = $this->config['servers']['SANDBOX'];
+        } else {
+            $baseUri = $this->config['servers']['PROD'];
+        }
+
+        return $baseUri;
     }
 
     /**
@@ -117,16 +132,18 @@ class RequestBuilder
      * @return void
      * @throws InvalidApiVersion
      */
-    private function loadRequestsConfig($apiVersion)
+    private function loadConfig($apiVersion)
     {
         $config = new Config();
 
         switch ($apiVersion) {
             case 2:
-                $this->config = $config['payment.v2.requests'];
+                $this->config['requests'] = $config['payment.v2.requests'];
+                $this->config['servers'] = $config['payment.v2.servers'];
                 break;
             case 3:
-                $this->config = $config['payment.v3.requests'];
+                $this->config['requests'] = $config['payment.v3.requests'];
+                $this->config['servers'] = $config['payment.v3.servers'];
                 break;
             default:
                 throw new InvalidApiVersion("Invalid API version. Value should be '2' or '3'.");

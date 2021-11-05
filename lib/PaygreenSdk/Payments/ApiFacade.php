@@ -3,48 +3,55 @@
 namespace Paygreen\Sdk\Payments;
 
 use Exception;
-use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
 use Paygreen\Sdk\Core\Components\Environment;
-use Paygreen\Sdk\Core\HttpClient;
+use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
 use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Logger;
 use Paygreen\Sdk\Payments\Components\Builders\RequestBuilder;
 use Paygreen\Sdk\Payments\Exceptions\PaymentCreationException;
 use Paygreen\Sdk\Payments\Interfaces\OrderInterface;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 use Http\Client\Exception as HttpClientException;
 
 class ApiFacade
 {
-    const API_BASE_URL_SANDBOX = 'https://sandbox.paygreen.fr';
-    const API_BASE_URL_PROD = 'https://paygreen.fr';
-
     /** @var HttpClientInterface */
     private $client;
 
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(HttpClientInterface $client = null, LoggerInterface $logger = null)
-    {
-        if ($client === null) {
-            $environment = new Environment(
-                getenv('PG_PAYMENT_PUBLIC_KEY'),
-                getenv('PG_PAYMENT_PRIVATE_KEY'),
-                getenv('PG_PAYMENT_API_SERVER')
-            );
+    /** @var RequestBuilder */
+    private $requestBuilder;
 
-            $this->client = new HttpClient($environment);
-        } else {
-            $this->client = $client;
-        }
+    /** @var Environment */
+    private $environment;
+
+    /**
+     * @param HttpClientInterface $client
+     * @param LoggerInterface|null $logger
+     * @throws InvalidApiVersion
+     */
+    public function __construct(HttpClientInterface $client, LoggerInterface $logger = null)
+    {
+        $this->client = $client;
 
         if ($logger === null) {
             $this->logger = new Logger('api.payment');
         } else {
             $this->logger = $logger;
         }
+
+        $this->environment = new Environment(
+            getenv('PG_PAYMENT_API_PUBLIC_KEY'),
+            getenv('PG_PAYMENT_API_PRIVATE_KEY'),
+            getenv('PG_PAYMENT_API_SERVER'),
+            getenv('PG_PAYMENT_API_VERSION')
+        );
+
+        $this->requestBuilder = new RequestBuilder($this->environment);
     }
 
     /**
@@ -59,8 +66,6 @@ class ApiFacade
      * @param string $ttl
      * @return mixed|void
      * @throws PaymentCreationException
-     * @throws InvalidApiVersion
-     * @throws HttpClientException
      * @throws Exception
      */
     public function createCash(
@@ -76,16 +81,10 @@ class ApiFacade
     ) {
         $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
 
-        $requestBuilder = new RequestBuilder(
-            getenv('PG_PAYMENT_API_VERSION'),
-            $this->client->getEnvironment()->getPrivateKey(),
-            $this->getBaseUri()
-        );
-
-        $request = $requestBuilder->buildRequest(
+        $request = $this->requestBuilder->buildRequest(
             'create_cash',
             [
-                'ui' => $this->client->getEnvironment()->getPublicKey()
+                'ui' => $this->environment->getPublicKey()
             ],
             [
                 'orderId' => 'PG-' . $order->getReference(),
@@ -123,7 +122,7 @@ class ApiFacade
         );
 
         /** @var ResponseInterface $response */
-        $response = $this->client->sendRequest($request);
+        $response = $this->sendRequest($request);
 
         if ($response->getStatusCode() !== 200) {
             throw new PaymentCreationException(
@@ -132,20 +131,31 @@ class ApiFacade
         }
 
         return json_decode($response->getBody()->getContents(), true);
-
     }
 
     /**
-     * @return string
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     * @throws Exception
      */
-    private function getBaseUri()
+    private function sendRequest(RequestInterface $request)
     {
-        if (getenv('PG_PAYMENT_API_SERVER') === 'SANDBOX') {
-            $baseUri = self::API_BASE_URL_SANDBOX;
-        } else {
-            $baseUri = self::API_BASE_URL_PROD;
-        }
+        try {
+            $this->logger->info("Sending request '{$request->getUri()->getPath()}' ");
 
-        return $baseUri;
+            /** @var ResponseInterface $response */
+            $response = $this->client->sendRequest($request);
+
+            if ($response->getStatusCode() >= 400) {
+                $this->logger->error('Request error : ', [
+                    'code' => $response->getStatusCode(),
+                    'reasonPhrase' => $response->getReasonPhrase()
+                ]);
+            }
+
+            return $response;
+        } catch (HttpClientException $exception) {
+            $this->logger->error("An error occurred while sending request.", [$exception]);
+        }
     }
 }
