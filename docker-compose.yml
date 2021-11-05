@@ -7,3 +7,10 @@ services:
       target: php
     volumes:
       - ./:/srv/paygreen:rw,cached
+
+  phpstan:
+    build:
+      context: .
+      target: phpstan
+    volumes:
+      - ./:/srv/paygreen:rw,cached
