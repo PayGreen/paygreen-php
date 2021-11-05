@@ -75,62 +75,69 @@ class ApiFacade
         $paymentType = 'CB',
         $currency = 'EUR',
         $returnedUrl = '',
-        $metadata = [],
         $eligibleAmount = [],
+        $cardToken = '',
+        $metadata = [],
         $ttl = ''
     ) {
         $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
+
+        $requestBody = [
+            'orderId' => 'PG-' . $order->getReference(),
+            'amount' => $amount,
+            'currency' => $currency,
+            'paymentType' => $paymentType,
+            'notifiedUrl' => $notifiedUrl,
+            'returnedUrl' => $returnedUrl,
+            'buyer' => (object) [
+                'id' => $order->getCustomer()->getId(),
+                'lastName' => $order->getCustomer()->getLastName(),
+                'firstName' => $order->getCustomer()->getFirstName(),
+                'country' => $order->getCustomer()->getCountryCode()
+            ],
+            'shippingAddress' => (object) [
+                'lastName' => $order->getShippingAddress()->getLastName(),
+                'firstName' => $order->getShippingAddress()->getFirstName(),
+                'address' => $order->getShippingAddress()->getStreet(),
+                'zipCode' => $order->getShippingAddress()->getZipCode(),
+                'city' => $order->getShippingAddress()->getCity(),
+                'country' => $order->getShippingAddress()->getCountryCode()
+            ],
+            'billingAddress' => (object) [
+                'lastName' => $order->getBillingAddress()->getLastName(),
+                'firstName' => $order->getBillingAddress()->getFirstName(),
+                'address' => $order->getBillingAddress()->getStreet(),
+                'zipCode' => $order->getBillingAddress()->getZipCode(),
+                'city' => $order->getBillingAddress()->getCity(),
+                'country' => $order->getBillingAddress()->getCountryCode()
+            ],
+            'metadata' => $metadata,
+            'eligibleAmount' => $eligibleAmount,
+            'ttl' => $ttl
+        ];
+
+        if (!empty($cardToken)) {
+            $requestBody['card'] = (object) [
+                'token' => $cardToken
+            ];
+        }
 
         $request = $this->requestBuilder->buildRequest(
             'create_cash',
             [
                 'ui' => $this->environment->getPublicKey()
             ],
-            [
-                'orderId' => 'PG-' . $order->getReference(),
-                'amount' => $amount,
-                'currency' => $currency,
-                'paymentType' => $paymentType,
-                'notifiedUrl' => $notifiedUrl,
-                'returnedUrl' => $returnedUrl,
-                'buyer' => (object) [
-                    'id' => $order->getCustomer()->getId(),
-                    'lastName' => $order->getCustomer()->getLastName(),
-                    'firstName' => $order->getCustomer()->getFirstName(),
-                    'country' => $order->getCustomer()->getCountryCode()
-                ],
-                'shippingAddress' => (object) [
-                    'lastName' => $order->getShippingAddress()->getLastName(),
-                    'firstName' => $order->getShippingAddress()->getFirstName(),
-                    'address' => $order->getShippingAddress()->getStreet(),
-                    'zipCode' => $order->getShippingAddress()->getZipCode(),
-                    'city' => $order->getShippingAddress()->getCity(),
-                    'country' => $order->getShippingAddress()->getCountryCode()
-                ],
-                'billingAddress' => (object) [
-                    'lastName' => $order->getBillingAddress()->getLastName(),
-                    'firstName' => $order->getBillingAddress()->getFirstName(),
-                    'address' => $order->getBillingAddress()->getStreet(),
-                    'zipCode' => $order->getBillingAddress()->getZipCode(),
-                    'city' => $order->getBillingAddress()->getCity(),
-                    'country' => $order->getBillingAddress()->getCountryCode()
-                ],
-                'metadata' => $metadata,
-                'eligibleAmount' => $eligibleAmount,
-                'ttl' => $ttl
-            ]
+            $requestBody
         );
 
-        /** @var ResponseInterface $response */
-        $response = $this->sendRequest($request);
+        try {
+            /** @var ResponseInterface $response */
+            $response = $this->sendRequest($request);
 
-        if ($response->getStatusCode() !== 200) {
-            throw new PaymentCreationException(
-                "An error occurred while creating a payment task for order '{$order->getReference()}'."
-            );
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (Exception $exception) {
+            $this->logger->error("An error occurred while creating a payment task for order '{$order->getReference()}'.");
         }
-
-        return json_decode($response->getBody()->getContents(), true);
     }
 
     /**
@@ -141,21 +148,24 @@ class ApiFacade
     private function sendRequest(RequestInterface $request)
     {
         try {
-            $this->logger->info("Sending request '{$request->getUri()->getPath()}' ");
+            $this->logger->info("Sending request '{$request->getUri()->getPath()}'.");
 
             /** @var ResponseInterface $response */
             $response = $this->client->sendRequest($request);
 
             if ($response->getStatusCode() >= 400) {
-                $this->logger->error('Request error : ', [
+                $this->logger->error('Request error. ', [
                     'code' => $response->getStatusCode(),
-                    'reasonPhrase' => $response->getReasonPhrase()
+                    'reasonPhrase' => $response->getReasonPhrase(),
+                    'request' => $request
                 ]);
+
+                throw new Exception('Request error', $response->getStatusCode());
             }
 
             return $response;
         } catch (HttpClientException $exception) {
-            $this->logger->error("An error occurred while sending request.", [$exception]);
+            $this->logger->error("A client error occurred while sending request.", [$exception]);
         }
     }
 }
