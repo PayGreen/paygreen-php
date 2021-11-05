@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Tests\Core\Components;
+namespace Paygreen\Tests\Core\Component;
 
 use Paygreen\Sdk\Core\Component\Bag;
 use PHPUnit\Framework\TestCase;
