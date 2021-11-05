@@ -1,8 +1,8 @@
 <?php
 
 use Paygreen\Sdk\Core\Component\Environment;
-use Paygreen\Sdk\Payment\Components\Builders\RequestBuilder;
-use Paygreen\Sdk\Payment\Exception\InvalidApiVersion;
+use Paygreen\Sdk\Payment\Component\Builder\RequestBuilder;
+use Paygreen\Sdk\Payment\Exception\InvalidApiVersionException;
 use PHPUnit\Framework\TestCase;
 
 final class RequestBuilderTest extends TestCase
@@ -31,7 +31,7 @@ final class RequestBuilderTest extends TestCase
             'INVALID_API_VERSION'
         );
 
-        $this->expectException(InvalidApiVersion::class);
+        $this->expectException(InvalidApiVersionException::class);
 
         new RequestBuilder($environment);
     }
