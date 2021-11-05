@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Sdk\Core\Tools;
+namespace Paygreen\Sdk\Core\Tool;
 
 abstract class Collection
 {

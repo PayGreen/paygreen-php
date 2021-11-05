@@ -3,7 +3,7 @@
 namespace Paygreen\Tests\Core\Components;
 
 use InvalidArgumentException;
-use Paygreen\Sdk\Core\Components\Environment;
+use Paygreen\Sdk\Core\Component\Environment;
 use PHPUnit\Framework\TestCase;
 
 final class EnvironmentTest extends TestCase

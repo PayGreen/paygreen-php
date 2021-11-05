@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Sdk\Core\Components;
+namespace Paygreen\Sdk\Core\Component;
 
 use ArrayAccess;
 use Exception;

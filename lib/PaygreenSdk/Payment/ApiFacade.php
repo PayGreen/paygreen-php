@@ -1,15 +1,15 @@
 <?php
 
-namespace Paygreen\Sdk\Payments;
+namespace Paygreen\Sdk\Payment;
 
 use Exception;
-use Paygreen\Sdk\Core\Components\Environment;
-use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
+use Paygreen\Sdk\Core\Component\Environment;
+use Paygreen\Sdk\Payment\Exception\InvalidApiVersionException;
 use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Logger;
-use Paygreen\Sdk\Payments\Components\Builders\RequestBuilder;
-use Paygreen\Sdk\Payments\Exceptions\PaymentCreationException;
-use Paygreen\Sdk\Payments\Interfaces\OrderInterface;
+use Paygreen\Sdk\Payment\Component\Builder\RequestBuilder;
+use Paygreen\Sdk\Payment\Exception\PaymentCreationException;
+use Paygreen\Sdk\Payment\Model\OrderInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -32,7 +32,7 @@ class ApiFacade
     /**
      * @param HttpClientInterface $client
      * @param LoggerInterface|null $logger
-     * @throws InvalidApiVersion
+     * @throws InvalidApiVersionException
      */
     public function __construct(HttpClientInterface $client, LoggerInterface $logger = null)
     {

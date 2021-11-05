@@ -6,7 +6,7 @@ use Http\Client\Curl\Client;
 use Http\Client\Exception as HttpClientException;
 use Http\Client\HttpClient as HttpClientInterface;
 use Http\Discovery\HttpClientDiscovery;
-use Paygreen\Sdk\Core\Components\Environment;
+use Paygreen\Sdk\Core\Component\Environment;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Sdk\Payments\Interfaces;
+namespace Paygreen\Sdk\Payment\Model;
 
 interface OrderInterface
 {

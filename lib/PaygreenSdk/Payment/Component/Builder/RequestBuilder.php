@@ -1,13 +1,13 @@
 <?php
 
-namespace Paygreen\Sdk\Payments\Components\Builders;
+namespace Paygreen\Sdk\Payment\Component\Builder;
 
 use Exception;
 use LogicException;
 use GuzzleHttp\Psr7\Request;
-use Paygreen\Sdk\Core\Components\Config;
-use Paygreen\Sdk\Core\Components\Environment;
-use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
+use Paygreen\Sdk\Core\Component\Config;
+use Paygreen\Sdk\Core\Component\Environment;
+use Paygreen\Sdk\Payment\Exception\InvalidApiVersionException;
 use Psr\Http\Message\RequestInterface;
 
 class RequestBuilder
@@ -23,7 +23,7 @@ class RequestBuilder
 
     /**
      * @param Environment
-     * @throws InvalidApiVersion
+     * @throws InvalidApiVersionException
      */
     public function __construct(Environment $environment)
     {
@@ -130,7 +130,7 @@ class RequestBuilder
     /**
      * @param int $apiVersion
      * @return void
-     * @throws InvalidApiVersion
+     * @throws InvalidApiVersionException
      */
     private function loadConfig($apiVersion)
     {
@@ -146,7 +146,7 @@ class RequestBuilder
                 $this->config['servers'] = $config['payment.v3.servers'];
                 break;
             default:
-                throw new InvalidApiVersion("Invalid API version. Value should be '2' or '3'.");
+                throw new InvalidApiVersionException("Invalid API version. Value should be '2' or '3'.");
         }
     }
 }
