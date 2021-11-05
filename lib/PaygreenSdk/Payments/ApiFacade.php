@@ -3,52 +3,64 @@
 namespace Paygreen\Sdk\Payments;
 
 use Exception;
-use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Response;
+use Paygreen\Sdk\Payments\Exceptions\InvalidApiVersion;
 use Paygreen\Sdk\Core\Components\Environment;
 use Paygreen\Sdk\Core\HttpClient;
+use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Logger;
+use Paygreen\Sdk\Payments\Components\Builders\RequestBuilder;
 use Paygreen\Sdk\Payments\Exceptions\PaymentCreationException;
 use Paygreen\Sdk\Payments\Interfaces\OrderInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Http\Client\Exception as HttpClientException;
 
-class ApiClient extends HttpClient
+class ApiFacade
 {
     const API_BASE_URL_SANDBOX = 'https://sandbox.paygreen.fr';
     const API_BASE_URL_PROD = 'https://paygreen.fr';
 
+    /** @var HttpClientInterface */
+    private $client;
+
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(HttpClientInterface $client = null, LoggerInterface $logger = null)
     {
-        if ($logger === null) {
-            $this->logger = new Logger('payment');
+        if ($client === null) {
+            $environment = new Environment(
+                getenv('PG_PAYMENT_PUBLIC_KEY'),
+                getenv('PG_PAYMENT_PRIVATE_KEY'),
+                getenv('PG_PAYMENT_API_SERVER')
+            );
+
+            $this->client = new HttpClient($environment);
+        } else {
+            $this->client = $client;
         }
 
-        $environment = new Environment(
-            getenv('PAYGREEN_PUBLIC_KEY'),
-            getenv('PAYGREEN_PRIVATE_KEY'),
-            getenv('PAYGREEN_API_SERVER')
-        );
-
-        parent::__construct($environment);
-
-        $this->initClient();
+        if ($logger === null) {
+            $this->logger = new Logger('api.payment');
+        } else {
+            $this->logger = $logger;
+        }
     }
 
     /**
      * @param OrderInterface $order
      * @param int $amount
      * @param string $notifiedUrl
-     * @param string $currency
      * @param string $paymentType
+     * @param string $currency
      * @param string $returnedUrl
      * @param array $metadata
      * @param array $eligibleAmount
      * @param string $ttl
-     * @return Response
+     * @return mixed|void
      * @throws PaymentCreationException
+     * @throws InvalidApiVersion
+     * @throws HttpClientException
      * @throws Exception
      */
     public function createCash(
@@ -64,15 +76,18 @@ class ApiClient extends HttpClient
     ) {
         $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
 
-        $url = $this->parseUrlParameters(
-            $this->getBaseUri() . '/api/{ui}/payins/transaction/cash',
-            [
-                'ui' => $this->environment->getPublicKey()
-            ]
+        $requestBuilder = new RequestBuilder(
+            getenv('PG_PAYMENT_API_VERSION'),
+            $this->client->getEnvironment()->getPrivateKey(),
+            $this->getBaseUri()
         );
 
-        $response = $this->client->post($url, [
-            'json' => [
+        $request = $requestBuilder->buildRequest(
+            'create_cash',
+            [
+                'ui' => $this->client->getEnvironment()->getPublicKey()
+            ],
+            [
                 'orderId' => 'PG-' . $order->getReference(),
                 'amount' => $amount,
                 'currency' => $currency,
@@ -104,11 +119,11 @@ class ApiClient extends HttpClient
                 'metadata' => $metadata,
                 'eligibleAmount' => $eligibleAmount,
                 'ttl' => $ttl
-            ],
-            'headers' => [
-                'Authorization' => 'Bearer ' . $this->environment->getPrivateKey()
             ]
-        ]);
+        );
+
+        /** @var ResponseInterface $response */
+        $response = $this->client->sendRequest($request);
 
         if ($response->getStatusCode() !== 200) {
             throw new PaymentCreationException(
@@ -117,6 +132,7 @@ class ApiClient extends HttpClient
         }
 
         return json_decode($response->getBody()->getContents(), true);
+
     }
 
     /**
@@ -124,28 +140,12 @@ class ApiClient extends HttpClient
      */
     private function getBaseUri()
     {
-        if ($this->environment->getEnvironment() === 'SANDBOX') {
+        if (getenv('PG_PAYMENT_API_SERVER') === 'SANDBOX') {
             $baseUri = self::API_BASE_URL_SANDBOX;
         } else {
             $baseUri = self::API_BASE_URL_PROD;
         }
 
         return $baseUri;
-    }
-
-    /**
-     * @return void
-     */
-    private function initClient()
-    {
-        $this->client = new Client([
-            'defaults' => [
-                'headers' => [
-                    'Content-Type' => 'application/json',
-                    'Accept' => 'application/json',
-                    'User-Agent' => $this->buildUserAgentHeader()
-                ]
-            ]
-        ]);
     }
 }

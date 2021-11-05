@@ -2,16 +2,21 @@
 
 namespace Paygreen\Sdk\Core;
 
-use GuzzleHttp\Client;
+use Http\Client\Curl\Client;
+use Http\Client\Exception as HttpClientException;
+use Http\Client\HttpClient as HttpClientInterface;
+use Http\Discovery\HttpClientDiscovery;
 use Paygreen\Sdk\Core\Components\Environment;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
-class HttpClient
+class HttpClient implements HttpClientInterface
 {
     /** @var Client */
-    protected $client;
+    private $client;
 
     /** @var Environment */
-    protected $environment;
+    private $environment;
 
     /**
      * @param Environment $environment
@@ -19,42 +24,25 @@ class HttpClient
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
+
+        $this->client = HttpClientDiscovery::find();
     }
 
     /**
-     * @return string
+     * @return Environment
      */
-    protected function buildUserAgentHeader()
+    public function getEnvironment()
     {
-        $isPhpMajorVersionDefined = defined('PHP_MAJOR_VERSION');
-        $isPhpMinorVersionDefined = defined('PHP_MINOR_VERSION');
-        $isPhpReleaseVersionDefined = defined('PHP_RELEASE_VERSION');
-
-        if ($isPhpMajorVersionDefined && $isPhpMinorVersionDefined && $isPhpReleaseVersionDefined) {
-            $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
-        } else {
-            $phpVersion = phpversion();
-        }
-
-        return "PayGreenSDK/1.0.0 php:$phpVersion;";
+        return $this->environment;
     }
 
     /**
-     * @param string $url
-     * @return string
+     * @param RequestInterface $request
+     * @return ResponseInterface
+     * @throws HttpClientException
      */
-    protected function parseUrlParameters($url, $parameters)
+    public function sendRequest(RequestInterface $request)
     {
-        if (preg_match_all('/({(?<keys>[A-Z-_]+)})/i', $url, $results)) {
-            foreach ($results['keys'] as $key) {
-                if (!array_key_exists($key, $parameters)) {
-                    throw new \LogicException("Unable to retrieve parameter : '$key'.");
-                }
-
-                $url = preg_replace('/{' . $key . '}/i', $parameters[$key], $url);
-            }
-        }
-
-        return $url;
+        return $this->client->sendRequest($request);
     }
 }
