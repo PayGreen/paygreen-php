@@ -6,6 +6,4 @@ if [ "${1#-}" != "$1" ]; then
 	set -- php-fpm "$@"
 fi
 
-phpstan analyse lib tests
-
 exec docker-php-entrypoint "$@"
