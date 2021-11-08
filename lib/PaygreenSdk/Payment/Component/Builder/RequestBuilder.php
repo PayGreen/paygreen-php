@@ -22,7 +22,7 @@ class RequestBuilder
     private $baseUri;
 
     /**
-     * @param Environment
+     * @param Environment $environment
      * @throws InvalidApiVersionException
      */
     public function __construct(Environment $environment)
