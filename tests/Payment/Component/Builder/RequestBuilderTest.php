@@ -1,5 +1,7 @@
 <?php
 
+namespace Paygreen\Tests\Payment\Component\Builder;
+
 use Paygreen\Sdk\Core\Component\Environment;
 use Paygreen\Sdk\Payment\Component\Builder\RequestBuilder;
 use Paygreen\Sdk\Payment\Exception\InvalidApiVersionException;

@@ -27,6 +27,7 @@ final class BagTest extends TestCase
         $this->assertEquals('value', $bag['key']);
     }
 
+
     public function testToArrayConvertion()
     {
         $bag = new Bag();

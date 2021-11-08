@@ -1,6 +1,7 @@
 <?php
 
 namespace Paygreen\Tests\Core\Component;
+
 use Exception;
 use Paygreen\Sdk\Core\Component\Bag;
 use Paygreen\Sdk\Core\Component\Config;
@@ -26,7 +27,7 @@ final class ConfigTest extends TestCase
     public function testCanGetConfigFiles()
     {
         $config = new Config();
-        
+
         $this->assertTrue(is_array($config->getConfigFiles()));
     }
 

@@ -8,8 +8,8 @@ use Paygreen\Sdk\Payment\Exception\InvalidApiVersionException;
 use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Logger;
 use Paygreen\Sdk\Payment\Component\Builder\RequestBuilder;
-use Paygreen\Sdk\Payment\Exception\PaymentCreationException;
 use Paygreen\Sdk\Payment\Model\OrderInterface;
+use Paygreen\Sdk\Payment\Component\Response\Response;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -45,8 +45,8 @@ class ApiFacade
         }
 
         $this->environment = new Environment(
-            getenv('PG_PAYMENT_API_PUBLIC_KEY'),
-            getenv('PG_PAYMENT_API_PRIVATE_KEY'),
+            getenv('PG_PAYMENT_PUBLIC_KEY'),
+            getenv('PG_PAYMENT_PRIVATE_KEY'),
             getenv('PG_PAYMENT_API_SERVER'),
             getenv('PG_PAYMENT_API_VERSION')
         );
@@ -61,11 +61,11 @@ class ApiFacade
      * @param string $paymentType
      * @param string $currency
      * @param string $returnedUrl
-     * @param array $metadata
      * @param array $eligibleAmount
+     * @param string $cardToken
+     * @param array $metadata
      * @param string $ttl
-     * @return mixed|void
-     * @throws PaymentCreationException
+     * @return Response
      * @throws Exception
      */
     public function createCash(
@@ -93,7 +93,9 @@ class ApiFacade
                 'id' => $order->getCustomer()->getId(),
                 'lastName' => $order->getCustomer()->getLastName(),
                 'firstName' => $order->getCustomer()->getFirstName(),
-                'country' => $order->getCustomer()->getCountryCode()
+                'email' => $order->getCustomer()->getEmail(),
+                'country' => $order->getCustomer()->getCountryCode(),
+                'companyName' => $order->getCustomer()->getCompanyName()
             ],
             'shippingAddress' => (object) [
                 'lastName' => $order->getShippingAddress()->getLastName(),
@@ -130,19 +132,19 @@ class ApiFacade
             $requestBody
         );
 
-        try {
-            /** @var ResponseInterface $response */
-            $response = $this->sendRequest($request);
+        /** @var Response $response */
+        $response = $this->sendRequest($request);
 
-            return json_decode($response->getBody()->getContents(), true);
-        } catch (Exception $exception) {
-            $this->logger->error("An error occurred while creating a payment task for order '{$order->getReference()}'.");
+        if ($response->getHttpCode() === 200) {
+            $this->logger->info('Cash payment successfully created.');
         }
+
+        return $response;
     }
 
     /**
      * @param RequestInterface $request
-     * @return ResponseInterface
+     * @return Response
      * @throws Exception
      */
     private function sendRequest(RequestInterface $request)
@@ -152,20 +154,21 @@ class ApiFacade
 
             /** @var ResponseInterface $response */
             $response = $this->client->sendRequest($request);
+            
+            $response = new Response($request, $response);
 
-            if ($response->getStatusCode() >= 400) {
+            if ($response->getHttpCode() >= 400) {
                 $this->logger->error('Request error. ', [
-                    'code' => $response->getStatusCode(),
-                    'reasonPhrase' => $response->getReasonPhrase(),
+                    'code' => $response->getHttpCode(),
                     'request' => $request
                 ]);
-
-                throw new Exception('Request error', $response->getStatusCode());
             }
 
             return $response;
         } catch (HttpClientException $exception) {
             $this->logger->error("A client error occurred while sending request.", [$exception]);
+
+            throw new Exception('Http client error.', $exception->getCode(), $exception);
         }
     }
 }
