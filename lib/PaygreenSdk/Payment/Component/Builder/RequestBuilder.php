@@ -36,15 +36,13 @@ class RequestBuilder
      * @param string $name
      * @param array $options
      * @param array $body
-     * @param bool $private
      * @return RequestInterface
      * @throws Exception
      */
     public function buildRequest(
         $name,
         array $options = [],
-        array $body = [],
-        $private = true
+        array $body = []
     ) {
         $requestConfig = $this->config['requests'][$name];
 
@@ -60,7 +58,7 @@ class RequestBuilder
             'User-Agent' => $this->buildUserAgentHeader()
         ];
 
-        if ($private) {
+        if ($requestConfig['private']) {
             $headers['Authorization'] = 'Bearer ' . $this->environment->getPrivateKey();
         }
 
