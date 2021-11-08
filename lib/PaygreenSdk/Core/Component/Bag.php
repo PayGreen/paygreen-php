@@ -17,6 +17,10 @@ class Bag implements ArrayAccess
         $this->data = $data;
     }
 
+    /**
+     * @param bool $dotSeparator
+     * @return void
+     */
     public function setDotSeparator($dotSeparator)
     {
         $this->dotSeparator = (bool) $dotSeparator;

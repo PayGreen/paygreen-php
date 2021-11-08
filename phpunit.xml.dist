@@ -14,4 +14,7 @@
             <directory suffix=".php">lib</directory>
         </whitelist>
     </filter>
+    <php>
+        <server name="DOCUMENT_ROOT" value="/srv/paygreen" />
+    </php>
 </phpunit>
