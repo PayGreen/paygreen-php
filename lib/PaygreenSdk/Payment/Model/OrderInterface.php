@@ -23,4 +23,14 @@ interface OrderInterface
      * @return AddressInterface
      */
     public function getBillingAddress();
+
+    /**
+     * @return int
+     */
+    public function getAmount();
+    
+    /**
+     * @return int
+     */
+    public function getCurrency();
 }

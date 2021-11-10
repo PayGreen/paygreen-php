@@ -2,7 +2,7 @@ parameters:
     level: 6
 
     paths:
-        - lib/*
+        - lib/
 
     excludePaths:
-        - tests/*
+        - tests/

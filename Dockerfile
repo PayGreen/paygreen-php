@@ -1,10 +1,12 @@
 ARG PHP_VERSION=5.6
 ARG PHPSTAN_PHP_VERSION=7.2
+ARG NGINX_VERSION=1.21
 
 FROM php:${PHP_VERSION}-fpm-alpine AS php
 
 RUN set -eux; \
     apk add --no-cache \
+		acl \
         $PHPIZE_DEPS \
     	; \
     pecl install \
@@ -67,3 +69,12 @@ RUN chmod +x /usr/local/bin/docker-entrypoint
 
 ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
+
+
+FROM nginx:${NGINX_VERSION}-alpine AS nginx
+
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+
+WORKDIR /srv/paygreen
+
+COPY --from=php /srv/paygreen ./

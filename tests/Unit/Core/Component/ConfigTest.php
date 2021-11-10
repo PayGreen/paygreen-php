@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Tests\Core\Component;
+namespace Paygreen\Tests\Unit\Core\Component;
 
 use Exception;
 use Paygreen\Sdk\Core\Component\Bag;

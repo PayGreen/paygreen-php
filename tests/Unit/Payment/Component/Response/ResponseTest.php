@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Tests\Core\Component\Response;
+namespace Paygreen\Tests\Unit\Payment\Component\Response;
 
 use PHPUnit\Framework\TestCase;
 
