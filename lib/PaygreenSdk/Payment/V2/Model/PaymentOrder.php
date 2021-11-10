@@ -3,6 +3,7 @@
 namespace Paygreen\Sdk\Payment\V2\Model;
 
 use Paygreen\Sdk\Payment\Model\OrderInterface;
+use stdClass;
 
 class PaymentOrder
 {
@@ -27,12 +28,12 @@ class PaymentOrder
     private $returnedUrl;
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $metadata;
 
     /**
-     * @var array
+     * @var array<string>
      */
     private $eligibleAmount;
 
@@ -47,7 +48,7 @@ class PaymentOrder
     private $cardToken;
     
     /**
-     * @return array
+     * @return array<string|array<string>|int|stdClass|string>.
      */
     public function serialize() {
         $order = $this->getOrder();
@@ -166,7 +167,7 @@ class PaymentOrder
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getMetadata()
     {
@@ -174,7 +175,7 @@ class PaymentOrder
     }
 
     /**
-     * @param array $metadata
+     * @param array<string> $metadata
      * @return void
      */
     public function setMetadata($metadata)
@@ -183,7 +184,7 @@ class PaymentOrder
     }
 
     /**
-     * @return array
+     * @return array<string>
      */
     public function getEligibleAmount()
     {
@@ -191,7 +192,7 @@ class PaymentOrder
     }
 
     /**
-     * @param array $eligibleAmount
+     * @param array<string> $eligibleAmount
      * @return void
      */
     public function setEligibleAmount($eligibleAmount)
@@ -226,6 +227,7 @@ class PaymentOrder
 
     /**
      * @param string $cardToken
+     * @return void
      */
     public function setCardToken($cardToken)
     {

@@ -1,5 +1,0 @@
-payment:
-  v2:
-    servers:
-      SANDBOX: "https://sandbox.paygreen.fr"
-      PROD: "https://paygreen.fr"
