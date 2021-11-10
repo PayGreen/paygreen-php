@@ -14,9 +14,7 @@ test:
   services:
     - docker:20.10-dind
   script:
-    - docker build -t php .
-    - docker run --name php -d php
-    - docker exec php vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
+    - docker build .
 
 publish:
   image: curlimages/curl:latest
