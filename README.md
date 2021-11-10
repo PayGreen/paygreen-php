@@ -1,5 +1,5 @@
 # Paygreen PHP SDK
-[![pipeline status](https://gitlab.com/Paygreen-paygreen/integration/sdk-php/badges/develop/pipeline.svg)](https://gitlab.com/Paygreen-paygreen/integration/sdk-php/-/commits/develop)
+[![coverage report](https://gitlab.com/Paygreen-paygreen/integration/sdk-php/badges/develop/coverage.svg)](https://gitlab.com/Paygreen-paygreen/integration/sdk-php/-/commits/develop)
 
 ## Testing
 
