@@ -1,10 +1,10 @@
 <?php
 
-namespace Paygreen\Tests\Core\Component\Response;
+namespace Paygreen\Tests\Unit\Core\Component\Response;
 
 use PHPUnit\Framework\TestCase;
 
-final class JsonResponseTest extends TestCase
+final class ResponseTest extends TestCase
 {
     public function testTodo()
     {

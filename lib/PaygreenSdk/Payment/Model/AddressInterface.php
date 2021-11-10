@@ -7,12 +7,12 @@ interface AddressInterface
     /**
      * @return string
      */
-    public function getAddressLineOne();
+    public function getStreetLineOne();
 
     /**
      * @return string
      */
-    public function getAddressLineTwo();
+    public function getStreetLineTwo();
 
     /**
      * @return string
@@ -32,7 +32,7 @@ interface AddressInterface
     /**
      * @return string
      */
-    public function getZipCode();
+    public function getPostcode();
 
     /**
      * @return string

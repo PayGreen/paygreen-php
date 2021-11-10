@@ -22,8 +22,6 @@ class Logger implements LoggerInterface
      */
     public function __construct($area = 'sdk')
     {
-        date_default_timezone_set('Europe/Paris');
-
         $this->logger = new MonologLogger($area);
         $formatter = new LineFormatter(self::LOG_FORMAT, self::DATE_FORMAT);
         $path = $_SERVER['DOCUMENT_ROOT'] . self::LOG_BASE_PATH . DIRECTORY_SEPARATOR . $area . '.log';

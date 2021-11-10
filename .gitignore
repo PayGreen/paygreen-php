@@ -1,4 +1,8 @@
+/behat.yml
+/phpstan.neon
+
+/docker-compose.override.yml
+
 /vendor
+
 /.idea
-/.env
-/var/logs/*.log

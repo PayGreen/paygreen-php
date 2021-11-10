@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Tests\Core\Component;
+namespace Paygreen\Tests\Unit\Core\Component;
 
 use InvalidArgumentException;
 use Paygreen\Sdk\Core\Component\Environment;
