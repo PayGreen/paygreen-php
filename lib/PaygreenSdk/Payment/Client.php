@@ -3,12 +3,10 @@
 namespace Paygreen\Sdk\Payment;
 
 use Exception;
-use Paygreen\Sdk\Core\Component\Environment;
-use Paygreen\Sdk\Payment\Exception\InvalidApiVersionException;
+use Paygreen\Sdk\Core\Environment;
 use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Logger;
-use Paygreen\Sdk\Payment\Component\Builder\RequestBuilder;
-use Paygreen\Sdk\Payment\Component\Response\Response;
+use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -22,8 +20,8 @@ abstract class Client
     /** @var LoggerInterface */
     protected $logger;
 
-    /** @var RequestBuilder */
-    protected $requestBuilder;
+    /** @var RequestFactory */
+    protected $requestFactory;
 
     /** @var Environment */
     protected $environment;
@@ -31,7 +29,6 @@ abstract class Client
     /**
      * @param HttpClientInterface $client
      * @param LoggerInterface|null $logger
-     * @throws InvalidApiVersionException
      */
     public function __construct(HttpClientInterface $client, LoggerInterface $logger = null)
     {
@@ -50,27 +47,32 @@ abstract class Client
             getenv('PG_PAYMENT_API_VERSION')
         );
 
-        $this->requestBuilder = new RequestBuilder($this->environment);
+        $this->requestFactory = new RequestFactory($this->environment);
+    }
+
+    /**
+     * @param string $bearer
+     */
+    public function setBearer($bearer)
+    {
+        $this->environment->setBearer($bearer);
     }
     
     /**
      * @param RequestInterface $request
-     * @return Response
-     * @throws Exception
+     * @return ResponseInterface
+     * @throws HttpClientException
      */
     protected function sendRequest(RequestInterface $request)
     {
         try {
             $this->logger->info("Sending request '{$request->getUri()->getPath()}'.");
 
-            /** @var ResponseInterface $response */
             $response = $this->client->sendRequest($request);
-            
-            $response = new Response($request, $response);
 
-            if ($response->getHttpCode() >= 400) {
+            if ($response->getStatusCode() >= 400) {
                 $this->logger->error('Request error. ', [
-                    'code' => $response->getHttpCode(),
+                    'code' => $response->getStatusCode(),
                     'request' => $request
                 ]);
             }
@@ -79,7 +81,7 @@ abstract class Client
         } catch (HttpClientException $exception) {
             $this->logger->error("A client error occurred while sending request.", [$exception]);
 
-            throw new Exception('Http client error.', $exception->getCode(), $exception);
+            throw new $exception;
         }
     }
 }
