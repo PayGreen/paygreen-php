@@ -1,11 +1,13 @@
 <?php
 
-namespace Paygreen\Sdk\Payment\Component\Response;
+namespace Paygreen\Sdk\Payment\Response;
 
-use Paygreen\Sdk\Core\Component\Response\JsonResponse;
+use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Core\Exception\ResponseMalformedException;
+use Paygreen\Sdk\Core\Response\ResponseInterface;
+use stdClass;
 
-class Response extends JsonResponse
+class Response extends JsonResponse implements ResponseInterface
 {
     /** @var bool */
     private $success;
@@ -17,14 +19,14 @@ class Response extends JsonResponse
     private $code;
 
     /**
-     * @inheritDoc
+     * @return stdClass
+     * @throws ResponseMalformedException
      */
-    public function format($data)
+    public function getData()
     {
-        $data = parent::format($data);
+        $data = parent::getData();
 
-        if (empty($data)
-            || !property_exists($data, 'success')
+        if (!property_exists($data, 'success')
             || !property_exists($data, 'message')
             || !property_exists($data, 'code')
             || !property_exists($data, 'data')
@@ -38,6 +40,7 @@ class Response extends JsonResponse
 
         return $data->data;
     }
+    
 
     /**
      * @return int

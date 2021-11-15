@@ -15,6 +15,6 @@
         </whitelist>
     </filter>
     <php>
-        <server name="DOCUMENT_ROOT" value="/srv/paygreen" />
+        <var name="ROOT" value="/srv/paygreen/tests/Unit"/>
     </php>
 </phpunit>

@@ -1,18 +1,18 @@
 <?php
 
-namespace Paygreen\Sdk\Payment\Component\Builder;
+namespace Paygreen\Sdk\Payment\Factory;
 
 use GuzzleHttp\Psr7\Request;
-use Paygreen\Sdk\Core\Component\Environment;
+use Paygreen\Sdk\Core\Environment;
 
-class RequestBuilder
+class RequestFactory
 {
 
     /** @var Environment */
     private $environment;
-
-    /** @var string */
-    private $baseUri;
+    
+    /** @var Request */
+    public $request;
 
     /**
      * @param Environment $environment
@@ -20,7 +20,6 @@ class RequestBuilder
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
-        $this->baseUri = $this->getBaseUri();
     }
 
     /**
@@ -30,13 +29,13 @@ class RequestBuilder
      * @param bool $withBearer
      * @return Request
      */
-    public function buildRequest(
+    public function create(
         $url,
         array $body = [],
         $method = 'POST',
         $withBearer = true
     ) {
-        $url = $this->baseUri . $url;
+        $url = $this->environment->getEndpoint() . $url;
 
         $headers = [
             'Content-Type' => 'application/json',
@@ -45,7 +44,7 @@ class RequestBuilder
         ];
 
         if ($withBearer) {
-            $headers['Authorization'] = 'Bearer ' . $this->environment->getPrivateKey();
+            $headers['Authorization'] = 'Bearer ' . $this->environment->getBearer();
         }
 
         foreach ($body as $key => $item) {
@@ -56,21 +55,7 @@ class RequestBuilder
 
         $body = json_encode($body);
 
-        return new Request($method, $url, $headers, $body);
-    }
-
-    /**
-     * @return string
-     */
-    private function getBaseUri()
-    {
-        if ($this->environment->getEnvironment() === 'SANDBOX') {
-            $baseUri = "https://sandbox.paygreen.fr"; // TODO
-        } else {
-            $baseUri = "https://paygreen.fr"; // TODO
-        }
-
-        return $baseUri;
+        return $this->request = new Request($method, $url, $headers, $body);
     }
 
     /**

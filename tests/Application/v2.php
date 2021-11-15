@@ -48,4 +48,4 @@ $paymentOrder->setOrder($order);
 
 $response = $client->createPaymentOrder($paymentOrder);
 
-dump($response);
+dump($response->getData());
