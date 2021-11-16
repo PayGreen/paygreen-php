@@ -146,10 +146,16 @@ class Address implements AddressInterface
      */
     public function getStreet()
     {
-        return implode(' ', [
-            $this->getStreetLineOne(),
-            $this->getStreetLineTwo(),
-        ]);
+        if (!empty($this->getStreetLineTwo())) {
+            $street = implode(' ', [
+                $this->getStreetLineOne(),
+                $this->getStreetLineTwo(),
+            ]);
+        } else {
+            $street = $this->getStreetLineOne();
+        }
+        
+        return $street;
     }
 
     /**

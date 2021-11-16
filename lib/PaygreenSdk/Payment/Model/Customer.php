@@ -5,7 +5,7 @@ namespace Paygreen\Sdk\Payment\Model;
 class Customer implements CustomerInterface
 {
     /**
-     * @var int
+     * @var string
      */
     private $id;
 
@@ -35,7 +35,7 @@ class Customer implements CustomerInterface
     private $companyName;
 
     /**
-     * @return int
+     * @return string
      */
     public function getId()
     {
@@ -43,7 +43,7 @@ class Customer implements CustomerInterface
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return void
      */
     public function setId($id)
