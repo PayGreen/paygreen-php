@@ -3,18 +3,15 @@
 namespace Paygreen\Sdk\Payment\V2\Request\PaymentOrder;
 
 use Exception;
-use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
 
-class CreateRequest
-{
-    /**
-     * @var Request|RequestInterface
-     */
-    private $request;
+class CreateCashRequest extends \Paygreen\Sdk\Core\Request\Request
+{    
+    /** @var PaymentOrder */
+    private $paymentOrder;
 
     /**
      * @param RequestFactory $requestFactory
@@ -27,19 +24,21 @@ class CreateRequest
         $environment,
         $paymentOrder
     ) {
-        $publicKey = $environment->getPublicKey();
+        $this->paymentOrder = $paymentOrder;
         
-        $this->request = $requestFactory->create(
-            "/api/$publicKey/payins/transaction/cash",
-            $paymentOrder->serialize()
-        );
+        parent::__construct($requestFactory, $environment);
     }
 
     /**
-     * @return Request|RequestInterface
+     * @return RequestInterface
      */
     public function getRequest()
     {
-        return $this->request;
+        $publicKey = $this->environment->getPublicKey();
+
+        return $this->requestFactory->create(
+            "/api/$publicKey/payins/transaction/cash",
+            $this->paymentOrder->serialize()
+        );
     }
 }
