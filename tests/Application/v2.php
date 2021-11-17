@@ -13,7 +13,7 @@ $client = new PaymentClient($curl);
 
 $customer = new Customer();
 $customer->setId(1);
-$customer->setEmail('team.module@paygreen.fr');
+$customer->setEmail('maxime.lemolt@paygreen.fr');
 $customer->setFirstname('John');
 $customer->setLastname('Doe');
 
@@ -46,6 +46,6 @@ $paymentOrder = new PaymentOrder();
 $paymentOrder->setOrder($order);
 
 
-$response = $client->createPaymentOrder($paymentOrder);
+$response = $client->createCashPayment($paymentOrder);
 
 dump($response->getData());
