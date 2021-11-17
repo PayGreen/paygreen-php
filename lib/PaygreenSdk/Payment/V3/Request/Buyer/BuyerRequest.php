@@ -13,8 +13,10 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(Buyer $buyer)
     {
+        $publicKey = $this->environment->getPublicKey();
+
         return $this->requestFactory->create(
-            "/payment/buyers",
+            "/payment/shops/$publicKey/buyers",
             $buyer->serialize()
         );
     }
