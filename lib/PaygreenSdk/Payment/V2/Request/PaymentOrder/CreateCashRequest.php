@@ -3,7 +3,6 @@
 namespace Paygreen\Sdk\Payment\V2\Request\PaymentOrder;
 
 use Exception;
-use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
