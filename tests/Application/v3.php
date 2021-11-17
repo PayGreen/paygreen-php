@@ -22,5 +22,9 @@ $buyer->setEmail('test@paygreen.fr');
 $buyer->setCountryCode('FR');
 
 $response = $client->createBuyer($buyer);
+$data = $response->getData();
+dump($data);
+$buyer->setId($data->data->id);
+$response = $client->getBuyer($buyer);
 
 dump($response->getData());

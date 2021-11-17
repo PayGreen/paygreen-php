@@ -56,4 +56,15 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals($buyer->getEmail(), $content->email);
     }
 
+    public function testRequestGetBuyer()
+    {
+        $buyer = new Buyer();
+        $buyer->setId("buyerId");
+
+        $this->client->getBuyer($buyer);
+        $request = $this->client->getLastRequest();
+        
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/shops/public_key/buyers/buyerId', $request->getUri()->getPath());
+    }
 }
