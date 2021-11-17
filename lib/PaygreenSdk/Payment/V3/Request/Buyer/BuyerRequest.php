@@ -20,4 +20,19 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             $buyer->serialize()
         );
     }
+
+    /**
+     * @return Request|RequestInterface
+     */
+    public function getGetRequest(Buyer $buyer)
+    {
+        $publicKey = $this->environment->getPublicKey();
+        $buyerId = $buyer->getId();
+
+        return $this->requestFactory->create(
+            "/payment/shops/$publicKey/buyers/$buyerId",
+            [],
+            "GET"            
+        );
+    }
 }
