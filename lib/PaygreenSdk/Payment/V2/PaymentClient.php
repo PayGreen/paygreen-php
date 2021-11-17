@@ -24,11 +24,7 @@ class PaymentClient extends Client
         
         $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
         
-        $request = (new CreateCashRequest(
-            $this->requestFactory,
-            $this->environment,
-            $paymentOrder
-        ))->getRequest();
+        $request = (new CreateCashRequest($this->requestFactory, $this->environment))->getRequest($paymentOrder);
         
         $this->setLastRequest($request);
         
