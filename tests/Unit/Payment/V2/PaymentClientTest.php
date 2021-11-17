@@ -53,6 +53,19 @@ class PaymentClientTest extends TestCase
 
     /**
      * @return void
+     * @throws HttpClientException
+     */
+    public function testRequestCancelPayment()
+    {
+        $this->client->cancelPayment('tr15acde62ecfc1b8a2a1706b3f17a714e');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/public_key/payins/transaction/cancel', $request->getUri()->getPath());
+    }
+
+    /**
+     * @return void
      */
     private function buildPaymentOrder()
     {

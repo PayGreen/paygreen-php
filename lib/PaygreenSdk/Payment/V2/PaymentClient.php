@@ -7,6 +7,7 @@ use Http\Client\Exception as HttpClientException;
 use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateCashRequest;
 
 class PaymentClient extends Client
@@ -33,6 +34,32 @@ class PaymentClient extends Client
 
         if ($response->getStatusCode() === 200) {
             $this->logger->info('Cash payment successfully created.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param string $transactionId
+     * @return JsonResponse
+     * @throws HttpClientException
+     * @throws Exception
+     */
+    public function cancelPayment($transactionId)
+    {
+        $this->logger->info("Cancelling payment with transaction id '$transactionId'.");
+
+        $request = (new CancelRequest($this->requestFactory, $this->environment))->getCancelRequest(
+            $transactionId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if ($response->getStatusCode() === 200) {
+            $this->logger->info('Payment successfully canceled.');
         }
 
         return new JsonResponse($response);
