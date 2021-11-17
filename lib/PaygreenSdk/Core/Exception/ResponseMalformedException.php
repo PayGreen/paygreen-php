@@ -2,6 +2,8 @@
 
 namespace Paygreen\Sdk\Core\Exception;
 
-class ResponseMalformedException extends \Exception
+use Exception;
+
+class ResponseMalformedException extends Exception
 {
 }

@@ -2,13 +2,12 @@
 
 namespace Paygreen\Sdk\Payment\V3\Request\Authentication;
 
-use GuzzleHttp\Psr7\Request;
 use Psr\Http\Message\RequestInterface;
 
 class AuthenticationRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @return Request|RequestInterface
+     * @return RequestInterface
      */
     public function getRequest()
     {
