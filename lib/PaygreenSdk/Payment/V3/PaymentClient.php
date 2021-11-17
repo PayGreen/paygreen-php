@@ -17,9 +17,11 @@ class PaymentClient extends Client
      */
     public function authenticate()
     {
-        $request = new AuthenticationRequest($this->requestFactory, $this->environment);
-
-        $response = $this->sendRequest($request->getRequest());
+        $request = (new AuthenticationRequest($this->requestFactory, $this->environment))->getRequest();
+        $this->setLastRequest($request);
+        
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
 
         return new JsonResponse($response);
     }
@@ -30,9 +32,11 @@ class PaymentClient extends Client
      */
     public function createBuyer(Buyer $buyer)
     {
-        $request = new BuyerRequest($this->requestFactory, $this->environment);
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getCreateRequest($buyer);
+        $this->setLastRequest($request);
 
-        $response = $this->sendRequest($request->getCreateRequest($buyer));
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
 
         return new JsonResponse($response);
     }

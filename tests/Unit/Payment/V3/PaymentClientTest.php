@@ -2,12 +2,11 @@
 
 namespace Paygreen\Tests\Unit\Payment\V3;
 
-use Http\Client\Curl\Client;
+use Http\Mock\Client;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Symfony\Component\Dotenv\Dotenv;
 
 final class PaymentClientTest extends TestCase
 {
@@ -16,44 +15,45 @@ final class PaymentClientTest extends TestCase
      */
     private $client;
 
-    /*
     public function setUp()
     {
-        (new Dotenv())->load($GLOBALS['ROOT'] . '/.env.v3');
+        putenv("PG_PAYMENT_PUBLIC_KEY=public_key");
+        putenv("PG_PAYMENT_PRIVATE_KEY=private_key");
+        putenv("PG_PAYMENT_API_SERVER=SANDBOX");
+        putenv("PG_PAYMENT_API_VERSION=3");
 
-        $curl = new Client();
+        $client = new Client();
         $logger = new NullLogger();
 
-        $this->client = new PaymentClient($curl, $logger);
+        $this->client = new PaymentClient($client, $logger);
     }
-    */
 
-    /*
-    public function testCanAuthenticate()
+    public function testRequestAuthenticate()
     {
-        $response = $this->client->authenticate();
+        $this->client->authenticate();
+        $request = $this->client->getLastRequest();
 
-        $content = $response->getData();
-
-        $this->assertTrue(isset($content->created));
-
-        $this->client->setBearer($content->data->token);
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/auth/authentication/public_key/secret-key', $request->getUri()->getPath());
     }
-    */
 
-    /*
-    public function testCanCreateBuyer()
+    public function testRequestCreateBuyer()
     {
         $buyer = new Buyer();
-        $buyer->setReference(uniqid());
+        $buyer->setId(uniqid());
         $buyer->setFirstname('John');
         $buyer->setLastname('Doe');
         $buyer->setEmail('test@paygreen.fr');
         $buyer->setCountryCode('FR');
 
-        $response = $this->client->createBuyer($buyer);
+        $this->client->createBuyer($buyer);
+        $request = $this->client->getLastRequest();
+        
+        $content = json_decode($request->getBody()->getContents());
 
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/shops/public_key/buyers', $request->getUri()->getPath());
+        $this->assertEquals($buyer->getEmail(), $content->email);
     }
-    */
 
 }

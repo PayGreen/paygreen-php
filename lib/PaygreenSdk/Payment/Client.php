@@ -2,7 +2,6 @@
 
 namespace Paygreen\Sdk\Payment;
 
-use Exception;
 use Paygreen\Sdk\Core\Environment;
 use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Logger;
@@ -25,6 +24,12 @@ abstract class Client
 
     /** @var Environment */
     protected $environment;
+
+    /** @var RequestInterface */
+    private $lastRequest;
+
+    /** @var ResponseInterface */
+    private $lastResponse;
 
     /**
      * @param HttpClientInterface $client
@@ -52,12 +57,47 @@ abstract class Client
 
     /**
      * @param string $bearer
+     * @return void
      */
     public function setBearer($bearer)
     {
         $this->environment->setBearer($bearer);
     }
-    
+
+    /**
+     * @return RequestInterface
+     */
+    public function getLastRequest()
+    {
+        return $this->lastRequest;
+    }
+
+    /**
+     * @param RequestInterface $lastRequest
+     * @return void
+     */
+    protected function setLastRequest($lastRequest)
+    {
+        $this->lastRequest = $lastRequest;
+    }
+
+    /**
+     * @return ResponseInterface
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
+    }
+
+    /**
+     * @param ResponseInterface $lastResponse
+     * @return void
+     */
+    protected function setLastResponse($lastResponse)
+    {
+        $this->lastResponse = $lastResponse;
+    }
+
     /**
      * @param RequestInterface $request
      * @return ResponseInterface
