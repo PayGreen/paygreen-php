@@ -54,17 +54,44 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/shops/public_key/buyers', $request->getUri()->getPath());
         $this->assertEquals($buyer->getEmail(), $content->email);
+        $this->assertEquals($buyer->getFirstname(), $content->first_name);
+        $this->assertEquals($buyer->getLastname(), $content->last_name);
+        $this->assertEquals($buyer->getReference(), $content->id);
+        $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
 
     public function testRequestGetBuyer()
     {
         $buyer = new Buyer();
-        $buyer->setId("buyerId");
+        $buyer->setReference("buyerReference");
 
         $this->client->getBuyer($buyer);
         $request = $this->client->getLastRequest();
-        
+
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/shops/public_key/buyers/buyerId', $request->getUri()->getPath());
+        $this->assertEquals('/payment/shops/public_key/buyers/buyerReference', $request->getUri()->getPath());
+    }
+
+    public function testRequestUpdateBuyer()
+    {
+        $buyer = new Buyer();
+        $buyer->setReference("buyerReference");
+        $buyer->setFirstname('John');
+        $buyer->setLastname('Doe');
+        $buyer->setEmail('test@paygreen.fr');
+        $buyer->setCountryCode('FR');
+
+        $this->client->updateBuyer($buyer);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/shops/public_key/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals($buyer->getEmail(), $content->email);
+        $this->assertEquals($buyer->getFirstname(), $content->first_name);
+        $this->assertEquals($buyer->getLastname(), $content->last_name);
+        $this->assertEquals($buyer->getReference(), $content->id);
+        $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
 }
