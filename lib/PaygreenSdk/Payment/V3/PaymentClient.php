@@ -55,4 +55,20 @@ class PaymentClient extends Client
 
         return new JsonResponse($response);
     }
+
+    /**
+     * @return JsonResponse
+     * @throws Exception|\Http\Client\Exception
+     */
+    public function updateBuyer(Buyer $buyer)
+    {
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getUpdateRequest($buyer);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return new JsonResponse($response);
+    }
+    
 }

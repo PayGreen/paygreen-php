@@ -24,7 +24,12 @@ $buyer->setCountryCode('FR');
 $response = $client->createBuyer($buyer);
 $data = $response->getData();
 dump($data);
-$buyer->setId($data->data->id);
+$buyer->setReference($data->data->id);
 $response = $client->getBuyer($buyer);
-
+dump($response->getData());
+$buyer->setFirstname('Jerry');
+$buyer->setLastname('Cane');
+$buyer->setEmail('cane@paygreen.fr');
+$buyer->setCountryCode('US');
+$response = $client->updateBuyer($buyer);
 dump($response->getData());
