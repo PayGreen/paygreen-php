@@ -20,7 +20,6 @@ class Buyer extends Customer
             'email' => $this->getEmail(),
             'first_name' => $this->getFirstname(),
             'last_name' => $this->getLastname(),
-            'id' => $this->getReference(),
             'reference' => $this->getId(),
             'country' => $this->getCountryCode(),
         ];

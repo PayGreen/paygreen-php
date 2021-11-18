@@ -1,7 +1,9 @@
 <?php
 
 use Http\Client\Curl\Client;
+use Paygreen\Sdk\Payment\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
 
 $curl = new Client();
@@ -18,7 +20,7 @@ $buyer = new Buyer();
 $buyer->setId(uniqid());
 $buyer->setFirstname('John');
 $buyer->setLastname('Doe');
-$buyer->setEmail('test@paygreen.fr');
+$buyer->setEmail('romain@paygreen.fr');
 $buyer->setCountryCode('FR');
 
 $response = $client->createBuyer($buyer);
@@ -29,7 +31,24 @@ $response = $client->getBuyer($buyer);
 dump($response->getData());
 $buyer->setFirstname('Jerry');
 $buyer->setLastname('Cane');
-$buyer->setEmail('cane@paygreen.fr');
+$buyer->setEmail('dev-module@paygreen.fr');
 $buyer->setCountryCode('US');
 $response = $client->updateBuyer($buyer);
+dump($response->getData());
+
+
+$order = new Order();
+$order->setCustomer($buyer);
+$order->setReference('SDK-ORDER-123');
+$order->setAmount(1000);
+$order->setCurrency('EUR');
+
+$paymentOrder = new PaymentOrder();
+$paymentOrder->setPaymentMode("instant");
+$paymentOrder->setAutoCapture(true);
+$paymentOrder->setIntegrationMode("hosted_fields");
+$paymentOrder->setOrder($order);
+
+$response = $client->createOrder($paymentOrder);
+
 dump($response->getData());
