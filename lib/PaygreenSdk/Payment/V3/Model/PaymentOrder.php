@@ -26,30 +26,7 @@ class PaymentOrder
      * @var string
      */
     private $integrationMode;
-
-    /**
-     * @return array<string,bool|int|stdClass|string>
-     */
-    public function serialize() {
-        $order = $this->getOrder();
-
-        return [
-            'amount' => $order->getAmount(),
-            'currency' => $order->getCurrency(),
-            'paymentMode' => $this->getPaymentMode(),
-            'reference' => $order->getReference(),
-            'auto_capture' => $this->getAutoCapture(),
-            'integration_mode' => $this->getIntegrationMode(),
-            'buyer' => (object) [
-                'email' => $order->getCustomer()->getEmail(),
-                'firstName' => $order->getCustomer()->getFirstName(),
-                'lastName' => $order->getCustomer()->getLastName(),
-                'reference' => $order->getCustomer()->getId(),
-                'country' => $order->getCustomer()->getCountryCode()
-            ]
-        ];
-    }
-
+    
     /**
      * @return OrderInterface
      */

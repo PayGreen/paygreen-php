@@ -5,7 +5,7 @@ namespace Paygreen\Sdk\Payment\V3;
 use Exception;
 use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Payment\Client;
-use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\Model\CustomerInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
@@ -32,9 +32,9 @@ class PaymentClient extends Client
      * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
      */
-    public function createBuyer(Buyer $buyer)
+    public function createBuyer(CustomerInterface $customer)
     {
-        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getCreateRequest($buyer);
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getCreateRequest($customer);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -47,9 +47,9 @@ class PaymentClient extends Client
      * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
      */
-    public function getBuyer(Buyer $buyer)
+    public function getBuyer(CustomerInterface $customer)
     {
-        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getGetRequest($buyer);
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getGetRequest($customer);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -62,9 +62,9 @@ class PaymentClient extends Client
      * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
      */
-    public function updateBuyer(Buyer $buyer)
+    public function updateBuyer(CustomerInterface $customer)
     {
-        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getUpdateRequest($buyer);
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getUpdateRequest($customer);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

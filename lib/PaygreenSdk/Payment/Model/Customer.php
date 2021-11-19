@@ -10,6 +10,13 @@ class Customer implements CustomerInterface
     private $id;
 
     /**
+     * Reference to identify the user on the api
+     *
+     * @var null|string
+     */
+    private $reference = null;
+
+    /**
      * @var string
      */
     private $firstname;
@@ -134,5 +141,26 @@ class Customer implements CustomerInterface
     public function setCompanyName($companyName)
     {
         $this->companyName = $companyName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference()
+    {
+        if ($this->reference) {
+            return $this->reference;
+        }
+
+        return $this->getId();
+    }
+
+    /**
+     * @param string $reference
+     * @return void
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
     }
 }

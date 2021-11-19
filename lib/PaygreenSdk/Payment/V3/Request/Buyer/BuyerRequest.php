@@ -3,7 +3,7 @@
 namespace Paygreen\Sdk\Payment\V3\Request\Buyer;
 
 use GuzzleHttp\Psr7\Request;
-use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\Model\CustomerInterface;
 use Psr\Http\Message\RequestInterface;
 
 class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -11,27 +11,33 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     /**
      * @return Request|RequestInterface
      */
-    public function getCreateRequest(Buyer $buyer)
+    public function getCreateRequest(CustomerInterface $customer)
     {
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
             "/payment/shops/$publicKey/buyers",
-            $buyer->serialize()
+            json_encode([
+                'email' => $customer->getEmail(),
+                'first_name' => $customer->getFirstname(),
+                'last_name' => $customer->getLastname(),
+                'reference' => $customer->getId(),
+                'country' => $customer->getCountryCode(),
+            ])
         );
     }
 
     /**
      * @return Request|RequestInterface
      */
-    public function getGetRequest(Buyer $buyer)
+    public function getGetRequest(CustomerInterface $customer)
     {
         $publicKey = $this->environment->getPublicKey();
-        $buyerReference = $buyer->getReference();
+        $buyerReference = $customer->getReference();
 
         return $this->requestFactory->create(
             "/payment/shops/$publicKey/buyers/$buyerReference",
-            [],
+            null,
             "GET"            
         );
     }
@@ -39,14 +45,20 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     /**
      * @return Request|RequestInterface
      */
-    public function getUpdateRequest(Buyer $buyer)
+    public function getUpdateRequest(CustomerInterface $customer)
     {
         $publicKey = $this->environment->getPublicKey();
-        $buyerReference = $buyer->getReference();
+        $buyerReference = $customer->getReference();
         
         return $this->requestFactory->create(
             "/payment/shops/$publicKey/buyers/$buyerReference",
-            $buyer->serialize()
+            json_encode([
+                'email' => $customer->getEmail(),
+                'first_name' => $customer->getFirstname(),
+                'last_name' => $customer->getLastname(),
+                'reference' => $customer->getId(),
+                'country' => $customer->getCountryCode(),
+            ])
         );
     }
 }
