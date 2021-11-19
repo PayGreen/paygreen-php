@@ -19,9 +19,6 @@ class PaymentClientTest extends TestCase
     /** @var PaymentClient */
     private $client;
 
-    /** @var PaymentOrder */
-    private $paymentOrder;
-
     /**
      * @return void
      */
@@ -46,17 +43,18 @@ class PaymentClientTest extends TestCase
      */
     public function testRequestCreateCash()
     {
-        $this->paymentOrder->setType('CASH');
+        $paymentOrder = $this->buildPaymentOrder();
+        $paymentOrder->setType('CASH');
         
-        $this->client->createCashPayment($this->paymentOrder);
+        $this->client->createCashPayment($paymentOrder);
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/api/public_key/payins/transaction/cash', $request->getUri()->getPath());
-        $this->assertEquals($this->paymentOrder->getType(), $content->type);
-        $this->assertEquals($this->paymentOrder->getOrder()->getAmount(), $content->amount);
+        $this->assertEquals($paymentOrder->getType(), $content->type);
+        $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
     }
 
     /**
@@ -65,7 +63,8 @@ class PaymentClientTest extends TestCase
      */
     public function testRequestCreateRecurring()
     {
-        $this->paymentOrder->setType('RECURRING');
+        $paymentOrder = $this->buildPaymentOrder();
+        $paymentOrder->setType('RECURRING');
         
         $orderDetails = new OrderDetails();
         $orderDetails->setCycle(40);
@@ -78,17 +77,47 @@ class PaymentClientTest extends TestCase
         $multiplePayment->setWithPaymentLink(false);
         $multiplePayment->setOrderDetails($orderDetails);
         
-        $this->paymentOrder->setMultiplePayment($multiplePayment);
+        $paymentOrder->setMultiplePayment($multiplePayment);
         
-        $this->client->createRecurringPayment($this->paymentOrder);
+        $this->client->createRecurringPayment($paymentOrder);
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/api/public_key/payins/transaction/subscription', $request->getUri()->getPath());
-        $this->assertEquals($this->paymentOrder->getType(), $content->type);
-        $this->assertEquals($this->paymentOrder->getOrder()->getAmount(), $content->amount);
+        $this->assertEquals($paymentOrder->getType(), $content->type);
+        $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
+    }
+
+    /**
+     * @return void
+     * @throws HttpClientException
+     */
+    public function testRequestCreateXtime()
+    {
+        $paymentOrder = $this->buildPaymentOrder();
+        $paymentOrder->setType('XTIME');
+
+        $orderDetails = new OrderDetails();
+        $orderDetails->setCycle(40);
+        $orderDetails->setCount(3);
+
+        $multiplePayment = new MultiplePayment();
+        $multiplePayment->setWithPaymentLink(false);
+        $multiplePayment->setOrderDetails($orderDetails);
+
+        $paymentOrder->setMultiplePayment($multiplePayment);
+
+        $this->client->createXtimePayment($paymentOrder);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/public_key/payins/transaction/xtime', $request->getUri()->getPath());
+        $this->assertEquals($paymentOrder->getType(), $content->type);
+        $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
     }
 
     /**
@@ -108,7 +137,7 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
+     * @return PaymentOrder
      */
     private function buildPaymentOrder()
     {
@@ -143,7 +172,9 @@ class PaymentClientTest extends TestCase
         $order->setAmount(1000);
         $order->setCurrency('EUR');
 
-        $this->paymentOrder = new PaymentOrder();
-        $this->paymentOrder->setOrder($order);
+        $paymentOrder = new PaymentOrder();
+        $paymentOrder->setOrder($order);
+        
+        return $paymentOrder;
     }
 }

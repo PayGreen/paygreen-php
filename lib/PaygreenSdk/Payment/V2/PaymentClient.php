@@ -10,6 +10,7 @@ use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateCashRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateRecurringRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateXtimeRequest;
 
 class PaymentClient extends Client
 {
@@ -62,6 +63,33 @@ class PaymentClient extends Client
 
         if ($response->getStatusCode() === 200) {
             $this->logger->info('Recurring payment successfully created.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param PaymentOrder $paymentOrder
+     * @return JsonResponse
+     * @throws HttpClientException
+     * @throws Exception
+     */
+    public function createXtimePayment($paymentOrder)
+    {
+        $paymentType = $paymentOrder->getPaymentType();
+        $amount = $paymentOrder->getOrder()->getAmount();
+
+        $this->logger->info("Create '$paymentType' XTIME payment with an amount of '$amount'.");
+
+        $request = (new CreateXtimeRequest($this->requestFactory, $this->environment))->getRequest($paymentOrder);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if ($response->getStatusCode() === 200) {
+            $this->logger->info('XTIME payment successfully created.');
         }
 
         return new JsonResponse($response);

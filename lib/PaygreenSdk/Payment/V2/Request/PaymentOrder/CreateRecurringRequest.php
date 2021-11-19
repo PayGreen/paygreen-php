@@ -39,7 +39,7 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
             'type' => $paymentOrder->getType(),
             'notifiedUrl' => $paymentOrder->getNotifiedUrl(),
             'returnedUrl' => $paymentOrder->getReturnedUrl(),
-            'buyer' => (object) [
+            'buyer' => [
                 'id' => $paymentOrder->getOrder()->getCustomer()->getId(),
                 'lastName' => $paymentOrder->getOrder()->getCustomer()->getLastName(),
                 'firstName' => $paymentOrder->getOrder()->getCustomer()->getFirstName(),
@@ -47,7 +47,7 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
                 'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode(),
                 'companyName' => $paymentOrder->getOrder()->getCustomer()->getCompanyName()
             ],
-            'shippingAddress' => (object) [
+            'shippingAddress' => [
                 'lastName' => $paymentOrder->getOrder()->getShippingAddress()->getLastName(),
                 'firstName' => $paymentOrder->getOrder()->getShippingAddress()->getFirstName(),
                 'address' => $paymentOrder->getOrder()->getShippingAddress()->getStreet(),
@@ -55,7 +55,7 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
                 'city' => $paymentOrder->getOrder()->getShippingAddress()->getCity(),
                 'country' => $paymentOrder->getOrder()->getShippingAddress()->getCountryCode()
             ],
-            'billingAddress' => (object) [
+            'billingAddress' => [
                 'lastName' => $paymentOrder->getOrder()->getBillingAddress()->getLastName(),
                 'firstName' => $paymentOrder->getOrder()->getBillingAddress()->getFirstName(),
                 'address' => $paymentOrder->getOrder()->getBillingAddress()->getStreet(),
@@ -69,7 +69,7 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         if (!empty($paymentOrder->getCardToken())) {
-            $body['card'] = (object) [
+            $body['card'] = [
                 'token' => $paymentOrder->getCardToken()
             ];
         }
@@ -77,7 +77,7 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
         if (!empty($paymentOrder->getMultiplePayment())) {
             $body['withPaymentLink'] = $paymentOrder->getMultiplePayment()->getWithPaymentLink();
 
-            $body['orderDetails'] = (object) [
+            $body['orderDetails'] = [
                 'cycle' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getCycle(),
                 'count' =>$paymentOrder->getMultiplePayment()->getOrderDetails()->getCount(),
                 'firstAmount' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getFirstAmount(),
