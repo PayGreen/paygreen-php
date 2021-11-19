@@ -7,6 +7,8 @@ use Http\Mock\Client;
 use Paygreen\Sdk\Payment\Model\Address;
 use Paygreen\Sdk\Payment\Model\Customer;
 use Paygreen\Sdk\Payment\Model\Order;
+use Paygreen\Sdk\Payment\Model\OrderDetails;
+use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 use PHPUnit\Framework\TestCase;
@@ -44,11 +46,49 @@ class PaymentClientTest extends TestCase
      */
     public function testRequestCreateCash()
     {
+        $this->paymentOrder->setType('CASH');
+        
         $this->client->createCashPayment($this->paymentOrder);
         $request = $this->client->getLastRequest();
 
+        $content = json_decode($request->getBody()->getContents());
+
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/api/public_key/payins/transaction/cash', $request->getUri()->getPath());
+        $this->assertEquals($this->paymentOrder->getType(), $content->type);
+        $this->assertEquals($this->paymentOrder->getOrder()->getAmount(), $content->amount);
+    }
+
+    /**
+     * @return void
+     * @throws HttpClientException
+     */
+    public function testRequestCreateRecurring()
+    {
+        $this->paymentOrder->setType('RECURRING');
+        
+        $orderDetails = new OrderDetails();
+        $orderDetails->setCycle(40);
+        $orderDetails->setCount(12);
+        $orderDetails->setFirstAmount(6500);
+        $orderDetails->setDay(18);
+        $orderDetails->setStartAt(1637227163);
+        
+        $multiplePayment = new MultiplePayment();
+        $multiplePayment->setWithPaymentLink(false);
+        $multiplePayment->setOrderDetails($orderDetails);
+        
+        $this->paymentOrder->setMultiplePayment($multiplePayment);
+        
+        $this->client->createRecurringPayment($this->paymentOrder);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/public_key/payins/transaction/subscription', $request->getUri()->getPath());
+        $this->assertEquals($this->paymentOrder->getType(), $content->type);
+        $this->assertEquals($this->paymentOrder->getOrder()->getAmount(), $content->amount);
     }
 
     /**
@@ -60,8 +100,11 @@ class PaymentClientTest extends TestCase
         $this->client->cancelPayment('tr15acde62ecfc1b8a2a1706b3f17a714e');
         $request = $this->client->getLastRequest();
 
+        $content = json_decode($request->getBody()->getContents());
+
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/api/public_key/payins/transaction/cancel', $request->getUri()->getPath());
+        $this->assertEquals('tr15acde62ecfc1b8a2a1706b3f17a714e', $content->id);
     }
 
     /**

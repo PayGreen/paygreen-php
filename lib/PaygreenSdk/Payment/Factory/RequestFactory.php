@@ -4,6 +4,7 @@ namespace Paygreen\Sdk\Payment\Factory;
 
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Environment;
+use Psr\Http\Message\StreamInterface;
 
 class RequestFactory
 {
@@ -24,14 +25,14 @@ class RequestFactory
 
     /**
      * @param string $url
-     * @param array<string> $body
+     * @param string|resource|StreamInterface|null $body
      * @param string $method
      * @param bool $withBearer
      * @return Request
      */
     public function create(
         $url,
-        array $body = [],
+        $body = null,
         $method = 'POST',
         $withBearer = true
     ) {
@@ -46,14 +47,6 @@ class RequestFactory
         if ($withBearer) {
             $headers['Authorization'] = 'Bearer ' . $this->environment->getBearer();
         }
-
-        foreach ($body as $key => $item) {
-            if (empty($item)) {
-                unset($body[$key]);
-            }
-        }
-
-        $body = json_encode($body);
 
         return $this->request = new Request($method, $url, $headers, $body);
     }
