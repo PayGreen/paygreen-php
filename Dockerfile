@@ -44,7 +44,7 @@ ENTRYPOINT ["docker-entrypoint"]
 CMD ["php-fpm"]
 
 
-FROM php:${PHPSTAN_PHP_VERSION}-fpm-alpine AS phpstan
+FROM php:${PHPSTAN_PHP_VERSION}-fpm-alpine AS phptools
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
@@ -63,6 +63,7 @@ COPY --from=php /srv/paygreen/vendor vendor/
 
 RUN set -eux; \
     composer global require phpstan/phpstan; \
+    composer global require friendsofphp/php-cs-fixer; \
     export PATH=~/.composer/vendor/bin:$PATH
 
 COPY docker/phpstan/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
