@@ -8,7 +8,7 @@ use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
 
-class CreateCashRequest extends \Paygreen\Sdk\Core\Request\Request
+class CreateXtimeRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param RequestFactory $requestFactory
@@ -19,7 +19,7 @@ class CreateCashRequest extends \Paygreen\Sdk\Core\Request\Request
         $requestFactory,
         $environment
     ) {
-        
+
         parent::__construct($requestFactory, $environment);
     }
 
@@ -86,8 +86,9 @@ class CreateCashRequest extends \Paygreen\Sdk\Core\Request\Request
             ];
         }
 
+
         return $this->requestFactory->create(
-            "/api/$publicKey/payins/transaction/cash",
+            "/api/$publicKey/payins/transaction/xtime",
             json_encode($body)
         );
     }
