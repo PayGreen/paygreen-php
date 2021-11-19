@@ -4,8 +4,10 @@ use Http\Client\Curl\Client;
 use Paygreen\Sdk\Payment\Model\Address;
 use Paygreen\Sdk\Payment\Model\Customer;
 use Paygreen\Sdk\Payment\Model\Order;
+use Paygreen\Sdk\Payment\Model\OrderDetails;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
+use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 
 $curl = new Client();
 
@@ -43,9 +45,27 @@ $order->setAmount(1000);
 $order->setCurrency('EUR');
 
 $paymentOrder = new PaymentOrder();
+$paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
 
-
 $response = $client->createCashPayment($paymentOrder);
+
+dump($response->getData());
+
+$orderDetails = new OrderDetails();
+$orderDetails->setCycle(40);
+$orderDetails->setCount(12);
+$orderDetails->setFirstAmount(6500);
+$orderDetails->setDay(18);
+$orderDetails->setStartAt(1637227163);
+
+$multiplePayment = new MultiplePayment();
+$multiplePayment->setWithPaymentLink(true);
+$multiplePayment->setOrderDetails($orderDetails);
+
+$paymentOrder->setMultiplePayment($multiplePayment);
+$paymentOrder->setType('RECURRING');
+
+$response = $client->createRecurringPayment($paymentOrder);
 
 dump($response->getData());

@@ -9,6 +9,7 @@ use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateCashRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateRecurringRequest;
 
 class PaymentClient extends Client
 {
@@ -34,6 +35,33 @@ class PaymentClient extends Client
 
         if ($response->getStatusCode() === 200) {
             $this->logger->info('Cash payment successfully created.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param PaymentOrder $paymentOrder
+     * @return JsonResponse
+     * @throws HttpClientException
+     * @throws Exception
+     */
+    public function createRecurringPayment($paymentOrder)
+    {
+        $paymentType = $paymentOrder->getPaymentType();
+        $amount = $paymentOrder->getOrder()->getAmount();
+
+        $this->logger->info("Create '$paymentType' recurring payment with an amount of '$amount'.");
+
+        $request = (new CreateRecurringRequest($this->requestFactory, $this->environment))->getRequest($paymentOrder);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if ($response->getStatusCode() === 200) {
+            $this->logger->info('Recurring payment successfully created.');
         }
 
         return new JsonResponse($response);

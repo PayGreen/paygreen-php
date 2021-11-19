@@ -20,6 +20,11 @@ class PaymentOrder
     /**
      * @var string
      */
+    private $type;
+
+    /**
+     * @var string
+     */
     private $notifiedUrl;
 
     /**
@@ -47,56 +52,8 @@ class PaymentOrder
      */
     private $cardToken;
     
-    /**
-     * @return array<string|array<string>|int|stdClass|string>.
-     */
-    public function serialize() {
-        $order = $this->getOrder();
-        
-        $serialized = [
-            'orderId' => $order->getReference(),
-            'amount' => $order->getAmount(),
-            'currency' => $order->getCurrency(),
-            'paymentType' => $this->getPaymentType(),
-            'notifiedUrl' => $this->getNotifiedUrl(),
-            'returnedUrl' => $this->getReturnedUrl(),
-            'buyer' => (object) [
-                'id' => $order->getCustomer()->getId(),
-                'lastName' => $order->getCustomer()->getLastName(),
-                'firstName' => $order->getCustomer()->getFirstName(),
-                'email' => $order->getCustomer()->getEmail(),
-                'country' => $order->getCustomer()->getCountryCode(),
-                'companyName' => $order->getCustomer()->getCompanyName()
-            ],
-            'shippingAddress' => (object) [
-                'lastName' => $order->getShippingAddress()->getLastName(),
-                'firstName' => $order->getShippingAddress()->getFirstName(),
-                'address' => $order->getShippingAddress()->getStreet(),
-                'zipCode' => $order->getShippingAddress()->getPostcode(),
-                'city' => $order->getShippingAddress()->getCity(),
-                'country' => $order->getShippingAddress()->getCountryCode()
-            ],
-            'billingAddress' => (object) [
-                'lastName' => $order->getBillingAddress()->getLastName(),
-                'firstName' => $order->getBillingAddress()->getFirstName(),
-                'address' => $order->getBillingAddress()->getStreet(),
-                'zipCode' => $order->getBillingAddress()->getPostcode(),
-                'city' => $order->getBillingAddress()->getCity(),
-                'country' => $order->getBillingAddress()->getCountryCode()
-            ],
-            'metadata' => $this->getMetadata(),
-            'eligibleAmount' => $this->getEligibleAmount(),
-            'ttl' => $this->getTtl()
-        ];
-
-        if (!empty($this->getCardToken())) {
-            $serialized['card'] = (object) [
-                'token' => $this->getCardToken()
-            ];
-        }
-        
-        return $serialized;
-    }
+    /** @var MultiplePayment|null */
+    private $multiplePayment = null;
 
     /**
      * @return OrderInterface
@@ -130,6 +87,23 @@ class PaymentOrder
     public function setPaymentType($paymentType)
     {
         $this->paymentType = $paymentType;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     * @return void
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
     }
 
     /**
@@ -232,6 +206,23 @@ class PaymentOrder
     public function setCardToken($cardToken)
     {
         $this->cardToken = $cardToken;
+    }
+
+    /**
+     * @return MultiplePayment|null
+     */
+    public function getMultiplePayment()
+    {
+        return $this->multiplePayment;
+    }
+
+    /**
+     * @param MultiplePayment|null $multiplePayment
+     * @return void
+     */
+    public function setMultiplePayment($multiplePayment)
+    {
+        $this->multiplePayment = $multiplePayment;
     }
 }
  
