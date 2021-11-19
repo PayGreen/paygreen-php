@@ -16,6 +16,19 @@ interface CustomerInterface
     public function setId($id);
 
     /**
+     * Reference to identify the user on the api
+     *
+     * @return string
+     */
+    public function getReference();
+
+    /**
+     * @param string $reference
+     * @return void
+     */
+    public function setReference($reference);
+
+    /**
      * @return string
      */
     public function getFirstName();

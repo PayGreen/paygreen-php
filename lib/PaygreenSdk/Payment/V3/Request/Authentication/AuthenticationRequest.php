@@ -16,7 +16,7 @@ class AuthenticationRequest extends \Paygreen\Sdk\Core\Request\Request
         
         return $this->requestFactory->create(
             "/auth/authentication/$publicKey/secret-key",
-            [],
+            '',
             'POST',
             false
         )->withAddedHeader('Authorization', $privateKey);
