@@ -10,7 +10,7 @@ use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateCashRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateRecurringRequest;
-use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateRefundRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RefundRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateXtimeRequest;
 
 class PaymentClient extends Client
@@ -133,7 +133,7 @@ class PaymentClient extends Client
     {
         $this->logger->info("Refund transaction '$transactionId' with amount '$amount'.");
 
-        $request = (new CreateRefundRequest($this->requestFactory, $this->environment))->getRequest(
+        $request = (new RefundRequest($this->requestFactory, $this->environment))->getCreateRequest(
             $transactionId, $amount
         );
 

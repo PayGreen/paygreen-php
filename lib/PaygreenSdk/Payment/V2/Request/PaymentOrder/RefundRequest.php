@@ -4,14 +4,14 @@ namespace Paygreen\Sdk\Payment\V2\Request\PaymentOrder;
 
 use Psr\Http\Message\RequestInterface;
 
-class CreateRefundRequest extends \Paygreen\Sdk\Core\Request\Request
+class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $transactionId
      * @param int|null $amount
      * @return RequestInterface
      */
-    public function getRequest($transactionId, $amount = null)
+    public function getCreateRequest($transactionId, $amount = null)
     {
         $publicKey = $this->environment->getPublicKey();
 
