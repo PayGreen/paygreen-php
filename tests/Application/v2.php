@@ -57,23 +57,28 @@ $paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
 
 $response = $client->createCashPayment($paymentOrder);
+$responseData = $response->getData();
 
+dump($responseData);
+
+$transactionId = $responseData->data->id;
+$response = $client->refundPayment($transactionId);
 dump($response->getData());
 
-$orderDetails = new OrderDetails();
-$orderDetails->setCycle(40);
-$orderDetails->setCount(12);
-$orderDetails->setFirstAmount(6500);
-$orderDetails->setDay(18);
-$orderDetails->setStartAt(1637227163);
+// $orderDetails = new OrderDetails();
+// $orderDetails->setCycle(40);
+// $orderDetails->setCount(12);
+// $orderDetails->setFirstAmount(6500);
+// $orderDetails->setDay(18);
+// $orderDetails->setStartAt(1637227163);
+//
+// $multiplePayment = new MultiplePayment();
+// $multiplePayment->setWithPaymentLink(true);
+// $multiplePayment->setOrderDetails($orderDetails);
 
-$multiplePayment = new MultiplePayment();
-$multiplePayment->setWithPaymentLink(true);
-$multiplePayment->setOrderDetails($orderDetails);
+// $paymentOrder->setMultiplePayment($multiplePayment);
+// $paymentOrder->setType('RECURRING');
 
-$paymentOrder->setMultiplePayment($multiplePayment);
-$paymentOrder->setType('RECURRING');
+// $response = $client->createRecurringPayment($paymentOrder);
 
-$response = $client->createRecurringPayment($paymentOrder);
-
-dump($response->getData());
+// dump($response->getData());
