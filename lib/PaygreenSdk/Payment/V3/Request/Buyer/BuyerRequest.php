@@ -24,7 +24,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
                 'reference' => $customer->getId(),
                 'country' => $customer->getCountryCode(),
             ])
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 
     /**
@@ -39,7 +39,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             "/payment/shops/$publicKey/buyers/$buyerReference",
             null,
             "GET"            
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 
     /**
@@ -59,6 +59,6 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
                 'reference' => $customer->getId(),
                 'country' => $customer->getCountryCode(),
             ])
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 }

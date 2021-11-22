@@ -36,6 +36,6 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'integration_mode' => $paymentOrder->getIntegrationMode(),
                 'buyer' => $buyer
             ])
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 }
