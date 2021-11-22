@@ -8,10 +8,18 @@ use Paygreen\Sdk\Payment\Model\OrderDetails;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
+use Paygreen\Sdk\Core\Environment;
 
 $curl = new Client();
 
-$client = new PaymentClient($curl);
+$environment = new Environment(
+    getenv('PG_PAYMENT_PUBLIC_KEY'),
+    getenv('PG_PAYMENT_PRIVATE_KEY'),
+    getenv('PG_PAYMENT_API_SERVER'),
+    getenv('PG_PAYMENT_API_VERSION')
+);
+
+$client = new PaymentClient($curl, $environment);
 
 $customer = new Customer();
 $customer->setId(1);

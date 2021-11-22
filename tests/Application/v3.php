@@ -1,6 +1,7 @@
 <?php
 
 use Http\Client\Curl\Client;
+use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -8,7 +9,14 @@ use Paygreen\Sdk\Payment\V3\PaymentClient;
 
 $curl = new Client();
 
-$client = new PaymentClient($curl);
+$environment = new Environment(
+    getenv('PG_PAYMENT_PUBLIC_KEY'),
+    getenv('PG_PAYMENT_PRIVATE_KEY'),
+    getenv('PG_PAYMENT_API_SERVER'),
+    getenv('PG_PAYMENT_API_VERSION')
+);
+
+$client = new PaymentClient($curl, $environment);
 
 $response = $client->authenticate();
 
