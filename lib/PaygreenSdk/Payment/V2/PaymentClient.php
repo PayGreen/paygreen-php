@@ -11,6 +11,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateCashRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateRecurringRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateXtimeRequest;
+use Paygreen\Sdk\Payment\V2\Request\Refund\RefundRequest;
 
 class PaymentClient extends Client
 {
@@ -116,6 +117,33 @@ class PaymentClient extends Client
 
         if ($response->getStatusCode() === 200) {
             $this->logger->info('Payment successfully canceled.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param string $transactionId
+     * @param int|null $amount
+     * @return JsonResponse
+     * @throws HttpClientException
+     * @throws Exception
+     */
+    public function refundPayment($transactionId, $amount = null)
+    {
+        $this->logger->info("Refund transaction '$transactionId' with amount '$amount'.");
+
+        $request = (new RefundRequest($this->requestFactory, $this->environment))->getRequest(
+            $transactionId, $amount
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if ($response->getStatusCode() === 200) {
+            $this->logger->info('Refund successfully executed.');
         }
 
         return new JsonResponse($response);
