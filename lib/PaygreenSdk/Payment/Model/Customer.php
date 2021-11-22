@@ -144,15 +144,11 @@ class Customer implements CustomerInterface
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getReference()
     {
-        if ($this->reference) {
-            return $this->reference;
-        }
-
-        return $this->getId();
+        return $this->reference;
     }
 
     /**

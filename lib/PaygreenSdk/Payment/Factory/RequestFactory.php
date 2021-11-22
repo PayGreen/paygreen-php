@@ -40,6 +40,7 @@ class RequestFactory
 
         $headers = [
             'Content-Type' => 'application/json',
+            'Content-Length' => '0',
             'Accept' => 'application/json',
             'User-Agent' => $this->buildUserAgentHeader()
         ];

@@ -13,6 +13,18 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
+        if($paymentOrder->getOrder()->getCustomer()->getReference() === null ) {
+            $buyer = [
+                'email' => $paymentOrder->getOrder()->getCustomer()->getEmail(),
+                'firstName' => $paymentOrder->getOrder()->getCustomer()->getFirstName(),
+                'lastName' => $paymentOrder->getOrder()->getCustomer()->getLastName(),
+                'reference' => $paymentOrder->getOrder()->getCustomer()->getId(),
+                'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode()
+            ];
+        }
+        else {
+            $buyer = $paymentOrder->getOrder()->getCustomer()->getReference();
+        }
         return $this->requestFactory->create(
             "/payment/payment-orders",
             json_encode([
@@ -22,15 +34,8 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'reference' => $paymentOrder->getOrder()->getReference(),
                 'auto_capture' => $paymentOrder->getAutoCapture(),
                 'integration_mode' => $paymentOrder->getIntegrationMode(),
-                'buyer' => [
-                    'email' => $paymentOrder->getOrder()->getCustomer()->getEmail(),
-                    'firstName' => $paymentOrder->getOrder()->getCustomer()->getFirstName(),
-                    'lastName' => $paymentOrder->getOrder()->getCustomer()->getLastName(),
-                    'reference' => $paymentOrder->getOrder()->getCustomer()->getId(),
-                    'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode()
-                ]
+                'buyer' => $buyer
             ])
         );
     }
-
 }

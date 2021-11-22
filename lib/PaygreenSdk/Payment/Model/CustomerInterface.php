@@ -18,7 +18,7 @@ interface CustomerInterface
     /**
      * Reference to identify the user on the api
      *
-     * @return string
+     * @return null|string
      */
     public function getReference();
 
