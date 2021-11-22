@@ -141,6 +141,22 @@ class PaymentClientTest extends TestCase
     }
 
     /**
+     * @return void
+     * @throws HttpClientException
+     */
+    public function testRequestRefundPayment()
+    {
+        $this->client->refundPayment('tr15acde62ecfc1b8a2a1706b3f17a714e', 5000);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals(
+            '/api/public_key/payins/transaction/tr15acde62ecfc1b8a2a1706b3f17a714e',
+            $request->getUri()->getPath()
+        );
+    }
+
+    /**
      * @return PaymentOrder
      */
     private function buildPaymentOrder()
