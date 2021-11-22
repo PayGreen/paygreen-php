@@ -144,4 +144,40 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
         $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
     }
+
+    public function testRequestCreateWithBuyerOrder()
+    {
+        $customer = new Customer();
+        $customer->setReference("buyerReference");
+
+        $order = new Order();
+        $order->setCustomer($customer);
+        $order->setReference('SDK-ORDER-123');
+        $order->setAmount(1000);
+        $order->setCurrency('EUR');
+
+        $paymentOrder = new PaymentOrder();
+        $paymentOrder->setPaymentMode("instant");
+        $paymentOrder->setAutoCapture(true);
+        $paymentOrder->setIntegrationMode("hosted_fields");
+        $paymentOrder->setOrder($order);
+
+        $this->client->createOrder($paymentOrder);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
+        $this->assertEquals($customer->getReference(), $content->buyer);
+
+        $this->assertEquals($order->getReference(), $content->reference);
+        $this->assertEquals($order->getAmount(), $content->amount);
+        $this->assertEquals($order->getCurrency(), $content->currency);
+
+        $this->assertEquals($paymentOrder->getPaymentMode(), $content->paymentMode);
+        $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
+        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
+    }
+    
 }

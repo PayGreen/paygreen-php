@@ -27,28 +27,55 @@ class RequestFactory
      * @param string $url
      * @param string|resource|StreamInterface|null $body
      * @param string $method
-     * @param bool $withBearer
-     * @return Request
+     * @return RequestFactory
      */
     public function create(
         $url,
         $body = null,
-        $method = 'POST',
-        $withBearer = true
+        $method = 'POST'
     ) {
         $url = $this->environment->getEndpoint() . $url;
 
-        $headers = [
-            'Content-Type' => 'application/json',
-            'Accept' => 'application/json',
+        $header = [
             'User-Agent' => $this->buildUserAgentHeader()
         ];
 
-        if ($withBearer) {
-            $headers['Authorization'] = 'Bearer ' . $this->environment->getBearer();
+        $this->request = new Request($method, $url, $header, $body);
+
+        return $this;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest() {
+        return $this->request;
+    }
+
+    /**
+     * @return RequestFactory
+     */
+    public function withAuthorization() {
+        $this->request = $this->request->withAddedHeader('Authorization', 'Bearer ' . $this->environment->getBearer());
+        return $this;
+    }
+
+    /**
+     * @return RequestFactory
+     */
+    public function isJson() {
+
+        $size = 0;
+        $body = $this->request->getBody();
+        if ($body !== null) {
+           $size = (string)$body->getSize();
         }
 
-        return $this->request = new Request($method, $url, $headers, $body);
+        $this->request = $this->request->withAddedHeader('Content-Type', 'application/json');
+        $this->request = $this->request->withAddedHeader('Accept', 'application/json');
+        $this->request = $this->request->withAddedHeader('Content-Length', $size);
+
+        return $this;
     }
 
     /**
