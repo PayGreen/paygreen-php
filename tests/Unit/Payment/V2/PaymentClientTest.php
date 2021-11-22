@@ -4,6 +4,7 @@ namespace Paygreen\Tests\Unit\Payment\V2;
 
 use Http\Client\Exception as HttpClientException;
 use Http\Mock\Client;
+use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Model\Address;
 use Paygreen\Sdk\Payment\Model\Customer;
 use Paygreen\Sdk\Payment\Model\Order;
@@ -24,15 +25,18 @@ class PaymentClientTest extends TestCase
      */
     public function setUp()
     {
-        putenv("PG_PAYMENT_PUBLIC_KEY=public_key");
-        putenv("PG_PAYMENT_PRIVATE_KEY=private_key");
-        putenv("PG_PAYMENT_API_SERVER=SANDBOX");
-        putenv("PG_PAYMENT_API_VERSION=2");
-
         $client = new Client();
+
+        $environment = new Environment(
+            'public_key',
+            'private_key',
+            'SANDBOX',
+            2
+        );
+
         $logger = new NullLogger();
 
-        $this->client = new PaymentClient($client, $logger);
+        $this->client = new PaymentClient($client, $environment, $logger);
 
         $this->buildPaymentOrder();
     }

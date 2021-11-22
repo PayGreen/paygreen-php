@@ -31,8 +31,11 @@ abstract class Client
     /** @var ResponseInterface */
     private $lastResponse;
 
-    public function __construct(HttpClientInterface $client, LoggerInterface $logger = null)
-    {
+    public function __construct(
+        HttpClientInterface $client,
+        Environment $environment,
+        LoggerInterface $logger = null
+    ) {
         $this->client = $client;
 
         if (null === $logger) {
@@ -41,13 +44,7 @@ abstract class Client
             $this->logger = $logger;
         }
 
-        $this->environment = new Environment(
-            getenv('PG_PAYMENT_PUBLIC_KEY'),
-            getenv('PG_PAYMENT_PRIVATE_KEY'),
-            getenv('PG_PAYMENT_API_SERVER'),
-            getenv('PG_PAYMENT_API_VERSION')
-        );
-
+        $this->environment = $environment;
         $this->requestFactory = new RequestFactory($this->environment);
     }
 

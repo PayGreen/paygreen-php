@@ -3,6 +3,7 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
+use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Model\Customer;
 use Paygreen\Sdk\Payment\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -19,15 +20,18 @@ final class PaymentClientTest extends TestCase
 
     public function setUp()
     {
-        putenv("PG_PAYMENT_PUBLIC_KEY=public_key");
-        putenv("PG_PAYMENT_PRIVATE_KEY=private_key");
-        putenv("PG_PAYMENT_API_SERVER=SANDBOX");
-        putenv("PG_PAYMENT_API_VERSION=3");
-
         $client = new Client();
+
+        $environment = new Environment(
+            'public_key',
+            'private_key',
+            'SANDBOX',
+            3
+        );
+
         $logger = new NullLogger();
 
-        $this->client = new PaymentClient($client, $logger);
+        $this->client = new PaymentClient($client, $environment, $logger);
     }
 
     public function testRequestAuthenticate()
