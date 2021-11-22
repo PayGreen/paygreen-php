@@ -17,7 +17,7 @@ class CreateRefundRequest extends \Paygreen\Sdk\Core\Request\Request
 
         if (!is_null($amount)) {
             $body = [
-                'amount'
+                'amount' => $amount
             ];
         } else {
             $body = null;
