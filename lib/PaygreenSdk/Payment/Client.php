@@ -10,6 +10,7 @@ use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 abstract class Client
 {
@@ -36,7 +37,7 @@ abstract class Client
         $this->client = $client;
 
         if (null === $logger) {
-            $this->logger = new Logger('api.payment');
+            $this->logger = new NullLogger();
         } else {
             $this->logger = $logger;
         }
