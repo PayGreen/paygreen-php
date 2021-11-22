@@ -19,7 +19,7 @@ final class OrderTest extends TestCase
         $order = new Order();
         $order->setReference('order-1');
 
-        $this->assertEquals('PG-order-1', $order->getReference());
+        $this->assertEquals('order-1', $order->getReference());
     }
 
     /**

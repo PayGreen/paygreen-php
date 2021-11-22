@@ -38,4 +38,18 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             ])
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @return Request|RequestInterface
+     */
+    public function getGetRequest(PaymentOrder $paymentOrder)
+    {
+        $paymentId = $paymentOrder->getOrder()->getReference();
+
+        return $this->requestFactory->create(
+            "/payment/payment-orders/$paymentId",
+            null,
+            "GET"
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }

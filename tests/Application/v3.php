@@ -54,8 +54,8 @@ $buyerNoreference->setCountryCode('FR');
 $order = new Order();
 $order->setCustomer($buyerNoreference);
 $order->setReference('SDK-ORDER-123');
-$order->setAmount(1000);
-$order->setCurrency('EUR');
+$order->setAmount(107);
+$order->setCurrency('eur');
 
 $paymentOrder = new PaymentOrder();
 $paymentOrder->setPaymentMode("instant");
@@ -64,9 +64,17 @@ $paymentOrder->setIntegrationMode("hosted_fields");
 $paymentOrder->setOrder($order);
 
 $response = $client->createOrder($paymentOrder);
-dump($response->getData());
+$data = $response->getData();
+dump($data);
 
 $order->setCustomer($buyer);
-
 $response = $client->createOrder($paymentOrder);
-dump($response->getData());
+$data = $response->getData();
+dump($data);
+
+$order->setReference($data->data->id);
+$response = $client->getOrder($paymentOrder);
+$data = $response->getData();
+dump($data);
+
+
