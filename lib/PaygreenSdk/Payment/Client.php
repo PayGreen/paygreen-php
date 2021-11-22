@@ -2,14 +2,14 @@
 
 namespace Paygreen\Sdk\Payment;
 
-use Paygreen\Sdk\Core\Environment;
+use Http\Client\Exception as HttpClientException;
 use Http\Client\HttpClient as HttpClientInterface;
+use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Core\Logger;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
-use Http\Client\Exception as HttpClientException;
 
 abstract class Client
 {
@@ -31,15 +31,11 @@ abstract class Client
     /** @var ResponseInterface */
     private $lastResponse;
 
-    /**
-     * @param HttpClientInterface $client
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(HttpClientInterface $client, LoggerInterface $logger = null)
     {
         $this->client = $client;
 
-        if ($logger === null) {
+        if (null === $logger) {
             $this->logger = new Logger('api.payment');
         } else {
             $this->logger = $logger;
@@ -57,7 +53,6 @@ abstract class Client
 
     /**
      * @param string $bearer
-     * @return void
      */
     public function setBearer($bearer)
     {
@@ -73,15 +68,6 @@ abstract class Client
     }
 
     /**
-     * @param RequestInterface $lastRequest
-     * @return void
-     */
-    protected function setLastRequest($lastRequest)
-    {
-        $this->lastRequest = $lastRequest;
-    }
-
-    /**
      * @return ResponseInterface
      */
     public function getLastResponse()
@@ -90,8 +76,15 @@ abstract class Client
     }
 
     /**
+     * @param RequestInterface $lastRequest
+     */
+    protected function setLastRequest($lastRequest)
+    {
+        $this->lastRequest = $lastRequest;
+    }
+
+    /**
      * @param ResponseInterface $lastResponse
-     * @return void
      */
     protected function setLastResponse($lastResponse)
     {
@@ -99,9 +92,9 @@ abstract class Client
     }
 
     /**
-     * @param RequestInterface $request
-     * @return ResponseInterface
      * @throws HttpClientException
+     *
+     * @return ResponseInterface
      */
     protected function sendRequest(RequestInterface $request)
     {
@@ -113,15 +106,15 @@ abstract class Client
             if ($response->getStatusCode() >= 400) {
                 $this->logger->error('Request error. ', [
                     'code' => $response->getStatusCode(),
-                    'request' => $request
+                    'request' => $request,
                 ]);
             }
 
             return $response;
         } catch (HttpClientException $exception) {
-            $this->logger->error("A client error occurred while sending request.", [$exception]);
+            $this->logger->error('A client error occurred while sending request.', [$exception]);
 
-            throw new $exception;
+            throw new $exception();
         }
     }
 }

@@ -19,9 +19,9 @@ services:
     ports:
       - "80:80"
 
-  phpstan:
+  phptools:
     build:
       context: .
-      target: phpstan
+      target: phptools
     volumes:
       - ./:/srv/paygreen:rw,cached
