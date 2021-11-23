@@ -73,7 +73,6 @@ dump($response->getData());
 // $orderDetails->setStartAt(1637227163);
 //
 // $multiplePayment = new MultiplePayment();
-// $multiplePayment->setWithPaymentLink(true);
 // $multiplePayment->setOrderDetails($orderDetails);
 
 // $paymentOrder->setMultiplePayment($multiplePayment);

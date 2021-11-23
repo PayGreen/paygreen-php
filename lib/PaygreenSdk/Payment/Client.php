@@ -5,7 +5,6 @@ namespace Paygreen\Sdk\Payment;
 use Http\Client\Exception as HttpClientException;
 use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Core\Logger;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;

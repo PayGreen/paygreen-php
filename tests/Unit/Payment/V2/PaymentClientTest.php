@@ -78,7 +78,6 @@ class PaymentClientTest extends TestCase
         $orderDetails->setStartAt(1637227163);
         
         $multiplePayment = new MultiplePayment();
-        $multiplePayment->setWithPaymentLink(false);
         $multiplePayment->setOrderDetails($orderDetails);
         
         $paymentOrder->setMultiplePayment($multiplePayment);
@@ -108,7 +107,6 @@ class PaymentClientTest extends TestCase
         $orderDetails->setCount(3);
 
         $multiplePayment = new MultiplePayment();
-        $multiplePayment->setWithPaymentLink(false);
         $multiplePayment->setOrderDetails($orderDetails);
 
         $paymentOrder->setMultiplePayment($multiplePayment);

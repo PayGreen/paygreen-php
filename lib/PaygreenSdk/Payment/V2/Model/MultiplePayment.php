@@ -6,28 +6,8 @@ use Paygreen\Sdk\Payment\Model\OrderDetailsInterface;
 
 class MultiplePayment
 {
-    /** @var bool */
-    private $withPaymentLink = false;
-
     /** @var OrderDetailsInterface */
     private $orderDetails;
-
-    /**
-     * @return bool
-     */
-    public function getWithPaymentLink()
-    {
-        return $this->withPaymentLink;
-    }
-
-    /**
-     * @param bool $withPaymentLink
-     * @return void
-     */
-    public function setWithPaymentLink($withPaymentLink)
-    {
-        $this->withPaymentLink = $withPaymentLink;
-    }
 
     /**
      * @return OrderDetailsInterface

@@ -51,6 +51,9 @@ class PaymentOrder
      * @var string
      */
     private $cardToken;
+
+    /** @var bool */
+    private $withPaymentLink = false;
     
     /** @var MultiplePayment|null */
     private $multiplePayment = null;
@@ -206,6 +209,23 @@ class PaymentOrder
     public function setCardToken($cardToken)
     {
         $this->cardToken = $cardToken;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getWithPaymentLink()
+    {
+        return $this->withPaymentLink;
+    }
+
+    /**
+     * @param bool $withPaymentLink
+     * @return void
+     */
+    public function setWithPaymentLink($withPaymentLink)
+    {
+        $this->withPaymentLink = $withPaymentLink;
     }
 
     /**
