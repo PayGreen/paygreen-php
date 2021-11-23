@@ -39,7 +39,7 @@ class Order implements OrderInterface
      */
     public function getReference()
     {
-        return 'PG-' . $this->reference;
+        return $this->reference;
     }
 
     /**

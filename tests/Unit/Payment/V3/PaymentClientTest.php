@@ -179,5 +179,21 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
         $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
     }
+
+    public function testRequestGetOrder()
+    {
+        $order = new Order();
+        $order->setReference('SDK-ORDER-123');
+
+        $paymentOrder = new PaymentOrder();
+        $paymentOrder->setOrder($order);
+
+        $this->client->getOrder($paymentOrder);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders/SDK-ORDER-123', $request->getUri()->getPath());
+
+    }
     
 }
