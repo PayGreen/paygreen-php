@@ -8,26 +8,13 @@ use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
 
-class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
+class CashRequest extends \Paygreen\Sdk\Core\Request\Request
 {
-    /**
-     * @param RequestFactory $requestFactory
-     * @param Environment $environment
-     * @throws Exception
-     */
-    public function __construct(
-        $requestFactory,
-        $environment
-    ) {
-
-        parent::__construct($requestFactory, $environment);
-    }
-
     /**
      * @param PaymentOrder $paymentOrder
      * @return RequestInterface
      */
-    public function getRequest($paymentOrder)
+    public function getCreateRequest($paymentOrder)
     {
         $publicKey = $this->environment->getPublicKey();
 
@@ -39,6 +26,7 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
             'type' => $paymentOrder->getType(),
             'notifiedUrl' => $paymentOrder->getNotifiedUrl(),
             'returnedUrl' => $paymentOrder->getReturnedUrl(),
+            'withPaymentLink' => $paymentOrder->getWithPaymentLink(),
             'buyer' => [
                 'id' => $paymentOrder->getOrder()->getCustomer()->getId(),
                 'lastName' => $paymentOrder->getOrder()->getCustomer()->getLastName(),
@@ -74,22 +62,9 @@ class CreateRecurringRequest extends \Paygreen\Sdk\Core\Request\Request
             ];
         }
 
-        if (!empty($paymentOrder->getMultiplePayment())) {
-            $body['withPaymentLink'] = $paymentOrder->getMultiplePayment()->getWithPaymentLink();
-
-            $body['orderDetails'] = [
-                'cycle' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getCycle(),
-                'count' =>$paymentOrder->getMultiplePayment()->getOrderDetails()->getCount(),
-                'firstAmount' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getFirstAmount(),
-                'day' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getDay(),
-                'startAt' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getStartAt()
-            ];
-        }
-
-
         return $this->requestFactory->create(
-            "/api/$publicKey/payins/transaction/subscription",
+            "/api/$publicKey/payins/transaction/cash",
             json_encode($body)
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 }

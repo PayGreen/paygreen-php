@@ -19,6 +19,6 @@ class CancelRequest extends \Paygreen\Sdk\Core\Request\Request
             json_encode([
                 'id' => $transactionId
             ])
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 }

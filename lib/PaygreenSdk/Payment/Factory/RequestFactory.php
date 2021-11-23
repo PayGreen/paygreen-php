@@ -8,7 +8,6 @@ use Psr\Http\Message\StreamInterface;
 
 class RequestFactory
 {
-
     /** @var Environment */
     private $environment;
     
@@ -56,7 +55,11 @@ class RequestFactory
      * @return RequestFactory
      */
     public function withAuthorization() {
-        $this->request = $this->request->withAddedHeader('Authorization', 'Bearer ' . $this->environment->getBearer());
+        $this->request = $this->request->withAddedHeader(
+            'Authorization',
+            'Bearer ' . $this->environment->getBearer()
+        );
+
         return $this;
     }
 

@@ -8,10 +8,10 @@ use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
-use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateCashRequest;
-use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateRecurringRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CashRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RecurringRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RefundRequest;
-use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CreateXtimeRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
 
 class PaymentClient extends Client
 {
@@ -28,7 +28,7 @@ class PaymentClient extends Client
         
         $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
         
-        $request = (new CreateCashRequest($this->requestFactory, $this->environment))->getRequest($paymentOrder);
+        $request = (new CashRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
         
         $this->setLastRequest($request);
         
@@ -55,7 +55,7 @@ class PaymentClient extends Client
 
         $this->logger->info("Create '$paymentType' recurring payment with an amount of '$amount'.");
 
-        $request = (new CreateRecurringRequest($this->requestFactory, $this->environment))->getRequest($paymentOrder);
+        $request = (new RecurringRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
 
         $this->setLastRequest($request);
 
@@ -82,7 +82,7 @@ class PaymentClient extends Client
 
         $this->logger->info("Create '$paymentType' XTIME payment with an amount of '$amount'.");
 
-        $request = (new CreateXtimeRequest($this->requestFactory, $this->environment))->getRequest($paymentOrder);
+        $request = (new XtimeRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
 
         $this->setLastRequest($request);
 

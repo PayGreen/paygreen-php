@@ -27,6 +27,6 @@ class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
             "/api/$publicKey/payins/transaction/$transactionId",
             json_encode($body),
             'DELETE'
-        );
+        )->withAuthorization()->isJson()->getRequest();
     }
 }
