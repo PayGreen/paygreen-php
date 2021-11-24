@@ -3,7 +3,10 @@
 namespace Paygreen\Sdk\Payment\V2\Request\PaymentOrder;
 
 use Exception;
+use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
+use Paygreen\Sdk\Core\Serializer\Serializer;
 use Paygreen\Sdk\Core\Validator\Validator;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
@@ -70,7 +73,7 @@ class CashRequest extends \Paygreen\Sdk\Core\Request\Request
 
         return $this->requestFactory->create(
             "/api/{$publicKey}/payins/transaction/cash",
-            json_encode($body)
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
 }

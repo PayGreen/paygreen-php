@@ -2,6 +2,9 @@
 
 namespace Paygreen\Sdk\Payment\V2\Request\PaymentOrder;
 
+use Paygreen\Sdk\Core\Encoder\JsonEncoder;
+use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
+use Paygreen\Sdk\Core\Serializer\Serializer;
 use Psr\Http\Message\RequestInterface;
 
 class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -26,7 +29,7 @@ class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
 
         return $this->requestFactory->create(
             "/api/{$publicKey}/payins/transaction/{$transactionId}",
-            json_encode($body),
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();
     }
