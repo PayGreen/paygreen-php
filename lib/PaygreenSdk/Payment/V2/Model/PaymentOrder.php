@@ -2,7 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V2\Model;
 
-use Paygreen\Sdk\Payment\Model\OrderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 

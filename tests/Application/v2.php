@@ -1,9 +1,9 @@
 <?php
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Payment\Model\Address;
-use Paygreen\Sdk\Payment\Model\Customer;
-use Paygreen\Sdk\Payment\Model\Order;
+use Paygreen\Sdk\Payment\V2\Model\Address;
+use Paygreen\Sdk\Payment\V2\Model\Customer;
+use Paygreen\Sdk\Payment\V2\Model\Order;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
