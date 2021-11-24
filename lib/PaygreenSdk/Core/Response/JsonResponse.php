@@ -32,7 +32,7 @@ class JsonResponse
     }
 
     /**
-     * @return array<string, int|stdClass>
+     * @return array<string|int|stdClass>
      * @throws ResponseMalformedException
      */
     public function toArray()
