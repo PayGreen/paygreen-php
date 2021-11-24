@@ -124,6 +124,26 @@ class PaymentClientTest extends TestCase
      * @return void
      * @throws HttpClientException
      */
+    public function testRequestCreateTokenize()
+    {
+        $paymentOrder = $this->buildPaymentOrder();
+        $paymentOrder->setType('TOKENIZE');
+
+        $this->client->createTokenizePayment($paymentOrder);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/public_key/payins/transaction/tokenize', $request->getUri()->getPath());
+        $this->assertEquals($paymentOrder->getType(), $content->type);
+        $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
+    }
+
+    /**
+     * @return void
+     * @throws HttpClientException
+     */
     public function testRequestCancelPayment()
     {
         $this->client->cancelPayment('tr15acde62ecfc1b8a2a1706b3f17a714e');

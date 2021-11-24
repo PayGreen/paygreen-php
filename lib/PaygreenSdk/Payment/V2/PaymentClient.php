@@ -11,6 +11,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CashRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RecurringRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RefundRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TokenizeRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
 
 class PaymentClient extends Client
@@ -91,6 +92,33 @@ class PaymentClient extends Client
 
         if ($response->getStatusCode() === 200) {
             $this->logger->info('XTIME payment successfully created.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param PaymentOrder $paymentOrder
+     * @return JsonResponse
+     * @throws HttpClientException
+     * @throws Exception
+     */
+    public function createTokenizePayment($paymentOrder)
+    {
+        $paymentType = $paymentOrder->getPaymentType();
+        $amount = $paymentOrder->getOrder()->getAmount();
+
+        $this->logger->info("Create '$paymentType' tokenize payment with an amount of '$amount'.");
+
+        $request = (new TokenizeRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if ($response->getStatusCode() === 200) {
+            $this->logger->info('Tokenize payment successfully created.');
         }
 
         return new JsonResponse($response);
