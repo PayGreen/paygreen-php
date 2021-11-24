@@ -2,8 +2,8 @@
 
 namespace Paygreen\Sdk\Payment\Response;
 
-use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Core\Exception\ResponseMalformedException;
+use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Core\Response\ResponseInterface;
 use stdClass;
 
@@ -13,14 +13,15 @@ class Response extends JsonResponse implements ResponseInterface
     private $success;
 
     /** @var string */
-    private $message = null;
-    
+    private $message;
+
     /** @var int */
     private $code;
 
     /**
-     * @return stdClass
      * @throws ResponseMalformedException
+     *
+     * @return stdClass
      */
     public function getData()
     {
@@ -31,7 +32,7 @@ class Response extends JsonResponse implements ResponseInterface
             || !property_exists($data, 'code')
             || !property_exists($data, 'data')
         ) {
-            throw new ResponseMalformedException("Malformed response.");
+            throw new ResponseMalformedException('Malformed response.');
         }
 
         $this->code = (int) $data->code;
@@ -40,7 +41,6 @@ class Response extends JsonResponse implements ResponseInterface
 
         return $data->data;
     }
-    
 
     /**
      * @return int
@@ -69,12 +69,11 @@ class Response extends JsonResponse implements ResponseInterface
     public function toArray()
     {
         return array_merge(
-            array(
+            [
                 'message' => $this->message,
                 'success' => $this->success,
-                'code' => $this->code
-            ),
-            
+                'code' => $this->code,
+            ],
             parent::toArray()
         );
     }

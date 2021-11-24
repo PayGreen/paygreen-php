@@ -8,35 +8,13 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class Address implements AddressInterface
 {
     /**
-     * @param ClassMetadata $metadata
+     * @var string
      */
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('postcode', new Assert\NotBlank())
-            ->addPropertyConstraints('city', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('countryCode', [
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('streetLineOne', [
-                    new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraint('streetLineTwo', new Assert\Type('string'))
-        ;
-    }
+    private $postcode;
 
     /**
      * @var string
      */
-    private $postcode;
-    
-    /**
-     * @var string
-     */   
     private $city;
 
     /**
@@ -54,6 +32,25 @@ class Address implements AddressInterface
      */
     private $streetLineTwo;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraint('postcode', new Assert\NotBlank())
+            ->addPropertyConstraints('city', [
+                new Assert\NotBlank(),
+                new Assert\Type('string'),
+            ])
+            ->addPropertyConstraints('countryCode', [
+                new Assert\Type('string'),
+            ])
+            ->addPropertyConstraints('streetLineOne', [
+                new Assert\NotBlank(),
+                new Assert\Type('string'),
+            ])
+            ->addPropertyConstraint('streetLineTwo', new Assert\Type('string'))
+        ;
+    }
+
     /**
      * @return string
      */
@@ -64,7 +61,6 @@ class Address implements AddressInterface
 
     /**
      * @param string $postcode
-     * @return void
      */
     public function setPostcode($postcode)
     {
@@ -81,7 +77,6 @@ class Address implements AddressInterface
 
     /**
      * @param string $city
-     * @return void
      */
     public function setCity($city)
     {
@@ -98,7 +93,6 @@ class Address implements AddressInterface
 
     /**
      * @param string $firstname
-     * @return void
      */
     public function setFirstname($firstname)
     {
@@ -115,7 +109,6 @@ class Address implements AddressInterface
 
     /**
      * @param string $lastname
-     * @return void
      */
     public function setLastname($lastname)
     {
@@ -132,7 +125,6 @@ class Address implements AddressInterface
 
     /**
      * @param string $streetLineOne
-     * @return void
      */
     public function setStreetLineOne($streetLineOne)
     {
@@ -149,7 +141,6 @@ class Address implements AddressInterface
 
     /**
      * @param string $streetLineTwo
-     * @return void
      */
     public function setStreetLineTwo($streetLineTwo)
     {
@@ -169,7 +160,7 @@ class Address implements AddressInterface
         } else {
             $street = $this->getStreetLineOne();
         }
-        
+
         return $street;
     }
 
@@ -183,11 +174,9 @@ class Address implements AddressInterface
 
     /**
      * @param string $countryCode
-     * @return void
      */
     public function setCountryCode($countryCode)
     {
         $this->countryCode = $countryCode;
     }
-
 }

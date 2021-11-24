@@ -11,7 +11,6 @@ interface OrderInterface
 
     /**
      * @param string $reference
-     * @return void
      */
     public function setReference($reference);
 
@@ -22,7 +21,6 @@ interface OrderInterface
 
     /**
      * @param CustomerInterface $customer
-     * @return void
      */
     public function setCustomer($customer);
 
@@ -33,7 +31,6 @@ interface OrderInterface
 
     /**
      * @param AddressInterface $shippingAddress
-     * @return void
      */
     public function setShippingAddress($shippingAddress);
 
@@ -44,7 +41,6 @@ interface OrderInterface
 
     /**
      * @param AddressInterface $billingAddress
-     * @return void
      */
     public function setBillingAddress($billingAddress);
 
@@ -55,10 +51,9 @@ interface OrderInterface
 
     /**
      * @param int $amount
-     * @return void
      */
     public function setAmount($amount);
-    
+
     /**
      * @return string
      */
@@ -66,7 +61,6 @@ interface OrderInterface
 
     /**
      * @param string $currency
-     * @return void
      */
     public function setCurrency($currency);
 }
