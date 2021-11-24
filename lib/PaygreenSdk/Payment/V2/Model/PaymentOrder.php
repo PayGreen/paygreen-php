@@ -2,6 +2,8 @@
 
 namespace Paygreen\Sdk\Payment\V2\Model;
 
+use Paygreen\Sdk\Payment\V2\Enum\PaymentTypeEnum;
+use Paygreen\Sdk\Payment\V2\Enum\TypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -66,12 +68,8 @@ class PaymentOrder
                 new Assert\Type(OrderInterface::class),
                 new Assert\Valid(),
             ])
-            ->addPropertyConstraint('paymentType', new Assert\Choice([
-                'CB', 'AMEX', 'ANCV', 'ECV', 'RESTOFLASH', 'LUNCHR', 'CBTRD', 'TRD', 'SEPA',
-            ]))
-            ->addPropertyConstraint('type', new Assert\Choice([
-                'CASH', 'RECURRING', 'XTIME', 'TOKENIZE',
-            ]))
+            ->addPropertyConstraint('paymentType', new Assert\Choice(PaymentTypeEnum::getPaymentTypes()))
+            ->addPropertyConstraint('type', new Assert\Choice(TypeEnum::getTypes()))
             ->addPropertyConstraint('returnedUrl', new Assert\Url())
             ->addPropertyConstraint('metadata', new Assert\Type('array'))
             ->addPropertyConstraint('eligibleAmount', new Assert\Type('array'))
