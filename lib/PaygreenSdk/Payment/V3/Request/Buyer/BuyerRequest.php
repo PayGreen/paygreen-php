@@ -16,13 +16,13 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
-            "/payment/shops/$publicKey/buyers",
+            "/payment/shops/{$publicKey}/buyers",
             json_encode([
                 'email' => $buyer->getEmail(),
                 'first_name' => $buyer->getFirstname(),
                 'last_name' => $buyer->getLastname(),
                 'reference' => $buyer->getId(),
-                'country' => $buyer->getCountryCode()
+                'country' => $buyer->getCountryCode(),
             ])
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -36,9 +36,9 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         $buyerReference = $buyer->getReference();
 
         return $this->requestFactory->create(
-            "/payment/shops/$publicKey/buyers/$buyerReference",
+            "/payment/shops/{$publicKey}/buyers/{$buyerReference}",
             null,
-            "GET"            
+            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 
@@ -49,9 +49,9 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     {
         $publicKey = $this->environment->getPublicKey();
         $buyerReference = $buyer->getReference();
-        
+
         return $this->requestFactory->create(
-            "/payment/shops/$publicKey/buyers/$buyerReference",
+            "/payment/shops/{$publicKey}/buyers/{$buyerReference}",
             json_encode([
                 'email' => $buyer->getEmail(),
                 'first_name' => $buyer->getFirstname(),

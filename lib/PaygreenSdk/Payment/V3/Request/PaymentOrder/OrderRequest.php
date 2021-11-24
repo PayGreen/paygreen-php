@@ -13,20 +13,20 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
-        if($paymentOrder->getOrder()->getCustomer()->getReference() === null ) {
+        if (null === $paymentOrder->getOrder()->getCustomer()->getReference()) {
             $buyer = [
                 'email' => $paymentOrder->getOrder()->getCustomer()->getEmail(),
                 'firstName' => $paymentOrder->getOrder()->getCustomer()->getFirstName(),
                 'lastName' => $paymentOrder->getOrder()->getCustomer()->getLastName(),
                 'reference' => $paymentOrder->getOrder()->getCustomer()->getId(),
-                'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode()
+                'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode(),
             ];
-        }
-        else {
+        } else {
             $buyer = $paymentOrder->getOrder()->getCustomer()->getReference();
         }
+
         return $this->requestFactory->create(
-            "/payment/payment-orders",
+            '/payment/payment-orders',
             json_encode([
                 'amount' => $paymentOrder->getOrder()->getAmount(),
                 'currency' => $paymentOrder->getOrder()->getCurrency(),
@@ -36,7 +36,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'integration_mode' => $paymentOrder->getIntegrationMode(),
                 'partial_allowed' => $paymentOrder->isPartialAllowed(),
                 'platforms' => $paymentOrder->getPlatforms(),
-                'buyer' => $buyer
+                'buyer' => $buyer,
             ])
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -49,9 +49,9 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
         $paymentId = $paymentOrder->getOrder()->getReference();
 
         return $this->requestFactory->create(
-            "/payment/payment-orders/$paymentId",
+            "/payment/payment-orders/{$paymentId}",
             null,
-            "GET"
+            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 
@@ -63,9 +63,9 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
         $paymentId = $paymentOrder->getOrder()->getReference();
 
         return $this->requestFactory->create(
-            "/payment/payment-orders/$paymentId",
+            "/payment/payment-orders/{$paymentId}",
             json_encode([
-                'partial_allowed' => $paymentOrder->isPartialAllowed()
+                'partial_allowed' => $paymentOrder->isPartialAllowed(),
             ])
         )->withAuthorization()->isJson()->getRequest();
     }

@@ -4,7 +4,6 @@ namespace Paygreen\Sdk\Payment\V3\Model;
 
 use Paygreen\Sdk\Payment\Model\OrderInterface;
 
-
 class PaymentOrder
 {
     /**
@@ -15,7 +14,7 @@ class PaymentOrder
     /**
      * @var string
      */
-    private $paymentMode = "instant";
+    private $paymentMode = 'instant';
 
     /**
      * @var bool
@@ -25,7 +24,7 @@ class PaymentOrder
     /**
      * @var string
      */
-    private $integrationMode = "hosted_fields";
+    private $integrationMode = 'hosted_fields';
 
     /**
      * @var bool
@@ -35,7 +34,7 @@ class PaymentOrder
     /**
      * @var array
      */
-    private $platforms = ["bank_card","conecs"];
+    private $platforms = ['bank_card', 'conecs'];
 
     /**
      * @return array
@@ -52,7 +51,7 @@ class PaymentOrder
     {
         $this->platforms = $platforms;
     }
-    
+
     /**
      * @return OrderInterface
      */
@@ -63,7 +62,6 @@ class PaymentOrder
 
     /**
      * @param OrderInterface $order
-     * @return void
      */
     public function setOrder($order)
     {
@@ -80,7 +78,6 @@ class PaymentOrder
 
     /**
      * @param string $paymentMode
-     * @return void
      */
     public function setPaymentMode($paymentMode)
     {
@@ -134,5 +131,4 @@ class PaymentOrder
     {
         $this->partialAllowed = $partialAllowed;
     }
-
 }

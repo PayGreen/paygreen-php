@@ -14,14 +14,15 @@ use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 class PaymentClient extends Client
 {
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function authenticate()
     {
         $request = (new AuthenticationRequest($this->requestFactory, $this->environment))->getRequest();
         $this->setLastRequest($request);
-        
+
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
@@ -29,8 +30,9 @@ class PaymentClient extends Client
     }
 
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function createBuyer(Buyer $buyer)
     {
@@ -44,8 +46,9 @@ class PaymentClient extends Client
     }
 
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function getBuyer(Buyer $buyer)
     {
@@ -59,8 +62,9 @@ class PaymentClient extends Client
     }
 
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function updateBuyer(Buyer $buyer)
     {
@@ -74,8 +78,9 @@ class PaymentClient extends Client
     }
 
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function createOrder(PaymentOrder $paymentOrder)
     {
@@ -89,8 +94,9 @@ class PaymentClient extends Client
     }
 
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function getOrder(PaymentOrder $paymentOrder)
     {
@@ -104,8 +110,9 @@ class PaymentClient extends Client
     }
 
     /**
-     * @return JsonResponse
      * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
      */
     public function updateOrder(PaymentOrder $paymentOrder)
     {

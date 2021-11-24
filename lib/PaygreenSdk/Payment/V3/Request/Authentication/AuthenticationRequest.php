@@ -13,9 +13,9 @@ class AuthenticationRequest extends \Paygreen\Sdk\Core\Request\Request
     {
         $publicKey = $this->environment->getPublicKey();
         $privateKey = $this->environment->getPrivateKey();
-        
+
         return $this->requestFactory->create(
-            "/auth/authentication/$publicKey/secret-key"
+            "/auth/authentication/{$publicKey}/secret-key"
         )->isJson()->getRequest()->withAddedHeader('Authorization', $privateKey);
     }
 }
