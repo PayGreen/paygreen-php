@@ -4,6 +4,8 @@ namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
 use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -119,9 +121,9 @@ final class PaymentClientTest extends TestCase
         $order->setCurrency('EUR');
 
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode('instant');
+        $paymentOrder->setPaymentMode(ModeEnum::INSTANT);
         $paymentOrder->setAutoCapture(true);
-        $paymentOrder->setIntegrationMode('hosted_fields');
+        $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
         $paymentOrder->setOrder($order);
 
         $this->client->createOrder($paymentOrder);
@@ -158,9 +160,9 @@ final class PaymentClientTest extends TestCase
         $order->setCurrency('EUR');
 
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode('instant');
+        $paymentOrder->setPaymentMode(ModeEnum::INSTANT);
         $paymentOrder->setAutoCapture(true);
-        $paymentOrder->setIntegrationMode('hosted_fields');
+        $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
         $paymentOrder->setOrder($order);
 
         $this->client->createOrder($paymentOrder);
