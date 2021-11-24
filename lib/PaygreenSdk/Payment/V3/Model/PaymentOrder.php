@@ -2,6 +2,9 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
+use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+
 class PaymentOrder implements PaymentOrderInterface
 {
     /**
@@ -12,7 +15,7 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * @var string
      */
-    private $paymentMode = 'instant';
+    private $paymentMode = ModeEnum::INSTANT;
 
     /**
      * @var bool
@@ -22,7 +25,7 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * @var string
      */
-    private $integrationMode = 'hosted_fields';
+    private $integrationMode = IntegrationModeEnum::HOSTED_FIELDS;
 
     /**
      * @var bool
