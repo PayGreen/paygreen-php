@@ -2,8 +2,9 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Payment\Model\Address;
 use Paygreen\Sdk\Payment\Model\Order;
-use Paygreen\Sdk\Payment\Model\Customer;
+use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
 
@@ -24,12 +25,20 @@ $bearer = $response->getData()->data->token;
 
 $client->setBearer($bearer);
 
-$buyer = new Customer();
+$buyer = new Buyer();
 $buyer->setId(uniqid());
 $buyer->setFirstname('John');
 $buyer->setLastname('Doe');
 $buyer->setEmail('romain@paygreen.fr');
 $buyer->setCountryCode('FR');
+
+$address = new Address();
+$address->setStreetLineOne("107 allée Francois Mitterand");
+$address->setPostcode("76100");
+$address->setCity("Rouen");
+$address->setCountryCode("FR");
+
+$buyer->setBillingAddress($address);
 
 $response = $client->createBuyer($buyer);
 $data = $response->getData();
@@ -44,7 +53,7 @@ $buyer->setCountryCode('US');
 $response = $client->updateBuyer($buyer);
 dump($response->getData());
 
-$buyerNoreference = new Customer();
+$buyerNoreference = new Buyer();
 $buyerNoreference->setId(uniqid());
 $buyerNoreference->setFirstname('Will');
 $buyerNoreference->setLastname('Jackson');
@@ -56,6 +65,7 @@ $order->setCustomer($buyerNoreference);
 $order->setReference('SDK-ORDER-123');
 $order->setAmount(107);
 $order->setCurrency('eur');
+$order->setShippingAddress($address);
 
 $paymentOrder = new PaymentOrder();
 $paymentOrder->setPaymentMode("instant");
@@ -77,4 +87,8 @@ $response = $client->getOrder($paymentOrder);
 $data = $response->getData();
 dump($data);
 
+$paymentOrder->setPartialAllowed(true);
+$response = $client->updateOrder($paymentOrder);
+$data = $response->getData();
+dump($data);
 

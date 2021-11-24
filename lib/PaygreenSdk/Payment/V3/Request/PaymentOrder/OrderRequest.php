@@ -34,6 +34,8 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'reference' => $paymentOrder->getOrder()->getReference(),
                 'auto_capture' => $paymentOrder->getAutoCapture(),
                 'integration_mode' => $paymentOrder->getIntegrationMode(),
+                'partial_allowed' => $paymentOrder->isPartialAllowed(),
+                'platforms' => $paymentOrder->getPlatforms(),
                 'buyer' => $buyer
             ])
         )->withAuthorization()->isJson()->getRequest();
@@ -50,6 +52,21 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             "/payment/payment-orders/$paymentId",
             null,
             "GET"
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @return Request|RequestInterface
+     */
+    public function getUpdateRequest(PaymentOrder $paymentOrder)
+    {
+        $paymentId = $paymentOrder->getOrder()->getReference();
+
+        return $this->requestFactory->create(
+            "/payment/payment-orders/$paymentId",
+            json_encode([
+                'partial_allowed' => $paymentOrder->isPartialAllowed()
+            ])
         )->withAuthorization()->isJson()->getRequest();
     }
 }
