@@ -18,25 +18,27 @@ class PaymentClient extends Client
 {
     /**
      * @param PaymentOrder $paymentOrder
-     * @return JsonResponse
+     *
      * @throws HttpClientException
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function createCashPayment($paymentOrder)
     {
         $paymentType = $paymentOrder->getPaymentType();
         $amount = $paymentOrder->getOrder()->getAmount();
-        
-        $this->logger->info("Create '$paymentType' cash payment with an amount of '$amount'.");
-        
+
+        $this->logger->info("Create '{$paymentType}' cash payment with an amount of '{$amount}'.");
+
         $request = (new CashRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
-        
+
         $this->setLastRequest($request);
-        
+
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             $this->logger->info('Cash payment successfully created.');
         }
 
@@ -45,16 +47,18 @@ class PaymentClient extends Client
 
     /**
      * @param PaymentOrder $paymentOrder
-     * @return JsonResponse
+     *
      * @throws HttpClientException
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function createRecurringPayment($paymentOrder)
     {
         $paymentType = $paymentOrder->getPaymentType();
         $amount = $paymentOrder->getOrder()->getAmount();
 
-        $this->logger->info("Create '$paymentType' recurring payment with an amount of '$amount'.");
+        $this->logger->info("Create '{$paymentType}' recurring payment with an amount of '{$amount}'.");
 
         $request = (new RecurringRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
 
@@ -63,7 +67,7 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             $this->logger->info('Recurring payment successfully created.');
         }
 
@@ -72,16 +76,18 @@ class PaymentClient extends Client
 
     /**
      * @param PaymentOrder $paymentOrder
-     * @return JsonResponse
+     *
      * @throws HttpClientException
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function createXtimePayment($paymentOrder)
     {
         $paymentType = $paymentOrder->getPaymentType();
         $amount = $paymentOrder->getOrder()->getAmount();
 
-        $this->logger->info("Create '$paymentType' XTIME payment with an amount of '$amount'.");
+        $this->logger->info("Create '{$paymentType}' XTIME payment with an amount of '{$amount}'.");
 
         $request = (new XtimeRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
 
@@ -90,7 +96,7 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             $this->logger->info('XTIME payment successfully created.');
         }
 
@@ -99,16 +105,18 @@ class PaymentClient extends Client
 
     /**
      * @param PaymentOrder $paymentOrder
-     * @return JsonResponse
+     *
      * @throws HttpClientException
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function createTokenizePayment($paymentOrder)
     {
         $paymentType = $paymentOrder->getPaymentType();
         $amount = $paymentOrder->getOrder()->getAmount();
 
-        $this->logger->info("Create '$paymentType' tokenize payment with an amount of '$amount'.");
+        $this->logger->info("Create '{$paymentType}' tokenize payment with an amount of '{$amount}'.");
 
         $request = (new TokenizeRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
 
@@ -117,7 +125,7 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             $this->logger->info('Tokenize payment successfully created.');
         }
 
@@ -126,13 +134,15 @@ class PaymentClient extends Client
 
     /**
      * @param string $transactionId
-     * @return JsonResponse
+     *
      * @throws HttpClientException
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function cancelPayment($transactionId)
     {
-        $this->logger->info("Cancelling payment with transaction id '$transactionId'.");
+        $this->logger->info("Cancelling payment with transaction id '{$transactionId}'.");
 
         $request = (new CancelRequest($this->requestFactory, $this->environment))->getCancelRequest(
             $transactionId
@@ -143,7 +153,7 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             $this->logger->info('Payment successfully canceled.');
         }
 
@@ -151,18 +161,21 @@ class PaymentClient extends Client
     }
 
     /**
-     * @param string $transactionId
-     * @param int|null $amount
-     * @return JsonResponse
+     * @param string   $transactionId
+     * @param null|int $amount
+     *
      * @throws HttpClientException
      * @throws Exception
+     *
+     * @return JsonResponse
      */
     public function refundPayment($transactionId, $amount = null)
     {
-        $this->logger->info("Refund transaction '$transactionId' with amount '$amount'.");
+        $this->logger->info("Refund transaction '{$transactionId}' with amount '{$amount}'.");
 
         $request = (new RefundRequest($this->requestFactory, $this->environment))->getCreateRequest(
-            $transactionId, $amount
+            $transactionId,
+            $amount
         );
 
         $this->setLastRequest($request);
@@ -170,7 +183,7 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        if ($response->getStatusCode() === 200) {
+        if (200 === $response->getStatusCode()) {
             $this->logger->info('Refund successfully executed.');
         }
 

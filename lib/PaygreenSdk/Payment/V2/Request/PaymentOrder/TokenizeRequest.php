@@ -12,9 +12,11 @@ class TokenizeRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param PaymentOrder $paymentOrder
-     * @return RequestInterface
+     *
      * @throws ConstraintViolationException
      * @throws Exception
+     *
+     * @return RequestInterface
      */
     public function getCreateRequest($paymentOrder)
     {
@@ -41,33 +43,33 @@ class TokenizeRequest extends \Paygreen\Sdk\Core\Request\Request
                 'firstName' => $paymentOrder->getOrder()->getCustomer()->getFirstName(),
                 'email' => $paymentOrder->getOrder()->getCustomer()->getEmail(),
                 'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode(),
-                'companyName' => $paymentOrder->getOrder()->getCustomer()->getCompanyName()
+                'companyName' => $paymentOrder->getOrder()->getCustomer()->getCompanyName(),
             ],
             'shippingAddress' => [
                 'address' => $paymentOrder->getOrder()->getShippingAddress()->getStreet(),
                 'zipCode' => $paymentOrder->getOrder()->getShippingAddress()->getPostcode(),
                 'city' => $paymentOrder->getOrder()->getShippingAddress()->getCity(),
-                'country' => $paymentOrder->getOrder()->getShippingAddress()->getCountryCode()
+                'country' => $paymentOrder->getOrder()->getShippingAddress()->getCountryCode(),
             ],
             'billingAddress' => [
                 'address' => $paymentOrder->getOrder()->getBillingAddress()->getStreet(),
                 'zipCode' => $paymentOrder->getOrder()->getBillingAddress()->getPostcode(),
                 'city' => $paymentOrder->getOrder()->getBillingAddress()->getCity(),
-                'country' => $paymentOrder->getOrder()->getBillingAddress()->getCountryCode()
+                'country' => $paymentOrder->getOrder()->getBillingAddress()->getCountryCode(),
             ],
             'metadata' => $paymentOrder->getMetadata(),
             'eligibleAmount' => $paymentOrder->getEligibleAmount(),
-            'ttl' => $paymentOrder->getTtl()
+            'ttl' => $paymentOrder->getTtl(),
         ];
 
         if (!empty($paymentOrder->getCardToken())) {
             $body['card'] = [
-                'token' => $paymentOrder->getCardToken()
+                'token' => $paymentOrder->getCardToken(),
             ];
         }
 
         return $this->requestFactory->create(
-            "/api/$publicKey/payins/transaction/tokenize",
+            "/api/{$publicKey}/payins/transaction/tokenize",
             json_encode($body)
         )->withAuthorization()->isJson()->getRequest();
     }
