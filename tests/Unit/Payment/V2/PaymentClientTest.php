@@ -37,8 +37,6 @@ class PaymentClientTest extends TestCase
         $logger = new NullLogger();
 
         $this->client = new PaymentClient($client, $environment, $logger);
-
-        $this->buildPaymentOrder();
     }
 
     /**
@@ -166,8 +164,6 @@ class PaymentClientTest extends TestCase
         $customer->setLastname('Doe');
 
         $shippingAddress = new Address();
-        $shippingAddress->setFirstname('John');
-        $shippingAddress->setLastname('Doe');
         $shippingAddress->setStreetLineOne('1 rue de la Livraison');
         $shippingAddress->setStreetLineTwo('Appartement 12');
         $shippingAddress->setCity('Rouen');
@@ -175,8 +171,6 @@ class PaymentClientTest extends TestCase
         $shippingAddress->setPostcode('76000');
 
         $billingAddress = new Address();
-        $billingAddress->setFirstname('John');
-        $billingAddress->setLastname('Doe');
         $billingAddress->setStreetLineOne('1 rue de la Facturation');
         $billingAddress->setCity('Rouen');
         $billingAddress->setCountryCode('FR');

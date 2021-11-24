@@ -32,28 +32,6 @@ final class AddressTest extends TestCase
     /**
      * @return void
      */
-    public function testCanGetAndSetFirstname()
-    {
-        $address = new Address();
-        $address->setFirstname('Laurent');
-
-        $this->assertEquals('Laurent', $address->getFirstname());
-    }
-
-    /**
-     * @return void
-     */
-    public function testCanGetAndSetLastname()
-    {
-        $address = new Address();
-        $address->setLastname('Barre');
-
-        $this->assertEquals('Barre', $address->getLastname());
-    }
-
-    /**
-     * @return void
-     */
     public function testCanGetAndSetCountryCode()
     {
         $address = new Address();
