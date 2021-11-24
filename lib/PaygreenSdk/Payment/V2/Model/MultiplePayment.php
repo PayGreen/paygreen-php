@@ -8,22 +8,19 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class MultiplePayment
 {
-    /**
-     * @param ClassMetadata $metadata
-     */
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    /** @var OrderDetailsInterface */
+    private $orderDetails;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata
             ->addPropertyConstraints('orderDetails', [
                 new Assert\NotBlank(),
                 new Assert\Type(OrderDetailsInterface::class),
-                new Assert\Valid()
+                new Assert\Valid(),
             ])
         ;
     }
-
-    /** @var OrderDetailsInterface */
-    private $orderDetails;
 
     /**
      * @return OrderDetailsInterface
@@ -33,10 +30,6 @@ class MultiplePayment
         return $this->orderDetails;
     }
 
-    /**
-     * @param OrderDetailsInterface $orderDetails
-     * @return void
-     */
     public function setOrderDetails(OrderDetailsInterface $orderDetails)
     {
         $this->orderDetails = $orderDetails;

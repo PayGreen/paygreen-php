@@ -7,8 +7,9 @@ use Psr\Http\Message\RequestInterface;
 class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param string $transactionId
-     * @param int|null $amount
+     * @param string   $transactionId
+     * @param null|int $amount
+     *
      * @return RequestInterface
      */
     public function getCreateRequest($transactionId, $amount = null)
@@ -17,14 +18,14 @@ class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
 
         if (!is_null($amount)) {
             $body = [
-                'amount' => $amount
+                'amount' => $amount,
             ];
         } else {
             $body = null;
         }
 
         return $this->requestFactory->create(
-            "/api/$publicKey/payins/transaction/$transactionId",
+            "/api/{$publicKey}/payins/transaction/{$transactionId}",
             json_encode($body),
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();

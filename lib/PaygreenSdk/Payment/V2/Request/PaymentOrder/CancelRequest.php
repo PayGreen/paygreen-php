@@ -8,6 +8,7 @@ class CancelRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $transactionId
+     *
      * @return RequestInterface
      */
     public function getCancelRequest($transactionId)
@@ -15,9 +16,9 @@ class CancelRequest extends \Paygreen\Sdk\Core\Request\Request
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
-            "/api/$publicKey/payins/transaction/cancel",
+            "/api/{$publicKey}/payins/transaction/cancel",
             json_encode([
-                'id' => $transactionId
+                'id' => $transactionId,
             ])
         )->withAuthorization()->isJson()->getRequest();
     }

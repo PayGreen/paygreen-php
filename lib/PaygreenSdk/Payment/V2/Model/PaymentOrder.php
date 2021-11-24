@@ -9,37 +9,7 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class PaymentOrder
 {
     /**
-     * @param ClassMetadata $metadata
-     */
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('order', [
-                new Assert\NotBlank(),
-                new Assert\Type(OrderInterface::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraint('paymentType', new Assert\Choice([
-                'CB', 'AMEX', 'ANCV', 'ECV', 'RESTOFLASH', 'LUNCHR', 'CBTRD', 'TRD', 'SEPA'
-            ]))
-            ->addPropertyConstraint('type', new Assert\Choice([
-                'CASH', 'RECURRING', 'XTIME', 'TOKENIZE'
-            ]))
-            ->addPropertyConstraint('returnedUrl', new Assert\Url())
-            ->addPropertyConstraint('metadata', new Assert\Type('array'))
-            ->addPropertyConstraint('eligibleAmount', new Assert\Type('array'))
-            ->addPropertyConstraint('ttl', new Assert\Type('string'))
-            ->addPropertyConstraint('cardToken', new Assert\Type('array'))
-            ->addPropertyConstraint('withPaymentLink', new Assert\Type('bool'))
-            ->addPropertyConstraints('multiplePayment', [
-                new Assert\Type(MultiplePayment::class),
-                new Assert\Valid()
-            ])
-        ;
-    }
-
-    /** 
-     * @var OrderInterface 
+     * @var OrderInterface
      */
     private $order;
 
@@ -85,9 +55,36 @@ class PaymentOrder
 
     /** @var bool */
     private $withPaymentLink = false;
-    
-    /** @var MultiplePayment|null */
-    private $multiplePayment = null;
+
+    /** @var null|MultiplePayment */
+    private $multiplePayment;
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraints('order', [
+                new Assert\NotBlank(),
+                new Assert\Type(OrderInterface::class),
+                new Assert\Valid(),
+            ])
+            ->addPropertyConstraint('paymentType', new Assert\Choice([
+                'CB', 'AMEX', 'ANCV', 'ECV', 'RESTOFLASH', 'LUNCHR', 'CBTRD', 'TRD', 'SEPA',
+            ]))
+            ->addPropertyConstraint('type', new Assert\Choice([
+                'CASH', 'RECURRING', 'XTIME', 'TOKENIZE',
+            ]))
+            ->addPropertyConstraint('returnedUrl', new Assert\Url())
+            ->addPropertyConstraint('metadata', new Assert\Type('array'))
+            ->addPropertyConstraint('eligibleAmount', new Assert\Type('array'))
+            ->addPropertyConstraint('ttl', new Assert\Type('string'))
+            ->addPropertyConstraint('cardToken', new Assert\Type('array'))
+            ->addPropertyConstraint('withPaymentLink', new Assert\Type('bool'))
+            ->addPropertyConstraints('multiplePayment', [
+                new Assert\Type(MultiplePayment::class),
+                new Assert\Valid(),
+            ])
+        ;
+    }
 
     /**
      * @return OrderInterface
@@ -99,7 +96,6 @@ class PaymentOrder
 
     /**
      * @param OrderInterface $order
-     * @return void
      */
     public function setOrder($order)
     {
@@ -116,7 +112,6 @@ class PaymentOrder
 
     /**
      * @param string $paymentType
-     * @return void
      */
     public function setPaymentType($paymentType)
     {
@@ -133,7 +128,6 @@ class PaymentOrder
 
     /**
      * @param string $type
-     * @return void
      */
     public function setType($type)
     {
@@ -150,7 +144,6 @@ class PaymentOrder
 
     /**
      * @param string $notifiedUrl
-     * @return void
      */
     public function setNotifiedUrl($notifiedUrl)
     {
@@ -167,7 +160,6 @@ class PaymentOrder
 
     /**
      * @param string $returnedUrl
-     * @return void
      */
     public function setReturnedUrl($returnedUrl)
     {
@@ -184,7 +176,6 @@ class PaymentOrder
 
     /**
      * @param array<string> $metadata
-     * @return void
      */
     public function setMetadata($metadata)
     {
@@ -201,7 +192,6 @@ class PaymentOrder
 
     /**
      * @param array<string> $eligibleAmount
-     * @return void
      */
     public function setEligibleAmount($eligibleAmount)
     {
@@ -218,7 +208,6 @@ class PaymentOrder
 
     /**
      * @param string $ttl
-     * @return void
      */
     public function setTtl($ttl)
     {
@@ -235,7 +224,6 @@ class PaymentOrder
 
     /**
      * @param string $cardToken
-     * @return void
      */
     public function setCardToken($cardToken)
     {
@@ -252,7 +240,6 @@ class PaymentOrder
 
     /**
      * @param bool $withPaymentLink
-     * @return void
      */
     public function setWithPaymentLink($withPaymentLink)
     {
@@ -260,7 +247,7 @@ class PaymentOrder
     }
 
     /**
-     * @return MultiplePayment|null
+     * @return null|MultiplePayment
      */
     public function getMultiplePayment()
     {
@@ -268,12 +255,10 @@ class PaymentOrder
     }
 
     /**
-     * @param MultiplePayment|null $multiplePayment
-     * @return void
+     * @param null|MultiplePayment $multiplePayment
      */
     public function setMultiplePayment($multiplePayment)
     {
         $this->multiplePayment = $multiplePayment;
     }
 }
- 
