@@ -15,27 +15,27 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * @var string
      */
-    private $paymentMode = ModeEnum::INSTANT;
+    private $paymentMode;
 
     /**
      * @var bool
      */
-    private $autoCapture = false;
+    private $autoCapture;
 
     /**
      * @var string
      */
-    private $integrationMode = IntegrationModeEnum::HOSTED_FIELDS;
+    private $integrationMode;
 
     /**
      * @var bool
      */
-    private $partialAllowed = false;
+    private $partialAllowed;
 
     /**
      * @var array
      */
-    private $platforms = ['bank_card', 'conecs'];
+    private $platforms;
 
     /**
      * @return array
