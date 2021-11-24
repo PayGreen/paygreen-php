@@ -2,8 +2,8 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Payment\Model\Address;
-use Paygreen\Sdk\Payment\Model\Order;
+use Paygreen\Sdk\Payment\V3\Model\Address;
+use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
@@ -61,7 +61,7 @@ $buyerNoreference->setEmail('romain@paygreen.fr');
 $buyerNoreference->setCountryCode('FR');
 
 $order = new Order();
-$order->setCustomer($buyerNoreference);
+$order->setBuyer($buyerNoreference);
 $order->setReference('SDK-ORDER-123');
 $order->setAmount(107);
 $order->setCurrency('eur');
@@ -77,7 +77,7 @@ $response = $client->createOrder($paymentOrder);
 $data = $response->getData();
 dump($data);
 
-$order->setCustomer($buyer);
+$order->setBuyer($buyer);
 $response = $client->createOrder($paymentOrder);
 $data = $response->getData();
 dump($data);

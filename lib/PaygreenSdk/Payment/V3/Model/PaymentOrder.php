@@ -2,9 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Paygreen\Sdk\Payment\Model\OrderInterface;
-
-class PaymentOrder
+class PaymentOrder implements PaymentOrderInterface
 {
     /**
      * @var OrderInterface
@@ -65,7 +63,7 @@ class PaymentOrder
      */
     public function setOrder($order)
     {
-        $this->order = $order;
+        $this->order = $order;        
     }
 
     /**

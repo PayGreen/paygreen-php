@@ -5,11 +5,12 @@ namespace Paygreen\Tests\Unit\Payment\V3;
 use Http\Mock\Client;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
-use Paygreen\Sdk\Payment\Model\Order;
+use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+
 
 final class PaymentClientTest extends TestCase
 {
@@ -54,7 +55,7 @@ final class PaymentClientTest extends TestCase
 
         $this->client->createBuyer($buyer);
         $request = $this->client->getLastRequest();
-        
+
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
@@ -69,7 +70,7 @@ final class PaymentClientTest extends TestCase
     public function testRequestGetBuyer()
     {
         $buyer = new Buyer();
-        $buyer->setReference("buyerReference");
+        $buyer->setReference('buyerReference');
 
         $this->client->getBuyer($buyer);
         $request = $this->client->getLastRequest();
@@ -81,8 +82,8 @@ final class PaymentClientTest extends TestCase
     public function testRequestUpdateBuyer()
     {
         $buyer = new Buyer();
-        $buyer->setId("buyerId");
-        $buyer->setReference("buyerReference");
+        $buyer->setId('buyerId');
+        $buyer->setReference('buyerReference');
         $buyer->setFirstname('John');
         $buyer->setLastname('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
@@ -105,27 +106,27 @@ final class PaymentClientTest extends TestCase
     public function testRequestCreateOrder()
     {
         $buyer = new Buyer();
-        $buyer->setId("buyerId");
+        $buyer->setId('buyerId');
         $buyer->setFirstname('John');
         $buyer->setLastname('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
 
         $order = new Order();
-        $order->setCustomer($buyer);
+        $order->setBuyer($buyer);
         $order->setReference('SDK-ORDER-123');
         $order->setAmount(1000);
         $order->setCurrency('EUR');
 
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode("instant");
+        $paymentOrder->setPaymentMode('instant');
         $paymentOrder->setAutoCapture(true);
-        $paymentOrder->setIntegrationMode("hosted_fields");
+        $paymentOrder->setIntegrationMode('hosted_fields');
         $paymentOrder->setOrder($order);
-        
+
         $this->client->createOrder($paymentOrder);
         $request = $this->client->getLastRequest();
-        
+
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
@@ -148,18 +149,18 @@ final class PaymentClientTest extends TestCase
     public function testRequestCreateWithBuyerOrder()
     {
         $buyer = new Buyer();
-        $buyer->setReference("buyerReference");
+        $buyer->setReference('buyerReference');
 
         $order = new Order();
-        $order->setCustomer($buyer);
+        $order->setBuyer($buyer);
         $order->setReference('SDK-ORDER-123');
         $order->setAmount(1000);
         $order->setCurrency('EUR');
 
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode("instant");
+        $paymentOrder->setPaymentMode('instant');
         $paymentOrder->setAutoCapture(true);
-        $paymentOrder->setIntegrationMode("hosted_fields");
+        $paymentOrder->setIntegrationMode('hosted_fields');
         $paymentOrder->setOrder($order);
 
         $this->client->createOrder($paymentOrder);
@@ -213,5 +214,4 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals('/payment/payment-orders/SDK-ORDER-123', $request->getUri()->getPath());
         $this->assertEquals($paymentOrder->isPartialAllowed(), $content->partial_allowed);
     }
-    
 }

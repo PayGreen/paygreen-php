@@ -13,16 +13,16 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
-        if (null === $paymentOrder->getOrder()->getCustomer()->getReference()) {
+        if (null === $paymentOrder->getOrder()->getBuyer()->getReference()) {
             $buyer = [
-                'email' => $paymentOrder->getOrder()->getCustomer()->getEmail(),
-                'firstName' => $paymentOrder->getOrder()->getCustomer()->getFirstName(),
-                'lastName' => $paymentOrder->getOrder()->getCustomer()->getLastName(),
-                'reference' => $paymentOrder->getOrder()->getCustomer()->getId(),
-                'country' => $paymentOrder->getOrder()->getCustomer()->getCountryCode(),
+                'email' => $paymentOrder->getOrder()->getBuyer()->getEmail(),
+                'firstName' => $paymentOrder->getOrder()->getBuyer()->getFirstName(),
+                'lastName' => $paymentOrder->getOrder()->getBuyer()->getLastName(),
+                'reference' => $paymentOrder->getOrder()->getBuyer()->getId(),
+                'country' => $paymentOrder->getOrder()->getBuyer()->getCountryCode(),
             ];
         } else {
-            $buyer = $paymentOrder->getOrder()->getCustomer()->getReference();
+            $buyer = $paymentOrder->getOrder()->getBuyer()->getReference();
         }
 
         return $this->requestFactory->create(
