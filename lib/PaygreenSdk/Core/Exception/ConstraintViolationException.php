@@ -26,9 +26,10 @@ class ConstraintViolationException extends Exception
         $messages = [];
 
         foreach ($this->violations as $violation) {
-            $parameterName = get_class($violation->getRoot()) . '.' . $violation->getPropertyPath();
+            $parameterName = get_class($violation->getRoot()).'.'.$violation->getPropertyPath();
             $messages[$parameterName] = $violation->getMessage();
         }
+
         return $messages;
     }
 }

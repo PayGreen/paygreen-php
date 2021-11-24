@@ -8,7 +8,7 @@ class TextResponse implements ResponseInterface
 {
     /** @var PsrResponseInterface */
     public $response;
-    
+
     public function __construct(PsrResponseInterface $response)
     {
         $this->response = $response;
@@ -27,9 +27,9 @@ class TextResponse implements ResponseInterface
      */
     public function toArray()
     {
-        return array(
+        return [
             'http_code' => $this->response->getStatusCode(),
             'data' => $this->getData(),
-        );
+        ];
     }
 }

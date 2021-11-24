@@ -20,6 +20,7 @@ abstract class Request
     /**
      * @param RequestFactory $requestFactory
      * @param Environment $environment
+     *
      * @throws Exception
      */
     public function __construct(

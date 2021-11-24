@@ -17,29 +17,31 @@ class JsonResponse
     }
 
     /**
-     * @return stdClass
      * @throws ResponseMalformedException
+     *
+     * @return stdClass
      */
     public function getData()
     {
         $data = json_decode($this->response->getBody()->getContents());
 
         if (!$data instanceof stdClass) {
-            throw new ResponseMalformedException("Invalid JSON result.");
+            throw new ResponseMalformedException('Invalid JSON result.');
         }
-        
+
         return $data;
     }
 
     /**
-     * @return array<string|int|stdClass>
      * @throws ResponseMalformedException
+     *
+     * @return array<int|stdClass|string>
      */
     public function toArray()
     {
-        return array(
+        return [
             'http_code' => $this->response->getStatusCode(),
             'data' => $this->getData(),
-        );
+        ];
     }
 }

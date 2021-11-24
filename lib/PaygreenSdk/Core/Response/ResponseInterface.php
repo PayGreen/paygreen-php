@@ -6,11 +6,10 @@ use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 interface ResponseInterface
 {
-
     public function __construct(PsrResponseInterface $response);
 
     /**
-     * @return string|array<string>
+     * @return array<string>|string
      */
     public function getData();
 

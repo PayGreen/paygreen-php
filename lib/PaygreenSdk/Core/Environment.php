@@ -33,9 +33,9 @@ class Environment
     private $apiVersion;
 
     /**
-     * @param string $publicKey
-     * @param string $privateKey
-     * @param string $environment
+     * @param string     $publicKey
+     * @param string     $privateKey
+     * @param string     $environment
      * @param int|string $apiVersion
      */
     public function __construct($publicKey, $privateKey, $environment, $apiVersion)
@@ -48,10 +48,10 @@ class Environment
         $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX];
 
         if (!in_array($this->environment, $availableEnvironments)) {
-            throw new InvalidArgumentException('Environment only accept: ' . implode(', ', $availableEnvironments) . '. Current: "' . $environment . '"');
+            throw new InvalidArgumentException('Environment only accept: '.implode(', ', $availableEnvironments).'. Current: "'.$environment.'"');
         }
-        
-        if ($this->getApiVersion() === self::API_VERSION_2) {
+
+        if (self::API_VERSION_2 === $this->getApiVersion()) {
             $this->setBearer($this->getPrivateKey());
         }
     }
@@ -93,20 +93,19 @@ class Environment
      */
     public function getEndpoint()
     {
-        if ($this->getApiVersion() === 2) {
-            if ($this->getEnvironment() === self::ENVIRONMENT_SANDBOX) {
+        if (2 === $this->getApiVersion()) {
+            if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
                 return self::ENDPOINT_V2_SANDBOX;
-            } else {
-                return self::ENDPOINT_V2_PRODUCTION;
             }
+
+            return self::ENDPOINT_V2_PRODUCTION;
         }
-        else {
-            if ($this->getEnvironment() === self::ENVIRONMENT_SANDBOX) {
-                return self::ENDPOINT_V3_SANDBOX;
-            } else {
-                return self::ENDPOINT_V3_PRODUCTION;
-            }
+
+        if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
+            return self::ENDPOINT_V3_SANDBOX;
         }
+
+        return self::ENDPOINT_V3_PRODUCTION;
     }
 
     /**
