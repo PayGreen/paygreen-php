@@ -4,6 +4,8 @@ namespace Paygreen\Sdk\Payment\V2\Request\PaymentOrder;
 
 use Exception;
 use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+use Paygreen\Sdk\Core\Validator\Validator;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
@@ -13,9 +15,16 @@ class RecurringRequest extends \Paygreen\Sdk\Core\Request\Request
     /**
      * @param PaymentOrder $paymentOrder
      * @return RequestInterface
+     * @throws Exception
      */
     public function getCreateRequest($paymentOrder)
     {
+        $violations = Validator::validateModel($paymentOrder);
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
         $publicKey = $this->environment->getPublicKey();
 
         $body = [
@@ -36,16 +45,12 @@ class RecurringRequest extends \Paygreen\Sdk\Core\Request\Request
                 'companyName' => $paymentOrder->getOrder()->getCustomer()->getCompanyName()
             ],
             'shippingAddress' => [
-                'lastName' => $paymentOrder->getOrder()->getShippingAddress()->getLastName(),
-                'firstName' => $paymentOrder->getOrder()->getShippingAddress()->getFirstName(),
                 'address' => $paymentOrder->getOrder()->getShippingAddress()->getStreet(),
                 'zipCode' => $paymentOrder->getOrder()->getShippingAddress()->getPostcode(),
                 'city' => $paymentOrder->getOrder()->getShippingAddress()->getCity(),
                 'country' => $paymentOrder->getOrder()->getShippingAddress()->getCountryCode()
             ],
             'billingAddress' => [
-                'lastName' => $paymentOrder->getOrder()->getBillingAddress()->getLastName(),
-                'firstName' => $paymentOrder->getOrder()->getBillingAddress()->getFirstName(),
                 'address' => $paymentOrder->getOrder()->getBillingAddress()->getStreet(),
                 'zipCode' => $paymentOrder->getOrder()->getBillingAddress()->getPostcode(),
                 'city' => $paymentOrder->getOrder()->getBillingAddress()->getCity(),

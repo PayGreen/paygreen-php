@@ -2,8 +2,37 @@
 
 namespace Paygreen\Sdk\Payment\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+
 class OrderDetails implements OrderDetailsInterface
 {
+    /**
+     * @param ClassMetadata $metadata
+     */
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraints('cycle', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64])
+            ])
+            ->addPropertyConstraints('count', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64])
+            ])
+            ->addPropertyConstraints('day', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64])
+            ])
+            ->addPropertyConstraint('startAt', new Assert\Type('integer'))
+            ->addPropertyConstraints('firstAmount', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64])
+            ])
+        ;
+    }
+
     /** @var int */
     private $cycle;
 

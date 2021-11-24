@@ -3,10 +3,41 @@
 namespace Paygreen\Sdk\Payment\V2\Model;
 
 use Paygreen\Sdk\Payment\Model\OrderInterface;
-use stdClass;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class PaymentOrder
 {
+    /**
+     * @param ClassMetadata $metadata
+     */
+    static public function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraints('order', [
+                new Assert\NotBlank(),
+                new Assert\Type(OrderInterface::class),
+                new Assert\Valid()
+            ])
+            ->addPropertyConstraint('paymentType', new Assert\Choice([
+                'CB', 'AMEX', 'ANCV', 'ECV', 'RESTOFLASH', 'LUNCHR', 'CBTRD', 'TRD', 'SEPA'
+            ]))
+            ->addPropertyConstraint('type', new Assert\Choice([
+                'CASH', 'RECURRING', 'XTIME', 'TOKENIZE'
+            ]))
+            ->addPropertyConstraint('returnedUrl', new Assert\Url())
+            ->addPropertyConstraint('metadata', new Assert\Type('array'))
+            ->addPropertyConstraint('eligibleAmount', new Assert\Type('array'))
+            ->addPropertyConstraint('ttl', new Assert\Type('string'))
+            ->addPropertyConstraint('cardToken', new Assert\Type('array'))
+            ->addPropertyConstraint('withPaymentLink', new Assert\Type('bool'))
+            ->addPropertyConstraints('multiplePayment', [
+                new Assert\Type(MultiplePayment::class),
+                new Assert\Valid()
+            ])
+        ;
+    }
+
     /** 
      * @var OrderInterface 
      */

@@ -4,10 +4,9 @@ use Http\Client\Curl\Client;
 use Paygreen\Sdk\Payment\Model\Address;
 use Paygreen\Sdk\Payment\Model\Customer;
 use Paygreen\Sdk\Payment\Model\Order;
-use Paygreen\Sdk\Payment\Model\OrderDetails;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
-use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
+use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Environment;
 
 $curl = new Client();
@@ -28,8 +27,6 @@ $customer->setFirstname('John');
 $customer->setLastname('Doe');
 
 $shippingAddress = new Address();
-$shippingAddress->setFirstname('John');
-$shippingAddress->setLastname('Doe');
 $shippingAddress->setStreetLineOne('1 rue de la Livraison');
 $shippingAddress->setStreetLineTwo('Appartement 12');
 $shippingAddress->setCity('Rouen');
@@ -37,8 +34,6 @@ $shippingAddress->setCountryCode('FR');
 $shippingAddress->setPostcode('76000');
 
 $billingAddress = new Address();
-$billingAddress->setFirstname('John');
-$billingAddress->setLastname('Doe');
 $billingAddress->setStreetLineOne('1 rue de la Facturation');
 $billingAddress->setCity('Rouen');
 $billingAddress->setCountryCode('FR');
@@ -48,22 +43,27 @@ $order = new Order();
 $order->setCustomer($customer);
 $order->setBillingAddress($billingAddress);
 $order->setShippingAddress($shippingAddress);
-$order->setReference('SDK-ORDER-123');
+$order->setReference('PG-SDK-123');
 $order->setAmount(1000);
-$order->setCurrency('EUR');
+$order->setCurrency('eur');
 
 $paymentOrder = new PaymentOrder();
 $paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
 
-$response = $client->createCashPayment($paymentOrder);
-$responseData = $response->getData();
+try {
+    $response = $client->createCashPayment($paymentOrder);
+    $responseData = $response->getData();
 
-dump($responseData);
+    dump($responseData);
+} catch (ConstraintViolationException $exception) {
+    dump($exception->getViolationMessages());
+    die();
+}
 
-$transactionId = $responseData->data->id;
-$response = $client->refundPayment($transactionId);
-dump($response->getData());
+// $transactionId = $responseData->data->id;
+// $response = $client->refundPayment($transactionId);
+// dump($response->getData());
 
 // $orderDetails = new OrderDetails();
 // $orderDetails->setCycle(40);

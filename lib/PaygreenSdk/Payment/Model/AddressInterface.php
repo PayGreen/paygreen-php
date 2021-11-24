@@ -29,28 +29,6 @@ interface AddressInterface
     /**
      * @return string
      */
-    public function getFirstName();
-
-    /**
-     * @param string $firstname
-     * @return void
-     */
-    public function setFirstname($firstname);
-
-    /**
-     * @return string
-     */
-    public function getLastName();
-
-    /**
-     * @param string $lastname
-     * @return void
-     */
-    public function setLastname($lastname);
-
-    /**
-     * @return string
-     */
     public function getPostcode();
 
     /**
