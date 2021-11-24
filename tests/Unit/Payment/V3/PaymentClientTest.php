@@ -6,13 +6,13 @@ use Http\Mock\Client;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-
 
 final class PaymentClientTest extends TestCase
 {
@@ -54,6 +54,9 @@ final class PaymentClientTest extends TestCase
         $buyer->setLastname('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
+
+        $adresse = new Address();
+        $buyer->setBillingAddress($adresse);
 
         $this->client->createBuyer($buyer);
         $request = $this->client->getLastRequest();
