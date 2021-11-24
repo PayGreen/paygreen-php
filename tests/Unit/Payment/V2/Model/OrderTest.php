@@ -2,11 +2,11 @@
 
 namespace Paygreen\Tests\Unit\Payment\Model;
 
-use Paygreen\Sdk\Payment\Model\Address;
-use Paygreen\Sdk\Payment\Model\AddressInterface;
-use Paygreen\Sdk\Payment\Model\Customer;
-use Paygreen\Sdk\Payment\Model\CustomerInterface;
-use Paygreen\Sdk\Payment\Model\Order;
+use Paygreen\Sdk\Payment\V2\Model\Address;
+use Paygreen\Sdk\Payment\V2\Model\AddressInterface;
+use Paygreen\Sdk\Payment\V2\Model\Customer;
+use Paygreen\Sdk\Payment\V2\Model\CustomerInterface;
+use Paygreen\Sdk\Payment\V2\Model\Order;
 use PHPUnit\Framework\TestCase;
 
 final class OrderTest extends TestCase
