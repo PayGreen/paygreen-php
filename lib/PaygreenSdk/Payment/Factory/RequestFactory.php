@@ -8,24 +8,21 @@ use Psr\Http\Message\StreamInterface;
 
 class RequestFactory
 {
-    /** @var Environment */
-    private $environment;
-    
     /** @var Request */
     public $request;
+    /** @var Environment */
+    private $environment;
 
-    /**
-     * @param Environment $environment
-     */
     public function __construct(Environment $environment)
     {
         $this->environment = $environment;
     }
 
     /**
-     * @param string $url
-     * @param string|resource|StreamInterface|null $body
-     * @param string $method
+     * @param string                               $url
+     * @param null|resource|StreamInterface|string $body
+     * @param string                               $method
+     *
      * @return RequestFactory
      */
     public function create(
@@ -33,10 +30,10 @@ class RequestFactory
         $body = null,
         $method = 'POST'
     ) {
-        $url = $this->environment->getEndpoint() . $url;
+        $url = $this->environment->getEndpoint().$url;
 
         $header = [
-            'User-Agent' => $this->buildUserAgentHeader()
+            'User-Agent' => $this->buildUserAgentHeader(),
         ];
 
         $this->request = new Request($method, $url, $header, $body);
@@ -47,17 +44,19 @@ class RequestFactory
     /**
      * @return Request
      */
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
     /**
      * @return RequestFactory
      */
-    public function withAuthorization() {
+    public function withAuthorization()
+    {
         $this->request = $this->request->withAddedHeader(
             'Authorization',
-            'Bearer ' . $this->environment->getBearer()
+            'Bearer '.$this->environment->getBearer()
         );
 
         return $this;
@@ -66,12 +65,12 @@ class RequestFactory
     /**
      * @return RequestFactory
      */
-    public function isJson() {
-
+    public function isJson()
+    {
         $size = 0;
         $body = $this->request->getBody();
-        if ($body !== null) {
-           $size = (string)$body->getSize();
+        if (null !== $body) {
+            $size = (string) $body->getSize();
         }
 
         $this->request = $this->request->withAddedHeader('Content-Type', 'application/json');
@@ -91,11 +90,11 @@ class RequestFactory
         $isPhpReleaseVersionDefined = defined('PHP_RELEASE_VERSION');
 
         if ($isPhpMajorVersionDefined && $isPhpMinorVersionDefined && $isPhpReleaseVersionDefined) {
-            $phpVersion = PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION . '.' . PHP_RELEASE_VERSION;
+            $phpVersion = PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION.'.'.PHP_RELEASE_VERSION;
         } else {
             $phpVersion = phpversion();
         }
 
-        return "PayGreenSDK/1.0.0 php:$phpVersion;";
+        return "PayGreenSDK/1.0.0 php:{$phpVersion};";
     }
 }

@@ -11,7 +11,6 @@ interface OrderDetailsInterface
 
     /**
      * @param int $cycle
-     * @return void
      */
     public function setCycle($cycle);
 
@@ -22,7 +21,6 @@ interface OrderDetailsInterface
 
     /**
      * @param int $count
-     * @return void
      */
     public function setCount($count);
 
@@ -33,7 +31,6 @@ interface OrderDetailsInterface
 
     /**
      * @param int $day
-     * @return void
      */
     public function setDay($day);
 
@@ -44,7 +41,6 @@ interface OrderDetailsInterface
 
     /**
      * @param int $startAt
-     * @return void
      */
     public function setStartAt($startAt);
 
@@ -55,7 +51,6 @@ interface OrderDetailsInterface
 
     /**
      * @param int $firstAmount
-     * @return void
      */
     public function setFirstAmount($firstAmount);
 }

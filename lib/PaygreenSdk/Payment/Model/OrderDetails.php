@@ -7,32 +7,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class OrderDetails implements OrderDetailsInterface
 {
-    /**
-     * @param ClassMetadata $metadata
-     */
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('cycle', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64])
-            ])
-            ->addPropertyConstraints('count', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64])
-            ])
-            ->addPropertyConstraints('day', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64])
-            ])
-            ->addPropertyConstraint('startAt', new Assert\Type('integer'))
-            ->addPropertyConstraints('firstAmount', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64])
-            ])
-        ;
-    }
-
     /** @var int */
     private $cycle;
 
@@ -48,6 +22,29 @@ class OrderDetails implements OrderDetailsInterface
     /** @var int */
     private $firstAmount;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraints('cycle', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64]),
+            ])
+            ->addPropertyConstraints('count', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64]),
+            ])
+            ->addPropertyConstraints('day', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64]),
+            ])
+            ->addPropertyConstraint('startAt', new Assert\Type('integer'))
+            ->addPropertyConstraints('firstAmount', [
+                new Assert\Type('integer'),
+                new Assert\Length(['min' => 1, 'max' => 64]),
+            ])
+        ;
+    }
+
     /**
      * @return int
      */
@@ -58,7 +55,6 @@ class OrderDetails implements OrderDetailsInterface
 
     /**
      * @param int $cycle
-     * @return void
      */
     public function setCycle($cycle)
     {
@@ -75,7 +71,6 @@ class OrderDetails implements OrderDetailsInterface
 
     /**
      * @param int $count
-     * @return void
      */
     public function setCount($count)
     {
@@ -92,7 +87,6 @@ class OrderDetails implements OrderDetailsInterface
 
     /**
      * @param int $day
-     * @return void
      */
     public function setDay($day)
     {
@@ -109,7 +103,6 @@ class OrderDetails implements OrderDetailsInterface
 
     /**
      * @param int $startAt
-     * @return void
      */
     public function setStartAt($startAt)
     {
@@ -126,7 +119,6 @@ class OrderDetails implements OrderDetailsInterface
 
     /**
      * @param int $firstAmount
-     * @return void
      */
     public function setFirstAmount($firstAmount)
     {

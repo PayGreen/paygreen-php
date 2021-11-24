@@ -8,40 +8,16 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class Customer implements CustomerInterface
 {
     /**
-     * @param ClassMetadata $metadata
-     */
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('id', new Assert\NotBlank())
-            ->addPropertyConstraints('firstname', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('lastname', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('email', [
-                new Assert\NotBlank(),
-                new Assert\Email()
-            ])
-            ->addPropertyConstraint('countryCode', new Assert\Type('string'))
-            ->addPropertyConstraint('companyName', new Assert\Type('string'))
-        ;
-    }
-
-    /**
      * @var string
      */
     private $id;
 
     /**
-     * Reference to identify the user on the api
+     * Reference to identify the user on the api.
      *
      * @var null|string
      */
-    private $reference = null;
+    private $reference;
 
     /**
      * @var string
@@ -68,6 +44,27 @@ class Customer implements CustomerInterface
      */
     private $companyName;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraint('id', new Assert\NotBlank())
+            ->addPropertyConstraints('firstname', [
+                new Assert\NotBlank(),
+                new Assert\Type('string'),
+            ])
+            ->addPropertyConstraints('lastname', [
+                new Assert\NotBlank(),
+                new Assert\Type('string'),
+            ])
+            ->addPropertyConstraints('email', [
+                new Assert\NotBlank(),
+                new Assert\Email(),
+            ])
+            ->addPropertyConstraint('countryCode', new Assert\Type('string'))
+            ->addPropertyConstraint('companyName', new Assert\Type('string'))
+        ;
+    }
+
     /**
      * @return string
      */
@@ -78,7 +75,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $id
-     * @return void
      */
     public function setId($id)
     {
@@ -95,7 +91,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $firstname
-     * @return void
      */
     public function setFirstname($firstname)
     {
@@ -112,7 +107,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $lastname
-     * @return void
      */
     public function setLastname($lastname)
     {
@@ -129,7 +123,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $countryCode
-     * @return void
      */
     public function setCountryCode($countryCode)
     {
@@ -146,7 +139,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $email
-     * @return void
      */
     public function setEmail($email)
     {
@@ -163,7 +155,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $companyName
-     * @return void
      */
     public function setCompanyName($companyName)
     {
@@ -180,7 +171,6 @@ class Customer implements CustomerInterface
 
     /**
      * @param string $reference
-     * @return void
      */
     public function setReference($reference)
     {

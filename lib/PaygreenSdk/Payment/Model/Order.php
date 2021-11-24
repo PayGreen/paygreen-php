@@ -8,39 +8,6 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class Order implements OrderInterface
 {
     /**
-     * @param ClassMetadata $metadata
-     */
-    static public function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('reference', new Assert\NotBlank())
-            ->addPropertyConstraints('customer', [
-                new Assert\NotBlank(),
-                new Assert\Type(CustomerInterface::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraints('shippingAddress', [
-                new Assert\NotBlank(),
-                new Assert\Type(AddressInterface::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraints('billingAddress', [
-                new Assert\NotBlank(),
-                new Assert\Type(AddressInterface::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraints('amount', [
-                new Assert\NotBlank(),
-                new Assert\Type('integer')
-            ])
-            ->addPropertyConstraints('currency', [
-                new Assert\NotBlank(),
-                new Assert\Type('string')
-            ])
-        ;
-    }
-
-    /**
      * @var string
      */
     private $reference;
@@ -70,6 +37,36 @@ class Order implements OrderInterface
      */
     private $currency;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraint('reference', new Assert\NotBlank())
+            ->addPropertyConstraints('customer', [
+                new Assert\NotBlank(),
+                new Assert\Type(CustomerInterface::class),
+                new Assert\Valid(),
+            ])
+            ->addPropertyConstraints('shippingAddress', [
+                new Assert\NotBlank(),
+                new Assert\Type(AddressInterface::class),
+                new Assert\Valid(),
+            ])
+            ->addPropertyConstraints('billingAddress', [
+                new Assert\NotBlank(),
+                new Assert\Type(AddressInterface::class),
+                new Assert\Valid(),
+            ])
+            ->addPropertyConstraints('amount', [
+                new Assert\NotBlank(),
+                new Assert\Type('integer'),
+            ])
+            ->addPropertyConstraints('currency', [
+                new Assert\NotBlank(),
+                new Assert\Type('string'),
+            ])
+        ;
+    }
+
     /**
      * @return string
      */
@@ -80,7 +77,6 @@ class Order implements OrderInterface
 
     /**
      * @param string $reference
-     * @return void
      */
     public function setReference($reference)
     {
@@ -97,7 +93,6 @@ class Order implements OrderInterface
 
     /**
      * @param CustomerInterface $customer
-     * @return void
      */
     public function setCustomer($customer)
     {
@@ -114,7 +109,6 @@ class Order implements OrderInterface
 
     /**
      * @param AddressInterface $shippingAddress
-     * @return void
      */
     public function setShippingAddress($shippingAddress)
     {
@@ -131,7 +125,6 @@ class Order implements OrderInterface
 
     /**
      * @param AddressInterface $billingAddress
-     * @return void
      */
     public function setBillingAddress($billingAddress)
     {
@@ -148,7 +141,6 @@ class Order implements OrderInterface
 
     /**
      * @param int $amount
-     * @return void
      */
     public function setAmount($amount)
     {
@@ -165,7 +157,6 @@ class Order implements OrderInterface
 
     /**
      * @param string $currency
-     * @return void
      */
     public function setCurrency($currency)
     {
