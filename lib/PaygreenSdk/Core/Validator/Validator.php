@@ -11,13 +11,15 @@ class Validator
     /**
      * @param object $model
      * @param string $groups
-     * @return ConstraintViolationList
+     *
      * @throws Exception
+     *
+     * @return ConstraintViolationList
      */
-    static public function validateModel($model, $groups = null)
+    public static function validateModel($model, $groups = null)
     {
         if (!is_object($model)) {
-            throw new Exception('$model must be an object model, ' . gettype($model) . ' provided.');
+            throw new Exception('$model must be an object model, '.gettype($model).' provided.');
         }
 
         $validator = Validation::createValidatorBuilder()
