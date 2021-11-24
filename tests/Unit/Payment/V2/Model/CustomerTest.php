@@ -1,8 +1,8 @@
 <?php
 
-namespace Paygreen\Tests\Unit\Payment\Model;
+namespace Paygreen\Tests\Unit\Payment\V2\Model;
 
-use Paygreen\Sdk\Payment\Model\Customer;
+use Paygreen\Sdk\Payment\V2\Model\Customer;
 use PHPUnit\Framework\TestCase;
 
 final class CustomerTest extends TestCase

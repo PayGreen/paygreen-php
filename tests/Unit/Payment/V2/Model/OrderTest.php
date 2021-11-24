@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Tests\Unit\Payment\Model;
+namespace Paygreen\Tests\Unit\Payment\V2\Model;
 
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\AddressInterface;
