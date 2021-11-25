@@ -7,9 +7,9 @@ use Http\Mock\Client;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
+use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\Order;
 use Paygreen\Sdk\Payment\V2\Model\OrderDetails;
-use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 use PHPUnit\Framework\TestCase;
@@ -20,9 +20,6 @@ class PaymentClientTest extends TestCase
     /** @var PaymentClient */
     private $client;
 
-    /**
-     * @return void
-     */
     public function setUp()
     {
         $client = new Client();
@@ -40,14 +37,13 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws HttpClientException
      */
     public function testRequestCreateCash()
     {
         $paymentOrder = $this->buildPaymentOrder();
         $paymentOrder->setType('CASH');
-        
+
         $this->client->createCashPayment($paymentOrder);
         $request = $this->client->getLastRequest();
 
@@ -60,26 +56,25 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws HttpClientException
      */
     public function testRequestCreateRecurring()
     {
         $paymentOrder = $this->buildPaymentOrder();
         $paymentOrder->setType('RECURRING');
-        
+
         $orderDetails = new OrderDetails();
         $orderDetails->setCycle(40);
         $orderDetails->setCount(12);
         $orderDetails->setFirstAmount(6500);
         $orderDetails->setDay(18);
         $orderDetails->setStartAt(1637227163);
-        
+
         $multiplePayment = new MultiplePayment();
         $multiplePayment->setOrderDetails($orderDetails);
-        
+
         $paymentOrder->setMultiplePayment($multiplePayment);
-        
+
         $this->client->createRecurringPayment($paymentOrder);
         $request = $this->client->getLastRequest();
 
@@ -92,7 +87,6 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws HttpClientException
      */
     public function testRequestCreateXtime()
@@ -121,7 +115,6 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws HttpClientException
      */
     public function testRequestCreateTokenize()
@@ -141,7 +134,6 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws HttpClientException
      */
     public function testRequestCancelPayment()
@@ -157,7 +149,6 @@ class PaymentClientTest extends TestCase
     }
 
     /**
-     * @return void
      * @throws HttpClientException
      */
     public function testRequestRefundPayment()
@@ -168,6 +159,25 @@ class PaymentClientTest extends TestCase
         $this->assertEquals('DELETE', $request->getMethod());
         $this->assertEquals(
             '/api/public_key/payins/transaction/tr15acde62ecfc1b8a2a1706b3f17a714e',
+            $request->getUri()->getPath()
+        );
+    }
+
+    /**
+     * @throws HttpClientException
+     */
+    public function testRequestGetTransaction()
+    {
+        $transactionId = 'tr15acde62ecfc1b8a2a1706b3f17a714e';
+
+        $this->client->getTransaction($transactionId);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals(
+            "/api/public_key/payins/transaction/{$transactionId}",
             $request->getUri()->getPath()
         );
     }
@@ -206,7 +216,7 @@ class PaymentClientTest extends TestCase
 
         $paymentOrder = new PaymentOrder();
         $paymentOrder->setOrder($order);
-        
+
         return $paymentOrder;
     }
 }
