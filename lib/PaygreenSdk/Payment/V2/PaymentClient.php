@@ -249,6 +249,36 @@ class PaymentClient extends Client
     }
 
     /**
+     * @param string $transactionId
+     * @param int $amount
+     *
+     * @throws HttpClientException
+     * @throws Exception
+     *
+     * @return JsonResponse
+     */
+    public function updateTransactionAmount($transactionId, $amount)
+    {
+        $this->logger->info("Update transaction amount '{$transactionId}' with an amount of '{$amount}'.");
+
+        $request = (new TransactionRequest($this->requestFactory, $this->environment))->getUpdateAmountRequest(
+            $transactionId,
+            $amount
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Transaction amount successfully updated.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
      * @throws HttpClientException
      * @throws Exception
      *
