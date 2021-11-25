@@ -44,30 +44,33 @@ $order->setCustomer($customer);
 $order->setBillingAddress($billingAddress);
 $order->setShippingAddress($shippingAddress);
 $order->setReference('PG-SDK-123');
-$order->setAmount(1000);
-$order->setCurrency('eur');
+$order->setAmount(1500);
+$order->setCurrency('EUR');
 
 $paymentOrder = new PaymentOrder();
 $paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
 
-$response = $client->getAvailablePaymentType();
-$responseData = $response->getData();
-dump($responseData);
+//$response = $client->getAvailablePaymentType();
+//$responseData = $response->getData();
+//dump($responseData);
 
-//try {
-//    $response = $client->createCashPayment($paymentOrder);
-//    $responseData = $response->getData();
-//
-//    dump($responseData);
-//} catch (ConstraintViolationException $exception) {
-//    dump($exception->getViolationMessages());
-//    die();
-//}
-//
-//$transactionId = $responseData->data->id;
-//$response = $client->getTransaction($transactionId);
-//dump($response->getData());
+try {
+    $response = $client->createCashPayment($paymentOrder);
+    $responseData = $response->getData();
+
+    dump($responseData);
+} catch (ConstraintViolationException $exception) {
+    dump($exception->getViolationMessages());
+    die();
+}
+
+$transactionId = $responseData->data->id;
+$response = $client->getTransaction($transactionId);
+dump($response->getData());
+
+$response = $client->updateTransactionAmount($transactionId, 5000);
+dump($response->getData());
 
 //try {
 //    $response = $client->createTokenizePayment($paymentOrder);

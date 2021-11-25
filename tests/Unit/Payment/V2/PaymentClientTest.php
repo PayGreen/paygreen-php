@@ -200,6 +200,26 @@ class PaymentClientTest extends TestCase
     /**
      * @throws HttpClientException
      */
+    public function testRequestUpdateTransactionAmount()
+    {
+        $transactionId = 'tr15acde62ecfc1b8a2a1706b3f17a714e';
+
+        $this->client->updateTransactionAmount($transactionId, 500);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('PATCH', $request->getMethod());
+        $this->assertEquals(
+            "/api/public_key/payins/transaction/{$transactionId}",
+            $request->getUri()->getPath()
+        );
+        $this->assertEquals(500, $content->amount);
+    }
+
+    /**
+     * @throws HttpClientException
+     */
     public function testRequestAvailablePaymentType()
     {
         $this->client->getAvailablePaymentType();
