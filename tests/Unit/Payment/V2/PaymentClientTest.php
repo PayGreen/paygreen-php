@@ -173,9 +173,24 @@ class PaymentClientTest extends TestCase
         $this->client->getTransaction($transactionId);
         $request = $this->client->getLastRequest();
 
-        $content = json_decode($request->getBody()->getContents());
-
         $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals(
+            "/api/public_key/payins/transaction/{$transactionId}",
+            $request->getUri()->getPath()
+        );
+    }
+
+    /**
+     * @throws HttpClientException
+     */
+    public function testRequestConfirmTransaction()
+    {
+        $transactionId = 'tr15acde62ecfc1b8a2a1706b3f17a714e';
+
+        $this->client->confirmTransaction($transactionId);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('PUT', $request->getMethod());
         $this->assertEquals(
             "/api/public_key/payins/transaction/{$transactionId}",
             $request->getUri()->getPath()
