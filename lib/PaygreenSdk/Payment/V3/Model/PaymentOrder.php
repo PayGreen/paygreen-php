@@ -2,11 +2,11 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
+use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
@@ -85,7 +85,7 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * @var bool
      */
-    private $merchantInitiated;
+    private $merchantInitiated = false;
 
     /**
      * @var string
@@ -123,8 +123,11 @@ class PaymentOrder implements PaymentOrderInterface
             ->addPropertyConstraints('order', [
                 new Assert\NotBlank(),
                 new Assert\Type(OrderInterface::class),
+                /*new Assert\Type([
+                    'type' => OrderInterface::class,
+                    'groups' => 'reference',
+                ]),*/
                 new Assert\Valid()
-
             ])
             ->addPropertyConstraints('autoCapture', [
                 new Assert\IsNull(['groups'=>'split']),
@@ -138,19 +141,57 @@ class PaymentOrder implements PaymentOrderInterface
             ->addPropertyConstraints('firstAmount', [
                 new Assert\IsNull(['groups'=>'instant']),
                 new Assert\IsNull(['groups'=>'recurring']),
-                new Assert\Type('integer'),
+                new Assert\Type('integer')
+            ])
+            ->addPropertyConstraints('partialAllowed', [
+                new Assert\IsNull(['groups'=>'split']),
+                new Assert\IsNull(['groups'=>'recurring']),
+                new Assert\Type('bool')
+            ])
+            ->addPropertyConstraints('platformsShopId', [
+                new Assert\IsNull(['groups'=>'instant']),
+                new Assert\Type('integer')
             ])
         ;
 
         $metadata->addConstraint(new Assert\Callback([
-            'groups' => 'instant',
-            'callback' => 'validate'
+            'groups' => 'split',
+            'callback' => 'validateFirstAmount'
+        ]));
+
+        $metadata->addConstraint(new Assert\Callback([
+            'callback' => 'validateMerchantInitiated'
+        ]));
+
+        $metadata->addConstraint(new Assert\Callback([
+            'groups' => 'recurring',
+            'callback' => 'validatePaymentDay'
         ]));
     }
 
-    public function validate(ExecutionContextInterface $context, $payload)
+    public function validateFirstAmount(ExecutionContextInterface $context, $payload)
     {
-        dump("validate constraint");
+        $amount = $this->getOrder()->getAmount();
+        $firstAmount = $this->getFirstAmount();
+        if ($firstAmount >= $amount) {
+            $context->addViolation("First amount must be less than total amount.");
+        }
+    }
+
+    public function validateMerchantInitiated(ExecutionContextInterface $context, $payload)
+    {
+        $isMerchantInitiated = $this->isMerchantInitiated();
+
+        if ($isMerchantInitiated && (($this->instrumentId === null) || ($this->previousOrderId === null))) {
+            $context->addViolation("First amount must be less than total amount.");
+        }
+    }
+
+    public function validatePaymentDay(ExecutionContextInterface $context, $payload)
+    {
+        if (($this->paymentDay !== null) && ($this->cycle !== CycleEnum::MONTHLY)) {
+            $context->addViolation("Partial payment allowed only in recurring monthly.");
+        }
     }
 
     /**

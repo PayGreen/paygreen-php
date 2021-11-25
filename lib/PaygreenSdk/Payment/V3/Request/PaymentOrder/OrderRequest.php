@@ -2,6 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Request\PaymentOrder;
 
+use Exception;
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
@@ -15,14 +16,10 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @return Request|RequestInterface
+     * @throws Exception
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
-        $violations = Validator::validateModel($paymentOrder, $paymentOrder->getPaymentMode());
-
-        if ($violations->count() > 0) {
-            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
-        }
         if (null === $paymentOrder->getOrder()->getBuyer()->getReference()) {
             $buyer = [
                 'email' => $paymentOrder->getOrder()->getBuyer()->getEmail(),
@@ -32,7 +29,14 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'country' => $paymentOrder->getOrder()->getBuyer()->getCountryCode(),
             ];
         } else {
+            dump("coucou");
             $buyer = $paymentOrder->getOrder()->getBuyer()->getReference();
+        }
+
+        $violations = Validator::validateModel($paymentOrder, ["Default",$paymentOrder->getPaymentMode()]);
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
 
 
