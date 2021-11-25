@@ -21,4 +21,20 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string $transactionId
+     *
+     * @return RequestInterface
+     */
+    public function getConfirmationRequest($transactionId)
+    {
+        $publicKey = $this->environment->getPublicKey();
+
+        return $this->requestFactory->create(
+            "/api/{$publicKey}/payins/transaction/$transactionId",
+            null,
+            'PUT'
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }

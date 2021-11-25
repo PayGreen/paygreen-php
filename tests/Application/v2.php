@@ -51,29 +51,33 @@ $paymentOrder = new PaymentOrder();
 $paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
 
-try {
-    $response = $client->createCashPayment($paymentOrder);
-    $responseData = $response->getData();
+//try {
+//    $response = $client->createCashPayment($paymentOrder);
+//    $responseData = $response->getData();
+//
+//    dump($responseData);
+//} catch (ConstraintViolationException $exception) {
+//    dump($exception->getViolationMessages());
+//    die();
+//}
+//
+//$transactionId = $responseData->data->id;
+//$response = $client->getTransaction($transactionId);
+//dump($response->getData());
 
-    dump($responseData);
+try {
+//    $response = $client->createTokenizePayment($paymentOrder);
+//    $responseData = $response->getData();
+//    dump($responseData);
+//
+//    $response = $client->confirmTransaction($responseData->data->id);
+//    $responseData = $response->getData();
+//    dump($responseData);
+    
 } catch (ConstraintViolationException $exception) {
     dump($exception->getViolationMessages());
     die();
 }
-
-$transactionId = $responseData->data->id;
-$response = $client->getTransaction($transactionId);
-dump($response->getData());
-
-// try {
-//     $response = $client->createTokenizePayment($paymentOrder);
-//     $responseData = $response->getData();
-// 
-//     dump($responseData);
-// } catch (ConstraintViolationException $exception) {
-//     dump($exception->getViolationMessages());
-//     die();
-// }
 
 // $transactionId = $responseData->data->id;
 // $response = $client->refundPayment($transactionId);

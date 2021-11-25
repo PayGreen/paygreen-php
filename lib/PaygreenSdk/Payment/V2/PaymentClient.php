@@ -216,4 +216,34 @@ class PaymentClient extends Client
 
         return new JsonResponse($response);
     }
+
+    /**
+     * Useful to confirm tokenize transaction
+     * 
+     * @param string $transactionId
+     *
+     * @throws HttpClientException
+     * @throws Exception
+     *
+     * @return JsonResponse
+     */
+    public function confirmTransaction($transactionId)
+    {
+        $this->logger->info("Confirm transaction '{$transactionId}'.");
+
+        $request = (new TransactionRequest($this->requestFactory, $this->environment))->getConfirmationRequest(
+            $transactionId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Transaction successfully confirmed.');
+        }
+
+        return new JsonResponse($response);
+    }
 }
