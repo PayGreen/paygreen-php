@@ -61,15 +61,19 @@ try {
     die();
 }
 
-try {
-    $response = $client->createTokenizePayment($paymentOrder);
-    $responseData = $response->getData();
+$transactionId = $responseData->data->id;
+$response = $client->getTransaction($transactionId);
+dump($response->getData());
 
-    dump($responseData);
-} catch (ConstraintViolationException $exception) {
-    dump($exception->getViolationMessages());
-    die();
-}
+// try {
+//     $response = $client->createTokenizePayment($paymentOrder);
+//     $responseData = $response->getData();
+// 
+//     dump($responseData);
+// } catch (ConstraintViolationException $exception) {
+//     dump($exception->getViolationMessages());
+//     die();
+// }
 
 // $transactionId = $responseData->data->id;
 // $response = $client->refundPayment($transactionId);

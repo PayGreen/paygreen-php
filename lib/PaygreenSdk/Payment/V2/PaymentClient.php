@@ -12,6 +12,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CashRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RecurringRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RefundRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TokenizeRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TransactionRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
 
 class PaymentClient extends Client
@@ -185,6 +186,32 @@ class PaymentClient extends Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Refund successfully executed.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param string $transactionId
+     *
+     * @throws HttpClientException
+     * @throws Exception
+     *
+     * @return JsonResponse
+     */
+    public function getTransaction($transactionId)
+    {
+        $this->logger->info("Fetch transaction '{$transactionId}'.");
+
+        $request = (new TransactionRequest($this->requestFactory, $this->environment))->getGetRequest($transactionId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Transaction successfully retrieved.');
         }
 
         return new JsonResponse($response);
