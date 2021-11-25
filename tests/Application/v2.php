@@ -51,6 +51,10 @@ $paymentOrder = new PaymentOrder();
 $paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
 
+$response = $client->getAvailablePaymentType();
+$responseData = $response->getData();
+dump($responseData);
+
 //try {
 //    $response = $client->createCashPayment($paymentOrder);
 //    $responseData = $response->getData();
@@ -65,7 +69,7 @@ $paymentOrder->setOrder($order);
 //$response = $client->getTransaction($transactionId);
 //dump($response->getData());
 
-try {
+//try {
 //    $response = $client->createTokenizePayment($paymentOrder);
 //    $responseData = $response->getData();
 //    dump($responseData);
@@ -74,10 +78,10 @@ try {
 //    $responseData = $response->getData();
 //    dump($responseData);
     
-} catch (ConstraintViolationException $exception) {
-    dump($exception->getViolationMessages());
-    die();
-}
+//} catch (ConstraintViolationException $exception) {
+//    dump($exception->getViolationMessages());
+//    die();
+//}
 
 // $transactionId = $responseData->data->id;
 // $response = $client->refundPayment($transactionId);

@@ -198,6 +198,21 @@ class PaymentClientTest extends TestCase
     }
 
     /**
+     * @throws HttpClientException
+     */
+    public function testRequestAvailablePaymentType()
+    {
+        $this->client->getAvailablePaymentType();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals(
+            "/api/public_key/availablepaymenttype",
+            $request->getUri()->getPath()
+        );
+    }
+
+    /**
      * @return PaymentOrder
      */
     private function buildPaymentOrder()

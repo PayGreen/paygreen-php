@@ -14,6 +14,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\RefundRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TokenizeRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TransactionRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
+use Paygreen\Sdk\Payment\V2\Request\PaymentTypeRequest;
 
 class PaymentClient extends Client
 {
@@ -218,8 +219,8 @@ class PaymentClient extends Client
     }
 
     /**
-     * Useful to confirm tokenize transaction
-     * 
+     * Useful to confirm tokenize transaction.
+     *
      * @param string $transactionId
      *
      * @throws HttpClientException
@@ -242,6 +243,30 @@ class PaymentClient extends Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Transaction successfully confirmed.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @throws HttpClientException
+     * @throws Exception
+     *
+     * @return JsonResponse
+     */
+    public function getAvailablePaymentType()
+    {
+        $this->logger->info('Fetch available payment type.');
+
+        $request = (new PaymentTypeRequest($this->requestFactory, $this->environment))->getGetRequest();
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Available payment successfully retrieved.');
         }
 
         return new JsonResponse($response);
