@@ -8,4 +8,17 @@ class CycleEnum
     const DAILY = 'daily';
     const WEEKLY = 'weekly';
     const MONTHLY = 'monthly';
+
+    /**
+     * @return array<string>
+     */
+    public static function getCycles()
+    {
+        return [
+            self::NONE,
+            self::DAILY,
+            self::WEEKLY,
+            self::MONTHLY
+        ];
+    }
 }

@@ -8,4 +8,17 @@ class IntegrationModeEnum
     const INSITE = 'insite';
     const REDIRECT = 'redirect';
     const DIRECT = 'direct';
+
+    /**
+     * @return array<string>
+     */
+    public static function getIntegrationsModes()
+    {
+        return [
+            self::HOSTED_FIELDS,
+            self::INSITE,
+            self::REDIRECT,
+            self::DIRECT
+        ];
+    }
 }
