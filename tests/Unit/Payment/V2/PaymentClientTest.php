@@ -5,6 +5,7 @@ namespace Paygreen\Tests\Unit\Payment\V2;
 use Http\Client\Exception as HttpClientException;
 use Http\Mock\Client;
 use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
@@ -34,6 +35,71 @@ class PaymentClientTest extends TestCase
         $logger = new NullLogger();
 
         $this->client = new PaymentClient($client, $environment, $logger);
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     * @throws HttpClientException
+     */
+    public function testCreateOAuthAccessToken()
+    {
+        $this->client->createOAuthAccessToken(
+            '127.0.0.1',
+            'dev-module@paygreen.fr',
+            'name',
+            '0102030405',
+            '127.0.0.1'
+        );
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/auth', $request->getUri()->getPath());
+        $this->assertEquals('127.0.0.1', $content->ipAddress);
+        $this->assertEquals('dev-module@paygreen.fr', $content->email);
+        $this->assertEquals('name', $content->name);
+        $this->assertEquals('0102030405', $content->phoneNumber);
+        $this->assertEquals('127.0.0.1', $content->serverAddress);
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     * @throws HttpClientException
+     */
+    public function testGetOAuthAuthentication()
+    {
+        $url = $this->client->getOAuthAuthenticationPage(
+            'client_id',
+            'http://localhost'
+        );
+        
+        $this->assertEquals(
+            'https://sandbox.paygreen.fr/api/auth/authorize?client_id=client_id&redirect_uri=http%3A%2F%2Flocalhost&response_type=code',
+            $url
+        );
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     * @throws HttpClientException
+     */
+    public function testGetAuthenticationControl()
+    {
+        $this->client->controlOAuthAuthentication(
+            'client_id',
+            'authorization_code',
+            'code'
+        );
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/auth/accessToken', $request->getUri()->getPath());
+        $this->assertEquals('client_id', $content->client_id);
+        $this->assertEquals('authorization_code', $content->grant_type);
+        $this->assertEquals('code', $content->code);
     }
 
     /**
@@ -227,7 +293,7 @@ class PaymentClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals(
-            "/api/public_key/availablepaymenttype",
+            '/api/public_key/availablepaymenttype',
             $request->getUri()->getPath()
         );
     }
