@@ -42,16 +42,16 @@ $buyer->setBillingAddress($address);
 
 $response = $client->createBuyer($buyer);
 $data = $response->getData();
-//dump($data);
+dump($data);
 $buyer->setReference($data->data->id);
 $response = $client->getBuyer($buyer);
-//dump($response->getData());
+dump($response->getData());
 $buyer->setFirstname('Jerry');
 $buyer->setLastname('Cane');
 $buyer->setEmail('dev-module@paygreen.fr');
 $buyer->setCountryCode('US');
 $response = $client->updateBuyer($buyer);
-//dump($response->getData());
+dump($response->getData());
 
 $buyerNoreference = new Buyer();
 $buyerNoreference->setId(uniqid());
@@ -73,22 +73,22 @@ $paymentOrder->setAutoCapture(true);
 $paymentOrder->setIntegrationMode("hosted_fields");
 $paymentOrder->setOrder($order);
 
+/*$response = $client->createOrder($paymentOrder);
+$data = $response->getData();
+dump($data);
+
+$order->setBuyer($buyer);
 $response = $client->createOrder($paymentOrder);
 $data = $response->getData();
 dump($data);
 
-//$order->setBuyer($buyer);
-//$response = $client->createOrder($paymentOrder);
-//$data = $response->getData();
-//dump($data);
-//
-//$order->setReference($data->data->id);
-//$response = $client->getOrder($paymentOrder);
-//$data = $response->getData();
-//dump($data);
-//
-//$paymentOrder->setPartialAllowed(true);
-//$response = $client->updateOrder($paymentOrder);
-//$data = $response->getData();
-//dump($data);
+$order->setReference($data->data->id);
+$response = $client->getOrder($paymentOrder);
+$data = $response->getData();
+dump($data);
+
+$paymentOrder->setPartialAllowed(true);
+$response = $client->updateOrder($paymentOrder);
+$data = $response->getData();
+dump($data);*/
 

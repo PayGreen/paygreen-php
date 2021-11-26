@@ -116,7 +116,7 @@ final class PaymentClientTest extends TestCase
 
     public function testRequestCreateOrder()
     {
-        /*$buyer = new Buyer();
+        $buyer = new Buyer();
         $buyer->setId('buyerId');
         $buyer->setFirstname('John');
         $buyer->setLastname('Doe');
@@ -149,7 +149,7 @@ final class PaymentClientTest extends TestCase
         $paymentOrder->setOrder($order);
 
         $this->client->createOrder($paymentOrder);
-        
+
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
@@ -168,13 +168,12 @@ final class PaymentClientTest extends TestCase
 
         $this->assertEquals($paymentOrder->getPaymentMode(), $content->mode);
         $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
-        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);*/
+        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
     }
 
     public function testRequestCreateWithBuyerOrder()
     {
         $buyer = new Buyer();
-        $buyer->setId(123);
         $buyer->setReference('buyerReference');
 
         $address = new Address();
@@ -197,13 +196,8 @@ final class PaymentClientTest extends TestCase
         $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
         $paymentOrder->setOrder($order);
 
-        try {
-            $this->client->createOrder($paymentOrder);
-        }
-        catch (Exception $e){
-            dump($e);
-        }
-        
+        $this->client->createOrder($paymentOrder);
+
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());

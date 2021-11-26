@@ -3,9 +3,10 @@
 namespace Paygreen\Sdk\Payment\V3\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 
-class Buyer implements BuyerInterface
+class Buyer implements BuyerInterface, GroupSequenceProviderInterface
 {
     /**
      * @var string
@@ -51,28 +52,30 @@ class Buyer implements BuyerInterface
 
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
+        $metadata->setGroupSequenceProvider(true);
+
         $metadata
-            ->addPropertyConstraint('id', new Assert\NotBlank())
-            ->addPropertyConstraint('reference', new Assert\NotBlank(["groups"=>["reference"]]))
+            ->addPropertyConstraint('id', new Assert\NotBlank(['groups' => ['no_reference']]))
+            ->addPropertyConstraint('reference', new Assert\NotBlank(['groups' => ['reference']]))
             ->addPropertyConstraints('firstname', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
+                new Assert\NotBlank(['groups' => ['no_reference']]),
+                new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']),
             ])
             ->addPropertyConstraints('lastname', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
+                new Assert\NotBlank(['groups' => ['no_reference']]),
+                new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']),
             ])
             ->addPropertyConstraints('email', [
-                new Assert\NotBlank(),
+                new Assert\NotBlank(['groups' => ['no_reference']]),
                 new Assert\Email(),
             ])
             ->addPropertyConstraints('billingAddress', [
-                new Assert\NotBlank(),
-                new Assert\Type(AddressInterface::class),
-                new Assert\Valid(),
+                new Assert\NotBlank(['groups' => ['no_reference']]),
+                new Assert\Type(['groups' => ['no_reference'], 'type' => AddressInterface::class]),
+                new Assert\Valid(['groups' => ['no_reference']]),
             ])
-            ->addPropertyConstraint('countryCode', new Assert\Type('string'))
-            ->addPropertyConstraint('companyName', new Assert\Type('string'))
+            ->addPropertyConstraint('countryCode', new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']))
+            ->addPropertyConstraint('companyName', new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']))
         ;
     }
 
@@ -187,6 +190,7 @@ class Buyer implements BuyerInterface
     {
         $this->reference = $reference;
     }
+
     /**
      * @return Address
      */
@@ -201,5 +205,12 @@ class Buyer implements BuyerInterface
     public function setBillingAddress($billingAddress)
     {
         $this->billingAddress = $billingAddress;
+    }
+
+    public function getGroupSequence()
+    {
+        return [
+            null === $this->getReference() ? 'no_reference' : 'reference',
+        ];
     }
 }

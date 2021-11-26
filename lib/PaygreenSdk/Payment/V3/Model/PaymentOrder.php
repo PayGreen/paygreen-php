@@ -123,10 +123,6 @@ class PaymentOrder implements PaymentOrderInterface
             ->addPropertyConstraints('order', [
                 new Assert\NotBlank(),
                 new Assert\Type(OrderInterface::class),
-                /*new Assert\Type([
-                    'type' => OrderInterface::class,
-                    'groups' => 'reference',
-                ]),*/
                 new Assert\Valid()
             ])
             ->addPropertyConstraints('autoCapture', [

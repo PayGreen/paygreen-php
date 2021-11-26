@@ -15,8 +15,9 @@ use Psr\Http\Message\RequestInterface;
 class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @return Request|RequestInterface
      * @throws Exception
+     *
+     * @return Request|RequestInterface
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
@@ -29,16 +30,14 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'country' => $paymentOrder->getOrder()->getBuyer()->getCountryCode(),
             ];
         } else {
-            dump("coucou");
             $buyer = $paymentOrder->getOrder()->getBuyer()->getReference();
         }
 
-        $violations = Validator::validateModel($paymentOrder, ["Default",$paymentOrder->getPaymentMode()]);
+        $violations = Validator::validateModel($paymentOrder, ['Default', $paymentOrder->getPaymentMode()]);
 
         if ($violations->count() > 0) {
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
-
 
         $body = [
             'amount' => $paymentOrder->getOrder()->getAmount(),
@@ -63,7 +62,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'return_url' => $paymentOrder->getReturnUrl(),
             'shop_id' => $paymentOrder->getPlatformsShopId(),
             'start_at' => $paymentOrder->getStartAt(),
-            'ttl' => $paymentOrder->getInstrumentTTL()
+            'ttl' => $paymentOrder->getInstrumentTTL(),
         ];
 
         return $this->requestFactory->create(
