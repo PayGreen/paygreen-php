@@ -3,6 +3,7 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
+use Exception;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
@@ -55,8 +56,13 @@ final class PaymentClientTest extends TestCase
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
 
-        $adresse = new Address();
-        $buyer->setBillingAddress($adresse);
+        $address = new Address();
+        $address->setStreetLineOne("107 allée Francois Mitterand");
+        $address->setPostalCode("76100");
+        $address->setCity("Rouen");
+        $address->setCountryCode("FR");
+
+        $buyer->setBillingAddress($address);
 
         $this->client->createBuyer($buyer);
         $request = $this->client->getLastRequest();
@@ -117,19 +123,35 @@ final class PaymentClientTest extends TestCase
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
 
+        $address = new Address();
+        $address->setStreetLineOne("107 allée Francois Mitterand");
+        $address->setPostalCode("76100");
+        $address->setCity("Rouen");
+        $address->setCountryCode("FR");
+
+        $buyer->setBillingAddress($address);
+
         $order = new Order();
         $order->setBuyer($buyer);
         $order->setReference('SDK-ORDER-123');
         $order->setAmount(1000);
         $order->setCurrency('EUR');
+        $order->setShippingAddress($address);
 
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode(ModeEnum::INSTANT);
-        $paymentOrder->setAutoCapture(true);
+        $paymentOrder->setPaymentMode(ModeEnum::SPLIT);
+        //$paymentOrder->setAutoCapture(true);
+        $paymentOrder->setFirstAmount(10000);
         $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
         $paymentOrder->setOrder($order);
 
-        $this->client->createOrder($paymentOrder);
+
+        try {
+            $this->client->createOrder($paymentOrder);
+        }
+        catch (Exception $e) {
+            dump($e);
+        }
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
@@ -146,14 +168,14 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals($order->getAmount(), $content->amount);
         $this->assertEquals($order->getCurrency(), $content->currency);
 
-        $this->assertEquals($paymentOrder->getPaymentMode(), $content->paymentMode);
+        $this->assertEquals($paymentOrder->getPaymentMode(), $content->mode);
         $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
         $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
     }
 
     public function testRequestCreateWithBuyerOrder()
     {
-        $buyer = new Buyer();
+        /*$buyer = new Buyer();
         $buyer->setReference('buyerReference');
 
         $order = new Order();
@@ -181,9 +203,9 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals($order->getAmount(), $content->amount);
         $this->assertEquals($order->getCurrency(), $content->currency);
 
-        $this->assertEquals($paymentOrder->getPaymentMode(), $content->paymentMode);
+        $this->assertEquals($paymentOrder->getPaymentMode(), $content->mode);
         $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
-        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
+        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);*/
     }
 
     public function testRequestGetOrder()

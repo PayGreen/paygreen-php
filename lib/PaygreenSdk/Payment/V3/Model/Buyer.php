@@ -53,6 +53,7 @@ class Buyer implements BuyerInterface
     {
         $metadata
             ->addPropertyConstraint('id', new Assert\NotBlank())
+            ->addPropertyConstraint('reference', new Assert\NotBlank(["groups"=>["reference"]]))
             ->addPropertyConstraints('firstname', [
                 new Assert\NotBlank(),
                 new Assert\Type('string'),
@@ -64,6 +65,11 @@ class Buyer implements BuyerInterface
             ->addPropertyConstraints('email', [
                 new Assert\NotBlank(),
                 new Assert\Email(),
+            ])
+            ->addPropertyConstraints('billingAddress', [
+                new Assert\NotBlank(),
+                new Assert\Type(AddressInterface::class),
+                new Assert\Valid(),
             ])
             ->addPropertyConstraint('countryCode', new Assert\Type('string'))
             ->addPropertyConstraint('companyName', new Assert\Type('string'))

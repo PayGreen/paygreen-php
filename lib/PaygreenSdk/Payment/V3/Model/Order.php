@@ -40,7 +40,7 @@ class Order implements OrderInterface
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata
-            ->addPropertyConstraint('reference', new Assert\NotBlank())
+            ->addPropertyConstraint('reference', new Assert\NotBlank(["groups"=>["reference"]]))
             ->addPropertyConstraints('buyer', [
                 new Assert\NotBlank(),
                 new Assert\Type(BuyerInterface::class),

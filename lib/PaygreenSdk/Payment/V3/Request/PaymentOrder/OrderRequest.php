@@ -4,8 +4,10 @@ namespace Paygreen\Sdk\Payment\V3\Request\PaymentOrder;
 
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
+use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
+use Paygreen\Sdk\Core\Validator\Validator;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
 
@@ -16,6 +18,11 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
+        $violations = Validator::validateModel($paymentOrder, $paymentOrder->getPaymentMode());
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
         if (null === $paymentOrder->getOrder()->getBuyer()->getReference()) {
             $buyer = [
                 'email' => $paymentOrder->getOrder()->getBuyer()->getEmail(),
@@ -28,16 +35,31 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             $buyer = $paymentOrder->getOrder()->getBuyer()->getReference();
         }
 
+
         $body = [
             'amount' => $paymentOrder->getOrder()->getAmount(),
-            'currency' => $paymentOrder->getOrder()->getCurrency(),
-            'paymentMode' => $paymentOrder->getPaymentMode(),
-            'reference' => $paymentOrder->getOrder()->getReference(),
             'auto_capture' => $paymentOrder->getAutoCapture(),
+            'buyer' => $buyer,
+            'cancel_url' => $paymentOrder->getCancelUrl(),
+            'currency' => $paymentOrder->getOrder()->getCurrency(),
+            'cycle' => $paymentOrder->getCycle(),
+            'description' => $paymentOrder->getDescription(),
+            'eligible_amounts' => $paymentOrder->getEligibleAmount(),
+            'first_amount' => $paymentOrder->getFirstAmount(),
+            'instrument' => $paymentOrder->getInstrumentId(),
             'integration_mode' => $paymentOrder->getIntegrationMode(),
+            'is_merchant_initiated' => $paymentOrder->isMerchantInitiated(),
+            'mode' => $paymentOrder->getPaymentMode(),
+            'notification_url' => $paymentOrder->getNotificationUrl(),
+            'occurences' => $paymentOrder->getOccurences(),
             'partial_allowed' => $paymentOrder->isPartialAllowed(),
             'platforms' => $paymentOrder->getPlatforms(),
-            'buyer' => $buyer,
+            'previous_order_id' => $paymentOrder->getPreviousOrderId(),
+            'reference' => $paymentOrder->getOrder()->getReference(),
+            'return_url' => $paymentOrder->getReturnUrl(),
+            'shop_id' => $paymentOrder->getPlatformsShopId(),
+            'start_at' => $paymentOrder->getStartAt(),
+            'ttl' => $paymentOrder->getInstrumentTTL()
         ];
 
         return $this->requestFactory->create(

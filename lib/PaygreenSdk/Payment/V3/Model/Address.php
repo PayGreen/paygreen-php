@@ -10,7 +10,7 @@ class Address implements AddressInterface
     /**
      * @var string
      */
-    private $postcode;
+    private $postalCode;
 
     /**
      * @var string
@@ -35,7 +35,10 @@ class Address implements AddressInterface
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata
-            ->addPropertyConstraint('postcode', new Assert\NotBlank())
+            ->addPropertyConstraints('postalCode', [
+                new Assert\NotBlank(),
+                new Assert\Type('string')
+            ])
             ->addPropertyConstraints('city', [
                 new Assert\NotBlank(),
                 new Assert\Type('string'),
@@ -54,17 +57,17 @@ class Address implements AddressInterface
     /**
      * @return string
      */
-    public function getPostcode()
+    public function getPostalCode()
     {
-        return $this->postcode;
+        return $this->postalCode;
     }
 
     /**
-     * @param string $postcode
+     * @param string $postalCode
      */
-    public function setPostcode($postcode)
+    public function setPostalCode($postalCode)
     {
-        $this->postcode = $postcode;
+        $this->postalCode = $postalCode;
     }
 
     /**

@@ -7,12 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 final class AddressTest extends TestCase
 {
-    public function testCanGetAndSetPostCode()
+    public function testCanGetAndSetPostalCode()
     {
         $address = new Address();
-        $address->setPostcode('76000');
+        $address->setPostalCode('76000');
 
-        $this->assertEquals('76000', $address->getPostcode());
+        $this->assertEquals('76000', $address->getPostalCode());
     }
 
     public function testCanGetAndSetCity()
