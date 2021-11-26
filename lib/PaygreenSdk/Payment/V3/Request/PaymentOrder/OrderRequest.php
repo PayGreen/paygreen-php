@@ -11,6 +11,7 @@ use Paygreen\Sdk\Core\Serializer\Serializer;
 use Paygreen\Sdk\Core\Validator\Validator;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
@@ -72,11 +73,17 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
+     * @param int $paymentId
      * @return Request|RequestInterface
+     * @throws ConstraintViolationException
      */
-    public function getGetRequest(PaymentOrder $paymentOrder)
+    public function getGetRequest($paymentId)
     {
-        $paymentId = $paymentOrder->getOrder()->getReference();
+        $violations = Validator::validateValue($paymentId, new Assert\NotBlank());
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
 
         return $this->requestFactory->create(
             "/payment/payment-orders/{$paymentId}",
@@ -90,8 +97,14 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest(PaymentOrder $paymentOrder)
     {
-        $paymentId = $paymentOrder->getOrder()->getReference();
+        $violations = Validator::validateValue($paymentOrder->getOrder()->getReference(), new Assert\NotBlank());
+        $violations->addAll(Validator::validateValue($paymentOrder->isPartialAllowed(), new Assert\Type('bool')));
 
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
+        $paymentId = $paymentOrder->getOrder()->getReference();
         $body = ['partial_allowed' => $paymentOrder->isPartialAllowed()];
 
         return $this->requestFactory->create(

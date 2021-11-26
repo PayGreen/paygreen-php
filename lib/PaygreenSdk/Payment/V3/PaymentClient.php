@@ -94,13 +94,14 @@ class PaymentClient extends Client
     }
 
     /**
+     * @param int $paymentId
      * @throws Exception|\Http\Client\Exception
      *
      * @return JsonResponse
      */
-    public function getOrder(PaymentOrder $paymentOrder)
+    public function getOrder($paymentId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentOrder);
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

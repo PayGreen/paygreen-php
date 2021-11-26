@@ -59,6 +59,7 @@ $buyerNoreference->setFirstname('Will');
 $buyerNoreference->setLastname('Jackson');
 $buyerNoreference->setEmail('romain@paygreen.fr');
 $buyerNoreference->setCountryCode('FR');
+$buyerNoreference->setBillingAddress($address);
 
 $order = new Order();
 $order->setBuyer($buyerNoreference);
@@ -69,11 +70,10 @@ $order->setShippingAddress($address);
 
 $paymentOrder = new PaymentOrder();
 $paymentOrder->setPaymentMode("instant");
-$paymentOrder->setAutoCapture(true);
 $paymentOrder->setIntegrationMode("hosted_fields");
 $paymentOrder->setOrder($order);
 
-/*$response = $client->createOrder($paymentOrder);
+$response = $client->createOrder($paymentOrder);
 $data = $response->getData();
 dump($data);
 
@@ -83,12 +83,12 @@ $data = $response->getData();
 dump($data);
 
 $order->setReference($data->data->id);
-$response = $client->getOrder($paymentOrder);
+$response = $client->getOrder($paymentOrder->getOrder()->getReference());
 $data = $response->getData();
 dump($data);
 
 $paymentOrder->setPartialAllowed(true);
 $response = $client->updateOrder($paymentOrder);
 $data = $response->getData();
-dump($data);*/
+dump($data);
 
