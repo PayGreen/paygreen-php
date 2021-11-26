@@ -10,7 +10,7 @@ class Serializer
 {
     /** @var NormalizerInterface[] */
     private $normalizers;
-    
+
     /** @var EncoderInterface[] */
     private $encoders;
 
@@ -33,11 +33,12 @@ class Serializer
     {
         foreach ($this->normalizers as $normalizer) {
             if ($normalizer->supportsNormalization($data)) {
-                $data = $normalizer->normalize($data);   
+                $data = $normalizer->normalize($data);
             }
         }
-        
+
         foreach ($this->encoders as $encoder) {
+            /** @phpstan-ignore-next-line */
             if ($encoder::ENCODER_NAME === $format && $encoder->supportsEncoding($format)) {
                 return $encoder->encode($data);
             }

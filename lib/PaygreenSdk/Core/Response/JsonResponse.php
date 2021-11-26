@@ -23,7 +23,12 @@ class JsonResponse
      */
     public function getData()
     {
-        $data = json_decode($this->response->getBody()->getContents());
+        $content = $this->response->getBody()->getContents();
+        $data = new stdClass();
+
+        if ($content) {
+            $data = json_decode($content);
+        }
 
         if (!$data instanceof stdClass) {
             throw new ResponseMalformedException('Invalid JSON result.');
@@ -35,13 +40,13 @@ class JsonResponse
     /**
      * @throws ResponseMalformedException
      *
-     * @return array<int|stdClass|string>
+     * @return array
      */
     public function toArray()
     {
         return [
             'http_code' => $this->response->getStatusCode(),
-            'data' => $this->getData(),
+            'data' => (array)$this->getData(),
         ];
     }
 }

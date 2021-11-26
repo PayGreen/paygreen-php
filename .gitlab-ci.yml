@@ -34,3 +34,9 @@ publish:
         echo "Could not create package - Code $code - $body";
         exit 1;
       fi
+
+sast:
+  stage: test
+
+include:
+  - template: Security/SAST.gitlab-ci.yml
