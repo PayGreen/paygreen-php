@@ -102,6 +102,17 @@ class PaymentClientTest extends TestCase
         $this->assertEquals('code', $content->code);
     }
 
+
+    public function testGetShop()
+    {
+        $this->client->getShop();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/api/public_key/shop', $request->getUri()->getPath());
+
+    }
+
     /**
      * @throws HttpClientException
      */

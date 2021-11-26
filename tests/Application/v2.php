@@ -20,22 +20,25 @@ $environment = new Environment(
 
 $client = new PaymentClient($curl, $environment);
 
+$response = $client->getShop();
+$responseData = $response->getData();
+dump($responseData);
 
-    $response = $client->createOAuthAccessToken(
-        '37.143.52.241',
-        'dev-modulep@paygreen.fr',
-        'poleintegration'
-    );
-    $responseData = $response->getData();
-    dump($responseData);
-    
-    $clientId = $responseData->data->accessPublic;
-
-    $response = $client->getOAuthAuthenticationPage(
-        $clientId,
-        'http://localhost/'
-    );
-    dump($response);
+//$response = $client->createOAuthAccessToken(
+//    '37.143.52.241',
+//    'dev-modulep@paygreen.fr',
+//    'poleintegration'
+//);
+//$responseData = $response->getData();
+//dump($responseData);
+//
+//$clientId = $responseData->data->accessPublic;
+//
+//$response = $client->getOAuthAuthenticationPage(
+//    $clientId,
+//    'http://localhost/'
+//);
+//dump($response);
 
 //$customer = new Customer();
 //$customer->setId(1);
