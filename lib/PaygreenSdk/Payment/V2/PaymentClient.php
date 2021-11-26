@@ -17,6 +17,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TokenizeRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TransactionRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentTypeRequest;
+use Paygreen\Sdk\Payment\V2\Request\ShopRequest;
 
 class PaymentClient extends Client
 {
@@ -111,6 +112,24 @@ class PaymentClient extends Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('OAuth authentication is valid.');
+        }
+
+        return new JsonResponse($response);
+    }
+
+    public function getShop()
+    {
+        $this->logger->info("Get shop config.");
+
+        $request = (new ShopRequest($this->requestFactory, $this->environment))->getGetRequest();
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Shop config successfully retrieved.');
         }
 
         return new JsonResponse($response);
