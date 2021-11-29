@@ -29,13 +29,13 @@ interface AddressInterface
     /**
      * @return string
      */
-    public function getPostcode();
+    public function getPostalCode();
 
     /**
-     * @param string $postcode
+     * @param string $postalCode
      * @return void
      */
-    public function setPostcode($postcode);
+    public function setPostalCode($postalCode);
 
     /**
      * @return string

@@ -2,10 +2,13 @@
 
 namespace Paygreen\Sdk\Payment\V3\Request\Buyer;
 
+use Exception;
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
+use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
+use Paygreen\Sdk\Core\Validator\Validator;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Psr\Http\Message\RequestInterface;
 
@@ -13,9 +16,16 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @return Request|RequestInterface
+     * @throws Exception
      */
     public function getCreateRequest(Buyer $buyer)
     {
+        $violations = Validator::validateModel($buyer);
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
         $publicKey = $this->environment->getPublicKey();
 
         $body = [
@@ -28,7 +38,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
                 'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
                 'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
                 'city' => $buyer->getBillingAddress()->getCity(),
-                'postal_code' => $buyer->getBillingAddress()->getPostcode(),
+                'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
                 'country' => $buyer->getBillingAddress()->getCountryCode(),
             ]
         ];
@@ -44,6 +54,12 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getGetRequest(Buyer $buyer)
     {
+        $violations = Validator::validateModel($buyer,"reference");
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+        
         $publicKey = $this->environment->getPublicKey();
         $buyerReference = $buyer->getReference();
 
@@ -59,9 +75,15 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest(Buyer $buyer)
     {
+        $violations = Validator::validateModel($buyer,"reference");
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+        
         $publicKey = $this->environment->getPublicKey();
         $buyerReference = $buyer->getReference();
-        
+
         $body = [
             'email' => $buyer->getEmail(),
             'first_name' => $buyer->getFirstname(),
@@ -69,6 +91,18 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'reference' => $buyer->getId(),
             'country' => $buyer->getCountryCode()
         ];
+        
+        if (null !== $buyer->getBillingAddress()) {
+            $body [] = [
+                'billing_address' => [
+                    'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
+                    'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
+                    'city' => $buyer->getBillingAddress()->getCity(),
+                    'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
+                    'country' => $buyer->getBillingAddress()->getCountryCode()
+                ]
+            ];
+        }
 
         return $this->requestFactory->create(
             "/payment/shops/{$publicKey}/buyers/{$buyerReference}",

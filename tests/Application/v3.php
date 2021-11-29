@@ -34,7 +34,7 @@ $buyer->setCountryCode('FR');
 
 $address = new Address();
 $address->setStreetLineOne("107 allée Francois Mitterand");
-$address->setPostcode("76100");
+$address->setPostalCode("76100");
 $address->setCity("Rouen");
 $address->setCountryCode("FR");
 
@@ -73,7 +73,7 @@ $paymentOrder->setAutoCapture(true);
 $paymentOrder->setIntegrationMode("hosted_fields");
 $paymentOrder->setOrder($order);
 
-$response = $client->createOrder($paymentOrder);
+/*$response = $client->createOrder($paymentOrder);
 $data = $response->getData();
 dump($data);
 
@@ -90,5 +90,5 @@ dump($data);
 $paymentOrder->setPartialAllowed(true);
 $response = $client->updateOrder($paymentOrder);
 $data = $response->getData();
-dump($data);
+dump($data);*/
 

@@ -2,6 +2,10 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
+use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
+use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+
 interface PaymentOrderInterface
 {
     /**
@@ -25,12 +29,12 @@ interface PaymentOrderInterface
     public function setOrder($order);
 
     /**
-     * @return string
+     * @return ModeEnum
      */
     public function getPaymentMode();
 
     /**
-     * @param string $paymentMode
+     * @param ModeEnum $paymentMode
      */
     public function setPaymentMode($paymentMode);
 
@@ -45,12 +49,12 @@ interface PaymentOrderInterface
     public function setAutoCapture($autoCapture);
 
     /**
-     * @return string
+     * @return IntegrationModeEnum
      */
     public function getIntegrationMode();
 
     /**
-     * @param string $integrationMode
+     * @param IntegrationModeEnum $integrationMode
      */
     public function setIntegrationMode($integrationMode);
 
@@ -75,12 +79,12 @@ interface PaymentOrderInterface
     public function setCancelUrl($cancelUrl);
 
     /**
-     * @return string
+     * @return CycleEnum
      */
     public function getCycle();
 
     /**
-     * @param string $cycle
+     * @param CycleEnum $cycle
      */
     public function setCycle($cycle);
 

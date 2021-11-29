@@ -15,4 +15,24 @@ class StatusEnum
     const REFUSED = 'refused';
     const ERROR = 'error';
     const REFUNDED = 'refunded';
+
+    /**
+     * @return array<string>
+     */
+    public static function getPaymentModes()
+    {
+        return [
+            self::PENDING,
+            self::AUTHORIZED,
+            self::SUCCESSED,
+            self::ONGOING,
+            self::INTERRUPTED,
+            self::EXPIRED,
+            self::COMPLETED,
+            self::CANCELED,
+            self::REFUSED,
+            self::ERROR,
+            self::REFUNDED
+        ];
+    }
 }

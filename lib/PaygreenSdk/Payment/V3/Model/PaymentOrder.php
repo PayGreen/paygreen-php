@@ -2,8 +2,13 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
+use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class PaymentOrder implements PaymentOrderInterface
 {
@@ -13,7 +18,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $order;
 
     /**
-     * @var string
+     * @var ModeEnum
      */
     private $paymentMode;
 
@@ -23,7 +28,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $autoCapture;
 
     /**
-     * @var string
+     * @var IntegrationModeEnum
      */
     private $integrationMode;
 
@@ -48,7 +53,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $cancelUrl;
 
     /**
-     * @var string
+     * @var CycleEnum
      */
     private $cycle;
 
@@ -80,7 +85,7 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * @var bool
      */
-    private $merchantInitiated;
+    private $merchantInitiated = false;
 
     /**
      * @var string
@@ -112,6 +117,86 @@ class PaymentOrder implements PaymentOrderInterface
      */
     private $startAt;
 
+    public static function loadValidatorMetadata(ClassMetadata $metadata)
+    {
+        $metadata
+            ->addPropertyConstraints('order', [
+                new Assert\NotBlank(),
+                new Assert\Type(OrderInterface::class),
+                new Assert\Valid()
+            ])
+            ->addPropertyConstraints('paymentMode', [
+                new Assert\NotBlank(),
+                new Assert\Choice(ModeEnum::getPaymentModes())
+            ])
+            ->addPropertyConstraints('integrationMode', [
+                new Assert\Choice(IntegrationModeEnum::getIntegrationsModes())
+            ])
+            ->addPropertyConstraints('autoCapture', [
+                new Assert\IsNull(['groups'=>'split']),
+                new Assert\IsNull(['groups'=>'recurring']),
+                new Assert\Type('bool'),
+            ])
+            ->addPropertyConstraints('cycle', [
+                new Assert\NotBlank(['groups'=>'recurring']),
+                new Assert\Choice(CycleEnum::getCycles()),
+            ])
+            ->addPropertyConstraints('firstAmount', [
+                new Assert\IsNull(['groups'=>'instant']),
+                new Assert\IsNull(['groups'=>'recurring']),
+                new Assert\Type('integer')
+            ])
+            ->addPropertyConstraints('partialAllowed', [
+                new Assert\IsNull(['groups'=>'split']),
+                new Assert\IsNull(['groups'=>'recurring']),
+                new Assert\Type('bool')
+            ])
+            ->addPropertyConstraints('platformsShopId', [
+                new Assert\IsNull(['groups'=>'instant']),
+                new Assert\Type('integer')
+            ])
+        ;
+
+        $metadata->addConstraint(new Assert\Callback([
+            'groups' => 'split',
+            'callback' => 'validateFirstAmount'
+        ]));
+
+        $metadata->addConstraint(new Assert\Callback([
+            'callback' => 'validateMerchantInitiated'
+        ]));
+
+        $metadata->addConstraint(new Assert\Callback([
+            'groups' => 'recurring',
+            'callback' => 'validatePaymentDay'
+        ]));
+    }
+
+    public function validateFirstAmount(ExecutionContextInterface $context, $payload)
+    {
+        $amount = $this->getOrder()->getAmount();
+        $firstAmount = $this->getFirstAmount();
+        if ($firstAmount >= $amount) {
+            $context->addViolation("First amount must be less than total amount.");
+        }
+    }
+
+    public function validateMerchantInitiated(ExecutionContextInterface $context, $payload)
+    {
+        $isMerchantInitiated = $this->isMerchantInitiated();
+
+        if ($isMerchantInitiated && (($this->instrumentId === null) || ($this->previousOrderId === null))) {
+            $context->addViolation("First amount must be less than total amount.");
+        }
+    }
+
+    public function validatePaymentDay(ExecutionContextInterface $context, $payload)
+    {
+        if (($this->paymentDay !== null) && ($this->cycle !== CycleEnum::MONTHLY)) {
+            $context->addViolation("Partial payment allowed only in recurring monthly.");
+        }
+    }
+
     /**
      * @return array
      */
@@ -141,11 +226,11 @@ class PaymentOrder implements PaymentOrderInterface
      */
     public function setOrder($order)
     {
-        $this->order = $order;        
+        $this->order = $order;
     }
 
     /**
-     * @return string
+     * @return ModeEnum
      */
     public function getPaymentMode()
     {
@@ -153,7 +238,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param string $paymentMode
+     * @param ModeEnum $paymentMode
      */
     public function setPaymentMode($paymentMode)
     {
@@ -177,7 +262,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return string
+     * @return IntegrationModeEnum
      */
     public function getIntegrationMode()
     {
@@ -185,7 +270,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param string $integrationMode
+     * @param IntegrationModeEnum $integrationMode
      */
     public function setIntegrationMode($integrationMode)
     {
@@ -225,7 +310,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return string
+     * @return CycleEnum
      */
     public function getCycle()
     {
@@ -233,7 +318,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param string $cycle
+     * @param CycleEnum $cycle
      */
     public function setCycle($cycle)
     {
