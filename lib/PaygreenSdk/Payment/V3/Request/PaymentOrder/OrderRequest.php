@@ -73,20 +73,20 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param int $paymentId
+     * @param int $paymentReference
      * @return Request|RequestInterface
      * @throws ConstraintViolationException
      */
-    public function getGetRequest($paymentId)
+    public function getGetRequest($paymentReference)
     {
-        $violations = Validator::validateValue($paymentId, new Assert\NotBlank());
+        $violations = Validator::validateValue($paymentReference, new Assert\NotBlank());
 
         if ($violations->count() > 0) {
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
 
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentId}",
+            "/payment/payment-orders/{$paymentReference}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -94,6 +94,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @return Request|RequestInterface
+     * @throws ConstraintViolationException
      */
     public function getUpdateRequest(PaymentOrder $paymentOrder)
     {
@@ -104,11 +105,11 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
 
-        $paymentId = $paymentOrder->getOrder()->getReference();
+        $paymentReference = $paymentOrder->getOrder()->getReference();
         $body = ['partial_allowed' => $paymentOrder->isPartialAllowed()];
 
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentId}",
+            "/payment/payment-orders/{$paymentReference}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
