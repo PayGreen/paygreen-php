@@ -30,10 +30,10 @@
     "php": ">=5.6",
     "ext-json": "*",
     "ext-curl": "*",
-    "psr/log": "^1.1.4",
-    "guzzlehttp/psr7": "^1.8.3",
-    "php-http/message": "^1.7.2",
-    "php-http/httplug": "^1.0",
-    "symfony/validator": "^3.4"
+    "psr/log": ">=1.1.4",
+    "guzzlehttp/psr7": ">=1.8.3",
+    "php-http/message": ">=1.7.2",
+    "php-http/httplug": ">=1.0",
+    "symfony/validator": ">=3.4"
   }
 }
