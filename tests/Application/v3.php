@@ -2,6 +2,8 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
@@ -59,6 +61,7 @@ $buyerNoreference->setFirstname('Will');
 $buyerNoreference->setLastname('Jackson');
 $buyerNoreference->setEmail('romain@paygreen.fr');
 $buyerNoreference->setCountryCode('FR');
+$buyerNoreference->setBillingAddress($address);
 
 $order = new Order();
 $order->setBuyer($buyerNoreference);
@@ -68,9 +71,8 @@ $order->setCurrency('eur');
 $order->setShippingAddress($address);
 
 $paymentOrder = new PaymentOrder();
-$paymentOrder->setPaymentMode("instant");
-$paymentOrder->setAutoCapture(true);
-$paymentOrder->setIntegrationMode("hosted_fields");
+$paymentOrder->setPaymentMode(ModeEnum::INSTANT);
+$paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
 $paymentOrder->setOrder($order);
 
 /*$response = $client->createOrder($paymentOrder);
@@ -83,7 +85,7 @@ $data = $response->getData();
 dump($data);
 
 $order->setReference($data->data->id);
-$response = $client->getOrder($paymentOrder);
+$response = $client->getOrder($paymentOrder->getOrder()->getReference());
 $data = $response->getData();
 dump($data);
 

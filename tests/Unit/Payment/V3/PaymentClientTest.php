@@ -220,10 +220,7 @@ final class PaymentClientTest extends TestCase
         $order = new Order();
         $order->setReference('SDK-ORDER-123');
 
-        $paymentOrder = new PaymentOrder();
-        $paymentOrder->setOrder($order);
-
-        $this->client->getOrder($paymentOrder);
+        $this->client->getOrder($order->getReference());
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
