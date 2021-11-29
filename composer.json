@@ -31,7 +31,6 @@
     "ext-json": "*",
     "ext-curl": "*",
     "psr/log": "^1.1.4",
-    "monolog/monolog": "^1.26.1",
     "guzzlehttp/psr7": "^1.8.3",
     "php-http/message": "^1.7.2",
     "php-http/httplug": "^1.0",
