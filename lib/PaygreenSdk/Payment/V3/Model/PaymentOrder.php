@@ -18,7 +18,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $order;
 
     /**
-     * @var ModeEnum
+     * @var string
      */
     private $paymentMode;
 
@@ -28,7 +28,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $autoCapture;
 
     /**
-     * @var IntegrationModeEnum
+     * @var string
      */
     private $integrationMode;
 
@@ -53,7 +53,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $cancelUrl;
 
     /**
-     * @var CycleEnum
+     * @var string
      */
     private $cycle;
 
@@ -127,10 +127,12 @@ class PaymentOrder implements PaymentOrderInterface
             ])
             ->addPropertyConstraints('paymentMode', [
                 new Assert\NotBlank(),
-                new Assert\Choice(ModeEnum::getPaymentModes())
+                new Assert\Choice(ModeEnum::getPaymentModes()),
+                new Assert\Type('string')
             ])
             ->addPropertyConstraints('integrationMode', [
-                new Assert\Choice(IntegrationModeEnum::getIntegrationsModes())
+                new Assert\Choice(IntegrationModeEnum::getIntegrationsModes()),
+                new Assert\Type('string')
             ])
             ->addPropertyConstraints('autoCapture', [
                 new Assert\IsNull(['groups'=>'split']),
@@ -140,6 +142,7 @@ class PaymentOrder implements PaymentOrderInterface
             ->addPropertyConstraints('cycle', [
                 new Assert\NotBlank(['groups'=>'recurring']),
                 new Assert\Choice(CycleEnum::getCycles()),
+                new Assert\Type('string')
             ])
             ->addPropertyConstraints('firstAmount', [
                 new Assert\IsNull(['groups'=>'instant']),
@@ -230,7 +233,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return ModeEnum
+     * @return string
      */
     public function getPaymentMode()
     {
@@ -238,7 +241,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param ModeEnum $paymentMode
+     * @param string $paymentMode
      */
     public function setPaymentMode($paymentMode)
     {
@@ -262,7 +265,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return IntegrationModeEnum
+     * @return string
      */
     public function getIntegrationMode()
     {
@@ -270,7 +273,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param IntegrationModeEnum $integrationMode
+     * @param string $integrationMode
      */
     public function setIntegrationMode($integrationMode)
     {
@@ -310,7 +313,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return CycleEnum
+     * @return string
      */
     public function getCycle()
     {
@@ -318,7 +321,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param CycleEnum $cycle
+     * @param string $cycle
      */
     public function setCycle($cycle)
     {
