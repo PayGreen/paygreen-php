@@ -118,6 +118,7 @@ class Environment
 
     /**
      * @param string $bearer
+     * @return void
      */
     public function setBearer($bearer)
     {

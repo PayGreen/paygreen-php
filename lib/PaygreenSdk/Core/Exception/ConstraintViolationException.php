@@ -21,6 +21,9 @@ class ConstraintViolationException extends Exception
         parent::__construct($message);
     }
 
+    /**
+     * @return array
+     */
     public function getViolationMessages()
     {
         $messages = [];
