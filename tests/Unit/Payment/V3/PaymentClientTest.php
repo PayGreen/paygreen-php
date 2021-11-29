@@ -9,6 +9,7 @@ use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
@@ -244,5 +245,17 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/payment-orders/SDK-ORDER-123', $request->getUri()->getPath());
         $this->assertEquals($paymentOrder->isPartialAllowed(), $content->partial_allowed);
+    }
+
+    public function testRequestDeleteInstrument()
+    {
+        $instrument = new Instrument();
+        $instrument->setReference('instrumentReference');
+
+        $this->client->deleteInstrument($instrument->getReference());
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
     }
 }

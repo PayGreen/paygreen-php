@@ -9,6 +9,7 @@ use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
+use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 
 class PaymentClient extends Client
@@ -118,6 +119,23 @@ class PaymentClient extends Client
     public function updateOrder(PaymentOrder $paymentOrder)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getUpdateRequest($paymentOrder);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return new JsonResponse($response);
+    }
+
+    /**
+     * @param int $instrumentReference
+     * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
+     */
+    public function deleteInstrument($instrumentReference)
+    {
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getDeleteRequest($instrumentReference);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

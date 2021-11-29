@@ -5,6 +5,7 @@ use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
+use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -75,7 +76,7 @@ $paymentOrder->setPaymentMode(ModeEnum::INSTANT);
 $paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
 $paymentOrder->setOrder($order);
 
-/*$response = $client->createOrder($paymentOrder);
+$response = $client->createOrder($paymentOrder);
 $data = $response->getData();
 dump($data);
 
@@ -91,6 +92,12 @@ dump($data);
 
 $paymentOrder->setPartialAllowed(true);
 $response = $client->updateOrder($paymentOrder);
+$data = $response->getData();
+dump($data);
+
+/*$instrument = new Instrument();
+$instrument->setReference("ins_4961c47e6666497fb17d4e5af6268ac2");
+$response = $client->deleteInstrument($instrument->getReference());
 $data = $response->getData();
 dump($data);*/
 
