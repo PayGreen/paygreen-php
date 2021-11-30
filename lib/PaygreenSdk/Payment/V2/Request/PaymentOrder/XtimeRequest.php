@@ -73,11 +73,11 @@ class XtimeRequest extends \Paygreen\Sdk\Core\Request\Request
 
         if (!empty($paymentOrder->getMultiplePayment())) {
             $body['orderDetails'] = [
-                'cycle' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getCycle(),
-                'count' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getCount(),
-                'firstAmount' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getFirstAmount(),
-                'day' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getDay(),
-                'startAt' => $paymentOrder->getMultiplePayment()->getOrderDetails()->getStartAt(),
+                'cycle' => $paymentOrder->getMultiplePayment()->getCycle(),
+                'count' => $paymentOrder->getMultiplePayment()->getCount(),
+                'firstAmount' => $paymentOrder->getMultiplePayment()->getFirstAmount(),
+                'day' => $paymentOrder->getMultiplePayment()->getDay(),
+                'startAt' => $paymentOrder->getMultiplePayment()->getStartAt(),
             ];
         }
 
