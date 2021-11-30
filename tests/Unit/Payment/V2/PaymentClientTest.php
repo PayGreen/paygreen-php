@@ -10,7 +10,6 @@ use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\Order;
-use Paygreen\Sdk\Payment\V2\Model\OrderDetails;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 use PHPUnit\Framework\TestCase;
@@ -140,15 +139,12 @@ class PaymentClientTest extends TestCase
         $paymentOrder = $this->buildPaymentOrder();
         $paymentOrder->setType('RECURRING');
 
-        $orderDetails = new OrderDetails();
-        $orderDetails->setCycle(40);
-        $orderDetails->setCount(12);
-        $orderDetails->setFirstAmount(6500);
-        $orderDetails->setDay(18);
-        $orderDetails->setStartAt(1637227163);
-
         $multiplePayment = new MultiplePayment();
-        $multiplePayment->setOrderDetails($orderDetails);
+        $multiplePayment->setCycle(40);
+        $multiplePayment->setCount(12);
+        $multiplePayment->setFirstAmount(6500);
+        $multiplePayment->setDay(18);
+        $multiplePayment->setStartAt(1637227163);
 
         $paymentOrder->setMultiplePayment($multiplePayment);
 
@@ -171,12 +167,9 @@ class PaymentClientTest extends TestCase
         $paymentOrder = $this->buildPaymentOrder();
         $paymentOrder->setType('XTIME');
 
-        $orderDetails = new OrderDetails();
-        $orderDetails->setCycle(40);
-        $orderDetails->setCount(3);
-
         $multiplePayment = new MultiplePayment();
-        $multiplePayment->setOrderDetails($orderDetails);
+        $multiplePayment->setCycle(40);
+        $multiplePayment->setCount(3);
 
         $paymentOrder->setMultiplePayment($multiplePayment);
 

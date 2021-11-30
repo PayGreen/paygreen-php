@@ -2,7 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V2\Model;
 
-interface OrderDetailsInterface
+interface MultiplePaymentInterface
 {
     /**
      * @return int

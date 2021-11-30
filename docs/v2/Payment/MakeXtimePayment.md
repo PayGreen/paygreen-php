@@ -32,13 +32,10 @@ $paymentOrder->setType('XTIME');
 $paymentOrder->setOrder($order);
 $paymentOrder->setNotifiedUrl('https://localhost/notify');
 
-$orderDetails = new Paygreen\Sdk\Payment\V2\Model\OrderDetails();
-$orderDetails->setCycle(40); // Number of cycles
-$orderDetails->setCount(12); // Number of payments
-$orderDetails->setFirstAmount(1500); // Amount of the first payment in cents
-
 $multiplePayment = new Paygreen\Sdk\Payment\V2\Model\MultiplePayment();
-$multiplePayment->setOrderDetails($orderDetails);
+$multiplePayment->setCycle(40); // Number of cycles
+$multiplePayment->setCount(12); // Number of payments
+$multiplePayment->setFirstAmount(1500); // Amount of the first payment in cents
 
 $paymentOrder->setMultiplePayment($multiplePayment);
 
