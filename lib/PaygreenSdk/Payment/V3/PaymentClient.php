@@ -160,4 +160,21 @@ class PaymentClient extends Client
 
         return new JsonResponse($response);
     }
+
+    /**
+     * @param int $paymentReference
+     * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
+     */
+    public function refundOrder($paymentReference)
+    {
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentReference);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return new JsonResponse($response);
+    }
 }
