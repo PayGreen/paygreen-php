@@ -10,11 +10,6 @@ interface BuyerInterface
     public function getId();
 
     /**
-     * @param string $id
-     */
-    public function setId($id);
-
-    /**
      * Reference to identify the user on the api.
      *
      * @return null|string
@@ -22,19 +17,9 @@ interface BuyerInterface
     public function getReference();
 
     /**
-     * @param string $reference
-     */
-    public function setReference($reference);
-
-    /**
      * @return string
      */
     public function getFirstName();
-
-    /**
-     * @param string $firstname
-     */
-    public function setFirstname($firstname);
 
     /**
      * @return string
@@ -42,25 +27,14 @@ interface BuyerInterface
     public function getLastName();
 
     /**
-     * @param string $lastname
+     * @return string
      */
-    public function setLastname($lastname);
-
-    // @return string
     public function getEmail();
 
     /**
-     * @param string $email
+     * @return string
      */
-    public function setEmail($email);
-
-    // @return string
     public function getCompanyName();
-
-    /**
-     * @param string $companyName
-     */
-    public function setCompanyName($companyName);
 
     /**
      * @return string
@@ -68,15 +42,7 @@ interface BuyerInterface
     public function getCountryCode();
 
     /**
-     * @param string $countryCode
+     * @return AddressInterface
      */
-    public function setCountryCode($countryCode);
-
-
     public function getBillingAddress();
-
-    /**
-     * @param Address $billingAddress
-     */
-    public function setBillingAddress($billingAddress);
 }
