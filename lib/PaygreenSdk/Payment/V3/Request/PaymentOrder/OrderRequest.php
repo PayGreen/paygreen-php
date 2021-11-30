@@ -113,4 +113,22 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param int $paymentReference
+     * @return Request|RequestInterface
+     * @throws ConstraintViolationException
+     */
+    public function getCaptureRequest($paymentReference)
+    {
+        $violations = Validator::validateValue($paymentReference, new Assert\NotBlank());
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
+        return $this->requestFactory->create(
+            "/payment/payment-orders/{$paymentReference}/capture"
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }

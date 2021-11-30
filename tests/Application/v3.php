@@ -101,3 +101,6 @@ $response = $client->deleteInstrument($instrument->getReference());
 $data = $response->getData();
 dump($data);*/
 
+/*$response = $client->captureOrder("po_83b64a6891d04c60b8d372da4a1df37e");
+$data = $response->getData();
+dump($data);*/

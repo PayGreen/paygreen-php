@@ -143,4 +143,21 @@ class PaymentClient extends Client
 
         return new JsonResponse($response);
     }
+
+    /**
+     * @param int $paymentReference
+     * @throws Exception|\Http\Client\Exception
+     *
+     * @return JsonResponse
+     */
+    public function captureOrder($paymentReference)
+    {
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getCaptureRequest($paymentReference);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return new JsonResponse($response);
+    }
 }
