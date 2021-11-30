@@ -10,19 +10,9 @@ interface OrderInterface
     public function getId();
 
     /**
-     * @param string $id
-     */
-    public function setId($id);
-    
-    /**
      * @return string
      */
     public function getReference();
-
-    /**
-     * @param string $reference
-     */
-    public function setReference($reference);
 
     /**
      * @return BuyerInterface
@@ -30,19 +20,9 @@ interface OrderInterface
     public function getBuyer();
 
     /**
-     * @param BuyerInterface $buyer
-     */
-    public function setBuyer($buyer);
-
-    /**
      * @return AddressInterface
      */
     public function getShippingAddress();
-
-    /**
-     * @param AddressInterface $shippingAddress
-     */
-    public function setShippingAddress($shippingAddress);
 
     /**
      * @return int
@@ -50,17 +30,7 @@ interface OrderInterface
     public function getAmount();
 
     /**
-     * @param int $amount
-     */
-    public function setAmount($amount);
-
-    /**
      * @return string
      */
     public function getCurrency();
-
-    /**
-     * @param string $currency
-     */
-    public function setCurrency($currency);
 }
