@@ -3,7 +3,6 @@
 namespace Paygreen\Sdk\Payment;
 
 use Http\Client\Exception as HttpClientException;
-use Http\Client\HttpClient as HttpClientInterface;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
@@ -13,7 +12,6 @@ use Psr\Log\NullLogger;
 
 abstract class Client
 {
-    /** @var HttpClientInterface */
     protected $client;
 
     /** @var LoggerInterface */
@@ -32,7 +30,7 @@ abstract class Client
     private $lastResponse;
 
     public function __construct(
-        HttpClientInterface $client,
+        $client,
         Environment $environment,
         LoggerInterface $logger = null
     ) {
