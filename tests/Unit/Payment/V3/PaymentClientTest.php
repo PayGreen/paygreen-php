@@ -258,4 +258,16 @@ final class PaymentClientTest extends TestCase
         $this->assertEquals('DELETE', $request->getMethod());
         $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
     }
+
+    public function testRequestCaptureOrder()
+    {
+        $order = new Order();
+        $order->setReference('SDK-ORDER-123');
+
+        $this->client->captureOrder($order->getReference());
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders/SDK-ORDER-123/capture', $request->getUri()->getPath());
+    }
 }
