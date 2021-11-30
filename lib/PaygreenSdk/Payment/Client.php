@@ -2,8 +2,7 @@
 
 namespace Paygreen\Sdk\Payment;
 
-use Http\Client\Exception as HttpClientException;
-use Http\Client\HttpClient as HttpClientInterface;
+use Exception;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
@@ -13,7 +12,6 @@ use Psr\Log\NullLogger;
 
 abstract class Client
 {
-    /** @var HttpClientInterface */
     protected $client;
 
     /** @var LoggerInterface */
@@ -32,7 +30,7 @@ abstract class Client
     private $lastResponse;
 
     public function __construct(
-        HttpClientInterface $client,
+        $client,
         Environment $environment,
         LoggerInterface $logger = null
     ) {
@@ -89,29 +87,21 @@ abstract class Client
     }
 
     /**
-     * @throws HttpClientException
-     *
      * @return ResponseInterface
      */
     protected function sendRequest(RequestInterface $request)
     {
-        try {
-            $this->logger->info("Sending request '{$request->getUri()->getPath()}'.");
+        $this->logger->info("Sending request '{$request->getUri()->getPath()}'.");
 
-            $response = $this->client->sendRequest($request);
+        $response = $this->client->sendRequest($request);
 
-            if ($response->getStatusCode() >= 400) {
-                $this->logger->error('Request error. ', [
-                    'code' => $response->getStatusCode(),
-                    'request' => $request,
-                ]);
-            }
-
-            return $response;
-        } catch (HttpClientException $exception) {
-            $this->logger->error('A client error occurred while sending request.', [$exception]);
-
-            throw new $exception();
+        if ($response->getStatusCode() >= 400) {
+            $this->logger->error('Request error. ', [
+                'code' => $response->getStatusCode(),
+                'request' => $request,
+            ]);
         }
+
+        return $response;
     }
 }
