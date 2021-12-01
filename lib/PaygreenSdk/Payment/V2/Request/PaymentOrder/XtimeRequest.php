@@ -37,8 +37,8 @@ class XtimeRequest extends \Paygreen\Sdk\Core\Request\Request
             'currency' => $paymentOrder->getOrder()->getCurrency(),
             'paymentType' => $paymentOrder->getPaymentType(),
             'type' => $paymentOrder->getType(),
-            'notifiedUrl' => $paymentOrder->getNotifiedUrl(),
-            'returnedUrl' => $paymentOrder->getReturnedUrl(),
+            'notified_url' => $paymentOrder->getNotifiedUrl(),
+            'returned_url' => $paymentOrder->getReturnedUrl(),
             'withPaymentLink' => $paymentOrder->getWithPaymentLink(),
             'buyer' => [
                 'id' => $paymentOrder->getOrder()->getCustomer()->getId(),
