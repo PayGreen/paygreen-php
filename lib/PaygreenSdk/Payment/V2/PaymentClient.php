@@ -3,9 +3,7 @@
 namespace Paygreen\Sdk\Payment\V2;
 
 use Exception;
-use Http\Client\Exception as HttpClientException;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\OAuthRequest;
@@ -18,6 +16,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\TransactionRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentTypeRequest;
 use Paygreen\Sdk\Payment\V2\Request\ShopRequest;
+use Psr\Http\Message\ResponseInterface;
 
 class PaymentClient extends Client
 {
@@ -28,11 +27,10 @@ class PaymentClient extends Client
      * @param null|string $phoneNumber
      * @param null|string $serverAddress
      *
-     * @throws HttpClientException
-     * @throws Exception
      * @throws ConstraintViolationException
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createOAuthAccessToken(
         $ipAddress,
@@ -60,7 +58,7 @@ class PaymentClient extends Client
             $this->logger->info('OAuth access token successfully created.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
@@ -89,11 +87,10 @@ class PaymentClient extends Client
      * @param string $code
      * @param string $grantType
      *
-     * @throws ConstraintViolationException
-     * @throws HttpClientException
      * @throws Exception
+     * @throws ConstraintViolationException
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function controlOAuthAuthentication($clientId, $code, $grantType = 'authorization_code')
     {
@@ -114,12 +111,17 @@ class PaymentClient extends Client
             $this->logger->info('OAuth authentication is valid.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
+    /**
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
     public function getShop()
     {
-        $this->logger->info("Get shop config.");
+        $this->logger->info('Get shop config.');
 
         $request = (new ShopRequest($this->requestFactory, $this->environment))->getGetRequest();
 
@@ -132,16 +134,15 @@ class PaymentClient extends Client
             $this->logger->info('Shop config successfully retrieved.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param PaymentOrder $paymentOrder
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createCashPayment($paymentOrder)
     {
@@ -161,16 +162,15 @@ class PaymentClient extends Client
             $this->logger->info('Cash payment successfully created.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param PaymentOrder $paymentOrder
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createRecurringPayment($paymentOrder)
     {
@@ -190,16 +190,15 @@ class PaymentClient extends Client
             $this->logger->info('Recurring payment successfully created.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param PaymentOrder $paymentOrder
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createXtimePayment($paymentOrder)
     {
@@ -219,16 +218,15 @@ class PaymentClient extends Client
             $this->logger->info('XTIME payment successfully created.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param PaymentOrder $paymentOrder
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createTokenizePayment($paymentOrder)
     {
@@ -248,16 +246,15 @@ class PaymentClient extends Client
             $this->logger->info('Tokenize payment successfully created.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param string $transactionId
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function cancelPayment($transactionId)
     {
@@ -276,17 +273,16 @@ class PaymentClient extends Client
             $this->logger->info('Payment successfully canceled.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param string   $transactionId
      * @param null|int $amount
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function refundPayment($transactionId, $amount = null)
     {
@@ -306,16 +302,15 @@ class PaymentClient extends Client
             $this->logger->info('Refund successfully executed.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param string $transactionId
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function getTransaction($transactionId)
     {
@@ -332,7 +327,7 @@ class PaymentClient extends Client
             $this->logger->info('Transaction successfully retrieved.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
@@ -340,10 +335,9 @@ class PaymentClient extends Client
      *
      * @param string $transactionId
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function confirmTransaction($transactionId)
     {
@@ -362,17 +356,16 @@ class PaymentClient extends Client
             $this->logger->info('Transaction successfully confirmed.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param string $transactionId
      * @param int    $amount
      *
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function updateTransactionAmount($transactionId, $amount)
     {
@@ -392,14 +385,13 @@ class PaymentClient extends Client
             $this->logger->info('Transaction amount successfully updated.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
-     * @throws HttpClientException
      * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function getAvailablePaymentType()
     {
@@ -416,6 +408,6 @@ class PaymentClient extends Client
             $this->logger->info('Available payment successfully retrieved.');
         }
 
-        return new JsonResponse($response);
+        return $response;
     }
 }
