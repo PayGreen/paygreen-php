@@ -14,7 +14,9 @@ $environment = new Environment(
     'YOUR_PUBLIC_KEY',
     'YOUR_PRIVATE_KEY',
     'SANDBOX', // Possible values : PRODUCTION, SANDBOX
-    2
+    2,
+    'my-application-name',
+    'my-application-version'
 );
 
 $paymentClient = new PaymentClient(new Client(), $environment);

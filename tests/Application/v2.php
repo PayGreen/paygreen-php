@@ -16,7 +16,9 @@ $environment = new Environment(
     getenv('PG_PAYMENT_PUBLIC_KEY'),
     getenv('PG_PAYMENT_PRIVATE_KEY'),
     getenv('PG_PAYMENT_API_SERVER'),
-    getenv('PG_PAYMENT_API_VERSION')
+    getenv('PG_PAYMENT_API_VERSION'),
+    'SDK',
+    '1.0.0'
 );
 
 $client = new PaymentClient($curl, $environment);
