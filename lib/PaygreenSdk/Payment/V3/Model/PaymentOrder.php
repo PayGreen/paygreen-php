@@ -117,6 +117,11 @@ class PaymentOrder implements PaymentOrderInterface
      */
     private $startAt;
 
+    /**
+     * @var string
+     */
+    private $objectSecret;
+
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata
@@ -534,5 +539,21 @@ class PaymentOrder implements PaymentOrderInterface
     public function setInstrumentTTL($instrumentTTL)
     {
         $this->instrumentTTL = $instrumentTTL;
+    }
+
+    /**
+     * @return string
+     */
+    public function getObjectSecret()
+    {
+        return $this->objectSecret;
+    }
+
+    /**
+     * @param string $objectSecret
+     */
+    public function setObjectSecret($objectSecret)
+    {
+        $this->objectSecret = $objectSecret;
     }
 }
