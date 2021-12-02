@@ -43,7 +43,6 @@ class Order implements OrderInterface
             ->addPropertyConstraint('reference', new Assert\NotBlank(["groups"=>["reference"]]))
             ->addPropertyConstraints('buyer', [
                 new Assert\NotBlank(),
-                //new Assert\Type(BuyerInterface::class),
                 new Assert\Type([
                     'type' => BuyerInterface::class,
                     'groups' => ['reference']

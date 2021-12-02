@@ -217,4 +217,15 @@ interface PaymentOrderInterface
      * @param int $instrumentTTL
      */
     public function setInstrumentTTL($instrumentTTL);
+
+    /**
+     * @return string
+     */
+    public function getObjectSecret();
+
+    /**
+     * @param string $objectSecret
+     * @return void
+     */
+    public function setObjectSecret($objectSecret);
 }
