@@ -32,6 +32,12 @@ class Environment
     /** @var int */
     private $apiVersion;
 
+    /** @var string */
+    private $applicationName = 'sdk';
+
+    /** @var string */
+    private $applicationVersion = '1.0.0';
+
     /**
      * @param string     $publicKey
      * @param string     $privateKey
@@ -44,7 +50,6 @@ class Environment
         $this->privateKey = $privateKey;
         $this->environment = strtoupper($environment);
         $this->apiVersion = (int) $apiVersion;
-
         $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX];
 
         if (!in_array($this->environment, $availableEnvironments)) {
@@ -91,6 +96,23 @@ class Environment
     /**
      * @return string
      */
+    public function getApplicationName()
+    {
+        return $this->applicationName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApplicationVersion()
+    {
+        return $this->applicationVersion;
+    }
+
+
+    /**
+     * @return string
+     */
     public function getEndpoint()
     {
         if (2 === $this->getApiVersion()) {
@@ -118,10 +140,25 @@ class Environment
 
     /**
      * @param string $bearer
-     * @return void
      */
     public function setBearer($bearer)
     {
         $this->bearer = $bearer;
+    }
+
+    /**
+     * @param string $applicationName
+     */
+    public function setApplicationName($applicationName)
+    {
+        $this->applicationName = $applicationName;
+    }
+
+    /**
+     * @param string $applicationVersion
+     */
+    public function setApplicationVersion($applicationVersion)
+    {
+        $this->applicationVersion = (string) $applicationVersion;
     }
 }

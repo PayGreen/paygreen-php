@@ -85,6 +85,8 @@ class RequestFactory
      */
     private function buildUserAgentHeader()
     {
+        $applicationName = $this->environment->getApplicationName();
+        $applicationVersion = $this->environment->getApplicationVersion();
         $isPhpMajorVersionDefined = defined('PHP_MAJOR_VERSION');
         $isPhpMinorVersionDefined = defined('PHP_MINOR_VERSION');
         $isPhpReleaseVersionDefined = defined('PHP_RELEASE_VERSION');
@@ -95,6 +97,6 @@ class RequestFactory
             $phpVersion = phpversion();
         }
 
-        return "PayGreenSDK/1.0.0 php:{$phpVersion};";
+        return "Application:{$applicationName}/{$applicationVersion} sdk:1.0.0 php:{$phpVersion};";
     }
 }
