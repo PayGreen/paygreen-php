@@ -54,12 +54,12 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getGetRequest(Buyer $buyer)
     {
-        $violations = Validator::validateModel($buyer,"reference");
+        $violations = Validator::validateModel($buyer, "reference");
 
         if ($violations->count() > 0) {
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
-        
+
         $publicKey = $this->environment->getPublicKey();
         $buyerReference = $buyer->getReference();
 
@@ -75,12 +75,12 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest(Buyer $buyer)
     {
-        $violations = Validator::validateModel($buyer,"reference");
+        $violations = Validator::validateModel($buyer, "reference");
 
         if ($violations->count() > 0) {
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
-        
+
         $publicKey = $this->environment->getPublicKey();
         $buyerReference = $buyer->getReference();
 
@@ -91,7 +91,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'reference' => $buyer->getId(),
             'country' => $buyer->getCountryCode()
         ];
-        
+
         if (null !== $buyer->getBillingAddress()) {
             $body [] = [
                 'billing_address' => [
