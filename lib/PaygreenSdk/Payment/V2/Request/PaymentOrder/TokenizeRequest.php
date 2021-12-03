@@ -61,7 +61,6 @@ class TokenizeRequest extends \Paygreen\Sdk\Core\Request\Request
                 'country' => $paymentOrder->getOrder()->getBillingAddress()->getCountryCode(),
             ],
             'metadata' => $paymentOrder->getMetadata(),
-            'eligibleAmount' => $paymentOrder->getEligibleAmount(),
             'ttl' => $paymentOrder->getTtl(),
         ];
 
@@ -70,6 +69,8 @@ class TokenizeRequest extends \Paygreen\Sdk\Core\Request\Request
                 'token' => $paymentOrder->getCardToken(),
             ];
         }
+
+        $body['eligibleAmount'][$paymentOrder->getPaymentType()] = $body['amount'];
 
         return $this->requestFactory->create(
             "/api/{$publicKey}/payins/transaction/tokenize",

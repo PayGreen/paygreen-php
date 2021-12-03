@@ -16,7 +16,9 @@ final class EnvironmentTest extends TestCase
                 'public_key',
                 'private_key',
                 'SANDBOX',
-                2
+                2,
+                'sylius',
+                '5.0.0'
             ))
         );
     }
@@ -29,7 +31,9 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             'INVALID_ENVIRONMENT',
-            2
+            2,
+            'sylius',
+            '5.0.0'
         );
     }
 
@@ -39,7 +43,9 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             'production',
-            2
+            2,
+            'sylius',
+            '5.0.0'
         );
 
         $this->assertEquals(
@@ -61,6 +67,16 @@ final class EnvironmentTest extends TestCase
             2,
             $environment->getApiVersion()
         );
+
+        $this->assertEquals(
+            'sylius',
+            $environment->getApplicationName()
+        );
+
+        $this->assertEquals(
+            '5.0.0',
+            $environment->getApplicationName()
+        );
     }
 
     public function testEnvironmentEndpointDefinition()
@@ -69,7 +85,9 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_SANDBOX,
-            2
+            2,
+            'sylius',
+            '5.0.0'
         );
 
         $this->assertEquals(
@@ -81,7 +99,9 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_PRODUCTION,
-            2
+            2,
+            'sylius',
+            '5.0.0'
         );
 
         $this->assertEquals(
@@ -93,7 +113,9 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_SANDBOX,
-            3
+            3,
+            'sylius',
+            '5.0.0'
         );
 
         $this->assertEquals(
@@ -105,7 +127,9 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_PRODUCTION,
-            3
+            3,
+            'sylius',
+            '5.0.0'
         );
 
         $this->assertEquals(
