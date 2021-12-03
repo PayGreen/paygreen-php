@@ -3,7 +3,6 @@
 namespace Paygreen\Sdk\Payment\V3;
 
 use Exception;
-use Paygreen\Sdk\Core\Response\JsonResponse;
 use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -11,13 +10,14 @@ use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
+use Psr\Http\Message\ResponseInterface;
 
 class PaymentClient extends Client
 {
     /**
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     *@return ResponseInterface
      */
     public function authenticate()
     {
@@ -27,13 +27,13 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createBuyer(Buyer $buyer)
     {
@@ -43,13 +43,13 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function getBuyer(Buyer $buyer)
     {
@@ -59,13 +59,13 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function updateBuyer(Buyer $buyer)
     {
@@ -75,13 +75,13 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function createOrder(PaymentOrder $paymentOrder)
     {
@@ -91,14 +91,14 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param int $paymentReference
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function getOrder($paymentReference)
     {
@@ -108,13 +108,13 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function updateOrder(PaymentOrder $paymentOrder)
     {
@@ -124,14 +124,14 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param int $instrumentReference
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function deleteInstrument($instrumentReference)
     {
@@ -141,14 +141,14 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param int $paymentReference
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function captureOrder($paymentReference)
     {
@@ -158,14 +158,14 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 
     /**
      * @param int $paymentReference
-     * @throws Exception|\Http\Client\Exception
+     * @throws Exception
      *
-     * @return JsonResponse
+     * @return ResponseInterface
      */
     public function refundOrder($paymentReference)
     {
@@ -175,6 +175,6 @@ class PaymentClient extends Client
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
-        return new JsonResponse($response);
+        return $response;
     }
 }

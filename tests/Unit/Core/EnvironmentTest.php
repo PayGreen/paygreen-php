@@ -43,10 +43,11 @@ final class EnvironmentTest extends TestCase
             'public_key',
             'private_key',
             'production',
-            2,
-            'sylius',
-            '5.0.0'
+            2
         );
+
+        $environment->setApplicationName("sylius");
+        $environment->setApplicationVersion("5.0.0");
 
         $this->assertEquals(
             'public_key',
@@ -75,7 +76,7 @@ final class EnvironmentTest extends TestCase
 
         $this->assertEquals(
             '5.0.0',
-            $environment->getApplicationName()
+            $environment->getApplicationVersion()
         );
     }
 

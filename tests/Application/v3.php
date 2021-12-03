@@ -19,12 +19,15 @@ $environment = new Environment(
     getenv('PG_PAYMENT_API_SERVER'),
     getenv('PG_PAYMENT_API_VERSION')
 );
+$environment->setApplicationName("sdk");
+$environment->setApplicationVersion("1.0.0");
 
 $client = new PaymentClient($curl, $environment);
 
 $response = $client->authenticate();
+$data = json_decode($response->getBody()->getContents())->data;
 
-$bearer = $response->getData()->data->token;
+$bearer = $data->token;
 
 $client->setBearer($bearer);
 
@@ -44,17 +47,29 @@ $address->setCountryCode("FR");
 $buyer->setBillingAddress($address);
 
 $response = $client->createBuyer($buyer);
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 //dump($data);
-$buyer->setReference($data->data->id);
-$response = $client->getBuyer($buyer);
-//dump($response->getData());
+$buyer->setReference($data->id);
+try {
+    $response = $client->getBuyer($buyer);
+} catch (Exception $exeption) {
+    dump($exeption);
+}
+
+//$data = json_decode($response->getBody()->getContents())->data;
+//dump($data);
 $buyer->setFirstname('Jerry');
 $buyer->setLastname('Cane');
 $buyer->setEmail('dev-module@paygreen.fr');
 $buyer->setCountryCode('US');
-$response = $client->updateBuyer($buyer);
-//dump($response->getData());
+
+try {
+    $response = $client->updateBuyer($buyer);
+} catch (Exception $exeption) {
+    dump($exeption);
+}
+//$data = json_decode($response->getBody()->getContents())->data;
+//dump($data);
 
 $buyerNoreference = new Buyer();
 $buyerNoreference->setId(uniqid());
@@ -77,42 +92,42 @@ $paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
 $paymentOrder->setOrder($order);
 
 /*$response = $client->createOrder($paymentOrder);
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 $order->setBuyer($buyer);
 $response = $client->createOrder($paymentOrder);
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 
-$order->setReference($data->data->id);
-$paymentOrder->setObjectSecret($data->data->object_secret);
+$order->setReference($data->id);
+$paymentOrder->setObjectSecret($data->object_secret);
 
 $poReference = $paymentOrder->getOrder()->getReference();
 $objectSecret = $paymentOrder->getObjectSecret();
 
 
 /*$response = $client->getOrder($paymentOrder->getOrder()->getReference());
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 /*$paymentOrder->setPartialAllowed(true);
 $response = $client->updateOrder($paymentOrder);
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 /*$instrument = new Instrument();
 $instrument->setReference("ins_4961c47e6666497fb17d4e5af6268ac2");
 $response = $client->deleteInstrument($instrument->getReference());
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 /*$response = $client->captureOrder("po_83b64a6891d04c60b8d372da4a1df37e");
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 /*$response = $client->refundOrder("po_546db30ae2ec47769ef6de982c87b7b2");
-$data = $response->getData();
+$data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 
@@ -135,7 +150,7 @@ $body = '<!DOCTYPE html>
                 <div id="paygreen-pay-btn-frame"></div>
             </div>
     </div>
-        <script type="text/javascript" src="https://rc-pgjs.paygreen.fr/"></script>
+        <script type="text/javascript" src="https://rc-pgjs.paygreen.fr/latest/"></script>
         <script>
             const onDone = () => {
                 console.log("Paiement terminé");
@@ -145,7 +160,7 @@ $body = '<!DOCTYPE html>
                 console.error("Une erreur est survenue dans le flux de paiement");
             }
             ';
-$body .= "paygreenjs.init({paymentOrderID: '{$poReference}',objectSecret: '{$objectSecret}',publicKey: 'pk_adcacb393a7646989dab78d8b7ce98ba',onDone,onError,paymentMethod: 'svad_1'});";
+$body .= "paygreenjs.init({paymentOrderID: '{$poReference}',objectSecret: '{$objectSecret}',publicKey: 'pk_e8cf780bb80942889c100751454caac9',onDone,onError,paymentMethod: 'svad_1'});";
 $body .= '</script>
     <style>
       .pay-button:hover {
