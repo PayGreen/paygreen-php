@@ -60,7 +60,6 @@ class RecurringRequest extends \Paygreen\Sdk\Core\Request\Request
                 'country' => $paymentOrder->getOrder()->getBillingAddress()->getCountryCode(),
             ],
             'metadata' => $paymentOrder->getMetadata(),
-            'eligibleAmount' => $paymentOrder->getEligibleAmount(),
             'ttl' => $paymentOrder->getTtl(),
         ];
 
@@ -79,6 +78,8 @@ class RecurringRequest extends \Paygreen\Sdk\Core\Request\Request
                 'startAt' => $paymentOrder->getMultiplePayment()->getStartAt(),
             ];
         }
+
+        $body['eligibleAmount'][$paymentOrder->getPaymentType()] = $body['amount'];
 
         return $this->requestFactory->create(
             "/api/{$publicKey}/payins/transaction/subscription",
