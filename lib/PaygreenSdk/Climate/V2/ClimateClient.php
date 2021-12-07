@@ -5,6 +5,7 @@ namespace Paygreen\Sdk\Climate\V2;
 use Couchbase\User;
 use Exception;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
+use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
 use Paygreen\Sdk\Climate\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
@@ -128,6 +129,32 @@ class ClimateClient extends GreenClient
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('User data successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createEmptyFootprint($footprintId)
+    {
+        $this->logger->info("Create empty footprint with id '{$footprintId}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getCreateRequest($footprintId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (201 === $response->getStatusCode()) {
+            $this->logger->info('Footprint successfully created.');
         }
 
         return $response;
