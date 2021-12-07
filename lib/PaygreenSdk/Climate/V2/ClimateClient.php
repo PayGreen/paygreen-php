@@ -2,8 +2,8 @@
 
 namespace Paygreen\Sdk\Climate\V2;
 
-use Paygreen\Sdk\Core\Client;
+use Paygreen\Sdk\Core\GreenClient;
 
-class ClimateClient extends Client
+class ClimateClient extends GreenClient
 {
 }

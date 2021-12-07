@@ -3,7 +3,6 @@
 namespace Paygreen\Sdk\Payment\V3;
 
 use Exception;
-use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
@@ -12,7 +11,7 @@ use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PaymentClient extends Client
+class PaymentClient extends \Paygreen\Sdk\Core\PaymentClient
 {
     /**
      * @throws Exception

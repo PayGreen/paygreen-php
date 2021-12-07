@@ -2,8 +2,8 @@
 
 namespace Paygreen\Sdk\Charity\V2;
 
-use Paygreen\Sdk\Core\Client;
+use Paygreen\Sdk\Core\GreenClient;
 
-class CharityClient extends Client
+class CharityClient extends GreenClient
 {
 }
