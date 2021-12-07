@@ -1,0 +1,27 @@
+version: '3.4'
+
+services:
+  php:
+    build:
+      context: .
+      target: php
+    volumes:
+      - ./:/srv/paygreen:rw,cached
+
+  nginx:
+    build:
+      context: .
+      target: nginx
+    depends_on:
+      - php
+    volumes:
+      - ./:/srv/paygreen:ro
+    ports:
+      - "80:80"
+
+  phptools:
+    build:
+      context: .
+      target: phptools
+    volumes:
+      - ./:/srv/paygreen:rw,cached

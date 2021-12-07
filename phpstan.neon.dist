@@ -1,0 +1,12 @@
+parameters:
+    level: 6
+
+    paths:
+        - lib/*
+
+    excludePaths:
+        - tests/*
+
+    ignoreErrors:
+        - '#Method [a-zA-Z0-9\\_:()]+ return type has no value type specified in iterable type [a-zA-Z0-9\\]+.#'
+        - '#Method [a-zA-Z0-9\\_:()]+ has parameter [a-zA-Z0-9\\_$]+ with no value type specified in iterable type array.#'

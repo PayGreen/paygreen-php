@@ -1,0 +1,9 @@
+/behat.yml
+/phpstan.neon
+/.php-cs-fixer.cache
+
+/docker-compose.override.yml
+
+/vendor
+
+/.idea

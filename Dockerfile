@@ -1,0 +1,82 @@
+ARG PHP_VERSION=5.6
+ARG PHPSTAN_PHP_VERSION=7.2
+ARG NGINX_VERSION=1.21
+
+FROM php:${PHP_VERSION}-fpm-alpine AS php
+
+RUN set -eux; \
+    apk add --no-cache \
+		acl \
+        $PHPIZE_DEPS \
+    	; \
+    pecl install \
+        xdebug-2.5.5 \
+    	; \
+    docker-php-ext-install -j$(nproc) \
+        json \
+        ; \
+    docker-php-ext-enable \
+        xdebug
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN set -eux; \
+	composer clear-cache
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
+WORKDIR /srv/paygreen
+
+COPY composer.json composer.lock phpunit.xml.dist ./
+COPY lib lib/
+COPY tests tests/
+
+RUN set -eux; \
+	composer install --prefer-dist --no-scripts --no-progress; \
+	composer clear-cache; \
+    vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
+
+COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["php-fpm"]
+
+
+FROM php:${PHPSTAN_PHP_VERSION}-fpm-alpine AS phptools
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+# https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+RUN set -eux; \
+	composer clear-cache
+ENV PATH="${PATH}:/root/.composer/vendor/bin"
+
+WORKDIR /srv/paygreen
+
+COPY composer.json composer.lock phpunit.xml.dist ./
+COPY lib lib/
+COPY tests tests/
+COPY --from=php /srv/paygreen/vendor vendor/
+
+RUN set -eux; \
+    composer global require phpstan/phpstan; \
+    composer global require friendsofphp/php-cs-fixer; \
+    export PATH=~/.composer/vendor/bin:$PATH
+
+COPY docker/phpstan/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
+RUN chmod +x /usr/local/bin/docker-entrypoint
+
+ENTRYPOINT ["docker-entrypoint"]
+CMD ["php-fpm"]
+
+
+FROM nginx:${NGINX_VERSION}-alpine AS nginx
+
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/
+
+WORKDIR /srv/paygreen
+
+COPY --from=php /srv/paygreen ./
