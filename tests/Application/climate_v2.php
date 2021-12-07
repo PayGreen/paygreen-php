@@ -33,3 +33,7 @@ dump($responseData);
 $response = $client->getUserInfos('moduleTree', 'moduleTree');
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
+
+$response = $client->createEmptyFootprint('my-footprint-id');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
