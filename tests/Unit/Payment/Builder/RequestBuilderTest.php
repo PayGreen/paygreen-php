@@ -2,15 +2,15 @@
 
 namespace Paygreen\Tests\Unit\Payment\Builder;
 
-use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Payment\Factory\RequestFactory;
+use Paygreen\Sdk\Core\Factory\RequestFactory;
+use Paygreen\Sdk\Core\PaymentEnvironment;
 use PHPUnit\Framework\TestCase;
 
 final class RequestBuilderTest extends TestCase
 {
     public function testCanBeCreatedFromValidParameters()
     {
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             'sandbox',

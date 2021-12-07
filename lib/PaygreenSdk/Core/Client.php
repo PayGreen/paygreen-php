@@ -1,10 +1,7 @@
 <?php
 
-namespace Paygreen\Sdk\Payment;
+namespace Paygreen\Sdk\Core;
 
-use Exception;
-use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Payment\Factory\RequestFactory;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -17,12 +14,6 @@ abstract class Client
     /** @var LoggerInterface */
     protected $logger;
 
-    /** @var RequestFactory */
-    protected $requestFactory;
-
-    /** @var Environment */
-    protected $environment;
-
     /** @var RequestInterface */
     private $lastRequest;
 
@@ -31,7 +22,6 @@ abstract class Client
 
     public function __construct(
         $client,
-        Environment $environment,
         LoggerInterface $logger = null
     ) {
         $this->client = $client;
@@ -41,9 +31,6 @@ abstract class Client
         } else {
             $this->logger = $logger;
         }
-
-        $this->environment = $environment;
-        $this->requestFactory = new RequestFactory($this->environment);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Paygreen\Sdk\Core;
 
 use InvalidArgumentException;
 
-class Environment
+abstract class Environment
 {
     const API_VERSION_2 = 2;
     const API_VERSION_3 = 3;
@@ -12,42 +12,27 @@ class Environment
     const ENVIRONMENT_SANDBOX = 'SANDBOX';
     const ENVIRONMENT_PRODUCTION = 'PRODUCTION';
 
-    const ENDPOINT_V2_SANDBOX = 'https://sandbox.paygreen.fr';
-    const ENDPOINT_V2_PRODUCTION = 'https://paygreen.fr';
-    const ENDPOINT_V3_SANDBOX = 'https://rc-api.paygreen.fr';
-    const ENDPOINT_V3_PRODUCTION = 'https://api.paygreen.fr';
+    /** @var string */
+    protected $bearer;
 
     /** @var string */
-    private $publicKey;
-
-    /** @var string */
-    private $privateKey;
-
-    /** @var string */
-    private $bearer;
-
-    /** @var string */
-    private $environment;
+    protected $environment;
 
     /** @var int */
-    private $apiVersion;
+    protected $apiVersion;
 
     /** @var string */
-    private $applicationName = 'sdk';
+    protected $applicationName = 'sdk';
 
     /** @var string */
-    private $applicationVersion = '1.0.0';
+    protected $applicationVersion = '1.0.0';
 
     /**
-     * @param string     $publicKey
-     * @param string     $privateKey
      * @param string     $environment
      * @param int|string $apiVersion
      */
-    public function __construct($publicKey, $privateKey, $environment, $apiVersion)
+    public function __construct($environment, $apiVersion)
     {
-        $this->publicKey = $publicKey;
-        $this->privateKey = $privateKey;
         $this->environment = strtoupper($environment);
         $this->apiVersion = (int) $apiVersion;
         $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX];
@@ -55,26 +40,6 @@ class Environment
         if (!in_array($this->environment, $availableEnvironments)) {
             throw new InvalidArgumentException('Environment only accept: '.implode(', ', $availableEnvironments).'. Current: "'.$environment.'"');
         }
-
-        if (self::API_VERSION_2 === $this->getApiVersion()) {
-            $this->setBearer($this->getPrivateKey());
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getPublicKey()
-    {
-        return $this->publicKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrivateKey()
-    {
-        return $this->privateKey;
     }
 
     /**
@@ -109,27 +74,6 @@ class Environment
         return $this->applicationVersion;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getEndpoint()
-    {
-        if (2 === $this->getApiVersion()) {
-            if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
-                return self::ENDPOINT_V2_SANDBOX;
-            }
-
-            return self::ENDPOINT_V2_PRODUCTION;
-        }
-
-        if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
-            return self::ENDPOINT_V3_SANDBOX;
-        }
-
-        return self::ENDPOINT_V3_PRODUCTION;
-    }
-
     /**
      * @return string
      */
@@ -161,4 +105,9 @@ class Environment
     {
         $this->applicationVersion = (string) $applicationVersion;
     }
+
+    /**
+     * @return string
+     */
+    abstract public function getEndpoint();
 }
