@@ -21,6 +21,7 @@ publish:
   stage: deploy
   only:
     - develop
+    - master
   variables:
     URL: "$CI_SERVER_PROTOCOL://$CI_SERVER_HOST:$CI_SERVER_PORT/api/v4/projects/$CI_PROJECT_ID/packages/composer?job_token=$CI_JOB_TOKEN"
   script:
@@ -36,6 +37,15 @@ publish:
         echo "Could not create package - Code $code - $body";
         exit 1;
       fi
+
+push-github:
+  image: ilyasemenov/gitlab-ci-git-push
+  stage: deploy
+  rules:
+    - when: manual
+  only:
+    - master
+  script: git-push git@github.com:PayGreen/paygreen-php.git
 
 sast:
   stage: test
