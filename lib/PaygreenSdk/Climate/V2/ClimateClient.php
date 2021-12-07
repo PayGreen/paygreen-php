@@ -159,4 +159,33 @@ class ClimateClient extends GreenClient
 
         return $response;
     }
+
+    /**
+     * @param string $footprintId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getFootprint($footprintId, $detailed = false)
+    {
+        $this->logger->info("Get footprint with id '{$footprintId}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getGetRequest(
+            $footprintId,
+            $detailed
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Footprint successfully retrieved.');
+        }
+
+        return $response;
+    }
 }

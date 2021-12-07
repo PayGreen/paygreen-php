@@ -46,4 +46,44 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string $footprintId
+     * @param bool $detailed
+     *
+     * @throws ConstraintViolationException
+     *
+     * @return RequestInterface
+     */
+    public function getGetRequest($footprintId, $detailed = false)
+    {
+        $violations = Validator::validateValue($footprintId, [
+            new Assert\NotBlank(),
+            new Assert\Type('string'),
+            new Assert\Length([
+                'min' => 0,
+                'max' => 100,
+            ]),
+            new Assert\Regex([
+                'pattern' => '/^[a-zA-Z0-9_-]{0,100}$/'
+            ])
+        ]);
+        $violations->addAll(Validator::validateValue($detailed, new Assert\Type('bool')));
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+        
+        $query = ['detailed' => 0];
+        
+        if ($detailed) {
+            $query['detailed'] = 1;
+        }
+
+        return $this->requestFactory->create(
+            "/carbon/footprints/{$footprintId}?".http_build_query($query),
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
