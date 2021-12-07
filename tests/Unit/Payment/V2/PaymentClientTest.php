@@ -4,8 +4,8 @@ namespace Paygreen\Tests\Unit\Payment\V2;
 
 use Http\Client\Exception as HttpClientException;
 use Http\Mock\Client;
-use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
@@ -24,7 +24,7 @@ class PaymentClientTest extends TestCase
     {
         $client = new Client();
 
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             'SANDBOX',

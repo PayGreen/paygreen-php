@@ -4,7 +4,6 @@ namespace Paygreen\Sdk\Payment\V2;
 
 use Exception;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Payment\Client;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\OAuthRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
@@ -18,7 +17,7 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentTypeRequest;
 use Paygreen\Sdk\Payment\V2\Request\ShopRequest;
 use Psr\Http\Message\ResponseInterface;
 
-class PaymentClient extends Client
+class PaymentClient extends \Paygreen\Sdk\Core\PaymentClient
 {
     /**
      * @param string      $ipAddress
