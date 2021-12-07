@@ -3,7 +3,7 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs/client"
   DOCKER_TLS_VERIFY: 1
   DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
-  GIT_DEPTH: 100
+  GIT_DEPTH: 1
 
 stages:
   - test
@@ -41,7 +41,7 @@ publish:
 
 push-to-github:
   image: alpine:3.6
-  stage: test
+  stage: deploy
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual
