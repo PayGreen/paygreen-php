@@ -4,7 +4,7 @@ namespace Paygreen\Sdk\Core\Request;
 
 use Exception;
 use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Payment\Factory\RequestFactory;
+use Paygreen\Sdk\Core\Factory\RequestFactory;
 
 abstract class Request
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Paygreen\Sdk\Payment\Factory;
+namespace Paygreen\Sdk\Core\Factory;
 
 use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Environment;

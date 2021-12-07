@@ -2,7 +2,7 @@
 
 namespace Paygreen\Sdk\Core;
 
-use Paygreen\Sdk\Payment\Factory\RequestFactory;
+use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Psr\Log\LoggerInterface;
 
 abstract class GreenClient extends Client
