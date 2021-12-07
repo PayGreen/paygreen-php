@@ -86,4 +86,45 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string $footprintId
+     * @param string $status
+     *
+     * @throws ConstraintViolationException
+     *
+     * @return RequestInterface
+     */
+    public function getCloseRequest($footprintId, $status)
+    {
+        $violations = Validator::validateValue($footprintId, [
+            new Assert\NotBlank(),
+            new Assert\Type('string'),
+            new Assert\Length([
+                'min' => 0,
+                'max' => 100,
+            ]),
+            new Assert\Regex([
+                'pattern' => '/^[a-zA-Z0-9_-]{0,100}$/'
+            ])
+        ]);
+        $violations->addAll(Validator::validateValue($status, [
+            new Assert\Type('string'),
+            new Assert\Choice(['PURCHASED', 'CLOSED', 'OFFSET_FROM_ANOTHER_VENDOR'])
+        ]));
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+        
+        $body = [
+            'status' => $status
+        ];
+
+        return $this->requestFactory->create(
+            "/carbon/footprints/{$footprintId}",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'PATCH'
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
