@@ -1,6 +1,7 @@
 <?php
 
 use Http\Client\Curl\Client;
+use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
@@ -8,17 +9,14 @@ use Paygreen\Sdk\Payment\V2\Model\Order;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Core\Environment;
 
 $curl = new Client();
 
-$environment = new Environment(
+$environment = new PaymentEnvironment(
     getenv('PG_PAYMENT_PUBLIC_KEY'),
     getenv('PG_PAYMENT_PRIVATE_KEY'),
     getenv('PG_PAYMENT_API_SERVER'),
-    getenv('PG_PAYMENT_API_VERSION'),
-    'SDK',
-    '1.0.0'
+    getenv('PG_PAYMENT_API_VERSION')
 );
 
 $client = new PaymentClient($curl, $environment);

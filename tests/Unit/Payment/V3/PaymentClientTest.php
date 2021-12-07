@@ -3,8 +3,7 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
-use Exception;
-use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
@@ -27,7 +26,7 @@ final class PaymentClientTest extends TestCase
     {
         $client = new Client();
 
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             'SANDBOX',

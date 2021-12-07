@@ -4,21 +4,20 @@ namespace Paygreen\Tests\Unit\Core;
 
 use InvalidArgumentException;
 use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Core\PaymentEnvironment;
 use PHPUnit\Framework\TestCase;
 
-final class EnvironmentTest extends TestCase
+final class PaymentEnvironmentTest extends TestCase
 {
     public function testCanBeCreatedFromValidParameters()
     {
         $this->assertInstanceOf(
-            Environment::class,
-            (new Environment(
+            PaymentEnvironment::class,
+            (new PaymentEnvironment(
                 'public_key',
                 'private_key',
                 'SANDBOX',
-                2,
-                'sylius',
-                '5.0.0'
+                2
             ))
         );
     }
@@ -27,19 +26,17 @@ final class EnvironmentTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Environment(
+        new PaymentEnvironment(
             'public_key',
             'private_key',
             'INVALID_ENVIRONMENT',
-            2,
-            'sylius',
-            '5.0.0'
+            2
         );
     }
 
     public function testEnvironmentAccessors()
     {
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             'production',
@@ -82,59 +79,51 @@ final class EnvironmentTest extends TestCase
 
     public function testEnvironmentEndpointDefinition()
     {
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_SANDBOX,
-            2,
-            'sylius',
-            '5.0.0'
+            2
         );
 
         $this->assertEquals(
-            Environment::ENDPOINT_V2_SANDBOX,
+            PaymentEnvironment::ENDPOINT_V2_SANDBOX,
             $environment->getEndpoint()
         );
 
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_PRODUCTION,
-            2,
-            'sylius',
-            '5.0.0'
+            2
         );
 
         $this->assertEquals(
-            Environment::ENDPOINT_V2_PRODUCTION,
+            PaymentEnvironment::ENDPOINT_V2_PRODUCTION,
             $environment->getEndpoint()
         );
 
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_SANDBOX,
-            3,
-            'sylius',
-            '5.0.0'
+            3
         );
 
         $this->assertEquals(
-            Environment::ENDPOINT_V3_SANDBOX,
+            PaymentEnvironment::ENDPOINT_V3_SANDBOX,
             $environment->getEndpoint()
         );
 
-        $environment = new Environment(
+        $environment = new PaymentEnvironment(
             'public_key',
             'private_key',
             Environment::ENVIRONMENT_PRODUCTION,
-            3,
-            'sylius',
-            '5.0.0'
+            3
         );
 
         $this->assertEquals(
-            Environment::ENDPOINT_V3_PRODUCTION,
+            PaymentEnvironment::ENDPOINT_V3_PRODUCTION,
             $environment->getEndpoint()
         );
     }

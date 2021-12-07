@@ -1,7 +1,7 @@
 <?php
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Core\Environment;
+use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
@@ -13,7 +13,7 @@ use Paygreen\Sdk\Payment\V3\PaymentClient;
 
 $curl = new Client();
 
-$environment = new Environment(
+$environment = new PaymentEnvironment(
     getenv('PG_PAYMENT_PUBLIC_KEY'),
     getenv('PG_PAYMENT_PRIVATE_KEY'),
     getenv('PG_PAYMENT_API_SERVER'),
