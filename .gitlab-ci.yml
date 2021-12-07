@@ -41,7 +41,7 @@ publish:
 
 push-to-github:
   image: alpine:3.6
-  stage: test
+  stage: deploy
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
       when: manual
