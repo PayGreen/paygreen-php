@@ -2,6 +2,7 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\ClimateClient;
+use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\GreenEnvironment;
 
 $curl = new Client();
@@ -42,6 +43,21 @@ $response = $client->getFootprint('my-footprint-id', true);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 
-$response = $client->closeFootprint('my-footprint-id', 'CLOSED');
+// $response = $client->closeFootprint('my-footprint-id', 'CLOSED');
+// $responseData = json_decode($response->getBody()->getContents());
+// dump($responseData);
+
+$webBrowsingData = new WebBrowsingData();
+$webBrowsingData->setUserAgent('Application:my-application/1.0.0 sdk:1.0.0 php:5.6;');
+$webBrowsingData->setCountPages(85);
+$webBrowsingData->setCountImages(15);
+$webBrowsingData->setDevice('Laptop');
+$webBrowsingData->setBrowser('Firefox');
+$webBrowsingData->setTime(4789);
+$webBrowsingData->setExternalId('my-external-id');
+
+$response = $client->addWebBrowsing('my-footprint-id', $webBrowsingData);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
+
+
