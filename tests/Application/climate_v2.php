@@ -59,24 +59,22 @@ $client->setBearer($responseData->access_token);
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
 
-$departure = new Address(
-    '1 rue de Paris',
-    '75000',
-    'Paris',
-    'France'
-);
+$shippedFrom = new Address();
+$shippedFrom->setAddress('1 rue de Paris');
+$shippedFrom->setZipCode('75000');
+$shippedFrom->setCity('Paris');
+$shippedFrom->setCountry('France');
 
-$arrival = new Address(
-    '1 rue de Paris',
-    '75000',
-    'Paris',
-    'France'
-);
+$shippedTo = new Address();
+$shippedTo->setAddress('1 rue de Paris');
+$shippedTo->setZipCode('75000');
+$shippedTo->setCity('Paris');
+$shippedTo->setCountry('France');
 
 $deliveryData = new DeliveryData();
 $deliveryData->setTotalWeightInKg(45.5);
-$deliveryData->setShippedFrom($departure);
-$deliveryData->setShippedTo($arrival);
+$deliveryData->setShippedFrom($shippedFrom);
+$deliveryData->setShippedTo($shippedTo);
 $deliveryData->setTransportationExternalId('my-transportation-external-id');
 //$deliveryData->setDeliveryService('Colissimo');
 

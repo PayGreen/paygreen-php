@@ -149,24 +149,22 @@ class ClimateClientTest extends TestCase
      */
     public function testAddDeliveryData()
     {
-        $departure = new Address(
-            'my-departure-address',
-            'my-departure-zip-code',
-            'my-departure-city',
-            'my-departure-country'
-        );
+        $shippedFrom = new Address();
+        $shippedFrom->setAddress('1 rue de Paris');
+        $shippedFrom->setZipCode('75000');
+        $shippedFrom->setCity('Paris');
+        $shippedFrom->setCountry('France');
 
-        $arrival = new Address(
-            'my-arrival-address',
-            'my-arrival-zip-code',
-            'my-arrival-city',
-            'my-arrival-country'
-        );
+        $shippedTo = new Address();
+        $shippedTo->setAddress('1 rue de Paris');
+        $shippedTo->setZipCode('75000');
+        $shippedTo->setCity('Paris');
+        $shippedTo->setCountry('France');
         
         $deliveryData = new DeliveryData();
         $deliveryData->setTotalWeightInKg(45.50);
-        $deliveryData->setShippedFrom($departure);
-        $deliveryData->setShippedTo($arrival);
+        $deliveryData->setShippedFrom($shippedFrom);
+        $deliveryData->setShippedTo($shippedTo);
         $deliveryData->setTransportationExternalId('my-transporation-external-id');
         $deliveryData->setDeliveryService('Colissimo');
 
