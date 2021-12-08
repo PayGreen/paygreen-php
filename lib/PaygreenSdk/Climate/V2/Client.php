@@ -2,6 +2,7 @@
 
 namespace Paygreen\Sdk\Climate\V2;
 
+use Exception;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
