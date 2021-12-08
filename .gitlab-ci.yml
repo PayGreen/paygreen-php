@@ -3,6 +3,7 @@ variables:
   DOCKER_TLS_CERTDIR: "/certs/client"
   DOCKER_TLS_VERIFY: 1
   DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+  GIT_DEPTH: 1000
 
 stages:
   - test
@@ -21,6 +22,7 @@ publish:
   stage: deploy
   only:
     - develop
+    - master
   variables:
     URL: "$CI_SERVER_PROTOCOL://$CI_SERVER_HOST:$CI_SERVER_PORT/api/v4/projects/$CI_PROJECT_ID/packages/composer?job_token=$CI_JOB_TOKEN"
   script:
@@ -36,6 +38,20 @@ publish:
         echo "Could not create package - Code $code - $body";
         exit 1;
       fi
+
+push-to-github:
+  image: alpine:3.6
+  stage: deploy
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master"
+      when: manual
+  script:
+    - apk add --no-cache bash git openssh-client
+    - mkdir -p ~/.ssh
+    - cp $GITHUB_PUSH_SSH_PRIVATE_KEY ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan "github.com" >> ~/.ssh/known_hosts
+    - git push git@github.com:PayGreen/paygreen-php.git ${CI_COMMIT_SHA:-HEAD}:refs/heads/master --force --tags
 
 sast:
   stage: test
