@@ -1,14 +1,13 @@
 <?php
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\Order;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+use Paygreen\Sdk\Payment\V2\PaymentEnvironment;
 
 $curl = new Client();
 

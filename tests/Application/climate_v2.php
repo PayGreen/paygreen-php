@@ -2,10 +2,9 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\ClimateClient;
+use Paygreen\Sdk\Climate\V2\GreenEnvironment;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
-use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
-use Paygreen\Sdk\Core\GreenEnvironment;
 
 $curl = new Client();
 

@@ -3,7 +3,7 @@
 namespace Paygreen\Tests\Unit\Payment\Builder;
 
 use Paygreen\Sdk\Core\Factory\RequestFactory;
-use Paygreen\Sdk\Core\PaymentEnvironment;
+use Paygreen\Sdk\Payment\V2\PaymentEnvironment;
 use PHPUnit\Framework\TestCase;
 
 final class RequestBuilderTest extends TestCase

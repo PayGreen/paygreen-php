@@ -3,8 +3,8 @@
 namespace Paygreen\Tests\Unit\Core;
 
 use InvalidArgumentException;
+use Paygreen\Sdk\Climate\V2\GreenEnvironment;
 use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Core\GreenEnvironment;
 use PHPUnit\Framework\TestCase;
 
 final class GreenEnvironmentTest extends TestCase

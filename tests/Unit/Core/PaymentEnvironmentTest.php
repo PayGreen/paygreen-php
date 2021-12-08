@@ -4,7 +4,7 @@ namespace Paygreen\Tests\Unit\Core;
 
 use InvalidArgumentException;
 use Paygreen\Sdk\Core\Environment;
-use Paygreen\Sdk\Core\PaymentEnvironment;
+use Paygreen\Sdk\Payment\V2\PaymentEnvironment;
 use PHPUnit\Framework\TestCase;
 
 final class PaymentEnvironmentTest extends TestCase

@@ -4,7 +4,7 @@ namespace Paygreen\Sdk\Core;
 
 use InvalidArgumentException;
 
-abstract class Environment
+abstract class Environment implements EnvironmentInterface
 {
     const API_VERSION_2 = 2;
     const API_VERSION_3 = 3;

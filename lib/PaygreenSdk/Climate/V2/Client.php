@@ -2,8 +2,6 @@
 
 namespace Paygreen\Sdk\Climate\V2;
 
-use Couchbase\User;
-use Exception;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
@@ -11,11 +9,29 @@ use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
 use Paygreen\Sdk\Climate\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Core\GreenClient;
+use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
-class ClimateClient extends GreenClient
+class Client extends \Paygreen\Sdk\Core\Client
 {
+    /** @var RequestFactory */
+    protected $requestFactory;
+
+    /** @var Environment*/
+    protected $environment;
+
+    public function __construct(
+        $client,
+        Environment $environment,
+        LoggerInterface $logger = null
+    ) {
+        $this->environment = $environment;
+        $this->requestFactory = new RequestFactory($this->environment);
+
+        parent::__construct($client, $logger);
+    }
+
     /**
      * @param string      $clientId
      * @param string      $username

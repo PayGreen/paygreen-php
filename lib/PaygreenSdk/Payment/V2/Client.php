@@ -4,6 +4,7 @@ namespace Paygreen\Sdk\Payment\V2;
 
 use Exception;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\OAuthRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\CancelRequest;
@@ -16,9 +17,27 @@ use Paygreen\Sdk\Payment\V2\Request\PaymentOrder\XtimeRequest;
 use Paygreen\Sdk\Payment\V2\Request\PaymentTypeRequest;
 use Paygreen\Sdk\Payment\V2\Request\ShopRequest;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
-class PaymentClient extends \Paygreen\Sdk\Core\PaymentClient
+class Client extends \Paygreen\Sdk\Core\Client
 {
+    /** @var RequestFactory */
+    protected $requestFactory;
+
+    /** @var Environment */
+    protected $environment;
+
+    public function __construct(
+        $client,
+        Environment $environment,
+        LoggerInterface $logger = null
+    ) {
+        $this->environment = $environment;
+        $this->requestFactory = new RequestFactory($this->environment);
+
+        parent::__construct($client, $logger);
+    }
+    
     /**
      * @param string      $ipAddress
      * @param string      $email

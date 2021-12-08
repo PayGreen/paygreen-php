@@ -1,11 +1,9 @@
 <?php
 
-namespace Paygreen\Sdk\Core;
+namespace Paygreen\Sdk\Payment\V3;
 
-class PaymentEnvironment extends Environment
+class Environment extends \Paygreen\Sdk\Core\Environment
 {
-    const ENDPOINT_V2_SANDBOX = 'https://sandbox.paygreen.fr';
-    const ENDPOINT_V2_PRODUCTION = 'https://paygreen.fr';
     const ENDPOINT_V3_SANDBOX = 'https://rc-api.paygreen.fr';
     const ENDPOINT_V3_PRODUCTION = 'https://api.paygreen.fr';
 

@@ -1,13 +1,12 @@
 <?php
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Core\PaymentEnvironment;
+use Paygreen\Sdk\Payment\V2\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
-use Paygreen\Sdk\Payment\V3\Model\Instrument;
-use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\PaymentClient;
 

@@ -4,11 +4,11 @@ namespace Paygreen\Tests\Unit\Climate\V2;
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\ClimateClient;
+use Paygreen\Sdk\Climate\V2\GreenEnvironment;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Core\GreenEnvironment;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
