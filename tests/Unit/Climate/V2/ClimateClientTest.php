@@ -4,6 +4,7 @@ namespace Paygreen\Tests\Unit\Climate\V2;
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\ClimateClient;
+use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\GreenEnvironment;
 use PHPUnit\Framework\TestCase;
@@ -119,5 +120,26 @@ class ClimateClientTest extends TestCase
 
         $this->assertEquals('PATCH', $request->getMethod());
         $this->assertEquals('/carbon/footprints/footprint_id', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testAddWebBrowsingData()
+    {
+        $webBrowsingData = new WebBrowsingData();
+        $webBrowsingData->setUserAgent('Application:my-application/1.0.0 sdk:1.0.0 php:5.6;');
+        $webBrowsingData->setCountPages(85);
+        $webBrowsingData->setCountImages(15);
+        $webBrowsingData->setDevice('Laptop');
+        $webBrowsingData->setBrowser('Firefox');
+        $webBrowsingData->setTime(4789);
+        $webBrowsingData->setExternalId('my-external-id');
+        
+        $this->client->addWebBrowsing('footprint_id', $webBrowsingData);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint_id/web', $request->getUri()->getPath());
     }
 }
