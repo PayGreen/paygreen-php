@@ -72,4 +72,16 @@ class ClimateClientTest extends TestCase
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/account/client_id', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testGetUserInfos()
+    {
+        $this->client->getUserInfos('client_id', 'username');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/client_id/user/username', $request->getUri()->getPath());
+    }
 }

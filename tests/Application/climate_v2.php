@@ -29,3 +29,7 @@ $client->setBearer($responseData->access_token);
 $response = $client->getAccountInfos('moduleTree');
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
+
+$response = $client->getUserInfos('moduleTree', 'moduleTree');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
