@@ -8,7 +8,6 @@ use Paygreen\Sdk\Climate\V2\Model\Address;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Climate\V2\Environment;
-use Paygreen\Sdk\Climate\V2\Model\Address;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
