@@ -205,14 +205,24 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
 
         $body = [
             'totalWeightInKg' => $deliveryData->getTotalWeightInKg(),
-            'departure' => $deliveryData->getDeparture(),
-            'arrival' => $deliveryData->getArrival(),
+            'departure' => [
+                'address' => $deliveryData->getDeparture()->address,
+                'zipCode' => $deliveryData->getDeparture()->zipCode,
+                'city' => $deliveryData->getDeparture()->city,
+                'country' => $deliveryData->getDeparture()->country,
+            ],
+            'arrival' => [
+                'address' => $deliveryData->getArrival()->address,
+                'zipCode' => $deliveryData->getArrival()->zipCode,
+                'city' => $deliveryData->getArrival()->city,
+                'country' => $deliveryData->getArrival()->country,
+            ],
             'transportationExternalId' => $deliveryData->getTransportationExternalId(),
             'deliveryService' => $deliveryData->getDeliveryService()
         ];
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/web",
+            "/carbon/footprints/{$footprintId}/delivery",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
