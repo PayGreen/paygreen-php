@@ -75,8 +75,8 @@ $arrival = new Address(
 
 $deliveryData = new DeliveryData();
 $deliveryData->setTotalWeightInKg(45.5);
-$deliveryData->setDeparture($departure);
-$deliveryData->setArrival($arrival);
+$deliveryData->setShippedFrom($departure);
+$deliveryData->setShippedTo($arrival);
 $deliveryData->setTransportationExternalId('my-transportation-external-id');
 //$deliveryData->setDeliveryService('Colissimo');
 

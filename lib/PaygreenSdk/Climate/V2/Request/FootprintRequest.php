@@ -206,16 +206,16 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = [
             'totalWeightInKg' => $deliveryData->getTotalWeightInKg(),
             'departure' => [
-                'address' => $deliveryData->getDeparture()->getAddress(),
-                'zipCode' => $deliveryData->getDeparture()->getZipCode(),
-                'city' => $deliveryData->getDeparture()->getCity(),
-                'country' => $deliveryData->getDeparture()->getCountry(),
+                'address' => $deliveryData->getShippedFrom()->getAddress(),
+                'zipCode' => $deliveryData->getShippedFrom()->getZipCode(),
+                'city' => $deliveryData->getShippedFrom()->getCity(),
+                'country' => $deliveryData->getShippedFrom()->getCountry(),
             ],
             'arrival' => [
-                'address' => $deliveryData->getArrival()->getAddress(),
-                'zipCode' => $deliveryData->getArrival()->getZipCode(),
-                'city' => $deliveryData->getArrival()->getCity(),
-                'country' => $deliveryData->getArrival()->getCountry(),
+                'address' => $deliveryData->getShippedTo()->getAddress(),
+                'zipCode' => $deliveryData->getShippedTo()->getZipCode(),
+                'city' => $deliveryData->getShippedTo()->getCity(),
+                'country' => $deliveryData->getShippedTo()->getCountry(),
             ],
             'transportationExternalId' => $deliveryData->getTransportationExternalId(),
             'deliveryService' => $deliveryData->getDeliveryService()
