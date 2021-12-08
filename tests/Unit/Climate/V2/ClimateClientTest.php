@@ -130,8 +130,8 @@ class ClimateClientTest extends TestCase
     {
         $webBrowsingData = new WebBrowsingData();
         $webBrowsingData->setUserAgent('Application:my-application/1.0.0 sdk:1.0.0 php:5.6;');
-        $webBrowsingData->setCountPages(85);
-        $webBrowsingData->setCountImages(15);
+        $webBrowsingData->setPageCount(85);
+        $webBrowsingData->setImageCount(15);
         $webBrowsingData->setDevice('Laptop');
         $webBrowsingData->setBrowser('Firefox');
         $webBrowsingData->setTime(4789);

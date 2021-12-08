@@ -163,8 +163,8 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             'userAgent' => $webBrowsingData->getUserAgent(),
             'device' => $webBrowsingData->getDevice(),
             'browser' => $webBrowsingData->getBrowser(),
-            'countImages' => $webBrowsingData->getCountImages(),
-            'countPages' => $webBrowsingData->getCountPages(),
+            'countImages' => $webBrowsingData->getImageCount(),
+            'countPages' => $webBrowsingData->getPageCount(),
             'time' => $webBrowsingData->getTime(),
             'externalId' => $webBrowsingData->getExternalId()
         ];
