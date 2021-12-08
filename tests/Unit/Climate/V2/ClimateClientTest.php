@@ -174,4 +174,20 @@ class ClimateClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/footprints/footprint_id/delivery', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testAddProductData()
+    {
+        $this->client->addProductData(
+            'footprint_id',
+            'my-product-external-reference',
+            1
+        );
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint_id/products', $request->getUri()->getPath());
+    }
 }
