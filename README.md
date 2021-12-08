@@ -9,6 +9,7 @@ composer require paygreen/paygreen-php
 
 ## Requirements
 
+- PHP 5.6 and above.
 - PSR-7 HTTP Client like [Guzzle](https://github.com/guzzle/guzzle) or [curl-client](https://github.com/php-http/curl-client)
 
 ## Getting Started
@@ -17,41 +18,41 @@ composer require paygreen/paygreen-php
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Payment\V2\PaymentClient;
 
-putenv("PG_PAYMENT_PUBLIC_KEY=public_key");
-putenv("PG_PAYMENT_PRIVATE_KEY=private_key");
-putenv("PG_PAYMENT_API_SERVER=PRODUCTION");
-putenv("PG_PAYMENT_API_VERSION=2");
+$environment = new Environment('YOUR_PUBLIC_KEY', 'YOUR_PRIVATE_KEY', 'SANDBOX', 2);
 
-$curl = new Client();
-$client = new PaymentClient($curl);
+$client = new PaymentClient(new Client(), $environment);
 
+$customer = new Paygreen\Sdk\Payment\V2\Model\Customer();
+$customer->setId('my-customer-id');
+$customer->setEmail('john.doe@customer.fr');
+// ... and setStreetLineOne, setLastname
 
-$customer = new Customer();
-$customer->setEmail('john.doe@customer.com');
-// ... set id, firstname, lastname
+$shippingAddress = new Paygreen\Sdk\Payment\V2\Model\Address();
+$shippingAddress->setCity('London');
+// ... and setStreetLineOne, setCountryCode, setPostcode
 
-$shippingAddress = new Address();
-$shippingAddress->setCity('Rouen');
-// ... set firstname, lastname, street, postcode, country
+$billingAddress = new Paygreen\Sdk\Payment\V2\Model\Address();
+$billingAddress->setCity('London');
+// ... and setStreetLineOne, setCountryCode, setPostcode
 
-$billingAddress = new Address();
-$billingAddress->setCity('Rouen');
-// ... set firstname, lastname, street, postcode, country
-
-$order = new Order();
+$order = new Paygreen\Sdk\Payment\V2\Model\Order();
 $order->setCustomer($customer);
 $order->setBillingAddress($billingAddress);
 $order->setShippingAddress($shippingAddress);
-$order->setReference('my-reference');
-$order->setAmount(1000);
+$order->setReference('my-order-reference');
+$order->setAmount(2650);
 $order->setCurrency('EUR');
 
-$paymentOrder = new PaymentOrder();
+$paymentOrder = new Paygreen\Sdk\Payment\V2\Model\PaymentOrder();
+$paymentOrder->setType('CASH');
 $paymentOrder->setOrder($order);
+$paymentOrder->setNotifiedUrl('https://localhost/notify');
 
-$response = $client->createCashPayment($paymentOrder);
-
-$data = $response->getData();
+try {
+    $response = $paymentClient->createCashPayment($paymentOrder);
+} catch (Paygreen\Sdk\Core\Exception\ConstraintViolationException $exception) {
+    // Here you can catch constraint validation errors.
+}
 ```
 
 ## Testing
