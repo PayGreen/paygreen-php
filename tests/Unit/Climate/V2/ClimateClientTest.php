@@ -84,4 +84,16 @@ class ClimateClientTest extends TestCase
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/account/client_id/user/username', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testCreateEmptyFootprint()
+    {
+        $this->client->createEmptyFootprint('footprint_id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/footprints', $request->getUri()->getPath());
+    }
 }
