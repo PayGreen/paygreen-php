@@ -2,6 +2,8 @@
 
 namespace Paygreen\Sdk\Climate\V2\Request;
 
+use Exception;
+use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
@@ -125,6 +127,50 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             "/carbon/footprints/{$footprintId}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'PATCH'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string $footprintId
+     * @param WebBrowsingData $webBrowsingData
+     *
+     * @return RequestInterface
+     * @throws Exception
+     *
+     * @throws ConstraintViolationException
+     */
+    public function getAddWebBrowsingRequest($footprintId, WebBrowsingData $webBrowsingData)
+    {
+        $violations = Validator::validateValue($footprintId, [
+            new Assert\NotBlank(),
+            new Assert\Type('string'),
+            new Assert\Length([
+                'min' => 0,
+                'max' => 100,
+            ]),
+            new Assert\Regex([
+                'pattern' => '/^[a-zA-Z0-9_-]{0,100}$/'
+            ])
+        ]);
+        $violations->addAll(Validator::validateModel($webBrowsingData));
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
+        $body = [
+            'userAgent' => $webBrowsingData->getUserAgent(),
+            'device' => $webBrowsingData->getDevice(),
+            'browser' => $webBrowsingData->getBrowser(),
+            'countImages' => $webBrowsingData->getCountImages(),
+            'countPages' => $webBrowsingData->getCountPages(),
+            'time' => $webBrowsingData->getTime(),
+            'externalId' => $webBrowsingData->getExternalId()
+        ];
+
+        return $this->requestFactory->create(
+            "/carbon/footprints/{$footprintId}/web",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
 }
