@@ -26,6 +26,9 @@ abstract class Environment implements EnvironmentInterface
 
     /** @var string */
     protected $applicationVersion = '1.0.0';
+    
+    /** @var bool */
+    protected $testMode = false;
 
     /**
      * @param string     $environment
@@ -104,6 +107,22 @@ abstract class Environment implements EnvironmentInterface
     public function setApplicationVersion($applicationVersion)
     {
         $this->applicationVersion = (string) $applicationVersion;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTestMode()
+    {
+        return $this->testMode;
+    }
+
+    /**
+     * @param bool $testMode
+     */
+    public function setTestMode($testMode)
+    {
+        $this->testMode = $testMode;
     }
 
     /**

@@ -55,6 +55,16 @@ interface EnvironmentInterface
     public function setApplicationVersion($applicationVersion);
 
     /**
+     * @return bool 
+     */
+    public function isTestMode();
+
+    /**
+     * @param bool $testMode 
+     */
+    public function setTestMode($testMode);
+    
+    /**
      * @return string
      */
     public function getEndpoint();
