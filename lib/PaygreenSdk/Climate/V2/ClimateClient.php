@@ -4,6 +4,7 @@ namespace Paygreen\Sdk\Climate\V2;
 
 use Couchbase\User;
 use Exception;
+use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
 use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
@@ -214,6 +215,36 @@ class ClimateClient extends GreenClient
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Footprint successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     * @param WebBrowsingData $webBrowsingData
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function addWebBrowsing($footprintId, WebBrowsingData $webBrowsingData)
+    {
+        $this->logger->info("Add web browsing date to footprint with id '{$footprintId}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getAddWebBrowsingRequest(
+            $footprintId,
+            $webBrowsingData
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Web browsing data successfully added.');
         }
 
         return $response;
