@@ -14,8 +14,7 @@ final class GreenEnvironmentTest extends TestCase
         $this->assertInstanceOf(
             GreenEnvironment::class,
             (new GreenEnvironment(
-                'access_token',
-                'refresh_token',
+                'client_id',
                 'SANDBOX',
                 2
             ))
@@ -27,8 +26,7 @@ final class GreenEnvironmentTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         new GreenEnvironment(
-            'access_token',
-            'refresh_token',
+            'client_id',
             'SANDBOX',
             'INVALID_API_VERSION'
         );
@@ -37,28 +35,21 @@ final class GreenEnvironmentTest extends TestCase
     public function testEnvironmentAccessors()
     {
         $environment = new GreenEnvironment(
-            'access_token',
-            'refresh_token',
+            'client_id',
             'production',
             2
         );
 
         $this->assertEquals(
-            'access_token',
-            $environment->getBearer()
-        );
-
-        $this->assertEquals(
-            'refresh_token',
-            $environment->getRefreshToken()
+            'client_id',
+            $environment->getClientId()
         );
     }
 
     public function testEnvironmentEndpointDefinition()
     {
         $environment = new GreenEnvironment(
-            'access_token',
-            'refresh_token',
+            'client_id',
             Environment::ENVIRONMENT_SANDBOX,
             2
         );
@@ -69,8 +60,7 @@ final class GreenEnvironmentTest extends TestCase
         );
 
         $environment = new GreenEnvironment(
-            'access_token',
-            'refresh_token',
+            'client_id',
             Environment::ENVIRONMENT_PRODUCTION,
             2
         );
