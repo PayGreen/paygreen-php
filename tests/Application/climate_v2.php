@@ -41,3 +41,7 @@ dump($responseData);
 $response = $client->getFootprint('my-footprint-id', true);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
+
+$response = $client->closeFootprint('my-footprint-id', 'CLOSED');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
