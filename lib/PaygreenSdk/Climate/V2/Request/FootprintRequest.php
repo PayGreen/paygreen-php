@@ -77,11 +77,9 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
         
-        $query = ['detailed' => 0];
-        
-        if ($detailed) {
-            $query['detailed'] = 1;
-        }
+        $query = [
+            'detailed' => ($detailed) ? 1 : 0
+        ];
 
         return $this->requestFactory->create(
             "/carbon/footprints/{$footprintId}?".http_build_query($query),
