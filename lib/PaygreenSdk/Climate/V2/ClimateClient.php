@@ -230,11 +230,11 @@ class ClimateClient extends GreenClient
      *
      * @return ResponseInterface
      */
-    public function addWebBrowsing($footprintId, WebBrowsingData $webBrowsingData)
+    public function addWebBrowsingData($footprintId, WebBrowsingData $webBrowsingData)
     {
-        $this->logger->info("Add web browsing date to footprint with id '{$footprintId}'.");
+        $this->logger->info("Add web browsing data to footprint with id '{$footprintId}'.");
 
-        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getAddWebBrowsingRequest(
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getAddWebBrowsingDataRequest(
             $footprintId,
             $webBrowsingData
         );
@@ -260,11 +260,11 @@ class ClimateClient extends GreenClient
      *
      * @return ResponseInterface
      */
-    public function addDelivery($footprintId, DeliveryData $deliveryData)
+    public function addDeliveryData($footprintId, DeliveryData $deliveryData)
     {
         $this->logger->info("Add delivery data to footprint with id '{$footprintId}'.");
 
-        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getAddDeliveryRequest(
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getAddDeliveryDataRequest(
             $footprintId,
             $deliveryData
         );

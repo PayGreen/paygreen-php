@@ -56,7 +56,7 @@ $webBrowsingData->setBrowser('Firefox');
 $webBrowsingData->setTime(4789);
 $webBrowsingData->setExternalId('my-external-id');
 
-$response = $client->addWebBrowsing('my-footprint-id', $webBrowsingData);
+$response = $client->addWebBrowsingData('my-footprint-id', $webBrowsingData);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 

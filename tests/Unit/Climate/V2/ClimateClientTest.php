@@ -136,7 +136,7 @@ class ClimateClientTest extends TestCase
         $webBrowsingData->setTime(4789);
         $webBrowsingData->setExternalId('my-external-id');
         
-        $this->client->addWebBrowsing('footprint_id', $webBrowsingData);
+        $this->client->addWebBrowsingData('footprint_id', $webBrowsingData);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());

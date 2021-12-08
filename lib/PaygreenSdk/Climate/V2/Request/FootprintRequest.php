@@ -140,7 +140,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @throws ConstraintViolationException
      */
-    public function getAddWebBrowsingRequest($footprintId, WebBrowsingData $webBrowsingData)
+    public function getAddWebBrowsingDataRequest($footprintId, WebBrowsingData $webBrowsingData)
     {
         $violations = Validator::validateValue($footprintId, [
             new Assert\NotBlank(),
@@ -184,7 +184,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @throws ConstraintViolationException
      */
-    public function getAddDeliveryRequest($footprintId, DeliveryData $deliveryData)
+    public function getAddDeliveryDataRequest($footprintId, DeliveryData $deliveryData)
     {
         $violations = Validator::validateValue($footprintId, [
             new Assert\NotBlank(),
