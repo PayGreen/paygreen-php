@@ -4,6 +4,8 @@ namespace Paygreen\Tests\Unit\Climate\V2;
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\ClimateClient;
+use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
+use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\GreenEnvironment;
@@ -141,5 +143,38 @@ class ClimateClientTest extends TestCase
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/footprints/footprint_id/web', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testAddDeliveryData()
+    {
+        $departure = new PostalAddress(
+            'my-departure-address',
+            'my-departure-zip-code',
+            'my-departure-city',
+            'my-departure-country'
+        );
+
+        $arrival = new PostalAddress(
+            'my-arrival-address',
+            'my-arrival-zip-code',
+            'my-arrival-city',
+            'my-arrival-country'
+        );
+        
+        $deliveryData = new DeliveryData();
+        $deliveryData->setTotalWeightInKg(45.50);
+        $deliveryData->setDeparture($departure);
+        $deliveryData->setArrival($arrival);
+        $deliveryData->setTransportationExternalId('my-transporation-external-id');
+        $deliveryData->setDeliveryService('Colissimo');
+
+        $this->client->addDeliveryData('footprint_id', $deliveryData);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint_id/transportation', $request->getUri()->getPath());
     }
 }
