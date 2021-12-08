@@ -4,14 +4,14 @@ namespace Paygreen\Sdk\Core;
 
 use InvalidArgumentException;
 
-abstract class Environment
+abstract class Environment implements EnvironmentInterface
 {
     const API_VERSION_2 = 2;
     const API_VERSION_3 = 3;
 
     const ENVIRONMENT_SANDBOX = 'SANDBOX';
     const ENVIRONMENT_PRODUCTION = 'PRODUCTION';
-
+    
     /** @var string */
     protected $bearer;
 
@@ -26,6 +26,9 @@ abstract class Environment
 
     /** @var string */
     protected $applicationVersion = '1.0.0';
+    
+    /** @var bool */
+    protected $testMode = false;
 
     /**
      * @param string     $environment
@@ -104,6 +107,22 @@ abstract class Environment
     public function setApplicationVersion($applicationVersion)
     {
         $this->applicationVersion = (string) $applicationVersion;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTestMode()
+    {
+        return $this->testMode;
+    }
+
+    /**
+     * @param bool $testMode
+     */
+    public function setTestMode($testMode)
+    {
+        $this->testMode = $testMode;
     }
 
     /**

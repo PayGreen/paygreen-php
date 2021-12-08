@@ -1,27 +1,25 @@
 <?php
 
-namespace Paygreen\Sdk\Core;
+namespace Paygreen\Sdk\Climate\V2;
 
 use InvalidArgumentException;
 
-class GreenEnvironment extends Environment
+class Environment extends \Paygreen\Sdk\Core\Environment
 {
     const ENDPOINT_V2_SANDBOX = 'https://sb-api-climatekit.paygreen.fr';
     const ENDPOINT_V2_PRODUCTION = 'https://solidaire.paygreen.fr';
-
+    
     /** @var string */
-    private $refreshToken;
-
+    private $clientId;
+    
     /**
-     * @param string     $accessToken
-     * @param string     $refreshToken
+     * @param string $clientId
      */
-    public function __construct($accessToken, $refreshToken, $environment, $apiVersion)
+    public function __construct($clientId, $environment, $apiVersion)
     {
         parent::__construct($environment, $apiVersion);
         
-        $this->bearer = $accessToken;
-        $this->refreshToken = $refreshToken;
+        $this->clientId = $clientId;
         $availableApiVersions = [self::API_VERSION_2];
 
         if (!in_array($this->apiVersion, $availableApiVersions)) {
@@ -32,17 +30,17 @@ class GreenEnvironment extends Environment
     /**
      * @return string
      */
-    public function getRefreshToken()
+    public function getClientId()
     {
-        return $this->refreshToken;
+        return $this->clientId;
     }
 
     /**
-     * @param string $refreshToken
+     * @param string $clientId
      */
-    public function setRefreshToken($refreshToken)
+    public function setClientId($clientId)
     {
-        $this->refreshToken = $refreshToken;
+        $this->clientId = $clientId;
     }
 
     /**

@@ -5,15 +5,13 @@ use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Address;
-use Paygreen\Sdk\Payment\V3\Model\Instrument;
-use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V3\PaymentClient;
 
 $curl = new Client();
 
-$environment = new PaymentEnvironment(
+$environment = new \Paygreen\Sdk\Payment\V3\Environment(
     getenv('PG_PAYMENT_PUBLIC_KEY'),
     getenv('PG_PAYMENT_PRIVATE_KEY'),
     getenv('PG_PAYMENT_API_SERVER'),
@@ -22,7 +20,7 @@ $environment = new PaymentEnvironment(
 $environment->setApplicationName("sdk");
 $environment->setApplicationVersion("1.0.0");
 
-$client = new PaymentClient($curl, $environment);
+$client = new \Paygreen\Sdk\Payment\V3\Client($curl, $environment);
 
 $response = $client->authenticate();
 $data = json_decode($response->getBody()->getContents())->data;

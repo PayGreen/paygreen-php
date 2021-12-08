@@ -32,11 +32,15 @@ class RequestFactory
     ) {
         $url = $this->environment->getEndpoint().$url;
 
-        $header = [
+        $headers = [
             'User-Agent' => $this->buildUserAgentHeader(),
         ];
+        
+        if ($this->environment->isTestMode()) {
+            $headers['X-TEST-MODE'] = 1;
+        }
 
-        $this->request = new Request($method, $url, $header, $body);
+        $this->request = new Request($method, $url, $headers, $body);
 
         return $this;
     }

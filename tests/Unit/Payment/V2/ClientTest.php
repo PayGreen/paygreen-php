@@ -5,26 +5,25 @@ namespace Paygreen\Tests\Unit\Payment\V2;
 use Http\Client\Exception as HttpClientException;
 use Http\Mock\Client;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Core\PaymentEnvironment;
+use Paygreen\Sdk\Payment\V2\Environment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\Order;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V2\PaymentClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
-class PaymentClientTest extends TestCase
+class ClientTest extends TestCase
 {
-    /** @var PaymentClient */
+    /** @var \Paygreen\Sdk\Payment\V2\Client */
     private $client;
 
     public function setUp()
     {
         $client = new Client();
 
-        $environment = new PaymentEnvironment(
+        $environment = new Environment(
             'public_key',
             'private_key',
             'SANDBOX',
@@ -33,7 +32,7 @@ class PaymentClientTest extends TestCase
 
         $logger = new NullLogger();
 
-        $this->client = new PaymentClient($client, $environment, $logger);
+        $this->client = new \Paygreen\Sdk\Payment\V2\Client($client, $environment, $logger);
     }
 
     /**
