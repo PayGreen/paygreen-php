@@ -19,7 +19,7 @@ $billingAddress->setCity('London');
 $billingAddress->setCountryCode('UK');
 $billingAddress->setPostcode('SW14 6ZG');
 
-$order = new Paygreen\Sdk\Payment\V2\Model\Order() // Must implement the OrderInterface;
+$order = new Paygreen\Sdk\Payment\V2\Model\Order(); // Must implement the OrderInterface;
 $order->setCustomer($customer);
 $order->setBillingAddress($billingAddress);
 $order->setShippingAddress($shippingAddress);
