@@ -2,8 +2,6 @@
 
 namespace Paygreen\Sdk\Core;
 
-use InvalidArgumentException;
-
 interface EnvironmentInterface
 {
     /**
