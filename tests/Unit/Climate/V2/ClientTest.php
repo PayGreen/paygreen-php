@@ -4,7 +4,7 @@ namespace Paygreen\Tests\Unit\Climate\V2;
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
-use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
+use Paygreen\Sdk\Climate\V2\Model\Address;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Climate\V2\Environment;
@@ -150,14 +150,14 @@ class ClientTest extends TestCase
      */
     public function testAddDeliveryData()
     {
-        $departure = new PostalAddress(
+        $departure = new Address(
             'my-departure-address',
             'my-departure-zip-code',
             'my-departure-city',
             'my-departure-country'
         );
 
-        $arrival = new PostalAddress(
+        $arrival = new Address(
             'my-arrival-address',
             'my-arrival-zip-code',
             'my-arrival-city',
