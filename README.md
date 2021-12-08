@@ -55,6 +55,10 @@ try {
 }
 ```
 
+## Documentation
+
+See the [docs](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/README.md).
+
 ## Testing
 
 Start docker stack:
