@@ -11,10 +11,10 @@ class DeliveryData
     private $totalWeightInKg;
     
     /** @var Address */
-    private $departure;
+    private $shippedFrom;
 
     /** @var Address */
-    private $arrival;
+    private $shippedTo;
 
     /** @var string */
     private $transportationExternalId;
@@ -29,14 +29,14 @@ class DeliveryData
                 new Assert\NotBlank(),
                 new Assert\Type('float'),
             ])
-            ->addPropertyConstraints('departure', [
+            ->addPropertyConstraints('shippedFrom', [
                 new Assert\NotBlank(),
                 new Assert\Type(Address::class),
                 new Assert\Valid()
             ])
-            ->addPropertyConstraints('arrival', [
+            ->addPropertyConstraints('shippedTo', [
                 new Assert\NotBlank(),
-                new Assert\Type(PostalAddress::class),
+                new Assert\Type(Address::class),
                 new Assert\Valid()
             ])
             ->addPropertyConstraints('transportationExternalId', [
@@ -66,33 +66,33 @@ class DeliveryData
     /**
      * @return Address
      */
-    public function getDeparture()
+    public function getShippedFrom()
     {
-        return $this->departure;
+        return $this->shippedFrom;
     }
 
     /**
-     * @param Address $departure
+     * @param Address $shippedFrom
      */
-    public function setDeparture(Address $departure)
+    public function setShippedFrom($shippedFrom)
     {
-        $this->departure = $departure;
+        $this->shippedFrom = $shippedFrom;
     }
 
     /**
      * @return Address
      */
-    public function getArrival()
+    public function getShippedTo()
     {
-        return $this->arrival;
+        return $this->shippedTo;
     }
 
     /**
-     * @param Address $arrival
+     * @param Address $shippedTo
      */
-    public function setArrival(Address $arrival)
+    public function setShippedTo($shippedTo)
     {
-        $this->arrival = $arrival;
+        $this->shippedTo = $shippedTo;
     }
 
     /**

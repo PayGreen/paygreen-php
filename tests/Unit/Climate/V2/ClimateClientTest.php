@@ -165,8 +165,8 @@ class ClimateClientTest extends TestCase
         
         $deliveryData = new DeliveryData();
         $deliveryData->setTotalWeightInKg(45.50);
-        $deliveryData->setDeparture($departure);
-        $deliveryData->setArrival($arrival);
+        $deliveryData->setShippedFrom($departure);
+        $deliveryData->setShippedTo($arrival);
         $deliveryData->setTransportationExternalId('my-transporation-external-id');
         $deliveryData->setDeliveryService('Colissimo');
 
