@@ -1,5 +1,5 @@
 {
-  "name": "paygreen/paygreen-sdk",
+  "name": "paygreen/paygreen-php",
   "version": "1.0.3",
   "description": "PayGreen PHP SDK",
   "type": "library",
