@@ -3,6 +3,7 @@
 namespace Paygreen\Sdk\Payment\V3;
 
 use Exception;
+use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
@@ -10,9 +11,27 @@ use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
-class PaymentClient extends \Paygreen\Sdk\Core\PaymentClient
+class Client extends \Paygreen\Sdk\Core\Client
 {
+    /** @var RequestFactory */
+    protected $requestFactory;
+
+    /** @var Environment */
+    protected $environment;
+
+    public function __construct(
+        $client,
+        Environment $environment,
+        LoggerInterface $logger = null
+    ) {
+        $this->environment = $environment;
+        $this->requestFactory = new RequestFactory($this->environment);
+
+        parent::__construct($client, $logger);
+    }
+    
     /**
      * @throws Exception
      *

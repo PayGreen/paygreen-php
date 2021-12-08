@@ -1,10 +1,10 @@
 <?php
 
-namespace Paygreen\Sdk\Core;
+namespace Paygreen\Sdk\Climate\V2;
 
 use InvalidArgumentException;
 
-class GreenEnvironment extends Environment
+class Environment extends \Paygreen\Sdk\Core\Environment
 {
     const ENDPOINT_V2_SANDBOX = 'https://sb-api-climatekit.paygreen.fr';
     const ENDPOINT_V2_PRODUCTION = 'https://solidaire.paygreen.fr';

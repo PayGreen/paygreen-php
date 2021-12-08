@@ -1,21 +1,18 @@
 <?php
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Climate\V2\ClimateClient;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
-use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
-use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
-use Paygreen\Sdk\Core\GreenEnvironment;
+use Paygreen\Sdk\Climate\V2\Model\Address;
 
 $curl = new Client();
 
-$environment = new GreenEnvironment(
+$environment = new \Paygreen\Sdk\Climate\V2\Environment(
     getenv('PG_CLIMATE_CLIENT_ID'),
     getenv('PG_CLIMATE_API_SERVER'),
     getenv('PG_CLIMATE_API_VERSION')
 );
 
-$client = new ClimateClient($curl, $environment);
+$client = new \Paygreen\Sdk\Climate\V2\Client($curl, $environment);
 
 $response = $client->login('moduleTree', 'moduleTree', 'moduleTree');
 $responseData = json_decode($response->getBody()->getContents());
@@ -51,8 +48,8 @@ $client->setBearer($responseData->access_token);
 
 // $webBrowsingData = new WebBrowsingData();
 // $webBrowsingData->setUserAgent('Application:my-application/1.0.0 sdk:1.0.0 php:5.6;');
-// $webBrowsingData->setCountPages(85);
-// $webBrowsingData->setCountImages(15);
+// $webBrowsingData->setPageCount(85);
+// $webBrowsingData->setImageCount(15);
 // $webBrowsingData->setDevice('Laptop');
 // $webBrowsingData->setBrowser('Firefox');
 // $webBrowsingData->setTime(4789);
@@ -62,24 +59,22 @@ $client->setBearer($responseData->access_token);
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
 
-$departure = new PostalAddress(
-    '1 rue de Paris',
-    '75000',
-    'Paris',
-    'France'
-);
+$shippedFrom = new Address();
+$shippedFrom->setAddress('1 rue de Paris');
+$shippedFrom->setZipCode('75000');
+$shippedFrom->setCity('Paris');
+$shippedFrom->setCountry('France');
 
-$arrival = new PostalAddress(
-    '1 rue de Paris',
-    '75000',
-    'Paris',
-    'France'
-);
+$shippedTo = new Address();
+$shippedTo->setAddress('1 rue de Paris');
+$shippedTo->setZipCode('75000');
+$shippedTo->setCity('Paris');
+$shippedTo->setCountry('France');
 
 $deliveryData = new DeliveryData();
 $deliveryData->setTotalWeightInKg(45.5);
-$deliveryData->setDeparture($departure);
-$deliveryData->setArrival($arrival);
+$deliveryData->setShippedFrom($shippedFrom);
+$deliveryData->setShippedTo($shippedTo);
 $deliveryData->setTransportationExternalId('my-transportation-external-id');
 //$deliveryData->setDeliveryService('Colissimo');
 

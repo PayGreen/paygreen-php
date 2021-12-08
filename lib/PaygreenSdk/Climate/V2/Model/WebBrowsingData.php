@@ -17,10 +17,10 @@ class WebBrowsingData
     private $browser;
 
     /** @var integer */
-    private $countImages;
+    private $imageCount;
 
     /** @var integer */
-    private $countPages;
+    private $pageCount;
 
     /** @var integer */
     private $time;
@@ -46,8 +46,8 @@ class WebBrowsingData
                     'max' => 100
                 ])
             ])
-            ->addPropertyConstraint('countImages', new Assert\Type('integer'))
-            ->addPropertyConstraints('countPages', [
+            ->addPropertyConstraint('imageCount', new Assert\Type('integer'))
+            ->addPropertyConstraints('pageCount', [
                 new Assert\NotBlank(),
                 new Assert\Type('integer')
             ])
@@ -113,33 +113,33 @@ class WebBrowsingData
     /**
      * @return int
      */
-    public function getCountImages()
+    public function getImageCount()
     {
-        return $this->countImages;
+        return $this->imageCount;
     }
 
     /**
-     * @param int $countImages
+     * @param int $imageCount
      */
-    public function setCountImages($countImages)
+    public function setImageCount($imageCount)
     {
-        $this->countImages = $countImages;
+        $this->imageCount = $imageCount;
     }
 
     /**
      * @return int
      */
-    public function getCountPages()
+    public function getPageCount()
     {
-        return $this->countPages;
+        return $this->pageCount;
     }
 
     /**
-     * @param int $countPages
+     * @param int $pageCount
      */
-    public function setCountPages($countPages)
+    public function setPageCount($pageCount)
     {
-        $this->countPages = $countPages;
+        $this->pageCount = $pageCount;
     }
 
     /**

@@ -77,11 +77,9 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
         
-        $query = ['detailed' => 0];
-        
-        if ($detailed) {
-            $query['detailed'] = 1;
-        }
+        $query = [
+            'detailed' => ($detailed) ? 1 : 0
+        ];
 
         return $this->requestFactory->create(
             "/carbon/footprints/{$footprintId}?".http_build_query($query),
@@ -163,8 +161,8 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             'userAgent' => $webBrowsingData->getUserAgent(),
             'device' => $webBrowsingData->getDevice(),
             'browser' => $webBrowsingData->getBrowser(),
-            'countImages' => $webBrowsingData->getCountImages(),
-            'countPages' => $webBrowsingData->getCountPages(),
+            'countImages' => $webBrowsingData->getImageCount(),
+            'countPages' => $webBrowsingData->getPageCount(),
             'time' => $webBrowsingData->getTime(),
             'externalId' => $webBrowsingData->getExternalId()
         ];
@@ -206,16 +204,16 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = [
             'totalWeightInKg' => $deliveryData->getTotalWeightInKg(),
             'departure' => [
-                'address' => $deliveryData->getDeparture()->address,
-                'zipCode' => $deliveryData->getDeparture()->zipCode,
-                'city' => $deliveryData->getDeparture()->city,
-                'country' => $deliveryData->getDeparture()->country,
+                'address' => $deliveryData->getShippedFrom()->getAddress(),
+                'zipCode' => $deliveryData->getShippedFrom()->getZipCode(),
+                'city' => $deliveryData->getShippedFrom()->getCity(),
+                'country' => $deliveryData->getShippedFrom()->getCountry(),
             ],
             'arrival' => [
-                'address' => $deliveryData->getArrival()->address,
-                'zipCode' => $deliveryData->getArrival()->zipCode,
-                'city' => $deliveryData->getArrival()->city,
-                'country' => $deliveryData->getArrival()->country,
+                'address' => $deliveryData->getShippedTo()->getAddress(),
+                'zipCode' => $deliveryData->getShippedTo()->getZipCode(),
+                'city' => $deliveryData->getShippedTo()->getCity(),
+                'country' => $deliveryData->getShippedTo()->getCountry(),
             ],
             'transportationExternalId' => $deliveryData->getTransportationExternalId(),
             'deliveryService' => $deliveryData->getDeliveryService()

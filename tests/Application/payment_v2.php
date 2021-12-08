@@ -7,19 +7,18 @@ use Paygreen\Sdk\Payment\V2\Model\Customer;
 use Paygreen\Sdk\Payment\V2\Model\MultiplePayment;
 use Paygreen\Sdk\Payment\V2\Model\Order;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V2\PaymentClient;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+
 
 $curl = new Client();
 
-$environment = new PaymentEnvironment(
+$environment = new \Paygreen\Sdk\Payment\V2\Environment(
     getenv('PG_PAYMENT_PUBLIC_KEY'),
     getenv('PG_PAYMENT_PRIVATE_KEY'),
     getenv('PG_PAYMENT_API_SERVER'),
     getenv('PG_PAYMENT_API_VERSION')
 );
 
-$client = new PaymentClient($curl, $environment);
+$client = new \Paygreen\Sdk\Payment\V2\Client($curl, $environment);
 
 //$response = $client->getShop();
 //$responseData = $response->getData();

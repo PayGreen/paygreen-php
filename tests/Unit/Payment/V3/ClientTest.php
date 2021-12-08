@@ -3,22 +3,21 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
-use Paygreen\Sdk\Core\PaymentEnvironment;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
 use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V3\PaymentClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
-final class PaymentClientTest extends TestCase
+final class ClientTest extends TestCase
 {
     /**
-     * @var PaymentClient
+     * @var \Paygreen\Sdk\Payment\V3\Client
      */
     private $client;
 
@@ -26,7 +25,7 @@ final class PaymentClientTest extends TestCase
     {
         $client = new Client();
 
-        $environment = new PaymentEnvironment(
+        $environment = new Environment(
             'public_key',
             'private_key',
             'SANDBOX',
@@ -35,7 +34,7 @@ final class PaymentClientTest extends TestCase
 
         $logger = new NullLogger();
 
-        $this->client = new PaymentClient($client, $environment, $logger);
+        $this->client = new \Paygreen\Sdk\Payment\V3\Client($client, $environment, $logger);
     }
 
     public function testRequestAuthenticate()

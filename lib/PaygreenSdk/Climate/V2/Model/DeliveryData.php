@@ -10,11 +10,11 @@ class DeliveryData
     /** @var float */
     private $totalWeightInKg;
     
-    /** @var PostalAddress */
-    private $departure;
+    /** @var Address */
+    private $shippedFrom;
 
-    /** @var PostalAddress */
-    private $arrival;
+    /** @var Address */
+    private $shippedTo;
 
     /** @var string */
     private $transportationExternalId;
@@ -29,14 +29,14 @@ class DeliveryData
                 new Assert\NotBlank(),
                 new Assert\Type('float'),
             ])
-            ->addPropertyConstraints('departure', [
+            ->addPropertyConstraints('shippedFrom', [
                 new Assert\NotBlank(),
-                new Assert\Type(PostalAddress::class),
+                new Assert\Type(Address::class),
                 new Assert\Valid()
             ])
-            ->addPropertyConstraints('arrival', [
+            ->addPropertyConstraints('shippedTo', [
                 new Assert\NotBlank(),
-                new Assert\Type(PostalAddress::class),
+                new Assert\Type(Address::class),
                 new Assert\Valid()
             ])
             ->addPropertyConstraints('transportationExternalId', [
@@ -64,35 +64,35 @@ class DeliveryData
     }
 
     /**
-     * @return PostalAddress
+     * @return Address
      */
-    public function getDeparture()
+    public function getShippedFrom()
     {
-        return $this->departure;
+        return $this->shippedFrom;
     }
 
     /**
-     * @param PostalAddress $departure
+     * @param Address $shippedFrom
      */
-    public function setDeparture(PostalAddress $departure)
+    public function setShippedFrom($shippedFrom)
     {
-        $this->departure = $departure;
+        $this->shippedFrom = $shippedFrom;
     }
 
     /**
-     * @return PostalAddress
+     * @return Address
      */
-    public function getArrival()
+    public function getShippedTo()
     {
-        return $this->arrival;
+        return $this->shippedTo;
     }
 
     /**
-     * @param PostalAddress $arrival
+     * @param Address $shippedTo
      */
-    public function setArrival(PostalAddress $arrival)
+    public function setShippedTo($shippedTo)
     {
-        $this->arrival = $arrival;
+        $this->shippedTo = $shippedTo;
     }
 
     /**
