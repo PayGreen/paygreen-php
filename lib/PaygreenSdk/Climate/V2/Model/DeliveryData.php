@@ -10,10 +10,10 @@ class DeliveryData
     /** @var float */
     private $totalWeightInKg;
     
-    /** @var PostalAddress */
+    /** @var Address */
     private $departure;
 
-    /** @var PostalAddress */
+    /** @var Address */
     private $arrival;
 
     /** @var string */
@@ -31,7 +31,7 @@ class DeliveryData
             ])
             ->addPropertyConstraints('departure', [
                 new Assert\NotBlank(),
-                new Assert\Type(PostalAddress::class),
+                new Assert\Type(Address::class),
                 new Assert\Valid()
             ])
             ->addPropertyConstraints('arrival', [
@@ -64,7 +64,7 @@ class DeliveryData
     }
 
     /**
-     * @return PostalAddress
+     * @return Address
      */
     public function getDeparture()
     {
@@ -72,15 +72,15 @@ class DeliveryData
     }
 
     /**
-     * @param PostalAddress $departure
+     * @param Address $departure
      */
-    public function setDeparture(PostalAddress $departure)
+    public function setDeparture(Address $departure)
     {
         $this->departure = $departure;
     }
 
     /**
-     * @return PostalAddress
+     * @return Address
      */
     public function getArrival()
     {
@@ -88,9 +88,9 @@ class DeliveryData
     }
 
     /**
-     * @param PostalAddress $arrival
+     * @param Address $arrival
      */
-    public function setArrival(PostalAddress $arrival)
+    public function setArrival(Address $arrival)
     {
         $this->arrival = $arrival;
     }

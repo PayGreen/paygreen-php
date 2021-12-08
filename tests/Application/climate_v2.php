@@ -2,7 +2,7 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
-use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
+use Paygreen\Sdk\Climate\V2\Model\Address;
 
 $curl = new Client();
 
@@ -59,14 +59,14 @@ $client->setBearer($responseData->access_token);
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
 
-$departure = new PostalAddress(
+$departure = new Address(
     '1 rue de Paris',
     '75000',
     'Paris',
     'France'
 );
 
-$arrival = new PostalAddress(
+$arrival = new Address(
     '1 rue de Paris',
     '75000',
     'Paris',
