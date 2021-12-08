@@ -7,14 +7,6 @@ use InvalidArgumentException;
 interface EnvironmentInterface
 {
     /**
-     * @param string     $environment
-     * @param int|string $apiVersion
-     * 
-     * @throws InvalidArgumentException
-     */
-    public function __construct($environment, $apiVersion);
-
-    /**
      * @return string
      */
     public function getEnvironment();

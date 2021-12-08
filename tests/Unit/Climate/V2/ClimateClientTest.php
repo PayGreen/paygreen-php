@@ -3,8 +3,7 @@
 namespace Paygreen\Tests\Unit\Climate\V2;
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Climate\V2\ClimateClient;
-use Paygreen\Sdk\Climate\V2\GreenEnvironment;
+use Paygreen\Sdk\Climate\V2\Environment;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
@@ -14,14 +13,14 @@ use Psr\Log\NullLogger;
 
 class ClimateClientTest extends TestCase
 {
-    /** @var ClimateClient */
+    /** @var \Paygreen\Sdk\Climate\V2\Client */
     private $client;
 
     public function setUp()
     {
         $client = new Client();
 
-        $environment = new GreenEnvironment(
+        $environment = new Environment(
             'client_id',
             'SANDBOX',
             2
@@ -29,7 +28,7 @@ class ClimateClientTest extends TestCase
 
         $logger = new NullLogger();
 
-        $this->client = new ClimateClient($client, $environment, $logger);
+        $this->client = new \Paygreen\Sdk\Climate\V2\Client($client, $environment, $logger);
     }
 
     /**
@@ -175,6 +174,6 @@ class ClimateClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/carbon/footprints/footprint_id/transportation', $request->getUri()->getPath());
+        $this->assertEquals('/carbon/footprints/footprint_id/delivery', $request->getUri()->getPath());
     }
 }

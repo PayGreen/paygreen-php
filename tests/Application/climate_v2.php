@@ -1,20 +1,18 @@
 <?php
 
 use Http\Client\Curl\Client;
-use Paygreen\Sdk\Climate\V2\ClimateClient;
-use Paygreen\Sdk\Climate\V2\GreenEnvironment;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\PostalAddress;
 
 $curl = new Client();
 
-$environment = new GreenEnvironment(
+$environment = new \Paygreen\Sdk\Climate\V2\Environment(
     getenv('PG_CLIMATE_CLIENT_ID'),
     getenv('PG_CLIMATE_API_SERVER'),
     getenv('PG_CLIMATE_API_VERSION')
 );
 
-$client = new ClimateClient($curl, $environment);
+$client = new \Paygreen\Sdk\Climate\V2\Client($curl, $environment);
 
 $response = $client->login('moduleTree', 'moduleTree', 'moduleTree');
 $responseData = json_decode($response->getBody()->getContents());
