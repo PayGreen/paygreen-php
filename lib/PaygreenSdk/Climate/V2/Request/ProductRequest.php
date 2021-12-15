@@ -14,10 +14,10 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $footprintId
-     *
-     * @throws ConstraintViolationException
-     *
+     * @param string $productExternalReference
+     * @param integer $quantity
      * @return RequestInterface
+     * @throws ConstraintViolationException
      */
     public function getAddProductDataRequest(
         $footprintId,
@@ -40,7 +40,8 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             new Assert\Type('string')
         ]));
         $violations->addAll(Validator::validateValue($quantity, [
-            new Assert\NotBlank()
+            new Assert\NotBlank(),
+            new Assert\Type('integer')
         ]));
 
         if ($violations->count() > 0) {

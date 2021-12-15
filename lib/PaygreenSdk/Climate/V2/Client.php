@@ -302,7 +302,7 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $footprintId
      * @param string $productExternalId
-     * @param string $quantity
+     * @param integer $quantity
      *
      * @throws ConstraintViolationException
      * @throws Exception
