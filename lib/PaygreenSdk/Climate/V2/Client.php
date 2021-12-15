@@ -365,4 +365,62 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @param string $footprintId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function removeDeliveryData($footprintId)
+    {
+        $this->logger->info("Remove delivery data on footprint with id '{$footprintId}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getDeleteDeliveryDataRequest(
+            $footprintId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (204 === $response->getStatusCode()) {
+            $this->logger->info('Delivery data successfully removed.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     * @param null|string $productExternalReference
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function removeProductData($footprintId, $productExternalReference = null)
+    {
+        $this->logger->info("Remove product data on footprint with id '{$footprintId}'.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getDeleteProductDataRequest(
+            $footprintId,
+            $productExternalReference
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (204 === $response->getStatusCode()) {
+            $this->logger->info('Product data successfully removed.');
+        }
+
+        return $response;
+    }
 }
