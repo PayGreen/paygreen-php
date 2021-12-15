@@ -98,6 +98,13 @@ $response = $client->createProductReference(
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 
+$response = $client->createProductReference(
+    'my-external-product-reference',
+    'my-product-name'
+);
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
+
 $response = $client->addProductData(
     'my-footprint-id',
     'my-external-product-reference',
