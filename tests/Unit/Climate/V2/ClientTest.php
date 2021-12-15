@@ -165,7 +165,7 @@ class ClientTest extends TestCase
         $deliveryData->setTotalWeightInKg(45.50);
         $deliveryData->setShippedFrom($shippedFrom);
         $deliveryData->setShippedTo($shippedTo);
-        $deliveryData->setTransportationExternalId('my-transporation-external-id');
+        $deliveryData->setTransportationExternalId('1-28022');
         $deliveryData->setDeliveryService('Colissimo');
 
         $this->client->addDeliveryData('footprint_id', $deliveryData);
