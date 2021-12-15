@@ -8,18 +8,16 @@ PHP 5.6 and above.
 
 First, you need to initialize the HTTP client:
 ```php
-$client = new Client(); // Must implement the HttpClient interface
+$psr18Client = new Client(); // Must implement the HttpClient interface
 
-$environment = new Environment(
+$environment = new Paygreen\Sdk\Payment\V2\Environment(
     'YOUR_PUBLIC_KEY',
     'YOUR_PRIVATE_KEY',
     'SANDBOX', // Possible values : PRODUCTION, SANDBOX
-    2,
-    'my-application-name',
-    'my-application-version'
+    2
 );
 
-$paymentClient = new PaymentClient(new Client(), $environment);
+$client = new Paygreen\Sdk\Payment\V2\Client($psr18Client, $environment);
 ```
 
 ### Samples
