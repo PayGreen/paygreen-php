@@ -330,4 +330,39 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @param string $productExternalId
+     * @param string $productName
+     * @param null|string $emissionExternalId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createProductReference(
+        $productExternalId,
+        $productName,
+        $emissionExternalId = null
+    ) {
+        $this->logger->info("Create product reference with id '{$productExternalId}'.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getCreateProductReferenceRequest(
+            $productExternalId,
+            $productName,
+            $emissionExternalId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (201 === $response->getStatusCode()) {
+            $this->logger->info('Product reference successfully created.');
+        }
+
+        return $response;
+    }
 }

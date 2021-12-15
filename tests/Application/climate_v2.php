@@ -12,6 +12,8 @@ $environment = new \Paygreen\Sdk\Climate\V2\Environment(
     getenv('PG_CLIMATE_API_VERSION')
 );
 
+$environment->setTestMode(true);
+
 $client = new \Paygreen\Sdk\Climate\V2\Client($curl, $environment);
 
 $response = $client->login('moduleTree', 'moduleTree', 'moduleTree');
@@ -34,9 +36,9 @@ $client->setBearer($responseData->access_token);
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
 
-// $response = $client->createEmptyFootprint('my-footprint-id');
-// $responseData = json_decode($response->getBody()->getContents());
-// dump($responseData);
+$response = $client->createEmptyFootprint('my-footprint-id');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
 
 // $response = $client->getFootprint('my-footprint-id', true);
 // $responseData = json_decode($response->getBody()->getContents());
@@ -82,9 +84,16 @@ $client->setBearer($responseData->access_token);
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
 
+$response = $client->createProductReference(
+    'my-external-product-reference',
+    'my-product-name'
+);
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
+
 $response = $client->addProductData(
     'my-footprint-id',
-    'AZ1234',
+    'my-external-product-reference',
     1
 );
 

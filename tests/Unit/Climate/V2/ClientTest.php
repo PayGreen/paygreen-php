@@ -190,4 +190,19 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/footprints/footprint_id/products', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testCreateProductReference()
+    {
+        $this->client->createProductReference(
+            'my-product-external-reference',
+            'my-product-name'
+        );
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/products/references', $request->getUri()->getPath());
+    }
 }

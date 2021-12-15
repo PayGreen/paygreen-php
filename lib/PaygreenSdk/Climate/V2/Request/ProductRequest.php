@@ -58,4 +58,46 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string $productExternalReference
+     * @param string $productName
+     * @param null|string $emissionExternalId
+     *
+     * @throws ConstraintViolationException
+     *
+     * @return RequestInterface
+     */
+    public function getCreateProductReferenceRequest(
+        $productExternalReference,
+        $productName,
+        $emissionExternalId = null
+    ) {
+        $violations = Validator::validateValue($productExternalReference, [
+            new Assert\NotBlank(),
+            new Assert\Type('string')
+        ]);
+        $violations->addAll(Validator::validateValue($productName, [
+            new Assert\NotBlank(),
+            new Assert\Type('string'),
+        ]));
+        $violations->addAll(Validator::validateValue($emissionExternalId, [
+            new Assert\Type('string'),
+        ]));
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
+        $body = [
+            'productExternalReference' => $productExternalReference,
+            'productName' => $productName,
+            'emissionExternalId' => $emissionExternalId,
+        ];
+
+        return $this->requestFactory->create(
+            "/carbon/products/references",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
