@@ -141,4 +141,33 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             'DELETE'
         )->withAuthorization()->getRequest();
     }
+
+    /**
+     * @param string $filepath
+     *
+     * @return RequestInterface
+     * @throws Exception
+     *
+     * @throws ConstraintViolationException
+     */
+    public function getExportProductCatalogRequest($filepath)
+    {
+        $violations = Validator::validateValue($filepath, [
+            new Assert\NotBlank(),
+            new Assert\Type('string'),
+        ]);
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
+        $body = [
+            'inputCsv' => curl_file_create($filepath, 'text/csv', 'product_catalog.csv'),
+        ];
+
+        return $this->requestFactory->create(
+            '/carbon/products/catalog',
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->getRequest();
+    }
 }

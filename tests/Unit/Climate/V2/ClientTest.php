@@ -242,4 +242,16 @@ class ClientTest extends TestCase
             $request->getUri()->getPath()
         );
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testExportProductCatalog()
+    {
+        $this->client->exportProductCatalog('my-product-catalog-path');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/products/catalog', $request->getUri()->getPath());
+    }
 }
