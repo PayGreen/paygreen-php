@@ -205,4 +205,41 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/products/references', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testRemoveDeliveryData()
+    {
+        $this->client->removeDeliveryData('footprint-id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint-id/delivery', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testRemoveProductData()
+    {
+        $this->client->removeProductData('footprint-id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint-id/products', $request->getUri()->getPath());
+
+        $this->client->removeProductData(
+            'footprint-id',
+            'my-product-external-reference'
+        );
+        
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals(
+            '/carbon/footprints/footprint-id/products/my-product-external-reference',
+            $request->getUri()->getPath()
+        );
+    }
 }

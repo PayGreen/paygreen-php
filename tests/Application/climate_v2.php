@@ -61,24 +61,24 @@ dump($responseData);
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
 
-// $shippedFrom = new Address();
-// $shippedFrom->setAddress('1 rue de Paris');
-// $shippedFrom->setZipCode('75000');
-// $shippedFrom->setCity('Paris');
-// $shippedFrom->setCountry('France');
+$shippedFrom = new Address();
+$shippedFrom->setAddress('1 rue de Paris');
+$shippedFrom->setZipCode('75000');
+$shippedFrom->setCity('Paris');
+$shippedFrom->setCountry('France');
 
-// $shippedTo = new Address();
-// $shippedTo->setAddress('1 rue de Paris');
-// $shippedTo->setZipCode('75000');
-// $shippedTo->setCity('Paris');
-// $shippedTo->setCountry('France');
+$shippedTo = new Address();
+$shippedTo->setAddress('1 rue de Paris');
+$shippedTo->setZipCode('75000');
+$shippedTo->setCity('Paris');
+$shippedTo->setCountry('France');
 
-// $deliveryData = new DeliveryData();
-// $deliveryData->setTotalWeightInKg(45.5);
-// $deliveryData->setShippedFrom($shippedFrom);
-// $deliveryData->setShippedTo($shippedTo);
-// $deliveryData->setTransportationExternalId('my-transportation-external-id');
-// $deliveryData->setDeliveryService('Colissimo');
+$deliveryData = new DeliveryData();
+$deliveryData->setTotalWeightInKg(45.5);
+$deliveryData->setShippedFrom($shippedFrom);
+$deliveryData->setShippedTo($shippedTo);
+$deliveryData->setTransportationExternalId('my-transportation-external-id');
+$deliveryData->setDeliveryService('Colissimo');
 
 // $response = $client->addDeliveryData('my-footprint-id', $deliveryData);
 // $responseData = json_decode($response->getBody()->getContents());
@@ -97,5 +97,17 @@ $response = $client->addProductData(
     1
 );
 
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
+
+$response = $client->removeDeliveryData('my-footprint-id');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
+
+$response = $client->removeProductData('my-footprint-id', 'my-external-product-reference');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
+
+$response = $client->removeProductData('my-footprint-id');
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
