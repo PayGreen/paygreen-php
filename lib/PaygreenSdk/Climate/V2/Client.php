@@ -423,4 +423,32 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @param string $filepath
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function exportProductCatalog($filepath)
+    {
+        $this->logger->info("Export product catalog.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getExportProductCatalogRequest(
+            $filepath
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Product catalog successfully exported.');
+        }
+
+        return $response;
+    }
 }
