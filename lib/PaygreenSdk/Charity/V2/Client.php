@@ -175,4 +175,30 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @param string $externalId
+     * 
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getPartnershipGroup($externalId)
+    {
+        $this->logger->info("Get partnership group named '{$externalId}'.");
+
+        $request = (new PartnershipRequest($this->requestFactory, $this->environment))->getGroupRequest($externalId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info("Partnership group named '{$externalId}' successfully retrieved.");
+        }
+
+        return $response;
+    }
 }
