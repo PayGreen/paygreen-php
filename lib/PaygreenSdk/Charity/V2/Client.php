@@ -5,6 +5,7 @@ namespace Paygreen\Sdk\Charity\V2;
 use Exception;
 use Paygreen\Sdk\Charity\V2\Request\LoginRequest;
 use Paygreen\Sdk\Charity\V2\Request\AccountRequest;
+use Paygreen\Sdk\Charity\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
@@ -117,6 +118,33 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Account successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $clientId
+     * @param string $username
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getUserInfos($clientId, $username)
+    {
+        $this->logger->info("Get user infos for account '{$clientId}' and username '{$username}'.");
+
+        $request = (new UserRequest($this->requestFactory, $this->environment))->getGetRequest($clientId, $username);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('User data successfully retrieved.');
         }
 
         return $response;
