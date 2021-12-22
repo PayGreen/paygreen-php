@@ -37,3 +37,14 @@ dump($responseData);*/
 $response = $client->getPartnershipGroups();
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
+$partershipGroups = $responseData->_embedded->partnership_group;
+$defaultGroupExternalId = "default";
+
+foreach ($partershipGroups as $partership) {
+    if($partership->isDefault === "1") {
+        $defaultGroupExternalId = $partership->externalId;
+    }
+}
+$response = $client->getPartnershipGroup($defaultGroupExternalId);
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
