@@ -10,7 +10,7 @@ $environment = new \Paygreen\Sdk\Charity\V2\Environment(
     getenv('PG_CHARITY_API_VERSION')
 );
 
-$environment->setTestMode(false);
+$environment->setTestMode(true);
 
 $client = new \Paygreen\Sdk\Charity\V2\Client($curl, $environment);
 
@@ -26,10 +26,14 @@ dump($responseData);
 
 $client->setBearer($responseData->access_token);
 
-$response = $client->getAccountInfos('poleintegration_5');
+/*$response = $client->getAccountInfos('poleintegration_5');
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
  
 $response = $client->getUserInfos('poleintegration_5', 'poleintegration_5');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);*/
+
+$response = $client->getPartnershipGroups();
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);

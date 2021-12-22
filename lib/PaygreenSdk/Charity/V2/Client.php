@@ -5,6 +5,7 @@ namespace Paygreen\Sdk\Charity\V2;
 use Exception;
 use Paygreen\Sdk\Charity\V2\Request\LoginRequest;
 use Paygreen\Sdk\Charity\V2\Request\AccountRequest;
+use Paygreen\Sdk\Charity\V2\Request\PartnershipRequest;
 use Paygreen\Sdk\Charity\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
@@ -145,6 +146,31 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('User data successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getPartnershipGroups()
+    {
+        $this->logger->info("Get all partnership groups.");
+
+        $request = (new PartnershipRequest($this->requestFactory, $this->environment))->getGroupsRequest();
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Partnership groups successfully retrieved.');
         }
 
         return $response;
