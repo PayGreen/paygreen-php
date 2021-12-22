@@ -17,19 +17,19 @@ $client = new \Paygreen\Sdk\Charity\V2\Client($curl, $environment);
 $response = $client->login('poleintegration_5', 'poleintegration_5', 'poleintegration_5');
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
-/*
+
 $client->setBearer($responseData->access_token);
 
-$response = $client->refresh('moduleTree', $responseData->refresh_token);
+$response = $client->refresh('poleintegration_5', $responseData->refresh_token);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 
-$client->setBearer($responseData->access_token);*/
+$client->setBearer($responseData->access_token);
 
-// $response = $client->getAccountInfos('moduleTree');
-// $responseData = json_decode($response->getBody()->getContents());
-// dump($responseData);
-// 
-// $response = $client->getUserInfos('moduleTree', 'moduleTree');
+/*$response = $client->getAccountInfos('poleintegration_5');
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);*/
+ 
+// $response = $client->getUserInfos('poleintegration_5', 'poleintegration_5');
 // $responseData = json_decode($response->getBody()->getContents());
 // dump($responseData);
