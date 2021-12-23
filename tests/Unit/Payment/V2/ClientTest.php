@@ -5,6 +5,7 @@ namespace Paygreen\Tests\Unit\Payment\V2;
 use Http\Client\Exception as HttpClientException;
 use Http\Mock\Client;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
+use Paygreen\Sdk\Payment\V2\Enum\PaymentTypeEnum;
 use Paygreen\Sdk\Payment\V2\Environment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
 use Paygreen\Sdk\Payment\V2\Model\Customer;
@@ -117,6 +118,7 @@ class ClientTest extends TestCase
     public function testRequestCreateCash()
     {
         $paymentOrder = $this->buildPaymentOrder();
+        $paymentOrder->setPaymentType('CB');
         $paymentOrder->setType('CASH');
 
         $this->client->createCashPayment($paymentOrder);
@@ -127,7 +129,29 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/api/public_key/payins/transaction/cash', $request->getUri()->getPath());
         $this->assertEquals($paymentOrder->getType(), $content->type);
+        $this->assertEquals($paymentOrder->getPaymentType(), $content->paymentType);
         $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
+    }
+
+    public function testRequestCreateCashWithEligibleAmount()
+    {
+        $paymentOrder = $this->buildPaymentOrder();
+        $paymentOrder->setType('CASH');
+        $paymentOrder->setPaymentType(PaymentTypeEnum::TRD);
+        $paymentOrder->setEligibleAmount([PaymentTypeEnum::TRD => 5000]);
+        $paymentOrder->setCardToken('my-card-token');
+
+        $this->client->createCashPayment($paymentOrder);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/api/public_key/payins/transaction/cash', $request->getUri()->getPath());
+        $this->assertEquals($paymentOrder->getType(), $content->type);
+        $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
+        $this->assertEquals($paymentOrder->getEligibleAmount()[PaymentTypeEnum::TRD], $content->eligibleAmount->TRD);
+        $this->assertEquals($paymentOrder->getCardToken(), $content->card->token);
     }
 
     /**
