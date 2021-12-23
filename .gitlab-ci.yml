@@ -53,8 +53,6 @@ push-to-github:
     - ssh-keyscan "github.com" >> ~/.ssh/known_hosts
     - git push git@github.com:PayGreen/sylius-paygreen-plugin.git ${CI_COMMIT_SHA:-HEAD}:refs/heads/master --force --tags
 
-sast:
-  stage: test
-
 include:
   - template: Security/SAST.gitlab-ci.yml
+  - template: Security/Secret-Detection.gitlab-ci.yml
