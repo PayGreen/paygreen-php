@@ -8,6 +8,7 @@ use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
 use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
+use Paygreen\Sdk\Climate\V2\Request\ProductRequest;
 use Paygreen\Sdk\Climate\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
@@ -293,6 +294,159 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (201 === $response->getStatusCode()) {
             $this->logger->info('Delivery data successfully added.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     * @param string $productExternalId
+     * @param integer $quantity
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function addProductData($footprintId, $productExternalId, $quantity)
+    {
+        $this->logger->info("Add product data to footprint with id '{$footprintId}'.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getAddProductDataRequest(
+            $footprintId,
+            $productExternalId,
+            $quantity
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (201 === $response->getStatusCode()) {
+            $this->logger->info('Product data successfully added.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $productExternalId
+     * @param string $productName
+     * @param null|string $emissionExternalId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createProductReference(
+        $productExternalId,
+        $productName,
+        $emissionExternalId = null
+    ) {
+        $this->logger->info("Create product reference with id '{$productExternalId}'.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getCreateProductReferenceRequest(
+            $productExternalId,
+            $productName,
+            $emissionExternalId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (201 === $response->getStatusCode()) {
+            $this->logger->info('Product reference successfully created.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function removeDeliveryData($footprintId)
+    {
+        $this->logger->info("Remove delivery data on footprint with id '{$footprintId}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getDeleteDeliveryDataRequest(
+            $footprintId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (204 === $response->getStatusCode()) {
+            $this->logger->info('Delivery data successfully removed.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     * @param null|string $productExternalReference
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function removeProductData($footprintId, $productExternalReference = null)
+    {
+        $this->logger->info("Remove product data on footprint with id '{$footprintId}'.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getDeleteProductDataRequest(
+            $footprintId,
+            $productExternalReference
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (204 === $response->getStatusCode()) {
+            $this->logger->info('Product data successfully removed.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $filepath
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function exportProductCatalog($filepath)
+    {
+        $this->logger->info("Export product catalog.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getExportProductCatalogRequest(
+            $filepath
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Product catalog successfully exported.');
         }
 
         return $response;

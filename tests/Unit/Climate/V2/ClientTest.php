@@ -5,9 +5,9 @@ namespace Paygreen\Tests\Unit\Climate\V2;
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\Address;
+use Paygreen\Sdk\Climate\V2\Environment;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
-use Paygreen\Sdk\Climate\V2\Environment;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -149,20 +149,6 @@ class ClientTest extends TestCase
      */
     public function testAddDeliveryData()
     {
-        $departure = new Address(
-            'my-departure-address',
-            'my-departure-zip-code',
-            'my-departure-city',
-            'my-departure-country'
-        );
-
-        $arrival = new Address(
-            'my-arrival-address',
-            'my-arrival-zip-code',
-            'my-arrival-city',
-            'my-arrival-country'
-        );
-
         $shippedFrom = new Address();
         $shippedFrom->setAddress('1 rue de Paris');
         $shippedFrom->setZipCode('75000');
@@ -179,7 +165,7 @@ class ClientTest extends TestCase
         $deliveryData->setTotalWeightInKg(45.50);
         $deliveryData->setShippedFrom($shippedFrom);
         $deliveryData->setShippedTo($shippedTo);
-        $deliveryData->setTransportationExternalId('my-transporation-external-id');
+        $deliveryData->setTransportationExternalId('1-28022');
         $deliveryData->setDeliveryService('Colissimo');
 
         $this->client->addDeliveryData('footprint_id', $deliveryData);
@@ -187,5 +173,85 @@ class ClientTest extends TestCase
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/footprints/footprint_id/delivery', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testAddProductData()
+    {
+        $this->client->addProductData(
+            'footprint_id',
+            'my-product-external-reference',
+            1
+        );
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint_id/products', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testCreateProductReference()
+    {
+        $this->client->createProductReference(
+            'my-product-external-reference',
+            'my-product-name'
+        );
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/products/references', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testRemoveDeliveryData()
+    {
+        $this->client->removeDeliveryData('footprint-id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint-id/delivery', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testRemoveProductData()
+    {
+        $this->client->removeProductData('footprint-id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint-id/products', $request->getUri()->getPath());
+
+        $this->client->removeProductData(
+            'footprint-id',
+            'my-product-external-reference'
+        );
+        
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals(
+            '/carbon/footprints/footprint-id/products/my-product-external-reference',
+            $request->getUri()->getPath()
+        );
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testExportProductCatalog()
+    {
+        $this->client->exportProductCatalog('my-product-catalog-path');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/products/catalog', $request->getUri()->getPath());
     }
 }
