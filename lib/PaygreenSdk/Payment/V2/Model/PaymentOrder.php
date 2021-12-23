@@ -74,7 +74,7 @@ class PaymentOrder
             ->addPropertyConstraint('metadata', new Assert\Type('array'))
             ->addPropertyConstraint('eligibleAmount', new Assert\Type('array'))
             ->addPropertyConstraint('ttl', new Assert\Type('string'))
-            ->addPropertyConstraint('cardToken', new Assert\Type('array'))
+            ->addPropertyConstraint('cardToken', new Assert\Type('string'))
             ->addPropertyConstraint('withPaymentLink', new Assert\Type('bool'))
             ->addPropertyConstraints('multiplePayment', [
                 new Assert\Type(MultiplePayment::class),

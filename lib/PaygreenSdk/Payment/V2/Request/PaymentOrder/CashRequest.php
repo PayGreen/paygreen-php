@@ -70,7 +70,9 @@ class CashRequest extends \Paygreen\Sdk\Core\Request\Request
             ];
         }
 
-        $body['eligibleAmount'][$paymentOrder->getPaymentType()] = $body['amount'];
+        if ($paymentOrder->getEligibleAmount()) {
+            $body['eligibleAmount'] = $paymentOrder->getEligibleAmount();
+        }
 
         return $this->requestFactory->create(
             "/api/{$publicKey}/payins/transaction/cash",
