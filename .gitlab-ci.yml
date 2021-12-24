@@ -29,7 +29,7 @@ test:5.6:
       - vendor
     policy: pull
   script:
-    - apt-get install php-xdebug
+    - apt-get install php5.6-xdebug
     - vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
 
 publish:
