@@ -28,6 +28,7 @@ test:5.6:
       - vendor
     policy: pull
   script:
+    - apk add $PHPIZE_DEPS
     - pecl install xdebug-2.5.5
     - coverage=$(vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never)
     - percent=$(coverage | sed 's/^\s*Lines:\s*\d+.\d+\%/')
