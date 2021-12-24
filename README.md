@@ -1,5 +1,7 @@
 # Paygreen PHP SDK
 
+
+
 ## Installation
 
 ```shell
@@ -9,7 +11,7 @@ composer require paygreen/paygreen-php
 ## Requirements
 
 - PHP 5.6 and above.
-- PSR-7 HTTP Client like [Guzzle](https://github.com/guzzle/guzzle) or [curl-client](https://github.com/php-http/curl-client)
+- [PSR-18](https://www.php-fig.org/psr/psr-18/) HTTP Client like [Guzzle](https://github.com/guzzle/guzzle) or [curl-client](https://github.com/php-http/curl-client)
 
 ## Getting Started
 
