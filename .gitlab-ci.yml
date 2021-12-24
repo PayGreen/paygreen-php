@@ -63,6 +63,8 @@ push-coverage-badge:
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan "gitlab.com" >> ~/.ssh/known_hosts
     - git clone git@gitlab.com:Paygreen-paygreen/gcp/cloud-storage/pg-production-cdn.git
+    - git config --global user.email "dev-module@paygreen.fr"
+    - git config --global user.name "Team Modules"
     - cd pg-production-cdn
     - mkdir -p coverage
     - curl "https://gitlab.com/Paygreen-paygreen/integration/sdk-php/badges/master/coverage.svg" > coverage/paygreen-php-master.svg
