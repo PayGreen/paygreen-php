@@ -28,7 +28,7 @@ test:5.6:
       - vendor
     policy: pull
   script:
-    - pecl install xdebug
+    - pecl install xdebug-2.5.5
     - coverage=$(vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never)
     - percent=$(coverage | sed 's/^\s*Lines:\s*\d+.\d+\%/')
     - echo percent
