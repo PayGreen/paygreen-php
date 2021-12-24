@@ -1,21 +1,32 @@
-variables:
-  DOCKER_HOST: tcp://docker:2376
-  DOCKER_TLS_CERTDIR: "/certs/client"
-  DOCKER_TLS_VERIFY: 1
-  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
-
 stages:
   - test
   - deploy
   - coverage
 
-test:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:20.10-dind
+build:
+  stage: build
+  image: php:5.6
+  cache:
+    key: vendor
+    paths:
+      - vendor
+    policy: push
   script:
-    - docker build .
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php');"
+    - php composer.phar install
+
+test:5.6:
+  stage: test
+  image: php:5.6
+  cache:
+    key: vendor
+    paths:
+      - vendor
+    policy: pull
+  script:
+    - vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
 
 publish:
   image: curlimages/curl:latest
