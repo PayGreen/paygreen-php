@@ -3,6 +3,8 @@
 namespace Paygreen\Sdk\Charity\V2;
 
 use Exception;
+use Paygreen\Sdk\Charity\V2\Model\Donation;
+use Paygreen\Sdk\Charity\V2\Request\DonationRequest;
 use Paygreen\Sdk\Charity\V2\Request\LoginRequest;
 use Paygreen\Sdk\Charity\V2\Request\AccountRequest;
 use Paygreen\Sdk\Charity\V2\Request\PartnershipRequest;
@@ -197,6 +199,32 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info("Partnership group named '{$externalId}' successfully retrieved.");
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param Donation $donation
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getCreateDonation($donation)
+    {
+        $this->logger->info("Create donation.");
+
+        $request = (new DonationRequest($this->requestFactory, $this->environment))->getCreateRequest($donation);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info("Donation successfully created.");
         }
 
         return $response;
