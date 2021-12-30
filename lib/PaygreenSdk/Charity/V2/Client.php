@@ -229,4 +229,30 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @param integer $donationId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getGetDonation($donationId)
+    {
+        $this->logger->info("Get donation {$donationId}.");
+
+        $request = (new DonationRequest($this->requestFactory, $this->environment))->getGetRequest($donationId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info("Donation {$donationId} successfully retrieved.");
+        }
+
+        return $response;
+    }
 }

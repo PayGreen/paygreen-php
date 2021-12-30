@@ -144,4 +144,18 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/donation', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testGetDonation()
+    {
+        $donationId = 1000;
+
+        $this->client->getGetDonation($donationId);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/donation/1000', $request->getUri()->getPath());
+    }
 }

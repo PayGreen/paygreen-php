@@ -76,3 +76,7 @@ $donation->setIsAPledge(true);
 $response = $client->getCreateDonation($donation);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
+
+$response = $client->getGetDonation((int)$responseData->idDonation);
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);

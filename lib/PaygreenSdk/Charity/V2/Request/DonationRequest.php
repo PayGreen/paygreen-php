@@ -9,6 +9,7 @@ use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
 use Paygreen\Sdk\Core\Validator\Validator;
 use Psr\Http\Message\RequestInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
 {
@@ -53,5 +54,30 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
             "/donation",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param integer $donationId
+     *
+     * @throws ConstraintViolationException
+     *
+     * @return RequestInterface
+     */
+    public function getGetRequest($donationId)
+    {
+        $violations = Validator::validateValue($donationId, [
+            new Assert\NotBlank(),
+            new Assert\Type('integer'),
+        ]);
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+
+        return $this->requestFactory->create(
+            "/donation/{$donationId}",
+            null,
+            'GET'
+        )->withAuthorization()->getRequest();
     }
 }
