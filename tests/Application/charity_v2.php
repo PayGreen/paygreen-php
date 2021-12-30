@@ -1,6 +1,9 @@
 <?php
 
 use Http\Client\Curl\Client;
+use Paygreen\Sdk\Charity\V2\Enum\DonationTypeEnum;
+use Paygreen\Sdk\Charity\V2\Model\Buyer;
+use Paygreen\Sdk\Charity\V2\Model\Donation;
 
 $curl = new Client();
 
@@ -46,5 +49,30 @@ foreach ($partershipGroups as $partership) {
     }
 }
 $response = $client->getPartnershipGroup($defaultGroupExternalId);
+$responseData = json_decode($response->getBody()->getContents());
+dump($responseData);
+
+$buyer = new Buyer();
+$buyer->setEmail("dev-modulep@paygreen.fr");
+$buyer->setFirstname('John');
+$buyer->setLastname('Doe');
+$buyer->setAddressLine('1 rue de la Livraison');
+$buyer->setAddressLineTwo('Appartement 12');
+$buyer->setCity('Rouen');
+$buyer->setCountryCode('FR');
+$buyer->setPostalCode('76000');
+$buyer->setPhoneNumber("0102030405");
+$buyer->setCompanyName("PayGreen");
+
+$donation = new Donation();
+$donation->setAssociationId(1);
+$donation->setType(DonationTypeEnum::ROUNDING);
+$donation->setDonationAmount(100);
+$donation->setTotalAmount(1000);
+$donation->setCurrency("EUR");
+$donation->setBuyer($buyer);
+$donation->setIsAPledge(true);
+
+$response = $client->getCreateDonation($donation);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
