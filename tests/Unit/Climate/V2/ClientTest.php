@@ -87,6 +87,15 @@ class ClientTest extends TestCase
         $this->assertEquals('/account/client_id/user/username', $request->getUri()->getPath());
     }
 
+    public function testGetCurrentUserInfos()
+    {
+        $this->client->getCurrentUserInfos();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/me/user/me', $request->getUri()->getPath());
+    }
+
     /**
      * @throws ConstraintViolationException
      */

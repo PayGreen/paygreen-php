@@ -155,6 +155,29 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getCurrentUserInfos()
+    {
+        $this->logger->info("Get current user infos for account.");
+
+        $request = (new UserRequest($this->requestFactory, $this->environment))->getGetCurrentUserRequest();
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Current user data successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
      * @param string $footprintId
      *
      * @throws ConstraintViolationException
