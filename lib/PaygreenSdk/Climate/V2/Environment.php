@@ -8,6 +8,7 @@ class Environment extends \Paygreen\Sdk\Core\Environment
 {
     const ENDPOINT_V2_SANDBOX = 'https://sb-api-climatekit.paygreen.fr';
     const ENDPOINT_V2_PRODUCTION = 'https://solidaire.paygreen.fr';
+    const ENDPOINT_V2_RECETTE = 'https://rc-api-climatekit.paygreen.fr';
     
     /** @var string */
     private $clientId;
@@ -48,10 +49,13 @@ class Environment extends \Paygreen\Sdk\Core\Environment
      */
     public function getEndpoint()
     {
-        if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
-            return self::ENDPOINT_V2_SANDBOX;
+        switch ($this->getEnvironment()) {
+            case self::ENVIRONMENT_SANDBOX:
+                return self::ENDPOINT_V2_SANDBOX;
+            case self::ENVIRONMENT_RECETTE:
+                return self::ENDPOINT_V2_RECETTE;
+            default:
+                return self::ENDPOINT_V2_PRODUCTION;
         }
-
-        return self::ENDPOINT_V2_PRODUCTION;
     }
 }

@@ -11,6 +11,7 @@ abstract class Environment implements EnvironmentInterface
 
     const ENVIRONMENT_SANDBOX = 'SANDBOX';
     const ENVIRONMENT_PRODUCTION = 'PRODUCTION';
+    const ENVIRONMENT_RECETTE = 'RECETTE';
     
     /** @var string */
     protected $bearer;
@@ -38,7 +39,7 @@ abstract class Environment implements EnvironmentInterface
     {
         $this->environment = strtoupper($environment);
         $this->apiVersion = (int) $apiVersion;
-        $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX];
+        $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX, self::ENVIRONMENT_RECETTE];
 
         if (!in_array($this->environment, $availableEnvironments)) {
             throw new InvalidArgumentException('Environment only accept: '.implode(', ', $availableEnvironments).'. Current: "'.$environment.'"');
