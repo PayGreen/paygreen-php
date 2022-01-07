@@ -38,4 +38,16 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->getRequest();
     }
+
+    /***
+     * @return RequestInterface
+     */
+    public function getGetCurrentUserRequest()
+    {
+        return $this->requestFactory->create(
+            "/account/me/user/me",
+            null,
+            'GET'
+        )->withAuthorization()->getRequest();
+    }
 }
