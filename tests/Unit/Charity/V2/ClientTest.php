@@ -3,7 +3,10 @@
 namespace Paygreen\Tests\Unit\Charity\V2;
 
 use Http\Client\Curl\Client;
+use Paygreen\Sdk\Charity\V2\Enum\DonationTypeEnum;
 use Paygreen\Sdk\Charity\V2\Environment;
+use Paygreen\Sdk\Charity\V2\Model\Buyer;
+use Paygreen\Sdk\Charity\V2\Model\Donation;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -106,5 +109,53 @@ class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/partnership-group/external_id', $request->getUri()->getPath());
+    }
+    
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testCreateDonation()
+    {
+        $buyer = new Buyer();
+        $buyer->setEmail("dev-modulep@paygreen.fr");
+        $buyer->setReference("buyerReference");
+        $buyer->setFirstname('John');
+        $buyer->setLastname('Doe');
+        $buyer->setAddressLine('1 rue de la Livraison');
+        $buyer->setAddressLineTwo('Appartement 12');
+        $buyer->setCity('Rouen');
+        $buyer->setCountryCode('FR');
+        $buyer->setPostalCode('76000');
+        $buyer->setPhoneNumber("0102030405");
+        $buyer->setCompanyName("PayGreen");
+
+        $donation = new Donation();
+        $donation->setAssociationId(1);
+        $donation->setType(DonationTypeEnum::ROUNDING);
+        $donation->setDonationAmount(100);
+        $donation->setTotalAmount(1000);
+        $donation->setCurrency("EUR");
+        $donation->setBuyer($buyer);
+        $donation->setIsAPledge(true);
+        
+        $this->client->getCreateDonation($donation);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/donation', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testGetDonation()
+    {
+        $donationId = 1000;
+
+        $this->client->getGetDonation($donationId);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/donation/1000', $request->getUri()->getPath());
     }
 }

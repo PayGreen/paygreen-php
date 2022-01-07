@@ -34,8 +34,7 @@ COPY tests tests/
 
 RUN set -eux; \
 	composer install --prefer-dist --no-scripts --no-progress; \
-	composer clear-cache; \
-    vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
+	composer clear-cache
 
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint

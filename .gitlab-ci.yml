@@ -1,21 +1,39 @@
-variables:
-  DOCKER_HOST: tcp://docker:2376
-  DOCKER_TLS_CERTDIR: "/certs/client"
-  DOCKER_TLS_VERIFY: 1
-  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
-  GIT_DEPTH: 1000
-
 stages:
+  - build
   - test
   - deploy
+  - coverage
 
-test:
-  stage: test
-  image: docker:latest
-  services:
-    - docker:20.10-dind
+build:
+  stage: build
+  image: php:5.6-alpine
+  cache:
+    key: vendor
+    paths:
+      - vendor
+    policy: push
   script:
-    - docker build .
+    - apk add zip unzip
+    - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    - php composer-setup.php
+    - php -r "unlink('composer-setup.php');"
+    - php composer.phar install
+
+test:5.6:
+  stage: test
+  image: php:5.6-alpine
+  cache:
+    key: vendor
+    paths:
+      - vendor
+    policy: pull
+  script:
+    - apk add $PHPIZE_DEPS
+    - pecl install xdebug-2.5.5
+    - vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never
+    #- coverage=$(vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never | grep '^\s*Lines:\s*\d*.\d*\%')
+    #- percent=$(echo coverage | sed 's/^\s*Lines:\s*\d+.\d+\%/')
+    #- echo percent
 
 publish:
   image: curlimages/curl:latest
@@ -52,6 +70,25 @@ push-to-github:
     - chmod 600 ~/.ssh/id_rsa
     - ssh-keyscan "github.com" >> ~/.ssh/known_hosts
     - git push git@github.com:PayGreen/paygreen-php.git ${CI_COMMIT_SHA:-HEAD}:refs/heads/master --force --tags
+
+#push-coverage-badge:
+#  image: alpine:3.6
+#  stage: test
+#  script:
+#    - apk add --no-cache bash git openssh-client
+#    - mkdir -p ~/.ssh
+#    - cp $GITLAB_CDN_PUSH_SSH_PRIVATE_KEY ~/.ssh/id_rsa
+#    - chmod 600 ~/.ssh/id_rsa
+#    - ssh-keyscan "gitlab.com" >> ~/.ssh/known_hosts
+#    - git clone git@gitlab.com:Paygreen-paygreen/gcp/cloud-storage/pg-production-cdn.git
+#    - git config --global user.email "dev-module@paygreen.fr"
+#    - git config --global user.name "Team Modules"
+#    - cd pg-production-cdn
+#    - mkdir -p badge
+#    - wget "https://gitlab.com/Paygreen-paygreen/integration/sdk-php/badges/master/coverage.svg" > badge/paygreen-php-master.svg
+#    - git add badge/paygreen-php-master.svg
+#    - git commit -m "Update paygreen-php coverage badge"
+#    - git push
 
 include:
   - template: Security/SAST.gitlab-ci.yml
