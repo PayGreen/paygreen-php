@@ -53,7 +53,7 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/donation",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
+        )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
 
     /**
@@ -78,6 +78,6 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
             "/donation/{$donationId}",
             null,
             'GET'
-        )->withAuthorization()->getRequest();
+        )->withAuthorization()->withTestMode()->getRequest();
     }
 }
