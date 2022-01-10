@@ -35,10 +35,6 @@ class RequestFactory
         $headers = [
             'User-Agent' => $this->buildUserAgentHeader(),
         ];
-        
-        if ($this->environment->isTestMode()) {
-            $headers['X-TEST-MODE'] = 1;
-        }
 
         $this->request = new Request($method, $url, $headers, $body);
 
@@ -63,6 +59,18 @@ class RequestFactory
             'Bearer '.$this->environment->getBearer()
         );
 
+        return $this;
+    }
+
+    /**
+     * @return RequestFactory
+     */
+    public function withTestMode()
+    {
+        if ($this->environment->isTestMode()) {
+            $this->request = $this->request->withAddedHeader('X-TEST-MODE', 1);
+        }
+        
         return $this;
     }
 

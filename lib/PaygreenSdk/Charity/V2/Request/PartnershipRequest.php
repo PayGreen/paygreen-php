@@ -18,7 +18,7 @@ class PartnershipRequest extends \Paygreen\Sdk\Core\Request\Request
             "/partnership-group",
             null,
             'GET'
-        )->withAuthorization()->getRequest();
+        )->withAuthorization()->withTestMode()->getRequest();
     }
 
     /**
@@ -43,6 +43,6 @@ class PartnershipRequest extends \Paygreen\Sdk\Core\Request\Request
             "/partnership-group/{$externalId}",
             null,
             'GET'
-        )->withAuthorization()->getRequest();
+        )->withAuthorization()->withTestMode()->getRequest();
     }
 }

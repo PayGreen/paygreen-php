@@ -57,7 +57,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/carbon/footprints/{$footprintId}/products",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
+        )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
 
     /**
@@ -99,7 +99,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/carbon/products/references",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
+        )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
     
     /**
@@ -139,7 +139,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             $url,
             null,
             'DELETE'
-        )->withAuthorization()->getRequest();
+        )->withAuthorization()->withTestMode()->getRequest();
     }
 
     /**
@@ -168,6 +168,6 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             '/carbon/products/catalog',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->getRequest();
+        )->withAuthorization()->withTestMode()->getRequest();
     }
 }
