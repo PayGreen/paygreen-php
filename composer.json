@@ -1,6 +1,6 @@
 {
   "name": "paygreen/paygreen-php",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "PayGreen PHP SDK",
   "type": "library",
   "license": "proprietary",

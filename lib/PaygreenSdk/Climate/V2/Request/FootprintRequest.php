@@ -3,6 +3,7 @@
 namespace Paygreen\Sdk\Climate\V2\Request;
 
 use Exception;
+use Paygreen\Sdk\Climate\V2\Enum\FootprintStatusEnum;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
@@ -111,7 +112,12 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         ]);
         $violations->addAll(Validator::validateValue($status, [
             new Assert\Type('string'),
-            new Assert\Choice(['PURCHASED', 'CLOSED', 'OFFSET_FROM_ANOTHER_VENDOR'])
+            new Assert\Choice([
+                FootprintStatusEnum::PURCHASED,
+                FootprintStatusEnum::CLOSED,
+                FootprintStatusEnum::OFFSET_FROM_ANOTHER_VENDOR,
+                FootprintStatusEnum::USER_CONTRIBUTED
+            ])
         ]));
 
         if ($violations->count() > 0) {
