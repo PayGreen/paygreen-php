@@ -256,7 +256,37 @@ class Client extends \Paygreen\Sdk\Core\Client
         $this->setLastResponse($response);
 
         if (200 === $response->getStatusCode()) {
-            $this->logger->info('Footprint successfully retrieved.');
+            $this->logger->info('Footprint successfully closed.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     * @param int $amount
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function userContribute($footprintId, $amount)
+    {
+        $this->logger->info("User contribute footprint with id '{$footprintId}' and amount '{$amount}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getUserContributedRequest(
+            $footprintId,
+            $amount
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Footprint successfully user contributed.');
         }
 
         return $response;
