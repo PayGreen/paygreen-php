@@ -135,6 +135,18 @@ class ClientTest extends TestCase
     /**
      * @throws ConstraintViolationException
      */
+    public function testUserContributeFootprint()
+    {
+        $this->client->userContribute('footprint_id', 500);
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('PATCH', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint_id', $request->getUri()->getPath());
+    }
+
+    /**
+     * @throws ConstraintViolationException
+     */
     public function testAddWebBrowsingData()
     {
         $webBrowsingData = new WebBrowsingData();
