@@ -165,9 +165,11 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             'inputCsv' => curl_file_create($filepath, 'text/csv', 'product_catalog.csv'),
         ];
 
-        return $this->requestFactory->create(
+        $request = $this->requestFactory->create(
             '/carbon/products/catalog',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->withTestMode()->getRequest();
+        )->withAuthorization()->withTestMode()->withCsv()->getRequest();
+
+        return $request;
     }
 }
