@@ -168,14 +168,8 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         $request = $this->requestFactory->create(
             '/carbon/products/catalog',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->withTestMode()->getRequest();
-        
-        $request->withAddedHeader('Accept', '*/*');
-        $request->withAddedHeader('Content-Type', 'multipart/form-data');
-        $request->withAddedHeader('Accept-Encoding', 'gzip, deflate, br');
-        $request->withAddedHeader('Cache-Control', 'no-cache');
-        $request->withAddedHeader('Accept', '*/*');
-        
+        )->withAuthorization()->withTestMode()->withCsv()->getRequest();
+
         return $request;
     }
 }
