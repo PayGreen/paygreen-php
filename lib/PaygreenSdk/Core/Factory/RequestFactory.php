@@ -77,6 +77,21 @@ class RequestFactory
     /**
      * @return RequestFactory
      */
+    public function withCsv()
+    {
+        $this->request = $this->request->withAddedHeader('Accept', '*/*');
+        $this->request = $this->request->withAddedHeader('Content-Type', 'multipart/form-data');
+        $this->request = $this->request->withAddedHeader('Accept-Encoding', 'gzip, deflate, br');
+        $this->request = $this->request->withAddedHeader('Cache-Control', 'no-cache');
+        $this->request = $this->request->withAddedHeader('Accept', '*/*');
+
+
+        return $this;
+    }
+
+    /**
+     * @return RequestFactory
+     */
     public function isJson()
     {
         $size = 0;
