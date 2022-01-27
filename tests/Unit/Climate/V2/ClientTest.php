@@ -269,7 +269,11 @@ class ClientTest extends TestCase
      */
     public function testExportProductCatalog()
     {
-        $this->client->exportProductCatalog('my-product-catalog-path');
+        $file = tmpfile();
+        $fileMetadata = stream_get_meta_data($file);
+        $filePath = $fileMetadata['uri'];
+        
+        $this->client->exportProductCatalog($filePath);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
