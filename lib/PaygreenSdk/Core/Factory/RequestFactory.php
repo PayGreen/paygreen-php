@@ -10,6 +10,7 @@ class RequestFactory
 {
     /** @var Request */
     public $request;
+
     /** @var Environment */
     private $environment;
 
@@ -22,19 +23,19 @@ class RequestFactory
      * @param string                               $url
      * @param null|resource|StreamInterface|string $body
      * @param string                               $method
+     * @param array                                $headers
      *
      * @return RequestFactory
      */
     public function create(
         $url,
         $body = null,
-        $method = 'POST'
+        $method = 'POST',
+        $headers = []
     ) {
         $url = $this->environment->getEndpoint().$url;
 
-        $headers = [
-            'User-Agent' => $this->buildUserAgentHeader(),
-        ];
+        $headers['User-Agent'] = $this->buildUserAgentHeader();
 
         $this->request = new Request($method, $url, $headers, $body);
 
@@ -70,21 +71,6 @@ class RequestFactory
         if ($this->environment->isTestMode()) {
             $this->request = $this->request->withAddedHeader('X-TEST-MODE', 1);
         }
-        
-        return $this;
-    }
-
-    /**
-     * @return RequestFactory
-     */
-    public function withCsv()
-    {
-        $this->request = $this->request->withAddedHeader('Accept', '*/*');
-        $this->request = $this->request->withAddedHeader('Content-Type', 'multipart/form-data');
-        $this->request = $this->request->withAddedHeader('Accept-Encoding', 'gzip, deflate, br');
-        $this->request = $this->request->withAddedHeader('Cache-Control', 'no-cache');
-        $this->request = $this->request->withAddedHeader('Accept', '*/*');
-
 
         return $this;
     }

@@ -3,6 +3,7 @@
 namespace Paygreen\Sdk\Climate\V2\Request;
 
 use Exception;
+use GuzzleHttp\Psr7\MultipartStream;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
@@ -101,7 +102,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
-    
+
     /**
      * @param string $footprintId
      * @param null|string $productExternalReference
@@ -161,15 +162,24 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
             throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
         }
 
-        $body = [
-            'inputCsv' => curl_file_create($filepath, 'text/csv', 'product_catalog.csv'),
-        ];
+        $multipart = new MultipartStream([
+            [
+                'name' => 'inputCsv',
+                'contents' => fopen($filepath, 'r'),
+                'filename' => 'product_catalog.csv'
+            ]
+        ]);
 
-        $request = $this->requestFactory->create(
+        return $this->requestFactory->create(
             '/carbon/products/catalog',
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->withTestMode()->withCsv()->getRequest();
-
-        return $request;
+            $multipart,
+            'POST',
+            [
+                'Accept' => '*/*',
+                'Content-Type' => 'multipart/form-data; boundary=' . $multipart->getBoundary(),
+                'Accept-Encoding' => 'gzip, deflate, br',
+                'Cache-Control' => 'no-cache'
+            ]
+        )->withAuthorization()->withTestMode()->getRequest();
     }
 }
