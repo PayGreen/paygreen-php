@@ -2,6 +2,7 @@
 
 namespace Paygreen\Tests\Unit\Climate\V2;
 
+use Exception;
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\Address;
@@ -87,6 +88,9 @@ class ClientTest extends TestCase
         $this->assertEquals('/account/client_id/user/username', $request->getUri()->getPath());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testGetCurrentUserInfos()
     {
         $this->client->getCurrentUserInfos();
@@ -94,6 +98,15 @@ class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/account/me/user/me', $request->getUri()->getPath());
+    }
+    
+    public function testGetFavoriteProject()
+    {
+        $this->client->getFavoriteProject('1');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/carbon/public/projects', $request->getUri()->getPath());   
     }
 
     /**

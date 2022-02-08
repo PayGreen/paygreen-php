@@ -50,4 +50,20 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->getRequest();
     }
+
+    /**
+     * @param string $userId
+     * 
+     * @return RequestInterface
+     */
+    public function getGetFavoriteProjectRequest($userId)
+    {
+        $query = ['idUser' => $userId];
+        
+        return $this->requestFactory->create(
+            "/carbon/public/projects?" . http_build_query($query),
+            null,
+            'GET'
+        )->withAuthorization()->getRequest();
+    }
 }
