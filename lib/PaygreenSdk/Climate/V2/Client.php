@@ -178,6 +178,31 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param string $userId
+     * 
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getFavoriteProject($userId)
+    {
+        $this->logger->info("Get favorite project for user '$userId'.");
+
+        $request = (new UserRequest($this->requestFactory, $this->environment))->getGetFavoriteProjectRequest($userId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('User favorite project successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
      * @param string $footprintId
      *
      * @throws ConstraintViolationException
