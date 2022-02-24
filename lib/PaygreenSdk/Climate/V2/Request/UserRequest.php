@@ -64,6 +64,6 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
             "/carbon/public/projects?" . http_build_query($query),
             null,
             'GET'
-        )->withAuthorization()->getRequest();
+        )->getRequest();
     }
 }
