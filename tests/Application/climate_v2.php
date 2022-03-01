@@ -116,15 +116,29 @@ $response = $client->createProductReference(
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 
-$response = $client->addProductData(
-    'my-footprint-id',
-    'my-external-product-reference',
-    1
-);
+//$response = $client->addProductData(
+//    'my-footprint-id',
+//    'my-external-product-reference',
+//    1
+//);
+//
+//$responseData = json_decode($response->getBody()->getContents());
+//dump($responseData);
 
+$cartItem1 = new \Paygreen\Sdk\Climate\V2\Model\CartItem();
+$cartItem1->setProductReference('7136056508601');
+$cartItem1->setQuantity(1);
+$cartItem1->setPriceWithoutTaxes(1599);
+
+$cartItem2 = new \Paygreen\Sdk\Climate\V2\Model\CartItem();
+$cartItem2->setProductReference('7209686433977');
+$cartItem2->setQuantity(4);
+$cartItem2->setPriceWithoutTaxes(1650);
+
+$response = $client->addProductsData('my-footprint-id', array($cartItem1, $cartItem2));
+dump($response->getStatusCode());
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
-
 
 $response = $client->removeDeliveryData('my-footprint-id');
 $responseData = json_decode($response->getStatusCode());

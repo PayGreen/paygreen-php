@@ -4,9 +4,11 @@ namespace Paygreen\Tests\Unit\Climate\V2;
 
 use Exception;
 use Http\Client\Curl\Client;
+use Paygreen\Sdk\Climate\V2\Model\CartItem;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\Address;
 use Paygreen\Sdk\Climate\V2\Environment;
+use Paygreen\Sdk\Climate\V2\Model\ProductReference;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use PHPUnit\Framework\TestCase;
@@ -212,17 +214,21 @@ class ClientTest extends TestCase
     /**
      * @throws ConstraintViolationException
      */
-    public function testAddProductData()
+    public function testAddProductsData()
     {
-        $this->client->addProductData(
-            'footprint_id',
-            'my-product-external-reference',
-            1
-        );
+        $cartItems = array();
+        
+        $cartItem = new CartItem();
+        $cartItem->setProductReference('my-product');
+        $cartItem->setQuantity(1);
+        $cartItem->setPriceWithoutTaxes(10000);
+        $cartItems[] = $cartItem;
+        
+        $this->client->addProductsData('footprint_id', $cartItems);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/carbon/footprints/footprint_id/products', $request->getUri()->getPath());
+        $this->assertEquals('/carbon/footprints/footprint_id/product-cart', $request->getUri()->getPath());
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Paygreen\Sdk\Climate\V2;
 
 use Exception;
+use Paygreen\Sdk\Climate\V2\Model\CartItem;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
@@ -404,6 +405,36 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (201 === $response->getStatusCode()) {
             $this->logger->info('Product data successfully added.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     * @param CartItem[] $cartItems
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function addProductsData($footprintId, $cartItems)
+    {
+        $this->logger->info("Add products data to footprint with id '{$footprintId}'.");
+
+        $request = (new ProductRequest($this->requestFactory, $this->environment))->getAddProductsDataRequest(
+            $footprintId,
+            $cartItems
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Products data successfully added.');
         }
 
         return $response;
