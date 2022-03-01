@@ -138,7 +138,7 @@ class ClientTest extends TestCase
         $donation->setBuyer($buyer);
         $donation->setIsAPledge(true);
         
-        $this->client->getCreateDonation($donation);
+        $this->client->createDonation($donation);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
@@ -152,7 +152,7 @@ class ClientTest extends TestCase
     {
         $donationId = 1000;
 
-        $this->client->getGetDonation($donationId);
+        $this->client->getDonation($donationId);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());

@@ -73,10 +73,10 @@ $donation->setCurrency("EUR");
 $donation->setBuyer($buyer);
 $donation->setIsAPledge(true);
 
-$response = $client->getCreateDonation($donation);
+$response = $client->createDonation($donation);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 
-$response = $client->getGetDonation((int)$responseData->idDonation);
+$response = $client->getDonation((int)$responseData->idDonation);
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
