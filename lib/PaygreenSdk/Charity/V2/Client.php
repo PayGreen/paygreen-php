@@ -212,7 +212,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getCreateDonation($donation)
+    public function createDonation($donation)
     {
         $this->logger->info("Create donation.");
 
@@ -238,7 +238,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getGetDonation($donationId)
+    public function getDonation($donationId)
     {
         $this->logger->info("Get donation {$donationId}.");
 
