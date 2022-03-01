@@ -37,18 +37,22 @@ $response = $client->getUserInfos('poleintegration_5', 'poleintegration_5');
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);*/
 
-$response = $client->getPartnershipGroups();
-$responseData = json_decode($response->getBody()->getContents());
-dump($responseData);
-$partershipGroups = $responseData->_embedded->partnership_group;
-$defaultGroupExternalId = "default";
+//$response = $client->getPartnershipGroups();
+//$responseData = json_decode($response->getBody()->getContents());
+//dump($responseData);
+//$partershipGroups = $responseData->_embedded->partnership_group;
+//$defaultGroupExternalId = "default";
+//
+//foreach ($partershipGroups as $partership) {
+//    if($partership->isDefault === "1") {
+//        $defaultGroupExternalId = $partership->externalId;
+//    }
+//}
+//$response = $client->getPartnershipGroup($defaultGroupExternalId);
+//$responseData = json_decode($response->getBody()->getContents());
+//dump($responseData);
 
-foreach ($partershipGroups as $partership) {
-    if($partership->isDefault === "1") {
-        $defaultGroupExternalId = $partership->externalId;
-    }
-}
-$response = $client->getPartnershipGroup($defaultGroupExternalId);
+$response = $client->getDefaultPartnershipGroup();
 $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 

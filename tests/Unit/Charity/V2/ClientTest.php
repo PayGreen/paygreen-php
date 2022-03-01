@@ -110,6 +110,19 @@ class ClientTest extends TestCase
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/partnership-group/external_id', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testGetDefaultPartnershipGroup()
+    {
+        $this->client->getDefaultPartnershipGroup();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $uri = $request->getUri();
+        $this->assertEquals('/partnership-group?isDefault=1', $uri->getPath() . '?' . $uri->getQuery());
+    }
     
     /**
      * @throws ConstraintViolationException
