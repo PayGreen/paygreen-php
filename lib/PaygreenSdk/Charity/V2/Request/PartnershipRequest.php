@@ -45,4 +45,16 @@ class PartnershipRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->withTestMode()->getRequest();
     }
+
+    /**
+     * @return RequestInterface
+     */
+    public function getDefaultGroup()
+    {
+        return $this->requestFactory->create(
+            "/partnership-group?isDefault=1",
+            null,
+            'GET'
+        )->withAuthorization()->withTestMode()->getRequest();
+    }
 }
