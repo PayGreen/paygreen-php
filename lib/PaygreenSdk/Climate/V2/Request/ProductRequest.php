@@ -4,6 +4,7 @@ namespace Paygreen\Sdk\Climate\V2\Request;
 
 use Exception;
 use GuzzleHttp\Psr7\MultipartStream;
+use Paygreen\Sdk\Climate\V2\Model\CartItem;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
@@ -57,6 +58,54 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
 
         return $this->requestFactory->create(
             "/carbon/footprints/{$footprintId}/products",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->withTestMode()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string $footprintId
+     * @param CartItem[] $cartItems
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     * @return RequestInterface
+     */
+    public function getAddProductsDataRequest($footprintId, $cartItems)
+    {
+        $violations = Validator::validateValue($footprintId, [
+            new Assert\NotBlank(),
+            new Assert\Type('string'),
+            new Assert\Length([
+                'min' => 0,
+                'max' => 100,
+            ]),
+            new Assert\Regex([
+                'pattern' => '/^[a-zA-Z0-9_-]{0,100}$/'
+            ])
+        ]);
+
+        foreach ($cartItems as $cartItem) {
+            $violations->addAll(Validator::validateModel($cartItem));
+        }
+
+        if ($violations->count() > 0) {
+            throw new ConstraintViolationException($violations, 'Request parameters validation has failed.');
+        }
+        
+        $products = array();
+
+        foreach ($cartItems as $cartItem) {
+            $products[] = array(
+                'productExternalReference' => $cartItem->getProductReference(),
+                'quantity' => $cartItem->getQuantity(),
+                'exTaxPriceInCents' => $cartItem->getPriceWithoutTaxes()
+            );
+        }
+
+        $body = ['products' => $products];
+
+        return $this->requestFactory->create(
+            "/carbon/footprints/{$footprintId}/product-cart",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }

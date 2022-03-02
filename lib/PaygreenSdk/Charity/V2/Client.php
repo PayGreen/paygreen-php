@@ -205,6 +205,30 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getDefaultPartnershipGroup()
+    {
+        $this->logger->info('Get default partnership group.');
+
+        $request = (new PartnershipRequest($this->requestFactory, $this->environment))->getDefaultGroup();
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info("Default partnership group successfully retrieved.");
+        }
+
+        return $response;
+    }
+
+    /**
      * @param Donation $donation
      *
      * @throws ConstraintViolationException
@@ -212,7 +236,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getCreateDonation($donation)
+    public function createDonation($donation)
     {
         $this->logger->info("Create donation.");
 
@@ -238,7 +262,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getGetDonation($donationId)
+    public function getDonation($donationId)
     {
         $this->logger->info("Get donation {$donationId}.");
 

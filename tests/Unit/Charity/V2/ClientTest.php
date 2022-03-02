@@ -110,6 +110,19 @@ class ClientTest extends TestCase
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/partnership-group/external_id', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testGetDefaultPartnershipGroup()
+    {
+        $this->client->getDefaultPartnershipGroup();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $uri = $request->getUri();
+        $this->assertEquals('/partnership-group?isDefault=1', $uri->getPath() . '?' . $uri->getQuery());
+    }
     
     /**
      * @throws ConstraintViolationException
@@ -138,7 +151,7 @@ class ClientTest extends TestCase
         $donation->setBuyer($buyer);
         $donation->setIsAPledge(true);
         
-        $this->client->getCreateDonation($donation);
+        $this->client->createDonation($donation);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
@@ -152,7 +165,7 @@ class ClientTest extends TestCase
     {
         $donationId = 1000;
 
-        $this->client->getGetDonation($donationId);
+        $this->client->getDonation($donationId);
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
