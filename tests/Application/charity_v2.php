@@ -57,7 +57,7 @@ $responseData = json_decode($response->getBody()->getContents());
 dump($responseData);
 
 $buyer = new Buyer();
-$buyer->setEmail("dev-modulep@paygreen.fr");
+$buyer->setEmail("dev-module@paygreen.fr");
 $buyer->setFirstname('John');
 $buyer->setLastname('Doe');
 $buyer->setAddressLine('1 rue de la Livraison');
