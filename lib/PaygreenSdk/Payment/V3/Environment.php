@@ -4,7 +4,7 @@ namespace Paygreen\Sdk\Payment\V3;
 
 class Environment extends \Paygreen\Sdk\Core\Environment
 {
-    const ENDPOINT_V3_SANDBOX = 'https://rc-api.paygreen.fr';
+    const ENDPOINT_V3_SANDBOX = 'https://rc-api.paygreen.dev';
     const ENDPOINT_V3_PRODUCTION = 'https://api.paygreen.fr';
 
     /** @var string */
@@ -23,10 +23,6 @@ class Environment extends \Paygreen\Sdk\Core\Environment
         
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
-
-        if (self::API_VERSION_2 === $this->getApiVersion()) {
-            $this->setBearer($this->getPrivateKey());
-        }
     }
 
     /**
@@ -50,14 +46,6 @@ class Environment extends \Paygreen\Sdk\Core\Environment
      */
     public function getEndpoint()
     {
-        if (2 === $this->getApiVersion()) {
-            if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
-                return self::ENDPOINT_V2_SANDBOX;
-            }
-
-            return self::ENDPOINT_V2_PRODUCTION;
-        }
-
         if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
             return self::ENDPOINT_V3_SANDBOX;
         }
