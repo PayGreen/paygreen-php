@@ -38,6 +38,6 @@ class TokenRequest extends \Paygreen\Sdk\Core\Request\Request
             "/tokens/footprint/{$footprintId}",
             null,
             'GET'
-        )->withAuthorization()->withTestMode()->isJson()->getRequest();
+        )->withAuthorization()->getRequest();
     }
 }
