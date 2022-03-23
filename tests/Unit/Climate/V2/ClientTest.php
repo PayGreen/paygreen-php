@@ -298,4 +298,16 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/products/catalog', $request->getUri()->getPath());
     }
+
+    /**
+     * @throws ConstraintViolationException
+     */
+    public function testGetTokenFootprint()
+    {
+        $this->client->getTokenFootprint('footprint_id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/tokens/footprint/footprint_id', $request->getUri()->getPath());
+    }
 }

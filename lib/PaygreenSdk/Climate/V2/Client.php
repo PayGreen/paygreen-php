@@ -10,6 +10,7 @@ use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
 use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
 use Paygreen\Sdk\Climate\V2\Request\ProductRequest;
+use Paygreen\Sdk\Climate\V2\Request\TokenRequest;
 use Paygreen\Sdk\Climate\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
@@ -231,6 +232,7 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $footprintId
+     * @param bool $detailed
      *
      * @throws ConstraintViolationException
      * @throws Exception
@@ -556,6 +558,32 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Product catalog successfully exported.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $footprintId
+     *
+     * @throws ConstraintViolationException
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getTokenFootprint($footprintId)
+    {
+        $this->logger->info("Get token for footprint with id '{$footprintId}'.");
+
+        $request = (new TokenRequest($this->requestFactory, $this->environment))->getGetRequest($footprintId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Token footprint successfully retrieved.');
         }
 
         return $response;
