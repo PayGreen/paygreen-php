@@ -69,6 +69,7 @@ $buyer->setPhoneNumber("0102030405");
 $buyer->setCompanyName("PayGreen");
 
 $donation = new Donation();
+$donation->setReference('GIFT-123');
 $donation->setAssociationId(1);
 $donation->setType(DonationTypeEnum::ROUNDING);
 $donation->setDonationAmount(100);
