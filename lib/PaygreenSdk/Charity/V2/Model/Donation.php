@@ -9,6 +9,11 @@ use Symfony\Component\Validator\Mapping\ClassMetadata;
 class Donation
 {
     /**
+     * @var string
+     */
+    private $reference;
+    
+    /**
      * @var integer
      */
     private $associationId;
@@ -47,6 +52,9 @@ class Donation
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata
+            ->addPropertyConstraints('reference', [
+                new Assert\Type('string'),
+            ])
             ->addPropertyConstraints('associationId', [
                 new Assert\NotBlank(),
                 new Assert\Type('integer'),
@@ -76,6 +84,22 @@ class Donation
             ->addPropertyConstraint('isAPledge', new Assert\Type('bool'))
 
         ;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @param string $reference
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
     }
 
     /**

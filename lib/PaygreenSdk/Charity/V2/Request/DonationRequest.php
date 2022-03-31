@@ -29,6 +29,7 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         $body = [
+            'donationReference' => $donation->getReference(),
             'idAssociation' => $donation->getAssociationId(),
             'type' => $donation->getType(),
             'donationAmount' => $donation->getDonationAmount(),
