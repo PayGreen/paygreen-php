@@ -2,11 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V2\Model;
 
-use Paygreen\Sdk\Payment\V2\Enum\PaymentTypeEnum;
-use Paygreen\Sdk\Payment\V2\Enum\TypeEnum;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class PaymentOrder
 {
     /**
@@ -59,29 +54,6 @@ class PaymentOrder
 
     /** @var null|MultiplePayment */
     private $multiplePayment;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('order', [
-                new Assert\NotBlank(),
-                new Assert\Type(OrderInterface::class),
-                new Assert\Valid(),
-            ])
-            ->addPropertyConstraint('paymentType', new Assert\Choice(PaymentTypeEnum::getPaymentTypes()))
-            ->addPropertyConstraint('type', new Assert\Choice(TypeEnum::getTypes()))
-            ->addPropertyConstraint('returnedUrl', new Assert\Url())
-            ->addPropertyConstraint('metadata', new Assert\Type('array'))
-            ->addPropertyConstraint('eligibleAmount', new Assert\Type('array'))
-            ->addPropertyConstraint('ttl', new Assert\Type('string'))
-            ->addPropertyConstraint('cardToken', new Assert\Type('string'))
-            ->addPropertyConstraint('withPaymentLink', new Assert\Type('bool'))
-            ->addPropertyConstraints('multiplePayment', [
-                new Assert\Type(MultiplePayment::class),
-                new Assert\Valid(),
-            ])
-        ;
-    }
 
     /**
      * @return OrderInterface

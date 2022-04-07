@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Climate\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class WebBrowsingData
 {
     /** @var string */
@@ -27,40 +24,6 @@ class WebBrowsingData
 
     /** @var string */
     private $externalId;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('userAgent', new Assert\Type('string'))
-            ->addPropertyConstraints('device', [
-                new Assert\Type('string'),
-                new Assert\Length([
-                    'min' => 0,
-                    'max' => 50
-                ])
-            ])
-            ->addPropertyConstraints('browser', [
-                new Assert\Type('string'),
-                new Assert\Length([
-                    'min' => 0,
-                    'max' => 100
-                ])
-            ])
-            ->addPropertyConstraint('imageCount', new Assert\Type('integer'))
-            ->addPropertyConstraints('pageCount', [
-                new Assert\NotBlank(),
-                new Assert\Type('integer')
-            ])
-            ->addPropertyConstraint('time', new Assert\Type('integer'))
-            ->addPropertyConstraints('externalId', [
-                new Assert\Type('string'),
-                new Assert\Length([
-                    'min' => 0,
-                    'max' => 255
-                ])
-            ])
-        ;
-    }
 
     /**
      * @return string

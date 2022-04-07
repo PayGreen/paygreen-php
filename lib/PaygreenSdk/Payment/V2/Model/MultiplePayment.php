@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class MultiplePayment implements MultiplePaymentInterface
 {
     /** @var int */
@@ -21,29 +18,6 @@ class MultiplePayment implements MultiplePaymentInterface
 
     /** @var int */
     private $firstAmount;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('cycle', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64]),
-            ])
-            ->addPropertyConstraints('count', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64]),
-            ])
-            ->addPropertyConstraints('day', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64]),
-            ])
-            ->addPropertyConstraint('startAt', new Assert\Type('integer'))
-            ->addPropertyConstraints('firstAmount', [
-                new Assert\Type('integer'),
-                new Assert\Length(['min' => 1, 'max' => 64]),
-            ])
-        ;
-    }
 
     /**
      * @return int

@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class Customer implements CustomerInterface
 {
     /**
@@ -43,27 +40,6 @@ class Customer implements CustomerInterface
      * @var string
      */
     private $companyName;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('id', new Assert\NotBlank())
-            ->addPropertyConstraints('firstname', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('lastname', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('email', [
-                new Assert\NotBlank(),
-                new Assert\Email(),
-            ])
-            ->addPropertyConstraint('countryCode', new Assert\Type('string'))
-            ->addPropertyConstraint('companyName', new Assert\Type('string'))
-        ;
-    }
 
     /**
      * @return string

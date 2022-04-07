@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Climate\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class CartItem
 {
     /** @var string */
@@ -15,24 +12,6 @@ class CartItem
 
     /** @var int */
     private $priceWithoutTaxes;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('productReference', [
-                new Assert\NotBlank(),
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('quantity', [
-                new Assert\NotBlank(),
-                new Assert\Type('int')
-            ])
-            ->addPropertyConstraints('priceWithoutTaxes', [
-                new Assert\NotBlank(),
-                new Assert\Type('int')
-            ])
-        ;
-    }
 
     /**
      * @return string
