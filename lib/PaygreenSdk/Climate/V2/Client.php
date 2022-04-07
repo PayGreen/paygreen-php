@@ -10,6 +10,7 @@ use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
 use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
 use Paygreen\Sdk\Climate\V2\Request\ProductRequest;
+use Paygreen\Sdk\Climate\V2\Request\StatisticRequest;
 use Paygreen\Sdk\Climate\V2\Request\TokenRequest;
 use Paygreen\Sdk\Climate\V2\Request\UserRequest;
 use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
@@ -584,6 +585,24 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Token footprint successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    public function getStatisticReport()
+    {
+        $this->logger->info("Get statistic report.");
+
+        $request = (new StatisticRequest($this->requestFactory, $this->environment))->getGetRequest();
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Statistic report successfully retrieved.');
         }
 
         return $response;
