@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Charity\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class Buyer
 {
     /**
@@ -63,27 +60,6 @@ class Buyer
      * @var string
      */
     private $phoneNumber;
-    
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('reference', new Assert\Type('string'))
-            ->addPropertyConstraint('firstname', new Assert\Type('string'))
-            ->addPropertyConstraint('lastname', new Assert\Type('string'))
-            ->addPropertyConstraints('email', [
-                new Assert\NotBlank(),
-                new Assert\Email(),
-            ])
-            ->addPropertyConstraint('addressLine', new Assert\Type('string'))
-            ->addPropertyConstraint('addressLineTwo', new Assert\Type('string'))
-            ->addPropertyConstraint('postalCode', new Assert\Type('string'))
-            ->addPropertyConstraint('city', new Assert\Type('string'))
-            ->addPropertyConstraint('countryCode', new Assert\Type('string'))
-            ->addPropertyConstraint('companyName', new Assert\Type('string'))
-            ->addPropertyConstraint('phoneNumber', new Assert\Type('string'))
-        ;
-    }
 
     /**
      * @return string
@@ -260,5 +236,4 @@ class Buyer
     {
         $this->addressLineTwo = $addressLineTwo;
     }
-
 }

@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class Address implements AddressInterface
 {
     /**
@@ -31,28 +28,6 @@ class Address implements AddressInterface
      * @var string
      */
     private $streetLineTwo;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('postalCode', [
-                new Assert\NotBlank(),
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('city', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('countryCode', [
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('streetLineOne', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraint('streetLineTwo', new Assert\Type('string'))
-        ;
-    }
 
     /**
      * @return string

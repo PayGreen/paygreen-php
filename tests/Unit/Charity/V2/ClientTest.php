@@ -7,7 +7,6 @@ use Paygreen\Sdk\Charity\V2\Enum\DonationTypeEnum;
 use Paygreen\Sdk\Charity\V2\Environment;
 use Paygreen\Sdk\Charity\V2\Model\Buyer;
 use Paygreen\Sdk\Charity\V2\Model\Donation;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -31,9 +30,6 @@ class ClientTest extends TestCase
         $this->client = new \Paygreen\Sdk\Charity\V2\Client($client, $environment, $logger);
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testLogin()
     {
         $this->client->login(
@@ -47,9 +43,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/login', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testRefresh()
     {
         $this->client->refresh(
@@ -63,9 +56,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/login', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetAccountInfos()
     {
         $this->client->getAccountInfos('client_id');
@@ -75,9 +65,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/account/client_id', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetUserInfos()
     {
         $this->client->getUserInfos('client_id', 'username');
@@ -87,9 +74,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/account/client_id/user/username', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetPartnershipGroups()
     {
         $this->client->getPartnershipGroups();
@@ -99,9 +83,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/partnership-group', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetPartnershipGroup()
     {
         $this->client->getPartnershipGroup('external_id');
@@ -111,9 +92,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/partnership-group/external_id', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetDefaultPartnershipGroup()
     {
         $this->client->getDefaultPartnershipGroup();
@@ -124,9 +102,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/partnership-group?isDefault=1', $uri->getPath() . '?' . $uri->getQuery());
     }
     
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testCreateDonation()
     {
         $buyer = new Buyer();
@@ -158,9 +133,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/donation', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetDonation()
     {
         $donationId = 1000;

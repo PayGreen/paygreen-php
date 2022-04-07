@@ -2,9 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class Buyer implements BuyerInterface, GroupSequenceProviderInterface
 {
@@ -49,35 +47,6 @@ class Buyer implements BuyerInterface, GroupSequenceProviderInterface
      * @var Address
      */
     private $billingAddress;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata->setGroupSequenceProvider(true);
-
-        $metadata
-            ->addPropertyConstraint('id', new Assert\NotBlank(['groups' => ['no_reference']]))
-            ->addPropertyConstraint('reference', new Assert\NotBlank(['groups' => ['reference']]))
-            ->addPropertyConstraints('firstname', [
-                new Assert\NotBlank(['groups' => ['no_reference']]),
-                new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']),
-            ])
-            ->addPropertyConstraints('lastname', [
-                new Assert\NotBlank(['groups' => ['no_reference']]),
-                new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']),
-            ])
-            ->addPropertyConstraints('email', [
-                new Assert\NotBlank(['groups' => ['no_reference']]),
-                new Assert\Email(),
-            ])
-            ->addPropertyConstraints('billingAddress', [
-                new Assert\NotBlank(['groups' => ['no_reference']]),
-                new Assert\Type(['groups' => ['no_reference'], 'type' => AddressInterface::class]),
-                new Assert\Valid(['groups' => ['no_reference']]),
-            ])
-            ->addPropertyConstraint('countryCode', new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']))
-            ->addPropertyConstraint('companyName', new Assert\Type(['groups' => ['no_reference'], 'type' => 'string']))
-        ;
-    }
 
     /**
      * @return string

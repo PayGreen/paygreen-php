@@ -2,9 +2,7 @@
 
 namespace Paygreen\Tests\Unit\Payment\V2;
 
-use Http\Client\Exception as HttpClientException;
 use Http\Mock\Client;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Payment\V2\Enum\PaymentTypeEnum;
 use Paygreen\Sdk\Payment\V2\Environment;
 use Paygreen\Sdk\Payment\V2\Model\Address;
@@ -36,10 +34,6 @@ class ClientTest extends TestCase
         $this->client = new \Paygreen\Sdk\Payment\V2\Client($client, $environment, $logger);
     }
 
-    /**
-     * @throws ConstraintViolationException
-     * @throws HttpClientException
-     */
     public function testCreateOAuthAccessToken()
     {
         $this->client->createOAuthAccessToken(
@@ -62,10 +56,6 @@ class ClientTest extends TestCase
         $this->assertEquals('127.0.0.1', $content->serverAddress);
     }
 
-    /**
-     * @throws ConstraintViolationException
-     * @throws HttpClientException
-     */
     public function testGetOAuthAuthentication()
     {
         $url = $this->client->getOAuthAuthenticationPage(
@@ -79,10 +69,6 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @throws ConstraintViolationException
-     * @throws HttpClientException
-     */
     public function testGetAuthenticationControl()
     {
         $this->client->controlOAuthAuthentication(
@@ -112,9 +98,6 @@ class ClientTest extends TestCase
 
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestCreateCash()
     {
         $paymentOrder = $this->buildPaymentOrder();
@@ -154,9 +137,6 @@ class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getCardToken(), $content->card->token);
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestCreateRecurring()
     {
         $paymentOrder = $this->buildPaymentOrder();
@@ -182,9 +162,6 @@ class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestCreateXtime()
     {
         $paymentOrder = $this->buildPaymentOrder();
@@ -207,9 +184,6 @@ class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestCreateTokenize()
     {
         $paymentOrder = $this->buildPaymentOrder();
@@ -226,9 +200,6 @@ class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getOrder()->getAmount(), $content->amount);
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestCancelPayment()
     {
         $this->client->cancelPayment('tr15acde62ecfc1b8a2a1706b3f17a714e');
@@ -241,9 +212,6 @@ class ClientTest extends TestCase
         $this->assertEquals('tr15acde62ecfc1b8a2a1706b3f17a714e', $content->id);
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestRefundPayment()
     {
         $this->client->refundPayment('tr15acde62ecfc1b8a2a1706b3f17a714e', 5000);
@@ -256,9 +224,6 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestGetTransaction()
     {
         $transactionId = 'tr15acde62ecfc1b8a2a1706b3f17a714e';
@@ -273,9 +238,6 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestConfirmTransaction()
     {
         $transactionId = 'tr15acde62ecfc1b8a2a1706b3f17a714e';
@@ -290,9 +252,6 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestUpdateTransactionAmount()
     {
         $transactionId = 'tr15acde62ecfc1b8a2a1706b3f17a714e';
@@ -310,9 +269,6 @@ class ClientTest extends TestCase
         $this->assertEquals(500, $content->amount);
     }
 
-    /**
-     * @throws HttpClientException
-     */
     public function testRequestAvailablePaymentType()
     {
         $this->client->getAvailablePaymentType();
