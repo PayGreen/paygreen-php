@@ -2,10 +2,6 @@
 
 namespace Paygreen\Sdk\Charity\V2\Model;
 
-use Paygreen\Sdk\Charity\V2\Enum\DonationTypeEnum;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class Donation
 {
     /**
@@ -47,44 +43,6 @@ class Donation
      * @var bool
      */
     private $isAPledge;
-
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('reference', [
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('associationId', [
-                new Assert\NotBlank(),
-                new Assert\Type('integer'),
-            ])
-            ->addPropertyConstraints('type', [
-                new Assert\NotBlank(),
-                new Assert\Choice(DonationTypeEnum::getDonationsTypes()),
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('donationAmount', [
-                new Assert\NotBlank(),
-                new Assert\Type('integer'),
-            ])
-            ->addPropertyConstraints('totalAmount', [
-                new Assert\NotBlank(),
-                new Assert\Type('integer'),
-            ])
-            ->addPropertyConstraints('currency', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('buyer', [
-                new Assert\NotBlank(),
-                new Assert\Type(Buyer::class),
-                new Assert\Valid(),
-            ])
-            ->addPropertyConstraint('isAPledge', new Assert\Type('bool'))
-
-        ;
-    }
 
     /**
      * @return string

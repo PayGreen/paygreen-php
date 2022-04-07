@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class Order implements OrderInterface
 {
     /**
@@ -36,34 +33,6 @@ class Order implements OrderInterface
      * @var string
      */
     private $currency;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraint('reference', new Assert\NotBlank(["groups"=>["reference"]]))
-            ->addPropertyConstraints('buyer', [
-                new Assert\NotBlank(),
-                new Assert\Type([
-                    'type' => BuyerInterface::class,
-                    'groups' => ['reference']
-                ]),
-                new Assert\Valid(),
-            ])
-            ->addPropertyConstraints('shippingAddress', [
-                new Assert\NotBlank(),
-                new Assert\Type(AddressInterface::class),
-                new Assert\Valid(),
-            ])
-            ->addPropertyConstraints('amount', [
-                new Assert\NotBlank(),
-                new Assert\Type('integer'),
-            ])
-            ->addPropertyConstraints('currency', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-        ;
-    }
 
     /**
      * @return string

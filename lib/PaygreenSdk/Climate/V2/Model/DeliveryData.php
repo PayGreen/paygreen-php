@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Climate\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class DeliveryData
 {
     /** @var float */
@@ -21,31 +18,6 @@ class DeliveryData
     
     /** @var string */
     private $deliveryService;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('totalWeightInKg', [
-                new Assert\NotBlank(),
-                new Assert\Type('float'),
-            ])
-            ->addPropertyConstraints('shippedFrom', [
-                new Assert\NotBlank(),
-                new Assert\Type(Address::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraints('shippedTo', [
-                new Assert\NotBlank(),
-                new Assert\Type(Address::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraints('transportationExternalId', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraint('deliveryService', new Assert\Type('string'))
-        ;
-    }
 
     /**
      * @return float

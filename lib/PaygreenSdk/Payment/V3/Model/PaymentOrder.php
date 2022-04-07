@@ -3,12 +3,7 @@
 namespace Paygreen\Sdk\Payment\V3\Model;
 
 use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
-use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
-
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 
 class PaymentOrder implements PaymentOrderInterface
 {
@@ -121,64 +116,6 @@ class PaymentOrder implements PaymentOrderInterface
      * @var string
      */
     private $objectSecret;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('order', [
-                new Assert\NotBlank(),
-                new Assert\Type(OrderInterface::class),
-                new Assert\Valid()
-            ])
-            ->addPropertyConstraints('paymentMode', [
-                new Assert\NotBlank(),
-                new Assert\Choice(ModeEnum::getPaymentModes()),
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('integrationMode', [
-                new Assert\Choice(IntegrationModeEnum::getIntegrationsModes()),
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('autoCapture', [
-                new Assert\IsNull(['groups'=>'split']),
-                new Assert\IsNull(['groups'=>'recurring']),
-                new Assert\Type('bool'),
-            ])
-            ->addPropertyConstraints('cycle', [
-                new Assert\NotBlank(['groups'=>'recurring']),
-                new Assert\Choice(CycleEnum::getCycles()),
-                new Assert\Type('string')
-            ])
-            ->addPropertyConstraints('firstAmount', [
-                new Assert\IsNull(['groups'=>'instant']),
-                new Assert\IsNull(['groups'=>'recurring']),
-                new Assert\Type('integer')
-            ])
-            ->addPropertyConstraints('partialAllowed', [
-                new Assert\IsNull(['groups'=>'split']),
-                new Assert\IsNull(['groups'=>'recurring']),
-                new Assert\Type('bool')
-            ])
-            ->addPropertyConstraints('platformsShopId', [
-                new Assert\IsNull(['groups'=>'instant']),
-                new Assert\Type('integer')
-            ])
-        ;
-
-        $metadata->addConstraint(new Assert\Callback([
-            'groups' => 'split',
-            'callback' => 'validateFirstAmount'
-        ]));
-
-        $metadata->addConstraint(new Assert\Callback([
-            'callback' => 'validateMerchantInitiated'
-        ]));
-
-        $metadata->addConstraint(new Assert\Callback([
-            'groups' => 'recurring',
-            'callback' => 'validatePaymentDay'
-        ]));
-    }
 
     public function validateFirstAmount(ExecutionContextInterface $context, $payload)
     {

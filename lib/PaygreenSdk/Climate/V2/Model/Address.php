@@ -2,9 +2,6 @@
 
 namespace Paygreen\Sdk\Climate\V2\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
-
 class Address
 {
     /** @var string */
@@ -18,28 +15,6 @@ class Address
 
     /** @var string */
     private $country;
-
-    public static function loadValidatorMetadata(ClassMetadata $metadata)
-    {
-        $metadata
-            ->addPropertyConstraints('address', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('zipCode', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('city', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-            ->addPropertyConstraints('country', [
-                new Assert\NotBlank(),
-                new Assert\Type('string'),
-            ])
-        ;
-    }
 
     /**
      * @return string
