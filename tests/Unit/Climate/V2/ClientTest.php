@@ -2,15 +2,12 @@
 
 namespace Paygreen\Tests\Unit\Climate\V2;
 
-use Exception;
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Climate\V2\Model\CartItem;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\Address;
 use Paygreen\Sdk\Climate\V2\Environment;
-use Paygreen\Sdk\Climate\V2\Model\ProductReference;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -34,9 +31,6 @@ class ClientTest extends TestCase
         $this->client = new \Paygreen\Sdk\Climate\V2\Client($client, $environment, $logger);
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testLogin()
     {
         $this->client->login(
@@ -50,9 +44,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/login', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testRefresh()
     {
         $this->client->refresh(
@@ -66,9 +57,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/login', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetAccountInfos()
     {
         $this->client->getAccountInfos('client_id');
@@ -78,9 +66,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/account/client_id', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetUserInfos()
     {
         $this->client->getUserInfos('client_id', 'username');
@@ -90,9 +75,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/account/client_id/user/username', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws Exception
-     */
     public function testGetCurrentUserInfos()
     {
         $this->client->getCurrentUserInfos();
@@ -111,9 +93,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/public/projects', $request->getUri()->getPath());   
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testCreateEmptyFootprint()
     {
         $this->client->createEmptyFootprint('footprint_id');
@@ -123,9 +102,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetFootprint()
     {
         $this->client->getFootprint('footprint_id');
@@ -135,9 +111,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint_id', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testCloseFootprint()
     {
         $this->client->closeFootprint('footprint_id', 'CLOSED');
@@ -147,9 +120,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint_id', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testUserContributeFootprint()
     {
         $this->client->userContribute('footprint_id', 500);
@@ -159,9 +129,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint_id', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testAddWebBrowsingData()
     {
         $webBrowsingData = new WebBrowsingData();
@@ -180,9 +147,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint_id/web', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testAddDeliveryData()
     {
         $shippedFrom = new Address();
@@ -211,9 +175,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint_id/delivery', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testAddProductsData()
     {
         $cartItems = array();
@@ -231,9 +192,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint_id/product-cart', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testCreateProductReference()
     {
         $this->client->createProductReference(
@@ -246,9 +204,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/products/references', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testRemoveDeliveryData()
     {
         $this->client->removeDeliveryData('footprint-id');
@@ -258,9 +213,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/footprints/footprint-id/delivery', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testRemoveProductData()
     {
         $this->client->removeProductData('footprint-id');
@@ -283,9 +235,6 @@ class ClientTest extends TestCase
         );
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testExportProductCatalog()
     {
         $file = tmpfile();
@@ -299,9 +248,6 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/products/catalog', $request->getUri()->getPath());
     }
 
-    /**
-     * @throws ConstraintViolationException
-     */
     public function testGetTokenFootprint()
     {
         $this->client->getTokenFootprint('footprint_id');
@@ -309,5 +255,15 @@ class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/tokens/footprint/footprint_id', $request->getUri()->getPath());
+    }
+
+    public function testGetStatisticReport()
+    {
+        $this->client->getStatisticReport();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/carbon/statistics/reports', $request->getUri()->getPath());
+        $this->assertEquals(null, $request->getBody()->getContents());
     }
 }
