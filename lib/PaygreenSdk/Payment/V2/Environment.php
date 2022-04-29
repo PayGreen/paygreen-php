@@ -6,8 +6,6 @@ class Environment extends \Paygreen\Sdk\Core\Environment
 {
     const ENDPOINT_V2_SANDBOX = 'https://sandbox.paygreen.fr';
     const ENDPOINT_V2_PRODUCTION = 'https://paygreen.fr';
-    const ENDPOINT_V3_SANDBOX = 'https://rc-api.paygreen.fr';
-    const ENDPOINT_V3_PRODUCTION = 'https://api.paygreen.fr';
 
     /** @var string */
     private $publicKey;
@@ -52,18 +50,10 @@ class Environment extends \Paygreen\Sdk\Core\Environment
      */
     public function getEndpoint()
     {
-        if (2 === $this->getApiVersion()) {
-            if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
-                return self::ENDPOINT_V2_SANDBOX;
-            }
-
-            return self::ENDPOINT_V2_PRODUCTION;
-        }
-
         if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
-            return self::ENDPOINT_V3_SANDBOX;
+            return self::ENDPOINT_V2_SANDBOX;
         }
-
-        return self::ENDPOINT_V3_PRODUCTION;
+    
+        return self::ENDPOINT_V2_PRODUCTION;
     }
 }

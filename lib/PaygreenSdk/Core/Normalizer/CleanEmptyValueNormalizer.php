@@ -37,7 +37,7 @@ class CleanEmptyValueNormalizer implements NormalizerInterface
                 $array[$key] = self::cleanEmptyValues($value);
             }
 
-            if (empty($value)) {
+            if (empty($value) && ($value !== false) && ($value !== 0)) {
                 unset($array[$key]);
             }
         }
