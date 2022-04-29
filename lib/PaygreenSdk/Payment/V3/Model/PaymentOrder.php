@@ -117,31 +117,6 @@ class PaymentOrder implements PaymentOrderInterface
      */
     private $objectSecret;
 
-    public function validateFirstAmount(ExecutionContextInterface $context, $payload)
-    {
-        $amount = $this->getOrder()->getAmount();
-        $firstAmount = $this->getFirstAmount();
-        if ($firstAmount >= $amount) {
-            $context->addViolation("First amount must be less than total amount.");
-        }
-    }
-
-    public function validateMerchantInitiated(ExecutionContextInterface $context, $payload)
-    {
-        $isMerchantInitiated = $this->isMerchantInitiated();
-
-        if ($isMerchantInitiated && (($this->instrumentId === null) || ($this->previousOrderId === null))) {
-            $context->addViolation("First amount must be less than total amount.");
-        }
-    }
-
-    public function validatePaymentDay(ExecutionContextInterface $context, $payload)
-    {
-        if (($this->paymentDay !== null) && ($this->cycle !== CycleEnum::MONTHLY)) {
-            $context->addViolation("Partial payment allowed only in recurring monthly.");
-        }
-    }
-
     /**
      * @return array
      */

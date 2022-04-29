@@ -2,9 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Symfony\Component\Validator\GroupSequenceProviderInterface;
-
-class Buyer implements BuyerInterface, GroupSequenceProviderInterface
+class Buyer implements BuyerInterface
 {
     /**
      * @var string
@@ -174,12 +172,5 @@ class Buyer implements BuyerInterface, GroupSequenceProviderInterface
     public function setBillingAddress($billingAddress)
     {
         $this->billingAddress = $billingAddress;
-    }
-
-    public function getGroupSequence()
-    {
-        return [
-            null === $this->getReference() ? 'no_reference' : 'reference',
-        ];
     }
 }

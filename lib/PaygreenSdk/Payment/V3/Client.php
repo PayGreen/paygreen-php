@@ -5,6 +5,7 @@ namespace Paygreen\Sdk\Payment\V3;
 use Exception;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
@@ -113,7 +114,7 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param int $paymentReference
+     * @param string $paymentReference
      * @throws Exception
      *
      * @return ResponseInterface
@@ -146,24 +147,7 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param int $instrumentReference
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function deleteInstrument($instrumentReference)
-    {
-        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getDeleteRequest($instrumentReference);
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @param int $paymentReference
+     * @param string $paymentReference
      * @throws Exception
      *
      * @return ResponseInterface
@@ -180,7 +164,7 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param int $paymentReference
+     * @param string $paymentReference
      * @throws Exception
      *
      * @return ResponseInterface
@@ -188,6 +172,74 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function refundOrder($paymentReference)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentReference);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $reference
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function deleteInstrument($reference)
+    {
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getDeleteRequest($reference);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param Instrument $instrument
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createInstrument($instrument)
+    {
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getCreateRequest($instrument);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param Instrument $instrument
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function updateInstrument($instrument)
+    {
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getUpdateRequest($instrument);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $reference
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getInstrument($reference)
+    {
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getGetRequest($reference);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
