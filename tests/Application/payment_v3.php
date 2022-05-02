@@ -24,10 +24,8 @@ $environment->setApplicationVersion("1.0.0");
 $client = new \Paygreen\Sdk\Payment\V3\Client($curl, $environment);
 
 $response = $client->authenticate();
-
 $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
-
 $client->setBearer($bearer);
 
 $buyer = new Buyer();
