@@ -9,7 +9,6 @@ use Paygreen\Sdk\Charity\V2\Request\LoginRequest;
 use Paygreen\Sdk\Charity\V2\Request\AccountRequest;
 use Paygreen\Sdk\Charity\V2\Request\PartnershipRequest;
 use Paygreen\Sdk\Charity\V2\Request\UserRequest;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -38,7 +37,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string      $username
      * @param string      $password
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -72,7 +70,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string      $clientId
      * @param string      $refreshToken
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -103,7 +100,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $clientId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -130,7 +126,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $clientId
      * @param string $username
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -155,7 +150,6 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -180,8 +174,7 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $externalId
-     * 
-     * @throws ConstraintViolationException
+     *
      * @throws Exception
      *
      * @return ResponseInterface
@@ -205,7 +198,7 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @throws ConstraintViolationException
+
      * @throws Exception
      *
      * @return ResponseInterface
@@ -231,7 +224,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param Donation $donation
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -257,7 +249,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param integer $donationId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface

@@ -266,4 +266,13 @@ class ClientTest extends TestCase
         $this->assertEquals('/carbon/statistics/reports', $request->getUri()->getPath());
         $this->assertEquals(null, $request->getBody()->getContents());
     }
+
+    public function testReserveCarbon()
+    {
+        $this->client->reserveCarbon('footprint_id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/carbon/footprints/footprint_id/contribution', $request->getUri()->getPath());
+    }
 }
