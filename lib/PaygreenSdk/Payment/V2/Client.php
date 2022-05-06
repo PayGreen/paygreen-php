@@ -3,7 +3,6 @@
 namespace Paygreen\Sdk\Payment\V2;
 
 use Exception;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V2\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V2\Request\OAuthRequest;
@@ -45,7 +44,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param null|string $phoneNumber
      * @param null|string $serverAddress
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -84,7 +82,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $redirectUri
      * @param string $responseType
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return string
@@ -106,7 +103,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $grantType
      *
      * @throws Exception
-     * @throws ConstraintViolationException
      *
      * @return ResponseInterface
      */
