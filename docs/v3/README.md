@@ -10,11 +10,10 @@ First, you need to initialize the HTTP client:
 ```php
 $psr18Client = new Client(); // Must implement the HttpClient interface
 
-$environment = new Paygreen\Sdk\Payment\V2\Environment(
+$environment = new Paygreen\Sdk\Payment\V3\Environment(
     'YOUR_SHOP_ID',
     'YOUR_SECRET_KEY',
-    'SANDBOX', // Possible values : PRODUCTION, SANDBOX
-    3
+    'SANDBOX' // Possible values : PRODUCTION, SANDBOX
 );
 
 $client = new Paygreen\Sdk\Payment\V3\Client($psr18Client, $environment);
