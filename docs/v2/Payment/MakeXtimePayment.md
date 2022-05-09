@@ -39,9 +39,5 @@ $multiplePayment->setFirstAmount(1500); // Amount of the first payment in cents
 
 $paymentOrder->setMultiplePayment($multiplePayment);
 
-try {
-    $response = $paymentClient->createXtimePayment($paymentOrder);
-} catch (Paygreen\Sdk\Core\Exception\ConstraintViolationException $exception) {
-    // Here you can catch constraint validation errors.
-}
+$response = $paymentClient->createXtimePayment($paymentOrder);
 ```

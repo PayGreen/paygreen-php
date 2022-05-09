@@ -32,9 +32,5 @@ $paymentOrder->setType('TOKENIZE');
 $paymentOrder->setOrder($order);
 $paymentOrder->setNotifiedUrl('https://localhost/notify');
 
-try {
-    $response = $paymentClient->createTokenizePayment($paymentOrder);
-} catch (Paygreen\Sdk\Core\Exception\ConstraintViolationException $exception) {
-    // Here you can catch constraint validation errors.
-}
+$response = $paymentClient->createTokenizePayment($paymentOrder);
 ```

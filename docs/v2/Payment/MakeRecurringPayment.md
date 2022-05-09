@@ -41,9 +41,5 @@ $multiplePayment->setStartAt(1637227163); // Start date
 
 $paymentOrder->setMultiplePayment($multiplePayment);
 
-try {
-    $response = $paymentClient->createRecurringPayment($paymentOrder);
-} catch (Paygreen\Sdk\Core\Exception\ConstraintViolationException $exception) {
-    // Here you can catch constraint validation errors.
-}
+$response = $paymentClient->createRecurringPayment($paymentOrder);
 ```
