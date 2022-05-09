@@ -13,7 +13,6 @@ use Paygreen\Sdk\Climate\V2\Request\ProductRequest;
 use Paygreen\Sdk\Climate\V2\Request\StatisticRequest;
 use Paygreen\Sdk\Climate\V2\Request\TokenRequest;
 use Paygreen\Sdk\Climate\V2\Request\UserRequest;
-use Paygreen\Sdk\Core\Exception\ConstraintViolationException;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
@@ -42,7 +41,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string      $username
      * @param string      $password
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -76,7 +74,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string      $clientId
      * @param string      $refreshToken
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -107,7 +104,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $clientId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -134,7 +130,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $clientId
      * @param string $username
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -208,7 +203,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $footprintId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -235,7 +229,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param bool $detailed
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -265,7 +258,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param string $status
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -295,7 +287,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param int $amount
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -325,7 +316,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param WebBrowsingData $webBrowsingData
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -355,7 +345,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param DeliveryData $deliveryData
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -386,7 +375,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $productExternalId
      * @param integer $quantity
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -417,7 +405,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param CartItem[] $cartItems
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -448,7 +435,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $productName
      * @param null|string $emissionExternalId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -481,7 +467,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $footprintId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -510,7 +495,6 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $footprintId
      * @param null|string $productExternalReference
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -539,7 +523,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $filepath
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -567,7 +550,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $footprintId
      *
-     * @throws ConstraintViolationException
      * @throws Exception
      *
      * @return ResponseInterface
@@ -603,6 +585,31 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (200 === $response->getStatusCode()) {
             $this->logger->info('Statistic report successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param $footprintId
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function reserveCarbon($footprintId)
+    {
+        $this->logger->info("Reserve carbon for footprint '{$footprintId}'.");
+
+        $request = (new FootprintRequest($this->requestFactory, $this->environment))->getReserveCarbonRequest($footprintId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (201 === $response->getStatusCode()) {
+            $this->logger->info('Carbon successfully reserved.');
         }
 
         return $response;

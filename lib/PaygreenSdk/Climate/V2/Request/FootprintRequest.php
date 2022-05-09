@@ -164,4 +164,18 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
             'DELETE'
         )->withAuthorization()->withTestMode()->getRequest();
     }
+
+    /**
+     * @param string $footprintId
+     *
+     * @throws Exception
+     *
+     * @return RequestInterface
+     */
+    public function getReserveCarbonRequest($footprintId)
+    {
+        return $this->requestFactory->create(
+            "/carbon/footprints/{$footprintId}/contribution"
+        )->withAuthorization()->withTestMode()->getRequest();
+    }
 }

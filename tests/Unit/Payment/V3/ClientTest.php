@@ -26,8 +26,8 @@ final class ClientTest extends TestCase
         $client = new Client();
 
         $environment = new Environment(
-            'public_key',
-            'private_key',
+            'my_shop_id',
+            'my_secret_key',
             'SANDBOX',
             3
         );
@@ -43,7 +43,7 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/auth/authentication/public_key/secret-key', $request->getUri()->getPath());
+        $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
     public function testRequestCreateBuyer()
@@ -69,7 +69,8 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/shops/public_key/buyers', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers', $request->getUri()->getPath());
+        $this->assertEquals("my_shop_id", $content->shop_id);
         $this->assertEquals($buyer->getEmail(), $content->email);
         $this->assertEquals($buyer->getFirstname(), $content->first_name);
         $this->assertEquals($buyer->getLastname(), $content->last_name);
@@ -86,7 +87,7 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/shops/public_key/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
     }
 
     public function testRequestUpdateBuyer()
@@ -105,7 +106,7 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/shops/public_key/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
         $this->assertEquals($buyer->getEmail(), $content->email);
         $this->assertEquals($buyer->getFirstname(), $content->first_name);
         $this->assertEquals($buyer->getLastname(), $content->last_name);
@@ -245,6 +246,47 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->isPartialAllowed(), $content->partial_allowed);
     }
 
+    public function testRequestCreateInstrument()
+    {
+        $instrument = new Instrument();
+        $instrument->setWithAuthorization(true);
+        $instrument->setType('bank_card');
+        $instrument->setToken('card_token');
+
+        $this->client->createInstrument($instrument);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/instruments', $request->getUri()->getPath());
+        
+        $this->assertEquals($instrument->getToken(), $content->token);
+        $this->assertEquals($instrument->getType(), $content->type);
+        $this->assertEquals($instrument->isWithAuthorization(), $content->with_authorization);
+    }
+
+    public function testRequestUpdateInstrument()
+    {
+        $instrument = new Instrument();
+        $instrument->setReference('instrumentReference');
+        $instrument->setWithAuthorization(true);
+        $instrument->setType('bank_card');
+        $instrument->setToken('card_token');
+
+        $this->client->updateInstrument($instrument);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
+
+        $this->assertEquals($instrument->getToken(), $content->token);
+        $this->assertEquals($instrument->getType(), $content->type);
+        $this->assertEquals($instrument->isWithAuthorization(), $content->with_authorization);
+    }
+
     public function testRequestDeleteInstrument()
     {
         $instrument = new Instrument();
@@ -254,6 +296,18 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
+    }
+
+    public function testRequestGetInstrument()
+    {
+        $instrument = new Instrument();
+        $instrument->setReference('instrumentReference');
+
+        $this->client->getInstrument($instrument->getReference());
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
     }
 

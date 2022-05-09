@@ -4,41 +4,42 @@ namespace Paygreen\Sdk\Payment\V3;
 
 class Environment extends \Paygreen\Sdk\Core\Environment
 {
-    const ENDPOINT_V3_SANDBOX = 'https://rc-api.paygreen.dev';
+    const ENDPOINT_V3_SANDBOX = 'https://sb-api.paygreen.dev';
+    const ENDPOINT_V3_RECETTE = 'https://rc-api.paygreen.dev';
     const ENDPOINT_V3_PRODUCTION = 'https://api.paygreen.fr';
 
     /** @var string */
-    private $publicKey;
+    private $shopId;
 
     /** @var string */
-    private $privateKey;
+    private $secretKey;
 
     /**
-     * @param string     $publicKey
-     * @param string     $privateKey
+     * @param string     $shopId
+     * @param string     $secretKey
      */
-    public function __construct($publicKey, $privateKey, $environment, $apiVersion)
+    public function __construct($shopId, $secretKey, $environment, $apiVersion)
     {
         parent::__construct($environment, $apiVersion);
         
-        $this->publicKey = $publicKey;
-        $this->privateKey = $privateKey;
+        $this->shopId = $shopId;
+        $this->secretKey = $secretKey;
     }
 
     /**
      * @return string
      */
-    public function getPublicKey()
+    public function getShopId()
     {
-        return $this->publicKey;
+        return $this->shopId;
     }
 
     /**
      * @return string
      */
-    public function getPrivateKey()
+    public function getSecretKey()
     {
-        return $this->privateKey;
+        return $this->secretKey;
     }
 
     /**
@@ -48,6 +49,10 @@ class Environment extends \Paygreen\Sdk\Core\Environment
     {
         if (self::ENVIRONMENT_SANDBOX === $this->getEnvironment()) {
             return self::ENDPOINT_V3_SANDBOX;
+        }
+
+        if (self::ENVIRONMENT_RECETTE === $this->getEnvironment()) {
+            return self::ENDPOINT_V3_RECETTE;
         }
 
         return self::ENDPOINT_V3_PRODUCTION;

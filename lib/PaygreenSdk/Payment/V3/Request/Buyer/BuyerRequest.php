@@ -18,9 +18,10 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(Buyer $buyer)
     {
-        $publicKey = $this->environment->getPublicKey();
+        $shopId = $this->environment->getShopId();
 
         $body = [
+            'shop_id' => $shopId,
             'email' => $buyer->getEmail(),
             'first_name' => $buyer->getFirstname(),
             'last_name' => $buyer->getLastname(),
@@ -36,7 +37,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/payment/shops/{$publicKey}/buyers",
+            "/payment/buyers",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -46,11 +47,11 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getGetRequest(Buyer $buyer)
     {
-        $publicKey = $this->environment->getPublicKey();
+        $shopId = $this->environment->getShopId();
         $buyerReference = $buyer->getReference();
 
         return $this->requestFactory->create(
-            "/payment/shops/{$publicKey}/buyers/{$buyerReference}",
+            "/payment/buyers/{$buyerReference}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -61,7 +62,6 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest(Buyer $buyer)
     {
-        $publicKey = $this->environment->getPublicKey();
         $buyerReference = $buyer->getReference();
 
         $body = [
@@ -85,7 +85,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         return $this->requestFactory->create(
-            "/payment/shops/{$publicKey}/buyers/{$buyerReference}",
+            "/payment/buyers/{$buyerReference}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
