@@ -18,7 +18,7 @@ class Environment extends \Paygreen\Sdk\Core\Environment
      * @param string     $shopId
      * @param string     $secretKey
      */
-    public function __construct($shopId, $secretKey, $environment, $apiVersion)
+    public function __construct($shopId, $secretKey, $environment, $apiVersion = \Paygreen\Sdk\Core\Environment::API_VERSION_3)
     {
         parent::__construct($environment, $apiVersion);
         
