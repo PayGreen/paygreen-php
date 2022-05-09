@@ -36,5 +36,8 @@
     "php-http/message": ">=1.7.2",
     "php-http/httplug": ">=1.0",
     "symfony/validator": ">=3.4"
+  },
+  "scripts": {
+    "test" : "vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never"
   }
 }
