@@ -1,19 +1,20 @@
 # Paygreen PHP SDK
 
+## 🚀 Getting Started
 
-
-## Installation
+### Installation
 
 ```shell
 composer require paygreen/paygreen-php
 ```
 
-## Requirements
+### Requirements
 
 - PHP 5.6 and above.
 - [PSR-18](https://www.php-fig.org/psr/psr-18/) HTTP Client like [Guzzle](https://github.com/guzzle/guzzle) or [curl-client](https://github.com/php-http/curl-client)
 
-## Getting Started
+
+### Example
 
 ```php
 use Http\Client\Curl\Client;
@@ -56,11 +57,13 @@ try {
 }
 ```
 
-## Documentation
+## 📚 Documentation
 
 See the [docs](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/README.md).
 
-## Testing
+> 🚀 Find the documentation for Paygreen V3 [here](https://github.com/PayGreen/paygreen-php/tree/master/docs/v3).
+
+## 🚧 Testing
 
 Start docker stack:
 ```shell
