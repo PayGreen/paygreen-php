@@ -9,12 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - uses: php-actions/composer@v5
+      - name: Composer
+        uses: php-actions/composer@v6
+        with:
+          progress: true
+          quiet: false
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
-        env:
-          TEST_NAME: Scarlett
         with:
           bootstrap: vendor/autoload.php
           configuration: test/phpunit.xml
