@@ -28,6 +28,11 @@ $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
 $client->setBearer($bearer);
 
+$response = $client->getConfig();
+$data = json_decode($response->getBody()->getContents())->data;
+dump($data);
+
+
 $buyer = new Buyer();
 $buyer->setId(uniqid());
 $buyer->setFirstname('John');

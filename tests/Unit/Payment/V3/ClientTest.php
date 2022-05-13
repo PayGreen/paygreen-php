@@ -46,6 +46,15 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
+    public function testRequestConfig()
+    {
+        $this->client->getConfig();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-configs?shop_id=my_shop_id', $request->getUri()->getPath());
+    }
+
     public function testRequestCreateBuyer()
     {
         $buyer = new Buyer();
