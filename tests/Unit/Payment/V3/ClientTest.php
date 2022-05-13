@@ -52,7 +52,7 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/payment-configs?shop_id=my_shop_id', $request->getUri()->getPath());
+        $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
     }
 
     public function testRequestCreateBuyer()
