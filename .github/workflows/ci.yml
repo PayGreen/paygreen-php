@@ -12,6 +12,7 @@ jobs:
       - name: Composer
         uses: php-actions/composer@v6
         with:
+          version: 2.2
           php_version: 5.6
 
       - name: PHPUnit Tests
