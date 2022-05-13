@@ -46,9 +46,9 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
-    public function testRequestConfig()
+    public function testRequestListConfig()
     {
-        $this->client->getConfig();
+        $this->client->listPaymentConfig();
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());

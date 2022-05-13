@@ -28,7 +28,7 @@ $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
 $client->setBearer($bearer);
 
-$response = $client->getConfig();
+$response = $client->listPaymentConfig();
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 

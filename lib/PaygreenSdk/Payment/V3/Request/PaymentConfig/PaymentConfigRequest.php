@@ -1,10 +1,10 @@
 <?php
 
-namespace Paygreen\Sdk\Payment\V3\Request\Config;
+namespace Paygreen\Sdk\Payment\V3\Request\PaymentConfig;
 
 use Psr\Http\Message\RequestInterface;
 
-class ConfigRequest extends \Paygreen\Sdk\Core\Request\Request
+class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @return RequestInterface
