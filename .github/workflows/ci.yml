@@ -12,8 +12,8 @@ jobs:
       - name: Composer
         uses: php-actions/composer@v6
         with:
-          progress: true
-          quiet: false
+          progress: yes
+          quiet: no
 
       - name: PHPUnit Tests
         uses: php-actions/phpunit@v2
