@@ -9,6 +9,7 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
+use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -41,6 +42,22 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function authenticate()
     {
         $request = (new AuthenticationRequest($this->requestFactory, $this->environment))->getRequest();
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @throws Exception
+     *
+     *@return ResponseInterface
+     */
+    public function listPaymentConfig()
+    {
+        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getGetRequest();
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
