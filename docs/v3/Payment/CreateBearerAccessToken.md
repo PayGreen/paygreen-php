@@ -1,5 +1,5 @@
 
-## How to create OAuth access token :
+## How to create a bearer access token :
 
 ```php
 $response = $client->authenticate();

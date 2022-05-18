@@ -40,12 +40,16 @@ class TokenizeRequest extends \Paygreen\Sdk\Core\Request\Request
                 'companyName' => $paymentOrder->getOrder()->getCustomer()->getCompanyName(),
             ],
             'shippingAddress' => [
+                'lastName' => $paymentOrder->getOrder()->getShippingAddress()->getLastName(),
+                'firstName' => $paymentOrder->getOrder()->getShippingAddress()->getFirstName(),
                 'address' => $paymentOrder->getOrder()->getShippingAddress()->getStreet(),
                 'zipCode' => $paymentOrder->getOrder()->getShippingAddress()->getPostcode(),
                 'city' => $paymentOrder->getOrder()->getShippingAddress()->getCity(),
                 'country' => $paymentOrder->getOrder()->getShippingAddress()->getCountryCode(),
             ],
             'billingAddress' => [
+                'lastName' => $paymentOrder->getOrder()->getBillingAddress()->getLastName(),
+                'firstName' => $paymentOrder->getOrder()->getBillingAddress()->getFirstName(),
                 'address' => $paymentOrder->getOrder()->getBillingAddress()->getStreet(),
                 'zipCode' => $paymentOrder->getOrder()->getBillingAddress()->getPostcode(),
                 'city' => $paymentOrder->getOrder()->getBillingAddress()->getCity(),
