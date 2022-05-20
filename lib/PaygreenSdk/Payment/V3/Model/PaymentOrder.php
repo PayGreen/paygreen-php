@@ -2,8 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class PaymentOrder implements PaymentOrderInterface
 {
