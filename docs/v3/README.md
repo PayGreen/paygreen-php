@@ -24,9 +24,9 @@ $client = new Paygreen\Sdk\Payment\V3\Client($psr18Client, $environment);
 ---
 
 - **Authentication**
-  - [How to create Bearer access token ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/CreateBearerAccessToken.md)
+  - [How to create Bearer access token?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/CreateBearerAccessToken.md)
 - **Make a payment**
   - [How to make a payment order?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/MakePaymentOrder.md)
 - **Adding payment script on your website**
-  - [How to display a payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/IntegratePaymentScript.md)
+  - [How to display a payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/IntegratePaymentScript.md)
 
