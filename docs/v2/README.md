@@ -25,18 +25,18 @@ $client = new Paygreen\Sdk\Payment\V2\Client($psr18Client, $environment);
 ---
 
 - **Authentication**
-  - [How to create OAuth access token ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/CreateOAuthAccessToken.md)
+  - [How to create OAuth access token?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/CreateOAuthAccessToken.md)
 - **Make a payment**
-  - [How to make a CASH payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeCashPayment.md)
-  - [How to make a RECURRING payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeRecurringPayment.md)
-  - [How to make a XTIME payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeXtimePayment.md)
-  - [How to make a TOKENIZE payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeTokenizePayment.md)
+  - [How to make a CASH payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeCashPayment.md)
+  - [How to make a RECURRING payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeRecurringPayment.md)
+  - [How to make a XTIME payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeXtimePayment.md)
+  - [How to make a TOKENIZE payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/MakeTokenizePayment.md)
 - **Transaction management**
-  - [How to cancel payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/CancelPayment.md)
-  - [How to get transaction details ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/GetTransactionDetails.md)
-  - [How to make a refund ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/RefundTransaction.md)
-  - [How to confirm TOKENIZE payment ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/ConfirmTokenizePayment.md)
-  - [How to update payment amount ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/UpdatePaymentAmount.md)
+  - [How to cancel payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/CancelPayment.md)
+  - [How to get transaction details?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/GetTransactionDetails.md)
+  - [How to make a refund?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/RefundPayment.md)
+  - [How to confirm TOKENIZE payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/ConfirmTokenizePayment.md)
+  - [How to update payment amount?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/UpdatePaymentAmount.md)
 - **Account management**
-  - [How to get available payment type ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/GetAvailablePaymentType.md)
-  - [How to get shop details ?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/GetShopDetails.md)
+  - [How to get available payment type?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/GetAvailablePaymentType.md)
+  - [How to get shop details?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v2/Payment/GetShopDetails.md)
