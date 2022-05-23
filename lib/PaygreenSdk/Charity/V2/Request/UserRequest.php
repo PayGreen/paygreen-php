@@ -3,7 +3,6 @@
 namespace Paygreen\Sdk\Charity\V2\Request;
 
 use Psr\Http\Message\RequestInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class UserRequest extends \Paygreen\Sdk\Core\Request\Request
 {
