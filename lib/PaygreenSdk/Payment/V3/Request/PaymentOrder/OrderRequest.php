@@ -22,8 +22,8 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
         if (null === $paymentOrder->getOrder()->getBuyer()->getReference()) {
             $buyer = [
                 'email' => $paymentOrder->getOrder()->getBuyer()->getEmail(),
-                'firstName' => $paymentOrder->getOrder()->getBuyer()->getFirstName(),
-                'lastName' => $paymentOrder->getOrder()->getBuyer()->getLastName(),
+                'first_name' => $paymentOrder->getOrder()->getBuyer()->getFirstName(),
+                'last_name' => $paymentOrder->getOrder()->getBuyer()->getLastName(),
                 'reference' => $paymentOrder->getOrder()->getBuyer()->getId(),
                 'country' => $paymentOrder->getOrder()->getBuyer()->getCountryCode(),
             ];

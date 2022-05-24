@@ -4,8 +4,8 @@
 $customer = new Paygreen\Sdk\Payment\V2\Model\Customer(); // Must implement the CustomerInterface
 $customer->setId('my-customer-id');
 $customer->setEmail('john.doe@customer.fr');
-$customer->setFirstname('John');
-$customer->setLastname('Doe');
+$customer->setFirstName('John');
+$customer->setLastName('Doe');
 
 $shippingAddress = new Paygreen\Sdk\Payment\V2\Model\Address(); // Must implement the AddressInterface
 $shippingAddress->setStreetLineOne('54 Crown Street');

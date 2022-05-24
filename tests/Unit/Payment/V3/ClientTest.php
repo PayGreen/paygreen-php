@@ -70,8 +70,8 @@ final class ClientTest extends TestCase
     {
         $buyer = new Buyer();
         $buyer->setId(uniqid());
-        $buyer->setFirstname('John');
-        $buyer->setLastname('Doe');
+        $buyer->setFirstName('John');
+        $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
 
@@ -92,8 +92,8 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/buyers', $request->getUri()->getPath());
         $this->assertEquals("my_shop_id", $content->shop_id);
         $this->assertEquals($buyer->getEmail(), $content->email);
-        $this->assertEquals($buyer->getFirstname(), $content->first_name);
-        $this->assertEquals($buyer->getLastname(), $content->last_name);
+        $this->assertEquals($buyer->getFirstName(), $content->first_name);
+        $this->assertEquals($buyer->getLastName(), $content->last_name);
         $this->assertEquals($buyer->getId(), $content->reference);
         $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
@@ -115,8 +115,8 @@ final class ClientTest extends TestCase
         $buyer = new Buyer();
         $buyer->setId('buyerId');
         $buyer->setReference('buyerReference');
-        $buyer->setFirstname('John');
-        $buyer->setLastname('Doe');
+        $buyer->setFirstName('John');
+        $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
 
@@ -128,8 +128,8 @@ final class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
         $this->assertEquals($buyer->getEmail(), $content->email);
-        $this->assertEquals($buyer->getFirstname(), $content->first_name);
-        $this->assertEquals($buyer->getLastname(), $content->last_name);
+        $this->assertEquals($buyer->getFirstName(), $content->first_name);
+        $this->assertEquals($buyer->getLastName(), $content->last_name);
         $this->assertEquals($buyer->getId(), $content->reference);
         $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
@@ -138,8 +138,8 @@ final class ClientTest extends TestCase
     {
         $buyer = new Buyer();
         $buyer->setId('buyerId');
-        $buyer->setFirstname('John');
-        $buyer->setLastname('Doe');
+        $buyer->setFirstName('John');
+        $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
         $buyer->setCountryCode('FR');
 
@@ -177,8 +177,8 @@ final class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
         $this->assertEquals($buyer->getEmail(), $content->buyer->email);
-        $this->assertEquals($buyer->getFirstname(), $content->buyer->firstName);
-        $this->assertEquals($buyer->getLastname(), $content->buyer->lastName);
+        $this->assertEquals($buyer->getFirstName(), $content->buyer->first_name);
+        $this->assertEquals($buyer->getLastName(), $content->buyer->last_name);
         $this->assertEquals($buyer->getId(), $content->buyer->reference);
         $this->assertEquals($buyer->getCountryCode(), $content->buyer->country);
 
