@@ -29,4 +29,6 @@ $client = new Paygreen\Sdk\Payment\V3\Client($psr18Client, $environment);
   - [How to make a payment order?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/MakePaymentOrder.md)
 - **Adding payment script on your website**
   - [How to display a payment?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/IntegratePaymentScript.md)
+- **Verify the public key validity**
+  - [How to check the validity of a public key?](https://github.com/PayGreen/paygreen-php/blob/master/docs/v3/Payment/CheckPublicKeyValidity.md)
 

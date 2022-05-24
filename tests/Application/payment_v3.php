@@ -32,6 +32,16 @@ $response = $client->listPaymentConfig();
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 
+$publicKey = "pk_6018016627284e5d95d0e48103272a37";
+$response = $client->getPublicKey($publicKey);
+$data = json_decode($response->getBody()->getContents())->data;
+
+if ($data !== null && $data->revoked_at === null) {
+    dump("Public key $publicKey valid.");
+} else {
+    dump("Public key $publicKey invalid.");
+}
+
 
 $buyer = new Buyer();
 $buyer->setId(uniqid());
