@@ -4,8 +4,8 @@
 $buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer(); // Or must implement the CustomerInterface
 $buyer->setId('my-customer-id');
 $buyer->setEmail('john.doe@customer.fr');
-$buyer->setFirstname('John');
-$buyer->setLastname('Doe');
+$buyer->setFirstName('John');
+$buyer->setLastName('Doe');
 $buyer->setCountryCode('FR');
 
 $shippingAddress = new Paygreen\Sdk\Payment\V3\Model\Address(); // Or must implement the AddressInterface

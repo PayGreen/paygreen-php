@@ -45,8 +45,8 @@ if ($data !== null && $data->revoked_at === null) {
 
 $buyer = new Buyer();
 $buyer->setId(uniqid());
-$buyer->setFirstname('John');
-$buyer->setLastname('Doe');
+$buyer->setFirstName('John');
+$buyer->setLastName('Doe');
 $buyer->setEmail('romain@paygreen.fr');
 $buyer->setCountryCode('FR');
 
@@ -71,8 +71,8 @@ try {
 $data = json_decode($response->getBody()->getContents())->data;
 //dump($data);
 
-$buyer->setFirstname('Jerry');
-$buyer->setLastname('Cane');
+$buyer->setFirstName('Jerry');
+$buyer->setLastName('Cane');
 $buyer->setEmail('dev-module@paygreen.fr');
 $buyer->setCountryCode('US');
 
@@ -86,8 +86,8 @@ $data = json_decode($response->getBody()->getContents())->data;
 
 $buyerNoreference = new Buyer();
 $buyerNoreference->setId(uniqid());
-$buyerNoreference->setFirstname('Will');
-$buyerNoreference->setLastname('Jackson');
+$buyerNoreference->setFirstName('Will');
+$buyerNoreference->setLastName('Jackson');
 $buyerNoreference->setEmail('romain@paygreen.fr');
 $buyerNoreference->setCountryCode('FR');
 $buyerNoreference->setBillingAddress($address);

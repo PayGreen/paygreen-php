@@ -289,8 +289,8 @@ class ClientTest extends TestCase
         $customer = new Customer();
         $customer->setId(1);
         $customer->setEmail('maxime.lemolt@paygreen.fr');
-        $customer->setFirstname('John');
-        $customer->setLastname('Doe');
+        $customer->setFirstName('John');
+        $customer->setLastName('Doe');
 
         $shippingAddress = new Address();
         $shippingAddress->setStreetLineOne('1 rue de la Livraison');
