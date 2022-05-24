@@ -280,7 +280,7 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/instruments', $request->getUri()->getPath());
-        
+
         $this->assertEquals($instrument->getToken(), $content->token);
         $this->assertEquals($instrument->getType(), $content->type);
         $this->assertEquals($instrument->isWithAuthorization(), $content->with_authorization);
@@ -353,5 +353,86 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/payment-orders/SDK-ORDER-123/refund', $request->getUri()->getPath());
+    }
+
+    public function testRequestCreateListener()
+    {
+        $this->client->createListener(
+            'webhook',
+            array('payment_order.authorized'),
+            'https://my-listener-url.fr'
+        );
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/notifications/listeners', $request->getUri()->getPath());
+        $this->assertEquals('webhook', $content->type);
+        $this->assertEquals(array('payment_order.authorized'), $content->events);
+        $this->assertEquals('https://my-listener-url.fr', $content->url);
+    }
+
+    public function testRequestUpdateListener()
+    {
+        $this->client->updateListener('lis_12345', 'https://my-listener-url.fr');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/notifications/listeners/lis_12345', $request->getUri()->getPath());
+        $this->assertEquals('https://my-listener-url.fr', $content->url);
+    }
+
+    public function testRequestGetListener()
+    {
+        $this->client->getListener('lis_12345');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/notifications/listeners/lis_12345', $request->getUri()->getPath());
+    }
+
+    public function testRequestGetListenerByShop()
+    {
+        $this->client->getListenerByShop('sh_12345');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals(
+            '/notifications/listeners?shop_id=sh_12345',
+            $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
+        );
+    }
+
+    public function testRequestDeleteListener()
+    {
+        $this->client->deleteListener('lis_12345');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('DELETE', $request->getMethod());
+        $this->assertEquals('/notifications/listeners/lis_12345', $request->getUri()->getPath());
+    }
+
+    public function testRequestGetNotificationsByListener()
+    {
+        $this->client->getNotificationsByListener('lis_12345');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals(
+            '/notifications/?listener_id=lis_12345',
+            $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
+        );
+    }
+
+    public function testRequestReplayNotification()
+    {
+        $this->client->replayNotification('ntf_12345');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/notifications/ntf_12345/replay',  $request->getUri()->getPath());
     }
 }
