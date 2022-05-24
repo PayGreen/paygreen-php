@@ -7,7 +7,6 @@ use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
 use Psr\Http\Message\RequestInterface;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
 {
