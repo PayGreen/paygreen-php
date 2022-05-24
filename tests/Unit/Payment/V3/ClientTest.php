@@ -46,6 +46,26 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
+    public function testRequestListConfig()
+    {
+        $this->client->listPaymentConfig();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+    }
+
+    public function testRequestGetPublicKey()
+    {
+        $publicKey = 'pk_xxxxxxxxxxx';
+        $this->client->getPublicKey($publicKey);
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/auth/public-keys/pk_xxxxxxxxxxx', $request->getUri()->getPath());
+    }
+
     public function testRequestCreateBuyer()
     {
         $buyer = new Buyer();
@@ -140,7 +160,7 @@ final class ClientTest extends TestCase
 
         $paymentOrder = new PaymentOrder();
         $paymentOrder->setPaymentMode(ModeEnum::SPLIT);
-        //$paymentOrder->setAutoCapture(true);
+        $paymentOrder->setAutoCapture(true);
         $paymentOrder->setFirstAmount(100);
         $paymentOrder->setMerchantInitiated(true);
         $paymentOrder->setInstrumentId(12415);
