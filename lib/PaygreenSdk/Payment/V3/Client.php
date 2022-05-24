@@ -9,10 +9,10 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
-use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
+use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
+use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
-use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -34,7 +34,7 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         parent::__construct($client, $logger);
     }
-    
+
     /**
      * @throws Exception
      *
@@ -43,38 +43,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function authenticate()
     {
         $request = (new AuthenticationRequest($this->requestFactory, $this->environment))->getRequest();
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @throws Exception
-     *
-     *@return ResponseInterface
-     */
-    public function listPaymentConfig()
-    {
-        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getGetRequest();
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @throws Exception
-     *
-     *@return ResponseInterface
-     */
-    public function getPublicKey($publicKey)
-    {
-        $request = (new PublicKeyRequest($this->requestFactory, $this->environment))->getGetRequest($publicKey);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -274,6 +242,132 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function getInstrument($reference)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getGetRequest($reference);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $type
+     * @param array $events
+     * @param string $url
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createListener($type, $events, $url)
+    {
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getCreateRequest(
+            $type,
+            $events,
+            $url
+        );
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $listenerId
+     * @param string $url
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function updateListener($listenerId, $url)
+    {
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getUpdateRequest($listenerId, $url);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $listenerId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getListener($listenerId)
+    {
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getGetRequest($listenerId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $shopId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getListenerByShop($shopId)
+    {
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getGetByShopRequest($shopId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $listenerId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function deleteListener($listenerId)
+    {
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getDeleteRequest($listenerId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $listenerId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getNotificationsByListener($listenerId)
+    {
+        $request = (new NotificationRequest($this->requestFactory, $this->environment))->getGetByListenerRequest($listenerId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $notificationId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function replayNotification($notificationId)
+    {
+        $request = (new NotificationRequest($this->requestFactory, $this->environment))->getReplayRequest($notificationId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
