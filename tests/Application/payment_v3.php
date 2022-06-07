@@ -105,6 +105,7 @@ $paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
 $paymentOrder->setOrder($order);
 $paymentOrder->setAutoCapture(true);
 $paymentOrder->setPlatforms(["bank_card"]);
+$paymentOrder->setMetadata(array('cart_id' => 'cart_1'));
 
 // Order avec un buyer no reference
 $response = $client->createOrder($paymentOrder);

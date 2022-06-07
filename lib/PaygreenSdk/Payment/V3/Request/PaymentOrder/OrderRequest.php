@@ -55,6 +55,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'shop_id' => $paymentOrder->getPlatformsShopId(),
             'start_at' => $paymentOrder->getStartAt(),
             'ttl' => $paymentOrder->getInstrumentTTL(),
+            'metadata' => $paymentOrder->getMetadata()
         ];
 
         return $this->requestFactory->create(
