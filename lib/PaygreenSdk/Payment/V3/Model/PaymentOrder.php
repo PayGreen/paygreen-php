@@ -115,6 +115,9 @@ class PaymentOrder implements PaymentOrderInterface
      */
     private $objectSecret;
 
+    /** @var array */
+    private $metadata;
+
     /**
      * @return array
      */
@@ -465,5 +468,21 @@ class PaymentOrder implements PaymentOrderInterface
     public function setObjectSecret($objectSecret)
     {
         $this->objectSecret = $objectSecret;
+    }
+
+    /**
+     * @return array
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * @param array $metadata
+     */
+    public function setMetadata(array $metadata)
+    {
+        $this->metadata = $metadata;
     }
 }

@@ -4,7 +4,7 @@ namespace Paygreen\Sdk\Payment\V3;
 
 class Environment extends \Paygreen\Sdk\Core\Environment
 {
-    const ENDPOINT_V3_SANDBOX = 'https://sb-api.paygreen.dev';
+    const ENDPOINT_V3_SANDBOX = 'https://sb-api.paygreen.fr';
     const ENDPOINT_V3_RECETTE = 'https://rc-api.paygreen.dev';
     const ENDPOINT_V3_PRODUCTION = 'https://api.paygreen.fr';
 
