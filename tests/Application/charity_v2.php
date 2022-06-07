@@ -58,8 +58,8 @@ dump($responseData);
 
 $buyer = new Buyer();
 $buyer->setEmail("dev-module@paygreen.fr");
-$buyer->setFirstname('John');
-$buyer->setLastname('Doe');
+$buyer->setFirstName('John');
+$buyer->setLastName('Doe');
 $buyer->setAddressLine('1 rue de la Livraison');
 $buyer->setAddressLineTwo('Appartement 12');
 $buyer->setCity('Rouen');

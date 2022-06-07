@@ -32,23 +32,23 @@ final class CustomerTest extends TestCase
     /**
      * @return void
      */
-    public function testCanGetAndSetFirstname()
+    public function testCanGetAndSetFirstName()
     {
         $customer = new Customer();
-        $customer->setFirstname('Laurent');
+        $customer->setFirstName('Laurent');
 
-        $this->assertEquals('Laurent', $customer->getFirstname());
+        $this->assertEquals('Laurent', $customer->getFirstName());
     }
 
     /**
      * @return void
      */
-    public function testCanGetAndSetLastname()
+    public function testCanGetAndSetLastName()
     {
         $customer = new Customer();
-        $customer->setLastname('Barre');
+        $customer->setLastName('Barre');
 
-        $this->assertEquals('Barre', $customer->getLastname());
+        $this->assertEquals('Barre', $customer->getLastName());
     }
 
     /**
