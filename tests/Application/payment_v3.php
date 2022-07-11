@@ -42,6 +42,10 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
+$response = $client->sendLog("coucou les logs");
+$responseData = json_decode($response->getBody()->getContents());
+dump($response);
+dump($responseData);
 
 $buyer = new Buyer();
 $buyer->setId(uniqid());

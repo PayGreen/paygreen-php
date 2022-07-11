@@ -9,10 +9,11 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
+use Paygreen\Sdk\Payment\V3\Request\Event\EventRequest;
+use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
-use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -406,6 +407,31 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function sendLog($content)
+    {
+        $this->logger->info("Send logs: '{$content}'.");
+
+        $request = (new EventRequest($this->requestFactory, $this->environment))->createEventRequest("log", $content);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (201 === $response->getStatusCode()) {
+            $this->logger->info('Log successfully sent.');
+        }
 
         return $response;
     }
