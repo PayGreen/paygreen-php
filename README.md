@@ -27,7 +27,7 @@ $client = new PaymentClient(new Client(), $environment);
 $customer = new Paygreen\Sdk\Payment\V2\Model\Customer();
 $customer->setId('my-customer-id');
 $customer->setEmail('john.doe@customer.fr');
-// ... and setStreetLineOne, setLastname
+// ... and setStreetLineOne, setLastName
 
 $shippingAddress = new Paygreen\Sdk\Payment\V2\Model\Address();
 $shippingAddress->setCity('London');

@@ -43,8 +43,8 @@ $client = new \Paygreen\Sdk\Payment\V2\Client($curl, $environment);
 $customer = new Customer();
 $customer->setId(1);
 $customer->setEmail('maxime.lemolt@paygreen.fr');
-$customer->setFirstname('John');
-$customer->setLastname('Doe');
+$customer->setFirstName('John');
+$customer->setLastName('Doe');
 
 $shippingAddress = new Address();
 $shippingAddress->setStreetLineOne('1 rue de la Livraison');
@@ -122,4 +122,4 @@ $paymentOrder->setType('RECURRING');
 
 $response = $client->createRecurringPayment($paymentOrder);
 
-dump($response->getData());
+dump(json_decode($response->getBody()->getContents())->data);

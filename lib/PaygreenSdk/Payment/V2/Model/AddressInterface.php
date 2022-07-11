@@ -33,4 +33,14 @@ interface AddressInterface
      * @return string
      */
     public function getStreet();
+
+    /**
+     * @return string
+     */
+    public function getFirstName();
+
+    /**
+     * @return string
+     */
+    public function getLastName();
 }

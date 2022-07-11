@@ -33,20 +33,20 @@ final class BuyerTest extends TestCase
         $this->assertEquals('PayGreen', $buyer->getCompanyName());
     }
 
-    public function testCanGetAndSetFirstname()
+    public function testCanGetAndSetFirstName()
     {
         $buyer = new Buyer();
-        $buyer->setFirstname('Laurent');
+        $buyer->setFirstName('Laurent');
 
-        $this->assertEquals('Laurent', $buyer->getFirstname());
+        $this->assertEquals('Laurent', $buyer->getFirstName());
     }
 
-    public function testCanGetAndSetLastname()
+    public function testCanGetAndSetLastName()
     {
         $buyer = new Buyer();
-        $buyer->setLastname('Barre');
+        $buyer->setLastName('Barre');
 
-        $this->assertEquals('Barre', $buyer->getLastname());
+        $this->assertEquals('Barre', $buyer->getLastName());
     }
 
     public function testCanGetAndSetEmail()

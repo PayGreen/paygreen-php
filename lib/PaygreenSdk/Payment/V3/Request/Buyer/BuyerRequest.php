@@ -23,8 +23,8 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = [
             'shop_id' => $shopId,
             'email' => $buyer->getEmail(),
-            'first_name' => $buyer->getFirstname(),
-            'last_name' => $buyer->getLastname(),
+            'first_name' => $buyer->getFirstName(),
+            'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getId(),
             'country' => $buyer->getCountryCode(),
             'billing_address' => [
@@ -66,8 +66,8 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 
         $body = [
             'email' => $buyer->getEmail(),
-            'first_name' => $buyer->getFirstname(),
-            'last_name' => $buyer->getLastname(),
+            'first_name' => $buyer->getFirstName(),
+            'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getId(),
             'country' => $buyer->getCountryCode()
         ];

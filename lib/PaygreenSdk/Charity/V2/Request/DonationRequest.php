@@ -27,8 +27,8 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
             'buyer' => [
                 'email' => $donation->getBuyer()->getEmail(),
                 'externalId' => $donation->getBuyer()->getReference(),
-                'firstname' => $donation->getBuyer()->getFirstname(),
-                'lastname' => $donation->getBuyer()->getLastname(),
+                'firstname' => $donation->getBuyer()->getFirstName(),
+                'lastname' => $donation->getBuyer()->getLastName(),
                 'address' => $donation->getBuyer()->getAddressLine(),
                 'address2' => $donation->getBuyer()->getAddressLineTwo(),
                 'city' => $donation->getBuyer()->getCity(),
