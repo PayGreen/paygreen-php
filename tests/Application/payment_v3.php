@@ -42,7 +42,7 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-$response = $client->sendLog("coucou les logs");
+$response = $client->sendLog("test sending logs");
 $responseData = json_decode($response->getBody()->getContents());
 dump($response);
 dump($responseData);
