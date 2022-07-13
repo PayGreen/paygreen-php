@@ -19,7 +19,7 @@ class StatusEnum
     /**
      * @return array<string>
      */
-    public static function getPaymentModes()
+    public static function getStatus()
     {
         return [
             self::PENDING,
