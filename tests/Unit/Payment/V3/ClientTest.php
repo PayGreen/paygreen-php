@@ -435,4 +435,17 @@ final class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/notifications/ntf_12345/replay',  $request->getUri()->getPath());
     }
+
+    public function testRequestCreateEvent()
+    {
+        $this->client->createEvent('log', 'log content');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/events',  $request->getUri()->getPath());
+        $this->assertEquals('log', $content->type);
+        $this->assertEquals('log content', $content->content);
+    }
 }

@@ -1,3 +1,12 @@
+# UPGRADE FROM `1.1.0` TO `1.1.1`
+
+1. We renamed a function whose name was incorrect.
+   Check your use of `Paygreen\Sdk\Payment\V3\Enum\StatusEnum`, `getPaymentModes` have been renamed to `getStatus`.
+    ```diff
+    - Paygreen\Sdk\Payment\V3\Enum\StatusEnum::getPaymentModes();
+    + Paygreen\Sdk\Payment\V3\Enum\StatusEnum::getStatus();
+    ```
+
 # UPGRADE FROM `1.0.X` TO `1.1.0`
 
 1. We have standardized and corrected all first and last name calls. For all models.  
