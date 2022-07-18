@@ -42,11 +42,6 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-$response = $client->sendLog("{\n        \"@timestamp\": \"2022-06-30T13:28:57.258599+00:00\",\n        \"@version\": 1,\n        \"host\": \"37df967de837\",\n        \"message\": \"Matched route \\\"app_instrument_get__invoke\\\".\",\n        \"type\": \"app\",\n        \"channel\": \"request\",\n        \"level\": \"INFO\",\n        \"monolog_level\": 200,\n        \"extra\": {\n            \"process_id\": 7,\n            \"url\": \"/payment/instruments/ins_de4710da1a034b1b9bf817778ee767d3\",\n            \"ip\": \"172.19.0.1\",\n            \"http_method\": \"GET\",\n            \"server\": \"\",\n            \"referrer\": null\n        },\n        \"context\": {\n            \"route\": \"app_instrument_get__invoke\",\n            \"route_parameters\": {\n            \"_route\": \"app_instrument_get__invoke\",\n            \"_controller\": \"App\\\\Controller\\\\Instrument\\\\GetController\",\n            \"id\": \"de4710da1a034b1b9bf817778ee767d3\"\n            },\n            \"request_uri\": \"http://payment.local:8087/payment/instruments/ins_de4710da1a034b1b9bf817778ee767d3\",\n            \"method\": \"GET\"\n        }\n    }");
-$responseData = json_decode($response->getBody()->getContents());
-dump($response);
-dump($responseData);
-
 $buyer = new Buyer();
 $buyer->setId(uniqid());
 $buyer->setFirstName('John');
