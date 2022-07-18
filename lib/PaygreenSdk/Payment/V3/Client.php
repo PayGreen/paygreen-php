@@ -412,26 +412,21 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param string $type
      * @param string $content
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function sendLog($content)
+    public function createEvent($type, $content)
     {
-        $this->logger->info("Send logs: '{$content}'.");
-
-        $request = (new EventRequest($this->requestFactory, $this->environment))->createEventRequest("log", $content);
+        $request = (new EventRequest($this->requestFactory, $this->environment))->getCreateRequest($type, $content);
 
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
-
-        if (201 === $response->getStatusCode()) {
-            $this->logger->info('Log successfully sent.');
-        }
 
         return $response;
     }
