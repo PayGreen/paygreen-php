@@ -42,7 +42,6 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-
 $buyer = new Buyer();
 $buyer->setId(uniqid());
 $buyer->setFirstName('John');
