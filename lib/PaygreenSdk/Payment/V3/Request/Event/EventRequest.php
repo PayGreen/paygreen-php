@@ -15,7 +15,7 @@ class EventRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @return RequestInterface
      */
-    public function createEventRequest(
+    public function getCreateRequest(
         $type,
         $content
     ) {
