@@ -14,6 +14,21 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @return Request|RequestInterface
+     */
+    public function getGetRequest(Buyer $buyer)
+    {
+        $shopId = $this->environment->getShopId();
+        $buyerReference = $buyer->getReference();
+
+        return $this->requestFactory->create(
+            "/payment/buyers/{$buyerReference}",
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @return Request|RequestInterface
      * @throws Exception
      */
     public function getCreateRequest(Buyer $buyer)
@@ -39,21 +54,6 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/payment/buyers",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @return Request|RequestInterface
-     */
-    public function getGetRequest(Buyer $buyer)
-    {
-        $shopId = $this->environment->getShopId();
-        $buyerReference = $buyer->getReference();
-
-        return $this->requestFactory->create(
-            "/payment/buyers/{$buyerReference}",
-            null,
-            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 

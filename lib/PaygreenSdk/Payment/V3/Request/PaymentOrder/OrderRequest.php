@@ -13,6 +13,20 @@ use Psr\Http\Message\RequestInterface;
 class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
+     * @param int $paymentReference
+     *
+     * @return Request|RequestInterface
+     */
+    public function getGetRequest($paymentReference)
+    {
+        return $this->requestFactory->create(
+            "/payment/payment-orders/{$paymentReference}",
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
      * @throws Exception
      *
      * @return Request|RequestInterface
@@ -61,20 +75,6 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             '/payment/payment-orders',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @param int $paymentReference
-     * 
-     * @return Request|RequestInterface
-     */
-    public function getGetRequest($paymentReference)
-    {
-        return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentReference}",
-            null,
-            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 
