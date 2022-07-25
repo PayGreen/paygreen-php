@@ -80,7 +80,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @return RequestInterface
      */
-    public function getGetByShopRequest($shopId)
+    public function getListByShopRequest($shopId)
     {
         $query = ['shop_id' => $shopId];
 
