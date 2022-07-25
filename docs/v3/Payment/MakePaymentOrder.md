@@ -33,5 +33,5 @@ $paymentOrder = new PaymentOrder();
 $paymentOrder->setOrder($order);
 $paymentOrder->setAutoCapture(true); // true or false, true by default
 
-$response = $client->createOrder($paymentOrder);
+$response = $client->createPaymentOrder($paymentOrder);
 ```
