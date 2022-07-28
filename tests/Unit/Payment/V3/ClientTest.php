@@ -168,7 +168,7 @@ final class ClientTest extends TestCase
         $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
         $paymentOrder->setOrder($order);
 
-        $this->client->createOrder($paymentOrder);
+        $this->client->createPaymentOrder($paymentOrder);
 
         $request = $this->client->getLastRequest();
 
@@ -216,7 +216,7 @@ final class ClientTest extends TestCase
         $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
         $paymentOrder->setOrder($order);
 
-        $this->client->createOrder($paymentOrder);
+        $this->client->createPaymentOrder($paymentOrder);
 
         $request = $this->client->getLastRequest();
 
@@ -240,7 +240,7 @@ final class ClientTest extends TestCase
         $order = new Order();
         $order->setReference('SDK-ORDER-123');
 
-        $this->client->getOrder($order->getReference());
+        $this->client->getPaymentOrder($order->getReference());
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
@@ -256,7 +256,7 @@ final class ClientTest extends TestCase
         $paymentOrder->setOrder($order);
         $paymentOrder->setPartialAllowed(true);
 
-        $this->client->updateOrder($paymentOrder);
+        $this->client->updatePaymentOrder($paymentOrder);
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
@@ -336,7 +336,7 @@ final class ClientTest extends TestCase
         $order = new Order();
         $order->setReference('SDK-ORDER-123');
 
-        $this->client->captureOrder($order->getReference());
+        $this->client->capturePaymentOrder($order->getReference());
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
@@ -348,7 +348,7 @@ final class ClientTest extends TestCase
         $order = new Order();
         $order->setReference('SDK-ORDER-123');
 
-        $this->client->refundOrder($order->getReference());
+        $this->client->refundPaymentOrder($order->getReference());
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());

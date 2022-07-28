@@ -139,7 +139,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function createOrder(PaymentOrder $paymentOrder)
+    public function createPaymentOrder(PaymentOrder $paymentOrder)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
         $this->setLastRequest($request);
@@ -156,7 +156,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getOrder($paymentReference)
+    public function getPaymentOrder($paymentReference)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentReference);
         $this->setLastRequest($request);
@@ -172,7 +172,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function updateOrder(PaymentOrder $paymentOrder)
+    public function updatePaymentOrder(PaymentOrder $paymentOrder)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getUpdateRequest($paymentOrder);
         $this->setLastRequest($request);
@@ -189,7 +189,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function captureOrder($paymentReference)
+    public function capturePaymentOrder($paymentReference)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getCaptureRequest($paymentReference);
         $this->setLastRequest($request);
@@ -206,7 +206,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function refundOrder($paymentReference)
+    public function refundPaymentOrder($paymentReference)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentReference);
         $this->setLastRequest($request);

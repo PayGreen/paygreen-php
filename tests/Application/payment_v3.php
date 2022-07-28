@@ -107,13 +107,13 @@ $paymentOrder->setPlatforms(["bank_card"]);
 $paymentOrder->setMetadata(array('cart_id' => 'cart_1'));
 
 // Order avec un buyer no reference
-$response = $client->createOrder($paymentOrder);
+$response = $client->createPaymentOrder($paymentOrder);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 
 // Order avec un buyer reference
 /*$order->setBuyer($buyer);
-$response = $client->createOrder($paymentOrder);
+$response = $client->createPaymentOrder($paymentOrder);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
@@ -123,12 +123,12 @@ $paymentOrder->setObjectSecret($data->object_secret);
 $poReference = $paymentOrder->getOrder()->getReference();
 $objectSecret = $paymentOrder->getObjectSecret();
 
-$response = $client->getOrder($poReference);
+$response = $client->getPaymentOrder($poReference);
 $data = json_decode($response->getBody()->getContents())->data;
 //dump($data);
 
 /*$paymentOrder->setPartialAllowed(true);
-$response = $client->updateOrder($paymentOrder);
+$response = $client->updatePaymentOrder($paymentOrder);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
@@ -138,16 +138,16 @@ $response = $client->deleteInstrument($instrument->getReference());
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
-/*$response = $client->captureOrder($poReference);
+/*$response = $client->capturePaymentOrder($poReference);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 
-$response = $client->getOrder($poReference);
+$response = $client->getPaymentOrder($poReference);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 
 
-$response = $client->refundOrder("po_546db30ae2ec47769ef6de982c87b7b2");
+$response = $client->refundPaymentOrder("po_546db30ae2ec47769ef6de982c87b7b2");
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
