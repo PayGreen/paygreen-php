@@ -349,7 +349,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getListenerByShop($shopId)
+    public function listListenerByShop($shopId)
     {
         $request = (new ListenerRequest($this->requestFactory, $this->environment))->getListByShopRequest($shopId);
         $this->setLastRequest($request);

@@ -396,7 +396,7 @@ final class ClientTest extends TestCase
 
     public function testRequestGetListenerByShop()
     {
-        $this->client->getListenerByShop('sh_12345');
+        $this->client->listListenerByShop('sh_12345');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
