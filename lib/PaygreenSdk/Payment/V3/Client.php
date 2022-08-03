@@ -413,7 +413,7 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $type
-     * @param string $content
+     * @param string|array $content
      *
      * @throws Exception
      *
