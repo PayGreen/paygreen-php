@@ -17,7 +17,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($listenerId)
     {
         return $this->requestFactory->create(
-            "/notifications/listeners/$listenerId",
+            "/notifications/listeners/{$listenerId}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -56,7 +56,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = ['url' => $url];
 
         return $this->requestFactory->create(
-            "/notifications/listeners/$listenerId",
+            "/notifications/listeners/{$listenerId}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -69,7 +69,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteRequest($listenerId)
     {
         return $this->requestFactory->create(
-            "/notifications/listeners/$listenerId",
+            "/notifications/listeners/{$listenerId}",
             null,
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();
@@ -82,10 +82,8 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getListByShopRequest($shopId)
     {
-        $query = ['shop_id' => $shopId];
-
         return $this->requestFactory->create(
-            "/notifications/listeners?" . http_build_query($query),
+            "/notifications/listeners?shop_id={$shopId}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
