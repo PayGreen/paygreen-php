@@ -2,7 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Enum;
 
-class ModeEnum
+class PaymentModeEnum
 {
     const INSTANT = 'instant';
     const SPLIT = 'split';

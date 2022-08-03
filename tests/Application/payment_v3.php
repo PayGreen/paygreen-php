@@ -2,7 +2,7 @@
 
 use Http\Client\Curl\Client;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
@@ -99,7 +99,7 @@ $order->setCurrency('eur');
 $order->setShippingAddress($address);
 
 $paymentOrder = new PaymentOrder();
-$paymentOrder->setPaymentMode(ModeEnum::INSTANT);
+$paymentOrder->setPaymentMode(PaymentModeEnum::INSTANT);
 $paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
 $paymentOrder->setOrder($order);
 $paymentOrder->setAutoCapture(true);

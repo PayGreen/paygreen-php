@@ -3,7 +3,7 @@
 namespace Paygreen\Tests\Unit\Payment\V3\Model;
 
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\OrderInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -32,9 +32,9 @@ final class PaymentOrderTest extends TestCase
     public function testCanGetAndSetPaymentMode()
     {
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode(ModeEnum::RECURRING);
+        $paymentOrder->setPaymentMode(PaymentModeEnum::RECURRING);
 
-        $this->assertEquals(ModeEnum::RECURRING, $paymentOrder->getPaymentMode());
+        $this->assertEquals(PaymentModeEnum::RECURRING, $paymentOrder->getPaymentMode());
     }
 
     public function testCanGetAndSetAutoCapture()
