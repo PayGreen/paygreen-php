@@ -2,91 +2,102 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
-use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 
 interface PaymentOrderInterface
 {
     /**
+     * @return string
+     */
+    public function getId();
+
+    /**
+     * @param string $id
+     */
+    public function setId($id);
+
+    /**
+     * Your reference to this Payment Order
+     *
+     * @return string
+     */
+    public function getReference();
+
+    /**
+     * @param string $reference
+     */
+    public function setReference($reference);
+
+    /**
+     * @return int
+     */
+    public function getAmount();
+
+    /**
+     * The amount (in cts)
+     *
+     * @param int $amount
+     */
+    public function setAmount($amount);
+
+    /**
      * @return array
      */
-    public function getPlatforms();
+    public function getEligibleAmounts();
 
     /**
-     * @param array $platforms
+     * Key-value array of eligible amounts (in cts)
+     * Keys can be food and travel.
+     *
+     * @param array $eligibleAmounts
      */
-    public function setPlatforms($platforms);
-
-    /**
-     * @return OrderInterface
-     */
-    public function getOrder();
-
-    /**
-     * @param OrderInterface $order
-     */
-    public function setOrder($order);
-
-    /**
-     * @return PaymentModeEnum
-     */
-    public function getPaymentMode();
-
-    /**
-     * @param PaymentModeEnum $paymentMode
-     */
-    public function setPaymentMode($paymentMode);
+    public function setEligibleAmounts($eligibleAmounts);
 
     /**
      * @return bool
      */
-    public function getAutoCapture();
+    public function isAutoCapture();
 
     /**
+     * If true, the operations will be automatically captured whenever possible.
+     * Otherwise, you need to call the Capture endpoint. Default is true.
+     *
      * @param bool $autoCapture
      */
     public function setAutoCapture($autoCapture);
 
     /**
-     * @return IntegrationModeEnum
+     * @return BuyerInterface
      */
-    public function getIntegrationMode();
+    public function getBuyer();
 
     /**
-     * @param IntegrationModeEnum $integrationMode
+     * Existing Buyer ID, or new Buyer entity
+     *
+     * @param BuyerInterface $buyer
      */
-    public function setIntegrationMode($integrationMode);
-
-    /**
-     * @return bool
-     */
-    public function isPartialAllowed();
-
-    /**
-     * @param bool $partialAllowed
-     */
-    public function setPartialAllowed($partialAllowed);
+    public function setBuyer($buyer);
 
     /**
      * @return string
      */
-    public function getCancelUrl();
+    public function getCaptureOn();
 
     /**
-     * @param string $cancelUrl
+     * If you need us to capture the operations on a specific day and hour.
+     *
+     * @param string $captureOn
      */
-    public function setCancelUrl($cancelUrl);
+    public function setCaptureOn($captureOn);
 
     /**
-     * @return CycleEnum
+     * @return string
      */
-    public function getCycle();
+    public function getCurrency();
 
     /**
-     * @param CycleEnum $cycle
+     * @param string $currency
      */
-    public function setCycle($cycle);
+    public function setCurrency($currency);
 
     /**
      * @return string
@@ -94,39 +105,37 @@ interface PaymentOrderInterface
     public function getDescription();
 
     /**
+     * An optional description to this Payment Order
+     *
      * @param string $description
      */
     public function setDescription($description);
 
     /**
-     * @return int
+     * @return string
      */
-    public function getEligibleAmount();
+    public function getInstrument();
 
     /**
-     * @param array<string> $eligibleAmount
+     * Existing Instrument ID - Required for merchant initiated payments
+     *
+     * @param string $instrument
      */
-    public function setEligibleAmount($eligibleAmount);
-
-    /**
-     * @return int
-     */
-    public function getFirstAmount();
-
-    /**
-     * @param int $firstAmount
-     */
-    public function setFirstAmount($firstAmount);
+    public function setInstrument($instrument);
 
     /**
      * @return int
      */
-    public function getInstrumentId();
+    public function getMaxOperations();
 
     /**
-     * @param int $instrumentId
+     * The maximum number of operations. If the amount is not reached with this number of operations,
+     * the Payment Order will automatically be canceled (and each authorized operations as well).
+     * Default is null (no maximum).
+     *
+     * @param int $maxOperations
      */
-    public function setInstrumentId($instrumentId);
+    public function setMaxOperations($maxOperations);
 
     /**
      * @return bool
@@ -139,93 +148,63 @@ interface PaymentOrderInterface
     public function setMerchantInitiated($merchantInitiated);
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getNotificationUrl();
+    public function isPartialAllowed();
 
     /**
-     * @param string $notificationUrl
+     * If true, the Payment Order will be successful immediately after an operation is Authorized,
+     * regardless of the amount.
+     * Default is false.
+     *
+     * @param bool $partial_allowed
      */
-    public function setNotificationUrl($notificationUrl);
+    public function setPartialAllowed($partial_allowed);
 
     /**
-     * @return int
+     * @return array
      */
-    public function getOccurences();
+    public function getPlatforms();
 
     /**
-     * @param int $occurences
+     * An array containing the platforms that can be processed through this Payment Order.
+     * If not set, all the validated Platforms of your Shop will be available.
+     *
+     * @param array $platforms
      */
-    public function setOccurences($occurences);
+    public function setPlatforms($platforms);
 
     /**
-     * @return int
+     * @return AddressInterface
      */
-    public function getPreviousOrderId();
+    public function getShippingAddress();
 
     /**
-     * @param int $previousOrderId
+     * The Shipping Address associated with this order.
+     *
+     * @param AddressInterface $shippingAddress
      */
-    public function setPreviousOrderId($previousOrderId);
-
-    /**
-     * @return int
-     */
-    public function getPlatformsShopId();
-
-    /**
-     * @param int $platformsShopId
-     */
-    public function setPlatformsShopId($platformsShopId);
-
-    /**
-     * @return string
-     */
-    public function getPaymentDay();
-
-    /**
-     * @param string $paymentDay
-     */
-    public function setPaymentDay($paymentDay);
-
-    /**
-     * @return string
-     */
-    public function getReturnUrl();
-
-    /**
-     * @param string $returnUrl
-     */
-    public function setReturnUrl($returnUrl);
-
-    /**
-     * @return string
-     */
-    public function getStartAt();
-
-    /**
-     * @param string $startAt
-     */
-    public function setStartAt($startAt);
+    public function setShippingAddress($shippingAddress);
 
     /**
      * @return int
      */
-    public function getInstrumentTTL();
+    public function getShopId();
 
     /**
-     * @param int $instrumentTTL
+     * The beneficiary Shop ID. If you are a Marketplace, set the sub-entity ID here.
+     *
+     * @param int $shopId
      */
-    public function setInstrumentTTL($instrumentTTL);
+    public function setShopId($shopId);
 
     /**
-     * @return string
+     * @return array
      */
-    public function getObjectSecret();
+    public function getMetadata();
 
     /**
-     * @param string $objectSecret
-     * @return void
+     * @param array $metadata
      */
-    public function setObjectSecret($objectSecret);
+    public function setMetadata($metadata);
 }

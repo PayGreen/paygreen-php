@@ -40,7 +40,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'email' => $buyer->getEmail(),
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
-            'reference' => $buyer->getId(),
+            'reference' => $buyer->getReference(),
             'country' => $buyer->getCountryCode(),
             'billing_address' => [
                 'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
@@ -62,13 +62,12 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest(Buyer $buyer)
     {
-        $buyerReference = $buyer->getReference();
-
         $body = [
+            'id' => $buyer->getId(),
             'email' => $buyer->getEmail(),
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
-            'reference' => $buyer->getId(),
+            'reference' => $buyer->getReference(),
             'country' => $buyer->getCountryCode()
         ];
 
@@ -85,7 +84,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         return $this->requestFactory->create(
-            "/payment/buyers/{$buyerReference}",
+            "/payment/buyers/{$buyer->getId()}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
