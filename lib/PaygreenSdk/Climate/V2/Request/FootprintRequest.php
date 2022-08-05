@@ -39,12 +39,10 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getGetRequest($footprintId, $detailed = false)
     {
-        $query = [
-            'detailed' => ($detailed) ? 1 : 0
-        ];
+        $detailed = ($detailed) ? 1 : 0;
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}?".http_build_query($query),
+            "/carbon/footprints/{$footprintId}?detailed={$detailed}",
             null,
             'GET'
         )->withAuthorization()->withTestMode()->isJson()->getRequest();

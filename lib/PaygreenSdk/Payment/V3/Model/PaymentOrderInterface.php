@@ -4,7 +4,7 @@ namespace Paygreen\Sdk\Payment\V3\Model;
 
 use Paygreen\Sdk\Payment\V3\Enum\CycleEnum;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 
 interface PaymentOrderInterface
 {
@@ -29,12 +29,12 @@ interface PaymentOrderInterface
     public function setOrder($order);
 
     /**
-     * @return ModeEnum
+     * @return PaymentModeEnum
      */
     public function getPaymentMode();
 
     /**
-     * @param ModeEnum $paymentMode
+     * @param PaymentModeEnum $paymentMode
      */
     public function setPaymentMode($paymentMode);
 
@@ -104,7 +104,7 @@ interface PaymentOrderInterface
     public function getEligibleAmount();
 
     /**
-     * @param int $eligibleAmount
+     * @param array<string> $eligibleAmount
      */
     public function setEligibleAmount($eligibleAmount);
 

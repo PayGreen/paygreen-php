@@ -14,7 +14,7 @@ class NotificationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetByListenerRequest($listenerId)
     {
         return $this->requestFactory->create(
-            "/notifications/?listener_id=$listenerId",
+            "/notifications/?listener_id={$listenerId}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -28,7 +28,7 @@ class NotificationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getReplayRequest($notificationId)
     {
         return $this->requestFactory->create(
-            "/notifications/$notificationId/replay"
+            "/notifications/{$notificationId}/replay"
         )->withAuthorization()->isJson()->getRequest();
     }
 }

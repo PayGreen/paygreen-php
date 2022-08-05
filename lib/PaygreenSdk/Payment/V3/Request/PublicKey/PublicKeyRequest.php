@@ -17,7 +17,7 @@ class PublicKeyRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($publicKey)
     {
         return $this->requestFactory->create(
-            "/auth/public-keys/$publicKey",
+            "/auth/public-keys/{$publicKey}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
