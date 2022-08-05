@@ -6,14 +6,24 @@ namespace Paygreen\Sdk\Payment\V3\Model;
 class PaymentOrder implements PaymentOrderInterface
 {
     /**
-     * @var OrderInterface
+     * @var string
      */
-    private $order;
+    private $id;
 
     /**
      * @var string
      */
-    private $paymentMode;
+    private $reference;
+
+    /**
+     * @var int
+     */
+    private $amount;
+
+    /**
+     * @var array
+     */
+    private $eligibleAmounts;
 
     /**
      * @var bool
@@ -21,34 +31,19 @@ class PaymentOrder implements PaymentOrderInterface
     private $autoCapture;
 
     /**
-     * @var string
+     * @var BuyerInterface
      */
-    private $integrationMode;
-
-    /**
-     * @var bool
-     */
-    private $partialAllowed;
-
-    /**
-     * @var array
-     */
-    private $platforms;
-
-    /**
-     * @var int
-     */
-    private $platformsShopId;
+    private $buyer;
 
     /**
      * @var string
      */
-    private $cancelUrl;
+    private $captureOn;
 
     /**
      * @var string
      */
-    private $cycle;
+    private $currency;
 
     /**
      * @var string
@@ -56,125 +51,126 @@ class PaymentOrder implements PaymentOrderInterface
     private $description;
 
     /**
-     * @var int
+     * @var string
      */
-    private $eligibleAmount;
+    private $instrument;
 
     /**
      * @var int
      */
-    private $firstAmount;
-
-    /**
-     * @var int
-     */
-    private $instrumentId;
-
-    /**
-     * @var int
-     */
-    private $instrumentTTL;
+    private $maxOperations;
 
     /**
      * @var bool
      */
-    private $merchantInitiated = false;
+    private $merchantInitiated;
 
     /**
-     * @var string
+     * @var bool
      */
-    private $notificationUrl;
+    private $partial_allowed;
+
+    /**
+     * @var array
+     */
+    private $platforms;
+
+    /**
+     * @var AddressInterface
+     */
+    private $shippingAddress;
 
     /**
      * @var int
      */
-    private $occurences;
+    private $shopId;
+
 
     /**
-     * @var int
+     * @var array
      */
-    private $previousOrderId;
-
-    /**
-     * @var string
-     */
-    private $paymentDay;
-
-    /**
-     * @var string
-     */
-    private $returnUrl;
-
-    /**
-     * @var string
-     */
-    private $startAt;
-
-    /**
-     * @var string
-     */
-    private $objectSecret;
-
-    /** @var array */
     private $metadata;
-
-    /**
-     * @return array
-     */
-    public function getPlatforms()
-    {
-        return $this->platforms;
-    }
-
-    /**
-     * @param array $platforms
-     */
-    public function setPlatforms($platforms)
-    {
-        $this->platforms = $platforms;
-    }
-
-    /**
-     * @return OrderInterface
-     */
-    public function getOrder()
-    {
-        return $this->order;
-    }
-
-    /**
-     * @param OrderInterface $order
-     */
-    public function setOrder($order)
-    {
-        $this->order = $order;
-    }
 
     /**
      * @return string
      */
-    public function getPaymentMode()
+    public function getId()
     {
-        return $this->paymentMode;
+        return $this->id;
     }
 
     /**
-     * @param string $paymentMode
+     * @param string $id
      */
-    public function setPaymentMode($paymentMode)
+    public function setId($id)
     {
-        $this->paymentMode = $paymentMode;
+        $this->id = $id;
+    }
+
+    /**
+     * Your reference to this Payment Order
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
+    }
+
+    /**
+     * @param string $reference
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount()
+    {
+        return $this->amount;
+    }
+
+    /**
+     * The amount (in cts)
+     *
+     * @param int $amount
+     */
+    public function setAmount($amount)
+    {
+        $this->amount = $amount;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEligibleAmounts()
+    {
+        return $this->eligibleAmounts;
+    }
+
+    /**
+     * @param array $eligibleAmounts
+     */
+    public function setEligibleAmounts($eligibleAmounts)
+    {
+        $this->eligibleAmounts = $eligibleAmounts;
     }
 
     /**
      * @return bool
      */
-    public function getAutoCapture()
+    public function isAutoCapture()
     {
         return $this->autoCapture;
     }
 
     /**
+     * If true, the operations will be automatically captured whenever possible.
+     * Otherwise, you need to call the Capture endpoint. Default is true.
+     *
      * @param bool $autoCapture
      */
     public function setAutoCapture($autoCapture)
@@ -183,67 +179,55 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return string
+     * @return BuyerInterface
      */
-    public function getIntegrationMode()
+    public function getBuyer()
     {
-        return $this->integrationMode;
+        return $this->buyer;
     }
 
     /**
-     * @param string $integrationMode
+     * Existing Buyer ID, or new Buyer entity
+     *
+     * @param BuyerInterface $buyer
      */
-    public function setIntegrationMode($integrationMode)
+    public function setBuyer($buyer)
     {
-        $this->integrationMode = $integrationMode;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isPartialAllowed()
-    {
-        return $this->partialAllowed;
-    }
-
-    /**
-     * @param bool $partialAllowed
-     */
-    public function setPartialAllowed($partialAllowed)
-    {
-        $this->partialAllowed = $partialAllowed;
+        $this->buyer = $buyer;
     }
 
     /**
      * @return string
      */
-    public function getCancelUrl()
+    public function getCaptureOn()
     {
-        return $this->cancelUrl;
+        return $this->captureOn;
     }
 
     /**
-     * @param string $cancelUrl
+     * If you need us to capture the operations on a specific day and hour.
+     *
+     * @param string $captureOn
      */
-    public function setCancelUrl($cancelUrl)
+    public function setCaptureOn($captureOn)
     {
-        $this->cancelUrl = $cancelUrl;
+        $this->captureOn = $captureOn;
     }
 
     /**
      * @return string
      */
-    public function getCycle()
+    public function getCurrency()
     {
-        return $this->cycle;
+        return $this->currency;
     }
 
     /**
-     * @param string $cycle
+     * @param string $currency
      */
-    public function setCycle($cycle)
+    public function setCurrency($currency)
     {
-        $this->cycle = $cycle;
+        $this->currency = $currency;
     }
 
     /**
@@ -255,6 +239,8 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
+     * An optional description to this Payment Order
+     *
      * @param string $description
      */
     public function setDescription($description)
@@ -263,51 +249,41 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getEligibleAmount()
+    public function getInstrument()
     {
-        return $this->eligibleAmount;
+        return $this->instrument;
     }
 
     /**
-     * @param int $eligibleAmount
+     * Existing Instrument ID - Required for merchant initiated payments
+     *
+     * @param string $instrument
      */
-    public function setEligibleAmount($eligibleAmount)
+    public function setInstrument($instrument)
     {
-        $this->eligibleAmount = $eligibleAmount;
-    }
-
-    /**
-     * @return int
-     */
-    public function getFirstAmount()
-    {
-        return $this->firstAmount;
-    }
-
-    /**
-     * @param int $firstAmount
-     */
-    public function setFirstAmount($firstAmount)
-    {
-        $this->firstAmount = $firstAmount;
+        $this->instrument = $instrument;
     }
 
     /**
      * @return int
      */
-    public function getInstrumentId()
+    public function getMaxOperations()
     {
-        return $this->instrumentId;
+        return $this->maxOperations;
     }
 
     /**
-     * @param int $instrumentId
+     * The maximum number of operations. If the amount is not reached with this number of operations,
+     * the Payment Order will automatically be canceled (and each authorized operations as well).
+     * Default is null (no maximum).
+     *
+     * @param int $maxOperations
      */
-    public function setInstrumentId($instrumentId)
+    public function setMaxOperations($maxOperations)
     {
-        $this->instrumentId = $instrumentId;
+        $this->maxOperations = $maxOperations;
     }
 
     /**
@@ -327,147 +303,78 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getNotificationUrl()
+    public function isPartialAllowed()
     {
-        return $this->notificationUrl;
+        return $this->partial_allowed;
     }
 
     /**
-     * @param string $notificationUrl
+     * If true, the Payment Order will be successful immediately after an operation is Authorized,
+     * regardless of the amount.
+     * Default is false.
+     *
+     * @param bool $partial_allowed
      */
-    public function setNotificationUrl($notificationUrl)
+    public function setPartialAllowed($partial_allowed)
     {
-        $this->notificationUrl = $notificationUrl;
+        $this->partial_allowed = $partial_allowed;
     }
 
     /**
-     * @return int
+     * @return array
      */
-    public function getOccurences()
+    public function getPlatforms()
     {
-        return $this->occurences;
+        return $this->platforms;
     }
 
     /**
-     * @param int $occurences
+     * An array containing the platforms that can be processed through this Payment Order.
+     * If not set, all the validated Platforms of your Shop will be available.
+     *
+     * @param array $platforms
      */
-    public function setOccurences($occurences)
+    public function setPlatforms($platforms)
     {
-        $this->occurences = $occurences;
+        $this->platforms = $platforms;
     }
 
     /**
-     * @return int
+     * @return AddressInterface
      */
-    public function getPreviousOrderId()
+    public function getShippingAddress()
     {
-        return $this->previousOrderId;
+        return $this->shippingAddress;
     }
 
     /**
-     * @param int $previousOrderId
+     * The Shipping Address associated with this order.
+     *
+     * @param AddressInterface $shippingAddress
      */
-    public function setPreviousOrderId($previousOrderId)
+    public function setShippingAddress($shippingAddress)
     {
-        $this->previousOrderId = $previousOrderId;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPlatformsShopId()
-    {
-        return $this->platformsShopId;
-    }
-
-    /**
-     * @param int $platformsShopId
-     */
-    public function setPlatformsShopId($platformsShopId)
-    {
-        $this->platformsShopId = $platformsShopId;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPaymentDay()
-    {
-        return $this->paymentDay;
-    }
-
-    /**
-     * @param string $paymentDay
-     */
-    public function setPaymentDay($paymentDay)
-    {
-        $this->paymentDay = $paymentDay;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReturnUrl()
-    {
-        return $this->returnUrl;
-    }
-
-    /**
-     * @param string $returnUrl
-     */
-    public function setReturnUrl($returnUrl)
-    {
-        $this->returnUrl = $returnUrl;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStartAt()
-    {
-        return $this->startAt;
-    }
-
-    /**
-     * @param string $startAt
-     */
-    public function setStartAt($startAt)
-    {
-        $this->startAt = $startAt;
+        $this->shippingAddress = $shippingAddress;
     }
 
     /**
      * @return int
      */
-    public function getInstrumentTTL()
+    public function getShopId()
     {
-        return $this->instrumentTTL;
+        return $this->shopId;
     }
 
     /**
-     * @param int $instrumentTTL
+     * The beneficiary Shop ID. If you are a Marketplace, set the sub-entity ID here.
+     *
+     * @param int $shopId
      */
-    public function setInstrumentTTL($instrumentTTL)
+    public function setShopId($shopId)
     {
-        $this->instrumentTTL = $instrumentTTL;
-    }
-
-    /**
-     * @return string
-     */
-    public function getObjectSecret()
-    {
-        return $this->objectSecret;
-    }
-
-    /**
-     * @param string $objectSecret
-     */
-    public function setObjectSecret($objectSecret)
-    {
-        $this->objectSecret = $objectSecret;
+        $this->shopId = $shopId;
     }
 
     /**
@@ -481,7 +388,7 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * @param array $metadata
      */
-    public function setMetadata(array $metadata)
+    public function setMetadata($metadata)
     {
         $this->metadata = $metadata;
     }

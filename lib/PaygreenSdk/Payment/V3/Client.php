@@ -159,14 +159,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $paymentReference
+     * @param string $id A payment order id (format: po_0000)
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function getPaymentOrder($paymentReference)
+    public function getPaymentOrder($id)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentReference);
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($id);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
