@@ -16,6 +16,7 @@ use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
+use Paygreen\Sdk\Payment\V3\Request\SellingContract\SellingContractRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -430,6 +431,63 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function createEvent($type, $content)
     {
         $request = (new EventRequest($this->requestFactory, $this->environment))->getCreateRequest($type, $content);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_selling_contracts
+     *
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getSellingContracts($shopId)
+    {
+        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/post_create_selling_contract
+     *
+     * @param string $number The number, or identifier, of the selling contract you have with your bank - check with your bank for more informations
+     * @param int $mcc Merchant Category Code (ISO-18245)
+     * @param int $maxAmount The maximum amount allowed by your selling contract
+     * @param string $type Only 'vads' is supported at the moment
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createSellingContract(
+        $number,
+        $mcc,
+        $maxAmount,
+        $type,
+        $shopId = null
+    ) {
+        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest(
+            $number,
+            $mcc,
+            $maxAmount,
+            $type,
+            $shopId
+        );
 
         $this->setLastRequest($request);
 

@@ -411,4 +411,39 @@ final class ClientTest extends TestCase
         $this->assertEquals('log', $content->type);
         $this->assertEquals('log content', $content->content);
     }
+
+    public function testRequestGetSellingContracts()
+    {
+        $this->client->getSellingContracts('my-shop-id');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
+        $this->assertEquals('my-shop-id', $content->shop_id);
+    }
+
+    public function testRequestCreateSellingContract()
+    {
+        $this->client->createSellingContract(
+            'number',
+            123,
+            1000,
+            'vads',
+            'my-shop-id'
+        );
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
+        $this->assertEquals('my-shop-id', $content->shop_id);
+        $this->assertEquals('number', $content->number);
+        $this->assertEquals(123, $content->mcc);
+        $this->assertEquals(1000, $content->max_amount);
+        $this->assertEquals('vads', $content->type);
+    }
 }
