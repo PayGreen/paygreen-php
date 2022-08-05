@@ -167,7 +167,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
 
-    public function testRequestCreateOrder()
+    public function testRequestCreatePaymentOrder()
     {
         $buyer = new Buyer();
         $buyer->setReference('my-user-reference');
@@ -243,7 +243,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
     }
 
-    public function testRequestGetOrder()
+    public function testRequestGetPaymentOrder()
     {
         $this->client->getPaymentOrder('po_0000');
         $request = $this->client->getLastRequest();
@@ -252,7 +252,23 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/payment-orders/po_0000', $request->getUri()->getPath());
     }
 
-    public function testRequestUpdateOrder()
+    public function testRequestGetPaymentOrders()
+    {
+        $order = new Order();
+        $order->setReference('SDK-ORDER-123');
+
+        $this->client->getPaymentOrders($order->getReference(), 'shop-id');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
+        $this->assertEquals('SDK-ORDER-123', $content->reference);
+        $this->assertEquals('shop-id', $content->shop_id);
+    }
+
+    public function testRequestUpdatePaymentOrder()
     {
         $paymentOrder = new PaymentOrder();
         $paymentOrder->setId('po_0000');
