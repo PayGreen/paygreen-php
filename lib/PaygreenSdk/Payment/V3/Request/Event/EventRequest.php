@@ -11,7 +11,7 @@ class EventRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $type
-     * @param string $content
+     * @param string|array $content
      *
      * @return RequestInterface
      */
