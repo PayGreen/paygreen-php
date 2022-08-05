@@ -111,6 +111,18 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
     }
 
+    public function testRequestGetBuyers()
+    {
+        $this->client->getBuyers('my-shop-id');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/buyers',  $request->getUri()->getPath());
+        $this->assertEquals('my-shop-id', $content->shop_id);
+    }
+
     public function testRequestUpdateBuyer()
     {
         $buyer = new Buyer();

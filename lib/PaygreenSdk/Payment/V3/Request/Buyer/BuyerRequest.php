@@ -98,4 +98,27 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string|null $shopId
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getListRequest($shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $body = array(
+            'shop_id' => $shopId
+        );
+
+        return $this->requestFactory->create(
+            "/payment/buyers",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }

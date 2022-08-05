@@ -137,6 +137,24 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getBuyers($shopId = null)
+    {
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
      * @param BuyerInterface $buyer
      *
      * @throws Exception
