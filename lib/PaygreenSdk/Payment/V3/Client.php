@@ -4,7 +4,6 @@ namespace Paygreen\Sdk\Payment\V3;
 
 use Exception;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
-use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
@@ -298,6 +297,25 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function getInstrument($reference)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getGetRequest($reference);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_instruments
+     *
+     * @param string|null $buyerId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getInstruments($buyerId = null)
+    {
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getListRequest($buyerId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
