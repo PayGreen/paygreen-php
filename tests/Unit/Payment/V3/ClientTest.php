@@ -47,13 +47,33 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
-    public function testRequestListConfig()
+    public function testRequestListPaymentConfig()
     {
         $this->client->listPaymentConfig();
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+    }
+
+    public function testRequestCreatePaymentConfig()
+    {
+        $this->client->createPaymentConfig(
+            'bank_card',
+            array('config1', 'config2'),
+            'selling-contract-id',
+            'shop-id'
+        );
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+        $this->assertEquals('bank_card', $content->platform);
+        $this->assertEquals(array('config1', 'config2'), $content->config);
+        $this->assertEquals('selling-contract-id', $content->selling_contract);
+        $this->assertEquals("shop-id", $content->shop_id);
     }
 
     public function testRequestGetPublicKey()
