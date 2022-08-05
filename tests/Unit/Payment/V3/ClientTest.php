@@ -4,7 +4,7 @@ namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
 use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
+use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;

@@ -98,7 +98,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteProductDataRequest($footprintId, $productExternalReference = null)
     {
         if (!empty($productExternalReference)) {
-            $url = "/carbon/footprints/{$footprintId}/products/$productExternalReference";
+            $url = "/carbon/footprints/{$footprintId}/products/{$productExternalReference}";
         } else {
             $url = "/carbon/footprints/{$footprintId}/products";
         }

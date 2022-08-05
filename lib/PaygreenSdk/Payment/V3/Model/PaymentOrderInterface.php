@@ -2,6 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
+
 interface PaymentOrderInterface
 {
     /**

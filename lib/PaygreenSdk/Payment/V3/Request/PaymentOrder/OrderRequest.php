@@ -72,7 +72,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         if (null !== $paymentOrder->getShippingAddress()) {
-            $buyer['shipping_address'] = [
+            $body['shipping_address'] = [
                 'city' => $paymentOrder->getShippingAddress()->getCity(),
                 'country' => $paymentOrder->getShippingAddress()->getCountryCode(),
                 'line1' => $paymentOrder->getShippingAddress()->getStreetLineOne(),
