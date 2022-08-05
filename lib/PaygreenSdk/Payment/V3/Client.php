@@ -39,6 +39,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @return Environment
+     */
+    public function getEnvironment()
+    {
+        return $this->environment;
+    }
+
+    /**
      * @throws Exception
      *
      *@return ResponseInterface

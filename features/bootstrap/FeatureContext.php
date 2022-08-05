@@ -1,14 +1,25 @@
 <?php
 
 use Behat\Behat\Context\Context;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
+use Paygreen\Sdk\Payment\V3\Client;
+use Paygreen\Sdk\Payment\V3\Environment;
+use PHPUnit\Framework\Assert;
+use Symfony\Component\Dotenv\Dotenv;
 
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext implements Context
 {
+    use BuyerDictionary;
+    use AuthenticationDictionary;
+
+    /**
+     * @var Client
+     */
+    private $client;
+
+
     /**
      * Initializes context.
      *
@@ -18,69 +29,31 @@ class FeatureContext implements Context
      */
     public function __construct()
     {
+        (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
     }
 
     /**
-     * @Given A new Environment
+     * @Given /^A ready to use Client$/
      */
-    public function aNewEnvironment()
+    public function aReadyToUseClient()
     {
-        $this->environment = new Environment();
+        $shopId = getenv('SHOP_ID');
+        $secretKey = getenv('SECRET_KEY');
+        $endpoint = getenv('ENVIRONMENT');
+        $environment = new Environment($shopId, $secretKey, $endpoint);
+
+        $httpClient = new Http\Client\Curl\Client();
+
+        $this->client = new Client($httpClient, $environment);
     }
 
     /**
-     * @Given A shop id is added to the Environment
+     * @Then /^I receive a (\d+) status code$/
      */
-    public function aShopIdIsAddedToTheEnvironment()
+    public function iReceiveAStatusCode($arg1)
     {
-        throw new PendingException();
+        Assert::assertEquals($arg1, $this->client->getLastResponse()->getStatusCode());
     }
 
-    /**
-     * @Given A secret key is added to the Environment
-     */
-    public function aSecretKeyIsAddedToTheEnvironment()
-    {
-        throw new PendingException();
-    }
 
-    /**
-     * @Given An endpoint is added to the Environment
-     */
-    public function anEndpointIsAddedToTheEnvironment()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then The Environment is ready to use
-     */
-    public function theEnvironmentIsReadyToUse()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given A ready to use Environment
-     */
-    public function aReadyToUseEnvironment()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given A PSR7 http client
-     */
-    public function aPsrHttpClient()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then The Client is ready to use but not authenticated
-     */
-    public function theClientIsReadyToUseButNotAuthenticated()
-    {
-        throw new PendingException();
-    }
 }
