@@ -259,6 +259,27 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @link https://developers.paygreen.fr/reference/get_list_payment_orders
+     *
+     * @param string|null $reference
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getPaymentOrders($reference = null, $shopId = null)
+    {
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
      * @throws Exception
      *
      * @return ResponseInterface
