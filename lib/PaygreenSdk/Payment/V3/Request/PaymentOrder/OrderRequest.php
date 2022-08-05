@@ -149,4 +149,30 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string|null $reference
+     * @param string|null $shopId
+     *
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getListRequest($reference = null, $shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $body = array(
+            'shop_id' => $shopId,
+            'reference' => $reference
+        );
+
+        return $this->requestFactory->create(
+            "/payment/payment-orders",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
