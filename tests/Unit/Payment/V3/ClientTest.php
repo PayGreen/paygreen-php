@@ -94,7 +94,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getEmail(), $content->email);
         $this->assertEquals($buyer->getFirstName(), $content->first_name);
         $this->assertEquals($buyer->getLastName(), $content->last_name);
-        $this->assertEquals($buyer->getId(), $content->reference);
+        $this->assertEquals($buyer->getReference(), $content->reference);
         $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
 
@@ -126,11 +126,11 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers/buyerId', $request->getUri()->getPath());
         $this->assertEquals($buyer->getEmail(), $content->email);
         $this->assertEquals($buyer->getFirstName(), $content->first_name);
         $this->assertEquals($buyer->getLastName(), $content->last_name);
-        $this->assertEquals($buyer->getId(), $content->reference);
+        $this->assertEquals($buyer->getReference(), $content->reference);
         $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
 
