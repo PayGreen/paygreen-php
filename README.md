@@ -66,16 +66,12 @@ Start docker stack:
 docker-compose up -d
 ```
 
-Run tests:
+PHPUnit tests:
 ```shell
 docker-compose exec php vendor/bin/phpunit tests
 ```
 
-Behat:
+Behat tests:
 ```shell
-
-export BEHAT_PARAMS="context[parameters][shop_id]=sh_dec7e3999339495795c88586d60a6396"
-
 docker-compose exec php vendor/bin/behat
-
 ```
