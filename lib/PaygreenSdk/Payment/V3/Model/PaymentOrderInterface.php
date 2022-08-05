@@ -104,7 +104,7 @@ interface PaymentOrderInterface
     public function getEligibleAmount();
 
     /**
-     * @param int $eligibleAmount
+     * @param array<string> $eligibleAmount
      */
     public function setEligibleAmount($eligibleAmount);
 

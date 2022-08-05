@@ -56,7 +56,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $description;
 
     /**
-     * @var int
+     * @var array<string>
      */
     private $eligibleAmount;
 
@@ -263,7 +263,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return int
+     * @return array<string>
      */
     public function getEligibleAmount()
     {
@@ -271,7 +271,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @param int $eligibleAmount
+     * @param array<string> $eligibleAmount
      */
     public function setEligibleAmount($eligibleAmount)
     {
