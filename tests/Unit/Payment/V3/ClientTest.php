@@ -303,14 +303,14 @@ final class ClientTest extends TestCase
 
     public function testRequestGetInstruments()
     {
-        $this->client->getInstruments('my-buyer-id');
+        $this->client->getInstruments('buy_0000');
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/instruments',  $request->getUri()->getPath());
-        $this->assertEquals('my-buyer-id', $content->buyer_id);
+        $this->assertEquals('buy_0000', $content->buyer_id);
     }
 
     public function testRequestCaptureOrder()
