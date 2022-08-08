@@ -111,9 +111,9 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             $shopId = $this->environment->getShopId();
         }
 
-        $body = array(
+        $body = [
             'shop_id' => $shopId
-        );
+        ];
 
         return $this->requestFactory->create(
             "/payment/buyers",

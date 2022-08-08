@@ -111,16 +111,16 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
     }
 
-    public function testRequestGetBuyers()
+    public function testRequestListBuyers()
     {
-        $this->client->getBuyers('my-shop-id');
+        $this->client->listBuyer('sh_0000');
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/buyers',  $request->getUri()->getPath());
-        $this->assertEquals('my-shop-id', $content->shop_id);
+        $this->assertEquals('sh_0000', $content->shop_id);
     }
 
     public function testRequestUpdateBuyer()
@@ -313,9 +313,9 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
     }
 
-    public function testRequestGetInstruments()
+    public function testRequestListInstruments()
     {
-        $this->client->getInstruments('buy_0000');
+        $this->client->listInstrument('buy_0000');
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());

@@ -143,7 +143,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getBuyers($shopId = null)
+    public function listBuyer($shopId = null)
     {
         $request = (new BuyerRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
         $this->setLastRequest($request);
@@ -331,7 +331,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getInstruments($buyerId = null)
+    public function listInstrument($buyerId = null)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getListRequest($buyerId);
         $this->setLastRequest($request);
