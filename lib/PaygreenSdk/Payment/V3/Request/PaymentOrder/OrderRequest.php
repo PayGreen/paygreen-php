@@ -138,10 +138,10 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
             $shopId = $this->environment->getShopId();
         }
 
-        $body = array(
+        $body = [
             'shop_id' => $shopId,
             'reference' => $reference
-        );
+        ];
 
         return $this->requestFactory->create(
             "/payment/payment-orders",

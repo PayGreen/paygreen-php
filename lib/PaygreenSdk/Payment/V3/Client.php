@@ -247,7 +247,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getPaymentOrders($reference = null, $shopId = null)
+    public function listPaymentOrder($reference = null, $shopId = null)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
         $this->setLastRequest($request);
