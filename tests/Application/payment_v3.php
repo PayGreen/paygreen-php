@@ -42,7 +42,7 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-$response = $client->getInstruments(1);
+$response = $client->getBuyers();
 dump($response);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
