@@ -261,48 +261,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @link https://developers.paygreen.fr/reference/get_list_payment_orders
-     *
-     * @param string|null $reference
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function getPaymentOrders($reference = null, $shopId = null)
-    {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @link https://developers.paygreen.fr/reference/get_list_payment_orders
-     *
-     * @param string|null $reference
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function getPaymentOrders($reference = null, $shopId = null)
-    {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
      * @throws Exception
      *
      * @return ResponseInterface
@@ -713,7 +671,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getShops($shopId = null)
+    public function listShop()
     {
         $request = (new ShopRequest($this->requestFactory, $this->environment))->getListRequest();
 

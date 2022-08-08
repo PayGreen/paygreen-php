@@ -512,7 +512,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/transactions/transaction-123',  $request->getUri()->getPath());
     }
 
-    public function testRequestGetTransactions()
+    public function testRequestListTransaction()
     {
         $this->client->listTransaction(
             'sh_0000',
@@ -543,9 +543,9 @@ final class ClientTest extends TestCase
         $this->assertEquals('/account/shops/shop-123',  $request->getUri()->getPath());
     }
 
-    public function testRequestGetShops()
+    public function testRequestListShop()
     {
-        $this->client->getShops();
+        $this->client->listShop();
 
         $request = $this->client->getLastRequest();
 
