@@ -44,17 +44,16 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
             $shopId = $this->environment->getShopId($shopId);
         }
 
-        $body = array(
+        $body = [
             'shop_id' => $shopId,
             'platform' => $platform,
             'selling_contract' => $sellingContractId,
             'config' => $config
-        );
+        ];
 
         return $this->requestFactory->create(
             "/payment/payment-configs",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
-            'POST'
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
 }

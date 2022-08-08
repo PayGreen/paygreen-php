@@ -61,8 +61,8 @@ final class ClientTest extends TestCase
         $this->client->createPaymentConfig(
             'bank_card',
             array('config1', 'config2'),
-            'selling-contract-id',
-            'shop-id'
+            'sel_0000',
+            'sh_0000'
         );
         $request = $this->client->getLastRequest();
 
@@ -72,8 +72,8 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
         $this->assertEquals('bank_card', $content->platform);
         $this->assertEquals(array('config1', 'config2'), $content->config);
-        $this->assertEquals('selling-contract-id', $content->selling_contract);
-        $this->assertEquals("shop-id", $content->shop_id);
+        $this->assertEquals('sel_0000', $content->selling_contract);
+        $this->assertEquals("sh_0000", $content->shop_id);
     }
 
     public function testRequestGetPublicKey()
