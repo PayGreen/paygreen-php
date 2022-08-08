@@ -42,74 +42,77 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-$buyer = new Buyer();
-$buyer->setId(uniqid());
-$buyer->setFirstName('John');
-$buyer->setLastName('Doe');
-$buyer->setEmail('romain@paygreen.fr');
-$buyer->setCountryCode('FR');
+$response = $client->getSellingContracts();
+dump($response);
 
-$address = new Address();
-$address->setStreetLineOne("107 allée Francois Mitterand");
-$address->setPostalCode("76100");
-$address->setCity("Rouen");
-$address->setCountryCode("FR");
-
-$buyer->setBillingAddress($address);
-
-$response = $client->createBuyer($buyer);
-$data = json_decode($response->getBody()->getContents())->data;
-
-$buyer->setReference($data->id);
-try {
-    $response = $client->getBuyer($buyer);
-} catch (Exception $exeption) {
-    dump($exeption);
-}
-
-$data = json_decode($response->getBody()->getContents())->data;
-//dump($data);
-
-$buyer->setFirstName('Jerry');
-$buyer->setLastName('Cane');
-$buyer->setEmail('dev-module@paygreen.fr');
-$buyer->setCountryCode('US');
-
-try {
-    $response = $client->updateBuyer($buyer);
-} catch (Exception $exeption) {
-    dump($exeption);
-}
-$data = json_decode($response->getBody()->getContents())->data;
-//dump($data);
-
-$buyerNoreference = new Buyer();
-$buyerNoreference->setId(uniqid());
-$buyerNoreference->setFirstName('Will');
-$buyerNoreference->setLastName('Jackson');
-$buyerNoreference->setEmail('romain@paygreen.fr');
-$buyerNoreference->setCountryCode('FR');
-$buyerNoreference->setBillingAddress($address);
-
-$order = new Order();
-$order->setBuyer($buyerNoreference);
-$order->setReference('SDK-ORDER-123');
-$order->setAmount(407);
-$order->setCurrency('eur');
-$order->setShippingAddress($address);
-
-$paymentOrder = new PaymentOrder();
-$paymentOrder->setPaymentMode(PaymentModeEnum::INSTANT);
-$paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
-$paymentOrder->setOrder($order);
-$paymentOrder->setAutoCapture(true);
-$paymentOrder->setPlatforms(["bank_card"]);
-$paymentOrder->setMetadata(array('cart_id' => 'cart_1'));
+//$buyer = new Buyer();
+//$buyer->setId(uniqid());
+//$buyer->setFirstName('John');
+//$buyer->setLastName('Doe');
+//$buyer->setEmail('romain@paygreen.fr');
+//$buyer->setCountryCode('FR');
+//
+//$address = new Address();
+//$address->setStreetLineOne("107 allée Francois Mitterand");
+//$address->setPostalCode("76100");
+//$address->setCity("Rouen");
+//$address->setCountryCode("FR");
+//
+//$buyer->setBillingAddress($address);
+//
+//$response = $client->createBuyer($buyer);
+//$data = json_decode($response->getBody()->getContents())->data;
+//
+//$buyer->setReference($data->id);
+//try {
+//    $response = $client->getBuyer($buyer);
+//} catch (Exception $exeption) {
+//    dump($exeption);
+//}
+//
+//$data = json_decode($response->getBody()->getContents())->data;
+////dump($data);
+//
+//$buyer->setFirstName('Jerry');
+//$buyer->setLastName('Cane');
+//$buyer->setEmail('dev-module@paygreen.fr');
+//$buyer->setCountryCode('US');
+//
+//try {
+//    $response = $client->updateBuyer($buyer);
+//} catch (Exception $exeption) {
+//    dump($exeption);
+//}
+//$data = json_decode($response->getBody()->getContents())->data;
+////dump($data);
+//
+//$buyerNoreference = new Buyer();
+//$buyerNoreference->setId(uniqid());
+//$buyerNoreference->setFirstName('Will');
+//$buyerNoreference->setLastName('Jackson');
+//$buyerNoreference->setEmail('romain@paygreen.fr');
+//$buyerNoreference->setCountryCode('FR');
+//$buyerNoreference->setBillingAddress($address);
+//
+//$order = new Order();
+//$order->setBuyer($buyerNoreference);
+//$order->setReference('SDK-ORDER-123');
+//$order->setAmount(407);
+//$order->setCurrency('eur');
+//$order->setShippingAddress($address);
+//
+//$paymentOrder = new PaymentOrder();
+//$paymentOrder->setPaymentMode(ModeEnum::INSTANT);
+//$paymentOrder->setIntegrationMode(IntegrationModeEnum::DIRECT);
+//$paymentOrder->setOrder($order);
+//$paymentOrder->setAutoCapture(true);
+//$paymentOrder->setPlatforms(["bank_card"]);
+//$paymentOrder->setMetadata(array('cart_id' => 'cart_1'));
 
 // Order avec un buyer no reference
-$response = $client->createPaymentOrder($paymentOrder);
-$data = json_decode($response->getBody()->getContents())->data;
-dump($data);
+// $response = $client->createPaymentOrder($paymentOrder);
+// $data = json_decode($response->getBody()->getContents())->data;
+// dump($data);
 
 // Order avec un buyer reference
 /*$order->setBuyer($buyer);
@@ -117,14 +120,14 @@ $response = $client->createPaymentOrder($paymentOrder);
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
-$order->setReference($data->id);
-$paymentOrder->setObjectSecret($data->object_secret);
-
-$poReference = $paymentOrder->getOrder()->getReference();
-$objectSecret = $paymentOrder->getObjectSecret();
-
-$response = $client->getPaymentOrder($poReference);
-$data = json_decode($response->getBody()->getContents())->data;
+//$order->setReference($data->id);
+//$paymentOrder->setObjectSecret($data->object_secret);
+//
+//$poReference = $paymentOrder->getOrder()->getReference();
+//$objectSecret = $paymentOrder->getObjectSecret();
+//
+//$response = $client->getPaymentOrder($poReference);
+//$data = json_decode($response->getBody()->getContents())->data;
 //dump($data);
 
 /*$paymentOrder->setPartialAllowed(true);

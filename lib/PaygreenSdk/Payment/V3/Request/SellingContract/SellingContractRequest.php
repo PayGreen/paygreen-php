@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
+use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
 use Psr\Http\Message\RequestInterface;
 
 class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -15,7 +16,7 @@ class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @return Request|RequestInterface
      */
-    public function getListRequest($shopId = null)
+    public function getListRequest($shopId)
     {
         if ($shopId === null) {
             $shopId = $this->environment->getShopId();
@@ -33,27 +34,22 @@ class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param string $number
-     * @param int $mcc
-     * @param int $maxAmount
-     * @param string $type
+     * @param SellingContractInterface $sellingContract
      * @param string|null $shopId
      *
      * @return Request|RequestInterface
      */
-    public function getCreateRequest(
-        $number,
-        $mcc,
-        $maxAmount,
-        $type,
-        $shopId
-    ) {
+    public function getCreateRequest(SellingContractInterface $sellingContract, $shopId = null) {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
         $body = [
-            'shop_id' => ($shopId === null) ? $this->environment->getShopId(): $shopId,
-            'number' => $number,
-            'mcc' => $mcc,
-            'max_amount' => $maxAmount,
-            'type' => $type
+            'shop_id' => $shopId,
+            'number' => $sellingContract->getNumber(),
+            'mcc' => $sellingContract->getMcc(),
+            'max_amount' => $sellingContract->getMaxAmount(),
+            'type' => $sellingContract->getType()
         ];
 
         return $this->requestFactory->create(

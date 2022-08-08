@@ -8,6 +8,7 @@ use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Event\EventRequest;
@@ -460,7 +461,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getSellingContracts($shopId)
+    public function getSellingContracts($shopId = null)
     {
         $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
 
@@ -475,28 +476,17 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @link https://developers.paygreen.fr/reference/post_create_selling_contract
      *
-     * @param string $number The number, or identifier, of the selling contract you have with your bank - check with your bank for more informations
-     * @param int $mcc Merchant Category Code (ISO-18245)
-     * @param int $maxAmount The maximum amount allowed by your selling contract
-     * @param string $type Only 'vads' is supported at the moment
+     * @param SellingContractInterface $sellingContract
      * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function createSellingContract(
-        $number,
-        $mcc,
-        $maxAmount,
-        $type,
-        $shopId = null
-    ) {
+    public function createSellingContract(SellingContractInterface $sellingContract, $shopId = null)
+    {
         $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest(
-            $number,
-            $mcc,
-            $maxAmount,
-            $type,
+            $sellingContract,
             $shopId
         );
 
