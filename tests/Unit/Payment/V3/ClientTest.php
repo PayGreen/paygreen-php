@@ -11,6 +11,7 @@ use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -410,5 +411,40 @@ final class ClientTest extends TestCase
         $this->assertEquals('/events',  $request->getUri()->getPath());
         $this->assertEquals('log', $content->type);
         $this->assertEquals('log content', $content->content);
+    }
+
+    public function testRequestGetSellingContracts()
+    {
+        $this->client->getSellingContracts('sh_0000');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->shop_id);
+    }
+
+    public function testRequestCreateSellingContract()
+    {
+        $sellingContract = new SellingContract();
+        $sellingContract->setNumber('10');
+        $sellingContract->setMcc(123);
+        $sellingContract->setMaxAmount(1000);
+        $sellingContract->setType('vads');
+
+        $this->client->createSellingContract($sellingContract, 'sh_0000');
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->shop_id);
+        $this->assertEquals('10', $content->number);
+        $this->assertEquals(123, $content->mcc);
+        $this->assertEquals(1000, $content->max_amount);
+        $this->assertEquals('vads', $content->type);
     }
 }
