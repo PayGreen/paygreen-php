@@ -49,10 +49,6 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getGetRequest($transactionId)
     {
-        $body = [
-            'id' => $transactionId,
-        ];
-
         return $this->requestFactory->create(
             "/payment/transactions/$transactionId",
             null,

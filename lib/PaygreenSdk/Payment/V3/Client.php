@@ -642,7 +642,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getTransactions(
+    public function listTransaction(
         $requesterShopId = null,
         $beneficiaryShopId = null,
         $maxPerPage = 10,

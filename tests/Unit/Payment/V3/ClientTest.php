@@ -514,9 +514,9 @@ final class ClientTest extends TestCase
 
     public function testRequestGetTransactions()
     {
-        $this->client->getTransactions(
-            'requester-shop-id',
-            'beneficiary-shop-id',
+        $this->client->listTransaction(
+            'sh_0000',
+            'sh_0001',
             10,
             2
         );
@@ -527,8 +527,8 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/transactions',  $request->getUri()->getPath());
-        $this->assertEquals('requester-shop-id', $content->requester_shop_id);
-        $this->assertEquals('beneficiary-shop-id', $content->shop_id);
+        $this->assertEquals('sh_0000', $content->requester_shop_id);
+        $this->assertEquals('sh_0001', $content->shop_id);
         $this->assertEquals(10, $content->max_per_page);
         $this->assertEquals(2, $content->page);
     }
