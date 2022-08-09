@@ -5,7 +5,7 @@ $address = new Paygreen\Sdk\Payment\V3\Model\Address(); // Or must implement the
 $address->setStreetLineOne('54 Crown Street');
 $address->setCity('London');
 $address->setCountryCode('UK');
-$address->setPostcode('SW14 6ZG');
+$address->setPostalCode('SW14 6ZG');
 
 $buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer(); // Or must implement the CustomerInterface
 $buyer->setReference('my-customer-id');

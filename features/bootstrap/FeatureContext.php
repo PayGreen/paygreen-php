@@ -13,6 +13,8 @@ class FeatureContext implements Context
 {
     use BuyerDictionary;
     use AuthenticationDictionary;
+    use PaymentOrderDictionary;
+    use InstrumentDictionary;
 
     /**
      * @var Client

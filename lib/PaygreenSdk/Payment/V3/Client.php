@@ -159,14 +159,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $id A payment order id (format: po_0000)
+     * @param string $paymentOrderId A payment order id (format: po_0000)
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function getPaymentOrder($id)
+    public function getPaymentOrder($paymentOrderId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($id);
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentOrderId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -192,14 +192,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $paymentReference
+     * @param string $paymentOrderId
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function capturePaymentOrder($paymentReference)
+    public function capturePaymentOrder($paymentOrderId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getCaptureRequest($paymentReference);
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getCaptureRequest($paymentOrderId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -209,14 +209,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $paymentReference
+     * @param string $paymentOrderId
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function refundPaymentOrder($paymentReference)
+    public function refundPaymentOrder($paymentOrderId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentReference);
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentOrderId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -226,14 +226,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $reference
+     * @param string $instrumentId
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function deleteInstrument($reference)
+    public function deleteInstrument($instrumentId)
     {
-        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getDeleteRequest($reference);
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getDeleteRequest($instrumentId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -248,7 +248,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function createInstrument($instrument)
+    public function createInstrument(Instrument $instrument)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getCreateRequest($instrument);
         $this->setLastRequest($request);
@@ -265,7 +265,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function updateInstrument($instrument)
+    public function updateInstrument(Instrument $instrument)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getUpdateRequest($instrument);
         $this->setLastRequest($request);
@@ -277,14 +277,14 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $reference
+     * @param string $instrumentId
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function getInstrument($reference)
+    public function getInstrument($instrumentId)
     {
-        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getGetRequest($reference);
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getGetRequest($instrumentId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

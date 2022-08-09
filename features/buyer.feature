@@ -8,7 +8,7 @@ Feature: Manage buyers
         And I authenticate the Client
 
     Scenario: Create a new buyer
-        Given I have a buyer object
+        Given A buyer object
         When I create a buyer
         Then I receive a 200 status code
         And I receive a response with the buyer
