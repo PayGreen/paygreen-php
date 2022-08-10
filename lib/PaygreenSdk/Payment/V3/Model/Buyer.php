@@ -29,22 +29,17 @@ class Buyer implements BuyerInterface
     /**
      * @var string
      */
-    private $countryCode;
-
-    /**
-     * @var string
-     */
     private $email;
-
-    /**
-     * @var string
-     */
-    private $companyName;
 
     /**
      * @var Address
      */
     private $billingAddress;
+
+    /**
+     * @var string
+     */
+    private $phoneNumber;
 
     /**
      * @return string
@@ -97,22 +92,6 @@ class Buyer implements BuyerInterface
     /**
      * @return string
      */
-    public function getCountryCode()
-    {
-        return $this->countryCode;
-    }
-
-    /**
-     * @param string $countryCode
-     */
-    public function setCountryCode($countryCode)
-    {
-        $this->countryCode = $countryCode;
-    }
-
-    /**
-     * @return string
-     */
     public function getEmail()
     {
         return $this->email;
@@ -124,22 +103,6 @@ class Buyer implements BuyerInterface
     public function setEmail($email)
     {
         $this->email = $email;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCompanyName()
-    {
-        return $this->companyName;
-    }
-
-    /**
-     * @param string $companyName
-     */
-    public function setCompanyName($companyName)
-    {
-        $this->companyName = $companyName;
     }
 
     /**
@@ -172,5 +135,21 @@ class Buyer implements BuyerInterface
     public function setBillingAddress($billingAddress)
     {
         $this->billingAddress = $billingAddress;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
+    }
+
+    /**
+     * @param string $phoneNumber
+     */
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
     }
 }

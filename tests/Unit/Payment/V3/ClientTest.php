@@ -73,7 +73,7 @@ final class ClientTest extends TestCase
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
         $address = new Address();
         $address->setStreetLineOne("107 allée Francois Mitterand");
@@ -95,7 +95,8 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getFirstName(), $content->first_name);
         $this->assertEquals($buyer->getLastName(), $content->last_name);
         $this->assertEquals($buyer->getId(), $content->reference);
-        $this->assertEquals($buyer->getCountryCode(), $content->country);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->phone_number);
+
     }
 
     public function testRequestGetBuyer()
@@ -118,7 +119,7 @@ final class ClientTest extends TestCase
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
         $this->client->updateBuyer($buyer);
         $request = $this->client->getLastRequest();
@@ -131,7 +132,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getFirstName(), $content->first_name);
         $this->assertEquals($buyer->getLastName(), $content->last_name);
         $this->assertEquals($buyer->getId(), $content->reference);
-        $this->assertEquals($buyer->getCountryCode(), $content->country);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->phone_number);
     }
 
     public function testRequestCreateOrder()
@@ -141,7 +142,7 @@ final class ClientTest extends TestCase
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
         $address = new Address();
         $address->setStreetLineOne("107 allée Francois Mitterand");
@@ -180,7 +181,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getFirstName(), $content->buyer->first_name);
         $this->assertEquals($buyer->getLastName(), $content->buyer->last_name);
         $this->assertEquals($buyer->getId(), $content->buyer->reference);
-        $this->assertEquals($buyer->getCountryCode(), $content->buyer->country);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->buyer->phone_number);
 
         $this->assertEquals($order->getReference(), $content->reference);
         $this->assertEquals($order->getAmount(), $content->amount);

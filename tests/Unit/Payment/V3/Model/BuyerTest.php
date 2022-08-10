@@ -25,14 +25,6 @@ final class BuyerTest extends TestCase
         $this->assertEquals('reference-1', $buyer->getReference());
     }
 
-    public function testCanGetAndSetCompanyName()
-    {
-        $buyer = new Buyer();
-        $buyer->setCompanyName('PayGreen');
-
-        $this->assertEquals('PayGreen', $buyer->getCompanyName());
-    }
-
     public function testCanGetAndSetFirstName()
     {
         $buyer = new Buyer();
@@ -57,12 +49,12 @@ final class BuyerTest extends TestCase
         $this->assertEquals('customer@test.fr', $buyer->getEmail());
     }
 
-    public function testCanGetAndSetCountryCode()
+    public function testCanGetAndSetPhoneNumber()
     {
         $buyer = new Buyer();
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
-        $this->assertEquals('FR', $buyer->getCountryCode());
+        $this->assertEquals('0102030405', $buyer->getPhoneNumber());
     }
 
     public function testCanGetAndSetBillingAddress()

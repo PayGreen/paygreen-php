@@ -47,7 +47,7 @@ $buyer->setId(uniqid());
 $buyer->setFirstName('John');
 $buyer->setLastName('Doe');
 $buyer->setEmail('romain@paygreen.fr');
-$buyer->setCountryCode('FR');
+$buyer->setPhoneNumber('0102030405');
 
 $address = new Address();
 $address->setStreetLineOne("107 allée Francois Mitterand");
@@ -73,7 +73,7 @@ $data = json_decode($response->getBody()->getContents())->data;
 $buyer->setFirstName('Jerry');
 $buyer->setLastName('Cane');
 $buyer->setEmail('dev-module@paygreen.fr');
-$buyer->setCountryCode('US');
+$buyer->setPhoneNumber('0102030405');
 
 try {
     $response = $client->updateBuyer($buyer);
@@ -88,7 +88,7 @@ $buyerNoreference->setId(uniqid());
 $buyerNoreference->setFirstName('Will');
 $buyerNoreference->setLastName('Jackson');
 $buyerNoreference->setEmail('romain@paygreen.fr');
-$buyerNoreference->setCountryCode('FR');
+$buyerNoreference->setPhoneNumber('0102030405');
 $buyerNoreference->setBillingAddress($address);
 
 $order = new Order();

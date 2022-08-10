@@ -34,12 +34,7 @@ interface BuyerInterface
     /**
      * @return string
      */
-    public function getCompanyName();
-
-    /**
-     * @return string
-     */
-    public function getCountryCode();
+    public function getPhoneNumber();
 
     /**
      * @return AddressInterface
