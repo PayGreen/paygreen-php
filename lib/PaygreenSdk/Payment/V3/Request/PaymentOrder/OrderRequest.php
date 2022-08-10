@@ -35,11 +35,11 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
     {
         if (null === $paymentOrder->getBuyer()->getId()) {
             $buyer = [
-                'email' => $paymentOrder->getOrder()->getBuyer()->getEmail(),
-                'first_name' => $paymentOrder->getOrder()->getBuyer()->getFirstName(),
-                'last_name' => $paymentOrder->getOrder()->getBuyer()->getLastName(),
-                'reference' => $paymentOrder->getOrder()->getBuyer()->getReference(),
-                'phone_number' => $paymentOrder->getOrder()->getBuyer()->getPhoneNumber(),
+                'email' => $paymentOrder->getBuyer()->getEmail(),
+                'first_name' => $paymentOrder->getBuyer()->getFirstName(),
+                'last_name' => $paymentOrder->getBuyer()->getLastName(),
+                'reference' => $paymentOrder->getBuyer()->getReference(),
+                'phone_number' => $paymentOrder->getBuyer()->getPhoneNumber(),
             ];
             if (null !== $paymentOrder->getBuyer()->getBillingAddress()) {
                 $buyer['billing_address'] = [
