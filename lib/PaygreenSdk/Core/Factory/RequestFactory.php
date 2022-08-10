@@ -8,6 +8,8 @@ use Psr\Http\Message\StreamInterface;
 
 class RequestFactory
 {
+    const SDK_VERSION = '1.1.0';
+
     /** @var Request */
     public $request;
 
@@ -110,6 +112,8 @@ class RequestFactory
             $phpVersion = phpversion();
         }
 
-        return "Application:{$applicationName}/{$applicationVersion} sdk:1.0.0 php:{$phpVersion};";
+        $sdkVersion = self::SDK_VERSION;
+
+        return "Application:$applicationName:$applicationVersion sdk:{$sdkVersion} php:$phpVersion;";
     }
 }
