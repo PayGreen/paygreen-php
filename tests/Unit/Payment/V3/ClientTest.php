@@ -3,13 +3,10 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
-use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
-use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use PHPUnit\Framework\TestCase;
@@ -131,7 +128,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
     }
 
-    public function testRequestListBuyers()
+    public function testRequestListBuyer()
     {
         $this->client->listBuyer('sh_0000');
         $request = $this->client->getLastRequest();
@@ -167,7 +164,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getCountryCode(), $content->country);
     }
 
-    public function testRequestCreateOrder()
+    public function testRequestCreatePaymentOrder()
     {
         $buyer = new Buyer();
         $buyer->setReference('my-user-reference');
@@ -243,7 +240,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
     }
 
-    public function testRequestGetOrder()
+    public function testRequestGetPaymentOrder()
     {
         $this->client->getPaymentOrder('po_0000');
         $request = $this->client->getLastRequest();
@@ -252,7 +249,20 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/payment-orders/po_0000', $request->getUri()->getPath());
     }
 
-    public function testRequestUpdateOrder()
+    public function testRequestListPaymentOrder()
+    {
+        $this->client->listPaymentOrder('SDK-ORDER-123', 'sh_0000');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
+        $this->assertEquals('SDK-ORDER-123', $content->reference);
+        $this->assertEquals('sh_0000', $content->shop_id);
+    }
+
+    public function testRequestUpdatePaymentOrder()
     {
         $paymentOrder = new PaymentOrder();
         $paymentOrder->setId('po_0000');
