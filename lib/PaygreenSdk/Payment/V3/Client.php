@@ -83,6 +83,38 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @link https://developers.paygreen.fr/reference/post_create_payment_config
+     *
+     * @param string $platform
+     * @param string[] $config
+     * @param string|null $sellingContractId
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createPaymentConfig(
+        $platform,
+        array $config,
+        $sellingContractId = null,
+        $shopId = null
+    ) {
+        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getCreateRequest(
+            $platform,
+            $config,
+            $sellingContractId,
+            $shopId
+        );
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
      * @throws Exception
      *
      *@return ResponseInterface
