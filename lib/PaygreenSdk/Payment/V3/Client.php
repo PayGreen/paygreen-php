@@ -18,6 +18,7 @@ use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
 use Paygreen\Sdk\Payment\V3\Request\SellingContract\SellingContractRequest;
+use Paygreen\Sdk\Payment\V3\Request\Transaction\TransactionRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -248,6 +249,27 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @return ResponseInterface
      */
     public function listPaymentOrder($reference = null, $shopId = null)
+    {
+        $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_payment_orders
+     *
+     * @param string|null $reference
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getPaymentOrders($reference = null, $shopId = null)
     {
         $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
         $this->setLastRequest($request);
@@ -577,6 +599,60 @@ class Client extends \Paygreen\Sdk\Core\Client
         $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest(
             $sellingContract,
             $shopId
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_get_transaction
+     *
+     * @param string $transactionId
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getTransaction($transactionId)
+    {
+        $request = (new TransactionRequest($this->requestFactory, $this->environment))->getGetRequest($transactionId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_transactions
+     *
+     * @param string|null $requesterShopId If not specified, the shop id of the environment will be used
+     * @param string|null $beneficiaryShopId
+     * @param int $maxPerPage
+     * @param int $page
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listTransaction(
+        $requesterShopId = null,
+        $beneficiaryShopId = null,
+        $maxPerPage = 10,
+        $page = 1
+    ) {
+        $request = (new TransactionRequest($this->requestFactory, $this->environment))->getListRequest(
+            $requesterShopId,
+            $beneficiaryShopId,
+            $maxPerPage,
+            $page
         );
 
         $this->setLastRequest($request);

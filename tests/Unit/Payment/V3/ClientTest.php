@@ -501,4 +501,35 @@ final class ClientTest extends TestCase
         $this->assertEquals(1000, $content->max_amount);
         $this->assertEquals('vads', $content->type);
     }
+
+    public function testRequestGetTransaction()
+    {
+        $this->client->getTransaction('transaction-123');
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/transactions/transaction-123',  $request->getUri()->getPath());
+    }
+
+    public function testRequestGetTransactions()
+    {
+        $this->client->listTransaction(
+            'sh_0000',
+            'sh_0001',
+            10,
+            2
+        );
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/transactions',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->requester_shop_id);
+        $this->assertEquals('sh_0001', $content->shop_id);
+        $this->assertEquals(10, $content->max_per_page);
+        $this->assertEquals(2, $content->page);
+    }
 }
