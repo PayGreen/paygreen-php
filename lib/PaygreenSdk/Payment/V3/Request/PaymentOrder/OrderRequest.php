@@ -13,14 +13,14 @@ use Psr\Http\Message\RequestInterface;
 class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param int $paymentReference
+     * @param int $id
      *
      * @return Request|RequestInterface
      */
-    public function getGetRequest($paymentReference)
+    public function getGetRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentReference}",
+            "/payment/payment-orders/{$id}",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -33,44 +33,53 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
-        if (null === $paymentOrder->getOrder()->getBuyer()->getReference()) {
+        if (null === $paymentOrder->getBuyer()->getId()) {
             $buyer = [
                 'email' => $paymentOrder->getOrder()->getBuyer()->getEmail(),
                 'first_name' => $paymentOrder->getOrder()->getBuyer()->getFirstName(),
                 'last_name' => $paymentOrder->getOrder()->getBuyer()->getLastName(),
-                'reference' => $paymentOrder->getOrder()->getBuyer()->getId(),
+                'reference' => $paymentOrder->getOrder()->getBuyer()->getReference(),
                 'phone_number' => $paymentOrder->getOrder()->getBuyer()->getPhoneNumber(),
             ];
+            if (null !== $paymentOrder->getBuyer()->getBillingAddress()) {
+                $buyer['billing_address'] = [
+                    'city' => $paymentOrder->getBuyer()->getBillingAddress()->getCity(),
+                    'country' => $paymentOrder->getBuyer()->getBillingAddress()->getCountryCode(),
+                    'line1' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineOne(),
+                    'line2' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineTwo(),
+                    'postal_code' => $paymentOrder->getBuyer()->getBillingAddress()->getPostalCode(),
+                ];
+            }
         } else {
-            $buyer = $paymentOrder->getOrder()->getBuyer()->getReference();
+            $buyer = $paymentOrder->getBuyer()->getId();
         }
 
         $body = [
-            'amount' => $paymentOrder->getOrder()->getAmount(),
-            'auto_capture' => $paymentOrder->getAutoCapture(),
+            'amount' => $paymentOrder->getAmount(),
+            'eligible_amounts' => $paymentOrder->getEligibleAmounts(),
+            'auto_capture' => $paymentOrder->isAutoCapture(),
             'buyer' => $buyer,
-            'cancel_url' => $paymentOrder->getCancelUrl(),
-            'currency' => $paymentOrder->getOrder()->getCurrency(),
-            'cycle' => $paymentOrder->getCycle(),
+            'capture_on' => $paymentOrder->getCaptureOn(),
+            'currency' => $paymentOrder->getCurrency(),
             'description' => $paymentOrder->getDescription(),
-            'eligible_amounts' => $paymentOrder->getEligibleAmount(),
-            'first_amount' => $paymentOrder->getFirstAmount(),
-            'instrument' => $paymentOrder->getInstrumentId(),
-            'integration_mode' => $paymentOrder->getIntegrationMode(),
-            'is_merchant_initiated' => $paymentOrder->isMerchantInitiated(),
-            'mode' => $paymentOrder->getPaymentMode(),
-            'notification_url' => $paymentOrder->getNotificationUrl(),
-            'occurences' => $paymentOrder->getOccurences(),
+            'instrument' => $paymentOrder->getInstrument(),
+            'max_operations' => $paymentOrder->getMaxOperations(),
+            'merchant_initiated' => $paymentOrder->isMerchantInitiated(),
             'partial_allowed' => $paymentOrder->isPartialAllowed(),
             'platforms' => $paymentOrder->getPlatforms(),
-            'previous_order_id' => $paymentOrder->getPreviousOrderId(),
-            'reference' => $paymentOrder->getOrder()->getReference(),
-            'return_url' => $paymentOrder->getReturnUrl(),
-            'shop_id' => $paymentOrder->getPlatformsShopId(),
-            'start_at' => $paymentOrder->getStartAt(),
-            'ttl' => $paymentOrder->getInstrumentTTL(),
-            'metadata' => $paymentOrder->getMetadata()
+            'reference' => $paymentOrder->getReference(),
+            'shop_id' => $paymentOrder->getShopId(),
         ];
+
+        if (null !== $paymentOrder->getShippingAddress()) {
+            $body['shipping_address'] = [
+                'city' => $paymentOrder->getShippingAddress()->getCity(),
+                'country' => $paymentOrder->getShippingAddress()->getCountryCode(),
+                'line1' => $paymentOrder->getShippingAddress()->getStreetLineOne(),
+                'line2' => $paymentOrder->getShippingAddress()->getStreetLineTwo(),
+                'postal_code' => $paymentOrder->getShippingAddress()->getPostalCode(),
+            ];
+        }
 
         return $this->requestFactory->create(
             '/payment/payment-orders',
@@ -83,36 +92,35 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest(PaymentOrder $paymentOrder)
     {
-        $paymentReference = $paymentOrder->getOrder()->getReference();
         $body = ['partial_allowed' => $paymentOrder->isPartialAllowed()];
 
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentReference}",
+            "/payment/payment-orders/{$paymentOrder->getId()}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
 
     /**
-     * @param int $paymentReference
+     * @param int $id
      * 
      * @return Request|RequestInterface
      */
-    public function getCaptureRequest($paymentReference)
+    public function getCaptureRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentReference}/capture"
+            "/payment/payment-orders/{$id}/capture"
         )->withAuthorization()->isJson()->getRequest();
     }
 
     /**
-     * @param int $paymentReference
+     * @param int $id
      * 
      * @return Request|RequestInterface
      */
-    public function getRefundRequest($paymentReference)
+    public function getRefundRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentReference}/refund"
+            "/payment/payment-orders/{$id}/refund"
         )->withAuthorization()->isJson()->getRequest();
     }
 }

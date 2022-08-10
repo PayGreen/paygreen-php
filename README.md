@@ -66,7 +66,12 @@ Start docker stack:
 docker-compose up -d
 ```
 
-Run tests:
+PHPUnit tests:
 ```shell
 docker-compose exec php vendor/bin/phpunit tests
+```
+
+Behat tests:
+```shell
+docker-compose exec php vendor/bin/behat
 ```

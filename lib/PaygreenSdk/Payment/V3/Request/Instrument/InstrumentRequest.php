@@ -83,4 +83,23 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string|null $buyerId
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getListRequest($buyerId = null)
+    {
+        $body = [
+            'buyer_id' => $buyerId
+        ];
+
+        return $this->requestFactory->create(
+            "/payment/instruments",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
