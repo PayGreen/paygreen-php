@@ -512,7 +512,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/transactions/transaction-123',  $request->getUri()->getPath());
     }
 
-    public function testRequestGetTransactions()
+    public function testRequestListTransaction()
     {
         $this->client->listTransaction(
             'sh_0000',
@@ -531,5 +531,39 @@ final class ClientTest extends TestCase
         $this->assertEquals('sh_0001', $content->shop_id);
         $this->assertEquals(10, $content->max_per_page);
         $this->assertEquals(2, $content->page);
+    }
+
+    public function testRequestGetShop()
+    {
+        $this->client->getShop('shop-123');
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/shops/shop-123',  $request->getUri()->getPath());
+    }
+
+    public function testRequestListShop()
+    {
+        $this->client->listShop();
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+    }
+
+    public function testRequestCreateShop()
+    {
+        $this->client->createShop('my-shop', 'shop-national-id');
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+        $this->assertEquals('my-shop', $content->name);
+        $this->assertEquals('shop-national-id', $content->national_id);
     }
 }
