@@ -7,17 +7,19 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
-use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Psr\Http\Message\RequestInterface;
 
 class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @return Request|RequestInterface
+     * @param BuyerInterface $buyer
+     * @param string|null $shopId
+     *
+     * @return Request
      */
-    public function getGetRequest(Buyer $buyer)
+    public function getGetRequest(BuyerInterface $buyer, $shopId = null)
     {
-        $shopId = $this->environment->getShopId();
         $buyerReference = $buyer->getReference();
 
         return $this->requestFactory->create(
@@ -28,12 +30,18 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @return Request|RequestInterface
+     * @param BuyerInterface $buyer
+     * @param string|null $shopId
+     *
      * @throws Exception
+     *
+     * @return Request|RequestInterface
      */
-    public function getCreateRequest(Buyer $buyer)
+    public function getCreateRequest(BuyerInterface $buyer, $shopId = null)
     {
-        $shopId = $this->environment->getShopId();
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
 
         $body = [
             'shop_id' => $shopId,
@@ -58,9 +66,11 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
+     * @param BuyerInterface $buyer
+     *
      * @return Request|RequestInterface
      */
-    public function getUpdateRequest(Buyer $buyer)
+    public function getUpdateRequest(BuyerInterface $buyer)
     {
         $body = [
             'id' => $buyer->getId(),
@@ -86,6 +96,29 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/payment/buyers/{$buyer->getId()}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string|null $shopId
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getListRequest($shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $body = [
+            'shop_id' => $shopId
+        ];
+
+        return $this->requestFactory->create(
+            "/payment/buyers",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 }
