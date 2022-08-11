@@ -3,13 +3,10 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
-use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\PaymentModeEnum;
 use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
-use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use PHPUnit\Framework\TestCase;
@@ -47,13 +44,33 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
-    public function testRequestListConfig()
+    public function testRequestListPaymentConfig()
     {
         $this->client->listPaymentConfig();
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+    }
+
+    public function testRequestCreatePaymentConfig()
+    {
+        $this->client->createPaymentConfig(
+            'bank_card',
+            array('config1', 'config2'),
+            'sel_0000',
+            'sh_0000'
+        );
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+        $this->assertEquals('bank_card', $content->platform);
+        $this->assertEquals(array('config1', 'config2'), $content->config);
+        $this->assertEquals('sel_0000', $content->selling_contract);
+        $this->assertEquals("sh_0000", $content->shop_id);
     }
 
     public function testRequestGetPublicKey()
@@ -111,7 +128,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
     }
 
-    public function testRequestListBuyers()
+    public function testRequestListBuyer()
     {
         $this->client->listBuyer('sh_0000');
         $request = $this->client->getLastRequest();
@@ -147,7 +164,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getPhoneNumber(), $content->phone_number);
     }
 
-    public function testRequestCreateOrder()
+    public function testRequestCreatePaymentOrder()
     {
         $buyer = new Buyer();
         $buyer->setReference('my-user-reference');
@@ -222,7 +239,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
     }
 
-    public function testRequestGetOrder()
+    public function testRequestGetPaymentOrder()
     {
         $this->client->getPaymentOrder('po_0000');
         $request = $this->client->getLastRequest();
@@ -231,7 +248,20 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/payment-orders/po_0000', $request->getUri()->getPath());
     }
 
-    public function testRequestUpdateOrder()
+    public function testRequestListPaymentOrder()
+    {
+        $this->client->listPaymentOrder('SDK-ORDER-123', 'sh_0000');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
+        $this->assertEquals('SDK-ORDER-123', $content->reference);
+        $this->assertEquals('sh_0000', $content->shop_id);
+    }
+
+    public function testRequestUpdatePaymentOrder()
     {
         $paymentOrder = new PaymentOrder();
         $paymentOrder->setId('po_0000');
@@ -469,5 +499,70 @@ final class ClientTest extends TestCase
         $this->assertEquals(123, $content->mcc);
         $this->assertEquals(1000, $content->max_amount);
         $this->assertEquals('vads', $content->type);
+    }
+
+    public function testRequestGetTransaction()
+    {
+        $this->client->getTransaction('transaction-123');
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/transactions/transaction-123',  $request->getUri()->getPath());
+    }
+
+    public function testRequestListTransaction()
+    {
+        $this->client->listTransaction(
+            'sh_0000',
+            'sh_0001',
+            10,
+            2
+        );
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/transactions',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->requester_shop_id);
+        $this->assertEquals('sh_0001', $content->shop_id);
+        $this->assertEquals(10, $content->max_per_page);
+        $this->assertEquals(2, $content->page);
+    }
+
+    public function testRequestGetShop()
+    {
+        $this->client->getShop('shop-123');
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/shops/shop-123',  $request->getUri()->getPath());
+    }
+
+    public function testRequestListShop()
+    {
+        $this->client->listShop();
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+    }
+
+    public function testRequestCreateShop()
+    {
+        $this->client->createShop('my-shop', 'shop-national-id');
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+        $this->assertEquals('my-shop', $content->name);
+        $this->assertEquals('shop-national-id', $content->national_id);
     }
 }

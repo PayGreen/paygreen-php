@@ -42,22 +42,8 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-$buyer = new Buyer();
-$buyer->setId(uniqid());
-$buyer->setFirstName('John');
-$buyer->setLastName('Doe');
-$buyer->setEmail('romain@paygreen.fr');
-$buyer->setPhoneNumber('0102030405');
-
-$address = new Address();
-$address->setStreetLineOne("107 allée Francois Mitterand");
-$address->setPostalCode("76100");
-$address->setCity("Rouen");
-$address->setCountryCode("FR");
-
-$buyer->setBillingAddress($address);
-
-$response = $client->createBuyer($buyer);
+$response = $client->listTransaction();
+dump($response);
 
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
