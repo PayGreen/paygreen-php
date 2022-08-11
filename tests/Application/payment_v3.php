@@ -58,6 +58,7 @@ dump($data);
 //$address = new Address();
 //$address->setStreetLineOne("107 allée Francois Mitterand");
 //$address->setPostalCode("76100");
+//$address->setState("Normandie");
 //$address->setCity("Rouen");
 //$address->setCountryCode("FR");
 //

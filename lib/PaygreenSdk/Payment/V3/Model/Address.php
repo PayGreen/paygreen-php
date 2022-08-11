@@ -30,6 +30,11 @@ class Address implements AddressInterface
     private $streetLineTwo;
 
     /**
+     * @var string
+     */
+    private $state;
+
+    /**
      * @return string
      */
     public function getPostalCode()
@@ -124,5 +129,21 @@ class Address implements AddressInterface
     public function setCountryCode($countryCode)
     {
         $this->countryCode = $countryCode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
     }
 }

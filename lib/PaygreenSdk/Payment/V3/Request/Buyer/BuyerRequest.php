@@ -56,6 +56,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
                 'city' => $buyer->getBillingAddress()->getCity(),
                 'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
                 'country' => $buyer->getBillingAddress()->getCountryCode(),
+                'state' => $buyer->getBillingAddress()->getState(),
             ]
         ];
 
@@ -88,7 +89,8 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
                     'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
                     'city' => $buyer->getBillingAddress()->getCity(),
                     'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
-                    'country' => $buyer->getBillingAddress()->getCountryCode()
+                    'country' => $buyer->getBillingAddress()->getCountryCode(),
+                    'state' => $buyer->getBillingAddress()->getState(),
                 ]
             ];
         }

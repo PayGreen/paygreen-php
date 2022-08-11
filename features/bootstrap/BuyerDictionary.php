@@ -27,6 +27,7 @@ trait BuyerDictionary
         $address->setStreetLineOne('1 rue de la paix');
         $address->setStreetLineTwo('2ème étage');
         $address->setPostalCode('75001');
+        $address->setState('Normandie');
 
         $this->buyer = new Buyer();
         $this->buyer->setReference('sdk-behat-buyer');

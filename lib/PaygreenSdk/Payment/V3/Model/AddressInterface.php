@@ -33,4 +33,9 @@ interface AddressInterface
      * @return string
      */
     public function getStreet();
+
+    /**
+     * @return string
+     */
+    public function getState();
 }
