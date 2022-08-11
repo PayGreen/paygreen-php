@@ -17,9 +17,9 @@ trait BuyerDictionary
 
 
     /**
-     * @Given /^I have a buyer object$/
+     * @Given /^A buyer object$/
      */
-    public function iHaveABuyerObject()
+    public function aBuyerObject()
     {
         $address = new Address();
         $address->setCity('Paris');
