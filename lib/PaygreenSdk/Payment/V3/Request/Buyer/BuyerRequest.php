@@ -49,7 +49,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getReference(),
-            'country' => $buyer->getCountryCode(),
+            'phone_number' => $buyer->getPhoneNumber(),
             'billing_address' => [
                 'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
                 'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
@@ -78,7 +78,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getReference(),
-            'country' => $buyer->getCountryCode()
+            'phone_number' => $buyer->getPhoneNumber()
         ];
 
         if (null !== $buyer->getBillingAddress()) {

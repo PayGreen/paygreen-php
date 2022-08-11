@@ -44,6 +44,7 @@ if ($data !== null && $data->revoked_at === null) {
 
 $response = $client->listTransaction();
 dump($response);
+
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);
 

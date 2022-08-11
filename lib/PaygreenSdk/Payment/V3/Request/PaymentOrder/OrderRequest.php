@@ -39,7 +39,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'first_name' => $paymentOrder->getBuyer()->getFirstName(),
                 'last_name' => $paymentOrder->getBuyer()->getLastName(),
                 'reference' => $paymentOrder->getBuyer()->getReference(),
-                'country' => $paymentOrder->getBuyer()->getCountryCode(),
+                'phone_number' => $paymentOrder->getBuyer()->getPhoneNumber(),
             ];
             if (null !== $paymentOrder->getBuyer()->getBillingAddress()) {
                 $buyer['billing_address'] = [
