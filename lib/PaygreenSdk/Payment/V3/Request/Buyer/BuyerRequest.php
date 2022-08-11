@@ -13,17 +13,15 @@ use Psr\Http\Message\RequestInterface;
 class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param BuyerInterface $buyer
+     * @param string $buyerId
      * @param string|null $shopId
      *
      * @return Request
      */
-    public function getGetRequest(BuyerInterface $buyer, $shopId = null)
+    public function getGetRequest($buyerId, $shopId = null)
     {
-        $buyerReference = $buyer->getReference();
-
         return $this->requestFactory->create(
-            "/payment/buyers/{$buyerReference}",
+            "/payment/buyers/$buyerId",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

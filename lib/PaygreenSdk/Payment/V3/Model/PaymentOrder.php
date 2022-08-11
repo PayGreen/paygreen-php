@@ -81,7 +81,7 @@ class PaymentOrder implements PaymentOrderInterface
     private $shippingAddress;
 
     /**
-     * @var int
+     * @var string
      */
     private $shopId;
 
@@ -360,7 +360,7 @@ class PaymentOrder implements PaymentOrderInterface
     }
 
     /**
-     * @return int
+     * @return string
      */
     public function getShopId()
     {
@@ -370,7 +370,7 @@ class PaymentOrder implements PaymentOrderInterface
     /**
      * The beneficiary Shop ID. If you are a Marketplace, set the sub-entity ID here.
      *
-     * @param int $shopId
+     * @param string $shopId
      */
     public function setShopId($shopId)
     {
