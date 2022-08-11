@@ -87,7 +87,7 @@ final class ClientTest extends TestCase
     public function testRequestCreateBuyer()
     {
         $buyer = new Buyer();
-        $buyer->setId(uniqid());
+        $buyer->setReference(uniqid());
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
@@ -98,6 +98,7 @@ final class ClientTest extends TestCase
         $address->setPostalCode("76100");
         $address->setCity("Rouen");
         $address->setCountryCode("FR");
+        $address->setState("Normandie");
 
         $buyer->setBillingAddress($address);
 
@@ -178,6 +179,7 @@ final class ClientTest extends TestCase
         $address->setPostalCode("76100");
         $address->setCity("Rouen");
         $address->setCountryCode("FR");
+        $address->setState("Normandie");
 
         $buyer->setBillingAddress($address);
 
@@ -216,6 +218,7 @@ final class ClientTest extends TestCase
         $address->setPostalCode("76100");
         $address->setCity("Rouen");
         $address->setCountryCode("FR");
+        $address->setState("Normandie");
 
         $paymentOrder = new PaymentOrder();
         $paymentOrder->setAmount(1000);

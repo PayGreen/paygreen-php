@@ -48,6 +48,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                     'line1' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineOne(),
                     'line2' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineTwo(),
                     'postal_code' => $paymentOrder->getBuyer()->getBillingAddress()->getPostalCode(),
+                    'state' => $paymentOrder->getBuyer()->getBillingAddress()->getState(),
                 ];
             }
         } else {
@@ -78,6 +79,7 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
                 'line1' => $paymentOrder->getShippingAddress()->getStreetLineOne(),
                 'line2' => $paymentOrder->getShippingAddress()->getStreetLineTwo(),
                 'postal_code' => $paymentOrder->getShippingAddress()->getPostalCode(),
+                'state' => $paymentOrder->getShippingAddress()->getState(),
             ];
         }
 

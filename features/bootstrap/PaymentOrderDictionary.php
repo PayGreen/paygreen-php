@@ -37,6 +37,7 @@ trait PaymentOrderDictionary
         $address->setCity('London');
         $address->setCountryCode('UK');
         $address->setPostalCode('SW14 6ZG');
+        $address->setState('London');
 
         $this->paymentOrder = new PaymentOrder();
         $this->paymentOrder->setReference('sdk-behat-payment-order');
@@ -107,6 +108,7 @@ trait PaymentOrderDictionary
         Assert::assertEquals($this->paymentOrder->getShippingAddress()->getStreetLineOne(), $data->shipping_address->line1);
         Assert::assertEquals($this->paymentOrder->getShippingAddress()->getStreetLineTwo(), $data->shipping_address->line2);
         Assert::assertEquals($this->paymentOrder->getShippingAddress()->getPostalCode(), $data->shipping_address->postal_code);
+        Assert::assertEquals($this->paymentOrder->getShippingAddress()->getState(), $data->shipping_address->state);
 
         // Buyer assertions
         Assert::assertEquals($this->paymentOrder->getBuyer()->getEmail(), $data->buyer->email);
