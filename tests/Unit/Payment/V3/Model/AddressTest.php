@@ -15,6 +15,14 @@ final class AddressTest extends TestCase
         $this->assertEquals('76000', $address->getPostalCode());
     }
 
+    public function testCanGetAndSetState()
+    {
+        $address = new Address();
+        $address->setState('Normandie');
+
+        $this->assertEquals('Normandie', $address->getState());
+    }
+
     public function testCanGetAndSetCity()
     {
         $address = new Address();

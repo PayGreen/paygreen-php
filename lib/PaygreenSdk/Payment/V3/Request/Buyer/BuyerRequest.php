@@ -7,32 +7,54 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
-use Paygreen\Sdk\Payment\V3\Model\Buyer;
+use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Psr\Http\Message\RequestInterface;
 
 class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @return Request|RequestInterface
-     * @throws Exception
+     * @param string $buyerId
+     * @param string|null $shopId
+     *
+     * @return Request
      */
-    public function getCreateRequest(Buyer $buyer)
+    public function getGetRequest($buyerId, $shopId = null)
     {
-        $shopId = $this->environment->getShopId();
+        return $this->requestFactory->create(
+            "/payment/buyers/$buyerId",
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param BuyerInterface $buyer
+     * @param string|null $shopId
+     *
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getCreateRequest(BuyerInterface $buyer, $shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
 
         $body = [
             'shop_id' => $shopId,
             'email' => $buyer->getEmail(),
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
-            'reference' => $buyer->getId(),
-            'country' => $buyer->getCountryCode(),
+            'reference' => $buyer->getReference(),
+            'phone_number' => $buyer->getPhoneNumber(),
             'billing_address' => [
                 'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
                 'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
                 'city' => $buyer->getBillingAddress()->getCity(),
                 'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
                 'country' => $buyer->getBillingAddress()->getCountryCode(),
+                'state' => $buyer->getBillingAddress()->getState(),
             ]
         ];
 
@@ -43,33 +65,19 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
+     * @param BuyerInterface $buyer
+     *
      * @return Request|RequestInterface
      */
-    public function getGetRequest(Buyer $buyer)
+    public function getUpdateRequest(BuyerInterface $buyer)
     {
-        $shopId = $this->environment->getShopId();
-        $buyerReference = $buyer->getReference();
-
-        return $this->requestFactory->create(
-            "/payment/buyers/{$buyerReference}",
-            null,
-            'GET'
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @return Request|RequestInterface
-     */
-    public function getUpdateRequest(Buyer $buyer)
-    {
-        $buyerReference = $buyer->getReference();
-
         $body = [
+            'id' => $buyer->getId(),
             'email' => $buyer->getEmail(),
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
-            'reference' => $buyer->getId(),
-            'country' => $buyer->getCountryCode()
+            'reference' => $buyer->getReference(),
+            'phone_number' => $buyer->getPhoneNumber()
         ];
 
         if (null !== $buyer->getBillingAddress()) {
@@ -79,14 +87,38 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
                     'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
                     'city' => $buyer->getBillingAddress()->getCity(),
                     'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
-                    'country' => $buyer->getBillingAddress()->getCountryCode()
+                    'country' => $buyer->getBillingAddress()->getCountryCode(),
+                    'state' => $buyer->getBillingAddress()->getState(),
                 ]
             ];
         }
 
         return $this->requestFactory->create(
-            "/payment/buyers/{$buyerReference}",
+            "/payment/buyers/{$buyer->getId()}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string|null $shopId
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getListRequest($shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $body = [
+            'shop_id' => $shopId
+        ];
+
+        return $this->requestFactory->create(
+            "/payment/buyers",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

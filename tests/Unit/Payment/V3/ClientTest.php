@@ -3,14 +3,12 @@
 namespace Paygreen\Tests\Unit\Payment\V3;
 
 use Http\Mock\Client;
-use Paygreen\Sdk\Payment\V3\Enum\IntegrationModeEnum;
-use Paygreen\Sdk\Payment\V3\Enum\ModeEnum;
 use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
-use Paygreen\Sdk\Payment\V3\Model\Order;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -46,13 +44,33 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
-    public function testRequestListConfig()
+    public function testRequestListPaymentConfig()
     {
         $this->client->listPaymentConfig();
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+    }
+
+    public function testRequestCreatePaymentConfig()
+    {
+        $this->client->createPaymentConfig(
+            'bank_card',
+            array('config1', 'config2'),
+            'sel_0000',
+            'sh_0000'
+        );
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
+        $this->assertEquals('bank_card', $content->platform);
+        $this->assertEquals(array('config1', 'config2'), $content->config);
+        $this->assertEquals('sel_0000', $content->selling_contract);
+        $this->assertEquals("sh_0000", $content->shop_id);
     }
 
     public function testRequestGetPublicKey()
@@ -69,17 +87,18 @@ final class ClientTest extends TestCase
     public function testRequestCreateBuyer()
     {
         $buyer = new Buyer();
-        $buyer->setId(uniqid());
+        $buyer->setReference(uniqid());
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
         $address = new Address();
         $address->setStreetLineOne("107 allée Francois Mitterand");
         $address->setPostalCode("76100");
         $address->setCity("Rouen");
         $address->setCountryCode("FR");
+        $address->setState("Normandie");
 
         $buyer->setBillingAddress($address);
 
@@ -94,20 +113,29 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getEmail(), $content->email);
         $this->assertEquals($buyer->getFirstName(), $content->first_name);
         $this->assertEquals($buyer->getLastName(), $content->last_name);
-        $this->assertEquals($buyer->getId(), $content->reference);
-        $this->assertEquals($buyer->getCountryCode(), $content->country);
+        $this->assertEquals($buyer->getReference(), $content->reference);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->phone_number);
     }
 
     public function testRequestGetBuyer()
     {
-        $buyer = new Buyer();
-        $buyer->setReference('buyerReference');
-
-        $this->client->getBuyer($buyer);
+        $this->client->getBuyer('buy_0000');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers/buy_0000', $request->getUri()->getPath());
+    }
+
+    public function testRequestListBuyer()
+    {
+        $this->client->listBuyer('sh_0000');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/buyers',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->shop_id);
     }
 
     public function testRequestUpdateBuyer()
@@ -118,7 +146,7 @@ final class ClientTest extends TestCase
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
         $this->client->updateBuyer($buyer);
         $request = $this->client->getLastRequest();
@@ -126,49 +154,40 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers/buyerId', $request->getUri()->getPath());
         $this->assertEquals($buyer->getEmail(), $content->email);
         $this->assertEquals($buyer->getFirstName(), $content->first_name);
         $this->assertEquals($buyer->getLastName(), $content->last_name);
-        $this->assertEquals($buyer->getId(), $content->reference);
-        $this->assertEquals($buyer->getCountryCode(), $content->country);
+        $this->assertEquals($buyer->getReference(), $content->reference);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->phone_number);
     }
 
-    public function testRequestCreateOrder()
+    public function testRequestCreatePaymentOrder()
     {
         $buyer = new Buyer();
-        $buyer->setId('buyerId');
+        $buyer->setReference('my-user-reference');
         $buyer->setFirstName('John');
         $buyer->setLastName('Doe');
         $buyer->setEmail('dev-module@paygreen.fr');
-        $buyer->setCountryCode('FR');
+        $buyer->setPhoneNumber('0102030405');
 
         $address = new Address();
-        $address->setStreetLineOne("107 allée Francois Mitterand");
+        $address->setStreetLineOne("107 allée Francois Mitterrand");
         $address->setPostalCode("76100");
         $address->setCity("Rouen");
         $address->setCountryCode("FR");
+        $address->setState("Normandie");
 
         $buyer->setBillingAddress($address);
 
-        $order = new Order();
-        $order->setBuyer($buyer);
-        $order->setReference('SDK-ORDER-123');
-        $order->setAmount(1000);
-        $order->setCurrency('EUR');
-        $order->setShippingAddress($address);
-
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode(ModeEnum::SPLIT);
-        $paymentOrder->setAutoCapture(true);
-        $paymentOrder->setFirstAmount(100);
-        $paymentOrder->setMerchantInitiated(true);
-        $paymentOrder->setInstrumentId(12415);
-        $paymentOrder->setPreviousOrderId(12345);
-        $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
-        $paymentOrder->setOrder($order);
+        $paymentOrder->setAmount(1000);
+        $paymentOrder->setBuyer($buyer);
+        $paymentOrder->setCurrency('eur');
+        $paymentOrder->setReference('my-order-reference');
+        $paymentOrder->setShippingAddress($address);
 
-        $this->client->createOrder($paymentOrder);
+        $this->client->createPaymentOrder($paymentOrder);
 
         $request = $this->client->getLastRequest();
 
@@ -179,44 +198,33 @@ final class ClientTest extends TestCase
         $this->assertEquals($buyer->getEmail(), $content->buyer->email);
         $this->assertEquals($buyer->getFirstName(), $content->buyer->first_name);
         $this->assertEquals($buyer->getLastName(), $content->buyer->last_name);
-        $this->assertEquals($buyer->getId(), $content->buyer->reference);
-        $this->assertEquals($buyer->getCountryCode(), $content->buyer->country);
-
-        $this->assertEquals($order->getReference(), $content->reference);
-        $this->assertEquals($order->getAmount(), $content->amount);
-        $this->assertEquals($order->getCurrency(), $content->currency);
-
-        $this->assertEquals($paymentOrder->getPaymentMode(), $content->mode);
-        $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
-        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
+        $this->assertEquals($buyer->getReference(), $content->buyer->reference);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->buyer->phone_number);
+        $this->assertEquals($paymentOrder->getReference(), $content->reference);
+        $this->assertEquals($paymentOrder->getAmount(), $content->amount);
+        $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
     }
 
     public function testRequestCreateWithBuyerOrder()
     {
         $buyer = new Buyer();
-        $buyer->setReference('buyerReference');
+        $buyer->setId('buy_0000');
 
         $address = new Address();
         $address->setStreetLineOne("107 allée Francois Mitterand");
         $address->setPostalCode("76100");
         $address->setCity("Rouen");
         $address->setCountryCode("FR");
-
-        $order = new Order();
-        $order->setBuyer($buyer);
-        $order->setReference('SDK-ORDER-123');
-        $order->setAmount(1000);
-        $order->setCurrency('EUR');
-        $order->setShippingAddress($address);
-
+        $address->setState("Normandie");
 
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setPaymentMode(ModeEnum::INSTANT);
-        $paymentOrder->setAutoCapture(true);
-        $paymentOrder->setIntegrationMode(IntegrationModeEnum::HOSTED_FIELDS);
-        $paymentOrder->setOrder($order);
+        $paymentOrder->setAmount(1000);
+        $paymentOrder->setBuyer($buyer);
+        $paymentOrder->setCurrency('eur');
+        $paymentOrder->setReference('my-order-reference');
+        $paymentOrder->setShippingAddress($address);
 
-        $this->client->createOrder($paymentOrder);
+        $this->client->createPaymentOrder($paymentOrder);
 
         $request = $this->client->getLastRequest();
 
@@ -224,45 +232,48 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
-        $this->assertEquals($buyer->getReference(), $content->buyer);
+        $this->assertEquals($buyer->getId(), $content->buyer);
 
-        $this->assertEquals($order->getReference(), $content->reference);
-        $this->assertEquals($order->getAmount(), $content->amount);
-        $this->assertEquals($order->getCurrency(), $content->currency);
-
-        $this->assertEquals($paymentOrder->getPaymentMode(), $content->mode);
-        $this->assertEquals($paymentOrder->getAutoCapture(), $content->auto_capture);
-        $this->assertEquals($paymentOrder->getIntegrationMode(), $content->integration_mode);
+        $this->assertEquals($paymentOrder->getReference(), $content->reference);
+        $this->assertEquals($paymentOrder->getAmount(), $content->amount);
+        $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
     }
 
-    public function testRequestGetOrder()
+    public function testRequestGetPaymentOrder()
     {
-        $order = new Order();
-        $order->setReference('SDK-ORDER-123');
-
-        $this->client->getOrder($order->getReference());
+        $this->client->getPaymentOrder('po_0000');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/payment-orders/SDK-ORDER-123', $request->getUri()->getPath());
+        $this->assertEquals('/payment/payment-orders/po_0000', $request->getUri()->getPath());
     }
 
-    public function testRequestUpdateOrder()
+    public function testRequestListPaymentOrder()
     {
-        $order = new Order();
-        $order->setReference('SDK-ORDER-123');
+        $this->client->listPaymentOrder('SDK-ORDER-123', 'sh_0000');
+        $request = $this->client->getLastRequest();
 
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
+        $this->assertEquals('SDK-ORDER-123', $content->reference);
+        $this->assertEquals('sh_0000', $content->shop_id);
+    }
+
+    public function testRequestUpdatePaymentOrder()
+    {
         $paymentOrder = new PaymentOrder();
-        $paymentOrder->setOrder($order);
+        $paymentOrder->setId('po_0000');
         $paymentOrder->setPartialAllowed(true);
 
-        $this->client->updateOrder($paymentOrder);
+        $this->client->updatePaymentOrder($paymentOrder);
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/payment-orders/SDK-ORDER-123', $request->getUri()->getPath());
+        $this->assertEquals('/payment/payment-orders/po_0000', $request->getUri()->getPath());
         $this->assertEquals($paymentOrder->isPartialAllowed(), $content->partial_allowed);
     }
 
@@ -331,28 +342,34 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/instruments/instrumentReference', $request->getUri()->getPath());
     }
 
+    public function testRequestListInstruments()
+    {
+        $this->client->listInstrument('buy_0000');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/instruments',  $request->getUri()->getPath());
+        $this->assertEquals('buy_0000', $content->buyer_id);
+    }
+
     public function testRequestCaptureOrder()
     {
-        $order = new Order();
-        $order->setReference('SDK-ORDER-123');
-
-        $this->client->captureOrder($order->getReference());
+        $this->client->capturePaymentOrder('po_0000');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/payment-orders/SDK-ORDER-123/capture', $request->getUri()->getPath());
+        $this->assertEquals('/payment/payment-orders/po_0000/capture', $request->getUri()->getPath());
     }
 
     public function testRequestRefundOrder()
     {
-        $order = new Order();
-        $order->setReference('SDK-ORDER-123');
-
-        $this->client->refundOrder($order->getReference());
+        $this->client->refundPaymentOrder('po_0000');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/payment-orders/SDK-ORDER-123/refund', $request->getUri()->getPath());
+        $this->assertEquals('/payment/payment-orders/po_0000/refund', $request->getUri()->getPath());
     }
 
     public function testRequestCreateListener()
@@ -396,7 +413,7 @@ final class ClientTest extends TestCase
 
     public function testRequestGetListenerByShop()
     {
-        $this->client->getListenerByShop('sh_12345');
+        $this->client->listListenerByShop('sh_12345');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
@@ -447,5 +464,105 @@ final class ClientTest extends TestCase
         $this->assertEquals('/events',  $request->getUri()->getPath());
         $this->assertEquals('log', $content->type);
         $this->assertEquals('log content', $content->content);
+    }
+
+    public function testRequestGetSellingContracts()
+    {
+        $this->client->getSellingContracts('sh_0000');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->shop_id);
+    }
+
+    public function testRequestCreateSellingContract()
+    {
+        $sellingContract = new SellingContract();
+        $sellingContract->setNumber('10');
+        $sellingContract->setMcc(123);
+        $sellingContract->setMaxAmount(1000);
+        $sellingContract->setType('vads');
+
+        $this->client->createSellingContract($sellingContract, 'sh_0000');
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->shop_id);
+        $this->assertEquals('10', $content->number);
+        $this->assertEquals(123, $content->mcc);
+        $this->assertEquals(1000, $content->max_amount);
+        $this->assertEquals('vads', $content->type);
+    }
+
+    public function testRequestGetTransaction()
+    {
+        $this->client->getTransaction('transaction-123');
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/transactions/transaction-123',  $request->getUri()->getPath());
+    }
+
+    public function testRequestListTransaction()
+    {
+        $this->client->listTransaction(
+            'sh_0000',
+            'sh_0001',
+            10,
+            2
+        );
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/payment/transactions',  $request->getUri()->getPath());
+        $this->assertEquals('sh_0000', $content->requester_shop_id);
+        $this->assertEquals('sh_0001', $content->shop_id);
+        $this->assertEquals(10, $content->max_per_page);
+        $this->assertEquals(2, $content->page);
+    }
+
+    public function testRequestGetShop()
+    {
+        $this->client->getShop('shop-123');
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/shops/shop-123',  $request->getUri()->getPath());
+    }
+
+    public function testRequestListShop()
+    {
+        $this->client->listShop();
+
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+    }
+
+    public function testRequestCreateShop()
+    {
+        $this->client->createShop('my-shop', 'shop-national-id');
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+        $this->assertEquals('my-shop', $content->name);
+        $this->assertEquals('shop-national-id', $content->national_id);
     }
 }

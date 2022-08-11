@@ -7,6 +7,8 @@ services:
       target: php
     volumes:
       - ./:/srv/paygreen:rw,cached
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   nginx:
     build:

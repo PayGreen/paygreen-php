@@ -10,6 +10,20 @@ use Psr\Http\Message\RequestInterface;
 class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
+     * @param string $listenerId
+     *
+     * @return RequestInterface
+     */
+    public function getGetRequest($listenerId)
+    {
+        return $this->requestFactory->create(
+            "/notifications/listeners/{$listenerId}",
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
      * @param string $type
      * @param array $events
      * @param string $url
@@ -42,38 +56,8 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = ['url' => $url];
 
         return $this->requestFactory->create(
-            "/notifications/listeners/$listenerId",
+            "/notifications/listeners/{$listenerId}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @param string $listenerId
-     *
-     * @return RequestInterface
-     */
-    public function getGetRequest($listenerId)
-    {
-        return $this->requestFactory->create(
-            "/notifications/listeners/$listenerId",
-            null,
-            'GET'
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @param string $shopId
-     *
-     * @return RequestInterface
-     */
-    public function getGetByShopRequest($shopId)
-    {
-        $query = ['shop_id' => $shopId];
-        
-        return $this->requestFactory->create(
-            "/notifications/listeners?" . http_build_query($query),
-            null,
-            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 
@@ -85,9 +69,27 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteRequest($listenerId)
     {
         return $this->requestFactory->create(
-            "/notifications/listeners/$listenerId",
+            "/notifications/listeners/{$listenerId}",
             null,
             'DELETE'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string|null $shopId
+     *
+     * @return RequestInterface
+     */
+    public function getListByShopRequest($shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        return $this->requestFactory->create(
+            "/notifications/listeners?shop_id=$shopId",
+            null,
+            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

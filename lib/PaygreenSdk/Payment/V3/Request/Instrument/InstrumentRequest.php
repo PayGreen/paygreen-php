@@ -18,21 +18,6 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @return Request|RequestInterface
      */
-    public function getDeleteRequest($reference)
-    {
-        return $this->requestFactory->create(
-            "/payment/instruments/{$reference}",
-            null,
-            'DELETE'
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @param string $reference
-     * @throws Exception
-     *
-     * @return Request|RequestInterface
-     */
     public function getGetRequest($reference)
     {
         return $this->requestFactory->create(
@@ -81,6 +66,40 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/payment/instruments/{$reference}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string $reference
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getDeleteRequest($reference)
+    {
+        return $this->requestFactory->create(
+            "/payment/instruments/{$reference}",
+            null,
+            'DELETE'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string|null $buyerId
+     * @throws Exception
+     *
+     * @return Request|RequestInterface
+     */
+    public function getListRequest($buyerId = null)
+    {
+        $body = [
+            'buyer_id' => $buyerId
+        ];
+
+        return $this->requestFactory->create(
+            "/payment/instruments",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

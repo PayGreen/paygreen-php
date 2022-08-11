@@ -1,4 +1,5 @@
 /behat.yml
+/.env.behat
 /phpstan.neon
 /.php-cs-fixer.cache
 
