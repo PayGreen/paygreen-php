@@ -119,14 +119,11 @@ final class ClientTest extends TestCase
 
     public function testRequestGetBuyer()
     {
-        $buyer = new Buyer();
-        $buyer->setReference('buyerReference');
-
-        $this->client->getBuyer($buyer);
+        $this->client->getBuyer('buy_0000');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/buyers/buyerReference', $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers/buy_0000', $request->getUri()->getPath());
     }
 
     public function testRequestListBuyer()
