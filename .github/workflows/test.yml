@@ -34,4 +34,4 @@ jobs:
 
       - name: Run behat tests through docker
         run: |
-          docker-compose exec php composer test:behat
+          docker-compose exec -T php composer test:behat
