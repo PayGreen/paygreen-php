@@ -29,7 +29,6 @@ Feature: Manage payment order
     Then I receive a 200 status code
     And I receive a response with the payment order
 
-  @instrument
   Scenario: Capture a payment order
     Given I add the buyer object to the payment order object
     And I set auto_capture to false in the payment order object
@@ -39,6 +38,16 @@ Feature: Manage payment order
     Given I authorize payment with pgjs
     When I capture a payment order
     Then I receive a 200 status code
+
+  @instrument
+  Scenario: Capture a payment order with instrument
+    Given I create an instrument with pgjs
+    Given I add the buyer object to the payment order object
+    And I set auto_capture to true in the payment order object
+    When I create a payment order
+    Then I receive a 200 status code
+    And I receive a response with the payment order
+    When I authorize payment with pgjs
 
   Scenario: Refund a payment order
     Given I add the buyer object to the payment order object

@@ -8,6 +8,7 @@ RUN set -eux; \
     apk add --no-cache \
     	chromium \
 		acl \
+    	libzip-dev \
         $PHPIZE_DEPS \
     	; \
     pecl install \
@@ -15,13 +16,10 @@ RUN set -eux; \
     	; \
     docker-php-ext-install -j$(nproc) \
         json \
+    	zip \
         ; \
     docker-php-ext-enable \
-        xdebug \
-        ; \
-    dpkg --add-architecture amd64; \
-	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb; \
-	dpkg -i google-chrome-stable_current_amd64.deb
+        xdebug
 
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 

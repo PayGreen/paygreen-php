@@ -1,9 +1,9 @@
-name: CI
+name: Test
 
 on: [push, pull_request]
 
 jobs:
-  build-test:
+  phpunit:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,3 +22,15 @@ jobs:
           php_version: 5.6
           configuration: phpunit.xml.dist
           args: --coverage-text
+
+  behat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker up
+        run: |
+          docker-compose up -d
+      - name: Run behat tests through docker
+        run: |
+          docker-compose exec behat composer test:behat
