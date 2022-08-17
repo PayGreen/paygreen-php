@@ -40,6 +40,6 @@
   },
   "scripts": {
     "test:phpunit" : "vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-text --colors=never",
-    "test:behat" : "vendor/bin/behat --colors=never"
+    "test:behat" : "vendor/bin/behat"
   }
 }
