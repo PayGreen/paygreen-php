@@ -32,6 +32,10 @@ jobs:
         run: |
           docker-compose up -d
 
+      - name: ls
+        run: |
+          docker-compose -f docker-compose.ci.yml exec -T php ls -lah
+
       - name: Run behat tests through docker
         run: |
           docker-compose -f docker-compose.ci.yml exec -T php composer test:behat
