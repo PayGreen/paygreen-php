@@ -34,6 +34,7 @@ WORKDIR /srv/paygreen
 COPY composer.json composer.lock phpunit.xml.dist ./
 COPY lib lib/
 COPY tests tests/
+COPY features features/
 
 RUN set -eux; \
 	composer install --prefer-dist --no-scripts --no-progress; \
