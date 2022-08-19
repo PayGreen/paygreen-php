@@ -16,6 +16,7 @@ class FeatureContext implements Context
     use PaymentOrderDictionary;
     use InstrumentDictionary;
     use NotificationDictionary;
+    use PaymentConfigDictionary;
 
     /**
      * @var Client
@@ -58,5 +59,14 @@ class FeatureContext implements Context
         Assert::assertEquals($arg1, $this->client->getLastResponse()->getStatusCode());
     }
 
+    /**
+     * @Then /^I receive '([\w ]+)' error message$/
+     */
+    public function iReceiveAnErrorMessage($arg1)
+    {
+        $response = $this->client->getLastResponse();
+        $content = json_decode($response->getBody()->getContents());
 
+        Assert::assertEquals($arg1, $content->message);
+    }
 }
