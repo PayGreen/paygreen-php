@@ -57,6 +57,7 @@ final class ClientTest extends TestCase
     {
         $this->client->createPaymentConfig(
             'bank_card',
+            'eur',
             array('config1', 'config2'),
             'sel_0000',
             'sh_0000'
