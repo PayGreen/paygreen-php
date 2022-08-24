@@ -1,5 +1,6 @@
 <?php
 
+use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use PHPUnit\Framework\Assert;
 
 /**
@@ -8,17 +9,26 @@ use PHPUnit\Framework\Assert;
 trait PaymentConfigDictionary
 {
     /**
+     * @var PaymentConfig
+     */
+    private $paymentConfig;
+
+    /**
+     * @Given /^A payment config object$/
+     */
+    public function aPaymentConfigObject()
+    {
+        $this->paymentConfig = new PaymentConfig();
+        $this->paymentConfig->setCurrency('eur');
+        $this->paymentConfig->setPlatform('conecs');
+    }
+
+    /**
      * @When /^I create a payment config$/
      */
     public function iCreateAPaymentConfig()
     {
-        $this->client->createPaymentConfig(
-            'conecs',
-            'eur',
-            array(),
-            null,
-            getenv('SHOP_ID')
-        );
+        $this->client->createPaymentConfig($this->paymentConfig, getenv('SHOP_ID'));
     }
 
     /**

@@ -10,6 +10,7 @@ Feature: Manage payment config
     And I authenticate the Client
 
   Scenario: Create a new payment config
+    Given A payment config object
     When I create a payment config
     Then I receive a 422 status code
     And I receive 'A Payment Config already exists on this platform' error message
