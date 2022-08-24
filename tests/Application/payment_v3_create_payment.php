@@ -1,3 +1,11 @@
+<?php
+use Symfony\Component\Dotenv\Dotenv;
+
+require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+
+(new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,8 +14,13 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <script defer type="text/javascript" src="https://rc-pgjs.paygreen.dev/latest/paygreen.min.js"></script>
+    <?php if (getenv('ENVIRONMENT') === 'RECETTE'): ?>
+        <script defer type="text/javascript" src="https://rc-pgjs.paygreen.dev/latest/paygreen.min.js"></script>
     <link href="https://rc-pgjs.paygreen.dev/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
+    <?php else: ?>
+        <script defer type="text/javascript" src="https://sb-pgjs.paygreen.fr/latest/paygreen.min.js"></script>
+    <link href="https://sb-pgjs.paygreen.fr/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
+    <?php endif; ?>
 </head>
 <body>
 
@@ -40,9 +53,6 @@
             paymentOrderID: paymentOrderId,
             instrument: instrumentId,
             mode: 'payment',
-            modeOptions: {
-                authorizedInstrument: false,
-            },
             paymentMethod: 'bank_card',
         });
     });

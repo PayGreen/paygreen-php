@@ -1,0 +1,42 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Composer
+        uses: php-actions/composer@v5
+        with:
+          version: 1
+          php_version: 7.4
+
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@v2
+        with:
+          version: 5.7
+          php_version: 5.6
+          configuration: phpunit.xml.dist
+          args: --coverage-text
+
+  behat:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker up
+        run: |
+          docker-compose -f docker-compose.ci.yml up -d
+
+      - name: Run behat tests through docker
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          PUBLIC_KEY: ${{ secrets.SECRET_KEY }}
+          SHOP_ID: ${{ secrets.SECRET_KEY }}
+          ENVIRONMENT: "SANDBOX"
+        run: |
+          docker-compose -f docker-compose.ci.yml exec -T php composer test:behat

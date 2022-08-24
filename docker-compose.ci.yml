@@ -5,8 +5,6 @@ services:
     build:
       context: .
       target: php
-    volumes:
-      - ./:/srv/paygreen:rw,cached
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -16,8 +14,6 @@ services:
       target: nginx
     depends_on:
       - php
-    volumes:
-      - ./:/srv/paygreen:ro
     ports:
       - "80:80"
 
@@ -34,5 +30,3 @@ services:
     build:
       context: .
       target: phptools
-    volumes:
-      - ./:/srv/paygreen:rw,cached
