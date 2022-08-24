@@ -28,6 +28,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param string $platform
+     * @param string $currency
      * @param string[] $config
      * @param string|null $sellingContractId
      * @param string|null $shopId
@@ -36,6 +37,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(
         $platform,
+        $currency,
         array $config,
         $sellingContractId = null,
         $shopId = null
@@ -47,6 +49,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = [
             'shop_id' => $shopId,
             'platform' => $platform,
+            'currency' => $currency,
             'selling_contract' => $sellingContractId,
             'config' => $config
         ];
