@@ -6,6 +6,7 @@ use Exception;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
+use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
@@ -88,6 +89,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @link https://developers.paygreen.fr/reference/post_create_payment_config
      *
      * @param string $platform
+     * @param string $currency
      * @param string[] $config
      * @param string|null $sellingContractId
      * @param string|null $shopId If not specified, the shop id of the environment will be used
@@ -98,12 +100,14 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function createPaymentConfig(
         $platform,
+        $currency,
         array $config,
         $sellingContractId = null,
         $shopId = null
     ) {
         $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getCreateRequest(
             $platform,
+            $currency,
             $config,
             $sellingContractId,
             $shopId
@@ -398,20 +402,16 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $type
-     * @param array $events
-     * @param string $url
+     * @param ListenerInterface $listener
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function createListener($type, $events, $url)
+    public function createListener(ListenerInterface $listener, $shopId = null)
     {
-        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getCreateRequest(
-            $type,
-            $events,
-            $url
-        );
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getCreateRequest($listener, $shopId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -457,11 +457,12 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function listListenerByShop($shopId = null)
+    public function listListener($shopId = null)
     {
         $request = (new ListenerRequest($this->requestFactory, $this->environment))->getListByShopRequest($shopId);
         $this->setLastRequest($request);
@@ -491,11 +492,12 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $listenerId
+     *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function getNotificationsByListener($listenerId)
+    public function listNotification($listenerId)
     {
         $request = (new NotificationRequest($this->requestFactory, $this->environment))->getGetByListenerRequest($listenerId);
         $this->setLastRequest($request);
