@@ -62,6 +62,4 @@ class FeatureContext implements Context
     {
         Assert::assertEquals($arg1, $this->client->getLastResponse()->getStatusCode());
     }
-
-
 }

@@ -1,9 +1,5 @@
 <?php
 
-use Behat\Mink\Driver\Selenium2Driver;
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
-use DMore\ChromeDriver\ChromeDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\WebDriverBy;
