@@ -25,18 +25,19 @@ jobs:
 
   behat:
     runs-on: ubuntu-latest
+    environment: SANDBOX
 
     steps:
       - uses: actions/checkout@v2
       - name: Docker up
+        env:
+          SHOP_ID: ${{ secrets.SHOP_ID }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
+          ENVIRONMENT: SANDBOX
         run: |
           docker-compose -f docker-compose.ci.yml up -d
 
       - name: Run behat tests through docker
-        env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          PUBLIC_KEY: ${{ secrets.SECRET_KEY }}
-          SHOP_ID: ${{ secrets.SECRET_KEY }}
-          ENVIRONMENT: "SANDBOX"
         run: |
           docker-compose -f docker-compose.ci.yml exec -T php composer test:behat

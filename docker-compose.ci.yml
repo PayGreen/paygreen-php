@@ -7,6 +7,11 @@ services:
       target: php
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    environment:
+      - SHOP_ID=${SHOP_ID}
+      - SECRET_KEY=${SECRET_KEY}
+      - PUBLIC_KEY=${PUBLIC_KEY}
+      - ENVIRONMENT=${ENVIRONMENT}
 
   nginx:
     build:
