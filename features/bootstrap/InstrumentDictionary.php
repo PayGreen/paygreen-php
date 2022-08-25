@@ -21,7 +21,6 @@ trait InstrumentDictionary
      */
     public function iCreateAnInstrumentWithPgjs()
     {
-
         $driver = RemoteWebDriver::create('http://selenium:4444', DesiredCapabilities::firefox());
         $driver->get('http://host.docker.internal/payment_v3_create_instrument.php?' .
             http_build_query([
@@ -32,6 +31,8 @@ trait InstrumentDictionary
         $driver->wait()->until(
             WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#paygreen-pan-frame iframe'))
         );
+
+        sleep(3);
 
         // Fill pan field
         $iframe = $driver->findElement(WebDriverBy::id('cardNumberFrame'));

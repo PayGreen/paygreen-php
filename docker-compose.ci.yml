@@ -12,6 +12,9 @@ services:
       - SECRET_KEY=${SECRET_KEY}
       - PUBLIC_KEY=${PUBLIC_KEY}
       - ENVIRONMENT=${ENVIRONMENT}
+      - BANK_CARD_PAN=${BANK_CARD_PAN}
+      - BANK_CARD_CVV=${BANK_CARD_CVV}
+      - BANK_CARD_EXP=${BANK_CARD_EXP}
 
   nginx:
     build:
@@ -30,6 +33,11 @@ services:
     shm_size: "2g"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+  selenium-video:
+    image: selenium/video:ffmpeg-4.3.1-20220812
+    volumes:
+      - ./videos:/videos
 
   phptools:
     build:

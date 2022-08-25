@@ -189,6 +189,8 @@ trait PaymentOrderDictionary
                 WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#paygreen-pan-frame iframe'))
             );
 
+            sleep(3);
+
             // Fill pan field
             $iframe = $driver->findElement(WebDriverBy::id('cardNumberFrame'));
             $driver->switchTo()->frame($iframe);
@@ -197,7 +199,7 @@ trait PaymentOrderDictionary
             );
             $driver->findElement(WebDriverBy::name('pan'))->sendKeys(getenv('BANK_CARD_PAN'));
 
-            // Fill cvc field
+            // Fill cvv field
             $driver->switchTo()->defaultContent();
             $iframe = $driver->findElement(WebDriverBy::id('cvvFrame'));
             $driver->switchTo()->frame($iframe);
@@ -225,6 +227,7 @@ trait PaymentOrderDictionary
                 return $driver->executeScript('return paymentDone === true');
             }
         );
+
         $success = $driver->executeScript('return paymentDone');
         $driver->quit();
 
