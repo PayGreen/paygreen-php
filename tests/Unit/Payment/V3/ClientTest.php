@@ -8,6 +8,7 @@ use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\Listener;
+use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use PHPUnit\Framework\TestCase;
@@ -56,13 +57,12 @@ final class ClientTest extends TestCase
 
     public function testRequestCreatePaymentConfig()
     {
-        $this->client->createPaymentConfig(
-            'bank_card',
-            'eur',
-            array('config1', 'config2'),
-            'sel_0000',
-            'sh_0000'
-        );
+        $paymentConfig = new PaymentConfig();
+        $paymentConfig->setPlatform('bank_card');
+        $paymentConfig->setConfig(array('config1', 'config2'));
+        $paymentConfig->setSellingContractId('sel_0000');
+        $paymentConfig->setCurrency('eur');
+        $this->client->createPaymentConfig($paymentConfig, 'sh_0000');
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());

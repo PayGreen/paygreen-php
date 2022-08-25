@@ -7,6 +7,7 @@ use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
+use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
@@ -88,28 +89,17 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @link https://developers.paygreen.fr/reference/post_create_payment_config
      *
-     * @param string $platform
-     * @param string $currency
-     * @param string[] $config
-     * @param string|null $sellingContractId
+     * @param PaymentConfigInterface $paymentConfig
      * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function createPaymentConfig(
-        $platform,
-        $currency,
-        array $config,
-        $sellingContractId = null,
-        $shopId = null
-    ) {
+    public function createPaymentConfig(PaymentConfigInterface $paymentConfig, $shopId = null)
+    {
         $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getCreateRequest(
-            $platform,
-            $currency,
-            $config,
-            $sellingContractId,
+            $paymentConfig,
             $shopId
         );
         $this->setLastRequest($request);
