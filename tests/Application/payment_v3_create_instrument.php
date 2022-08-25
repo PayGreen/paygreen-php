@@ -1,9 +1,14 @@
 <?php
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Exception\PathException;
 
 require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
-(new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+try {
+    (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+} catch (PathException $exception) {
+    // Prevent non-existent file exception while CI execution
+}
 ?>
 
 <!doctype html>
