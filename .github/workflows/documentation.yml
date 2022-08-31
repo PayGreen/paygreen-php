@@ -1,0 +1,19 @@
+name: Sync `documentation` directory to ReadMe
+
+# Run workflow for every push to the `main` branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repo
+        uses: actions/checkout@v3
+
+      - name: Sync documentation directory
+        uses: readmeio/rdme@7.5.0
+        with:
+          rdme: rdme docs ./docs/v3 --version=3 --key=${{ secrets.README_API_KEY }}
