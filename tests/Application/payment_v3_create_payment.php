@@ -7,7 +7,7 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 try {
     (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
 } catch (PathException $exception) {
-    // Prevent non-existent file exception while CI execution
+    print "The .env.behat file does not exist. This is probably unintentional.\n";
 }
 ?>
 
