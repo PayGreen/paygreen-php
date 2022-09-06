@@ -5,21 +5,21 @@ ARG NGINX_VERSION=1.21
 FROM php:${PHP_VERSION}-fpm-alpine AS php
 
 RUN set -eux; \
-    apk add --no-cache \
-    	chromium \
+	apk add --no-cache \
+		chromium \
 		acl \
-    	libzip-dev \
-        $PHPIZE_DEPS \
-    	; \
-    pecl install \
-        xdebug-2.5.5 \
-    	; \
-    docker-php-ext-install -j$(nproc) \
-        json \
-    	zip \
-        ; \
-    docker-php-ext-enable \
-        xdebug
+		libzip-dev \
+		$PHPIZE_DEPS \
+		; \
+	pecl install \
+		xdebug-2.5.5 \
+		; \
+	docker-php-ext-install -j$(nproc) \
+		json \
+		zip \
+		; \
+	docker-php-ext-enable \
+		xdebug
 
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 

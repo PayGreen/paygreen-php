@@ -73,9 +73,5 @@ docker-compose exec php vendor/bin/phpunit tests
 
 Behat tests:
 ```shell
-# Start a google chrome instance with security disabled
-google-chrome-stable --remote-debugging-address=0.0.0.0 --remote-debugging-port=9222 --disable-web-security --user-data-dir="/tmp" --disable-site-isolation-trials
-
-# Run tests
 docker-compose exec php vendor/bin/behat
 ```
