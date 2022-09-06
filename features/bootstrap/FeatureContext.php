@@ -5,6 +5,7 @@ use Paygreen\Sdk\Payment\V3\Client;
 use Paygreen\Sdk\Payment\V3\Environment;
 use PHPUnit\Framework\Assert;
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Exception\PathException;
 
 /**
  * Defines application features from the specific context.
@@ -33,7 +34,11 @@ class FeatureContext implements Context
      */
     public function __construct()
     {
-        (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+        try {
+            (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+        } catch (PathException $exception) {
+            print "The .env.behat file does not exist. This is probably unintentional.\n";
+        }
     }
 
     /**

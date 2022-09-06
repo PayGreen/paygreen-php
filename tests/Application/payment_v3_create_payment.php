@@ -1,9 +1,14 @@
 <?php
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Dotenv\Exception\PathException;
 
 require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
-(new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+try {
+    (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
+} catch (PathException $exception) {
+    print "The .env.behat file does not exist. This is probably unintentional.\n";
+}
 ?>
 
 <!doctype html>
@@ -16,10 +21,10 @@ require dirname(dirname(__DIR__)) . '/vendor/autoload.php';
     <title>Document</title>
     <?php if (getenv('ENVIRONMENT') === 'RECETTE'): ?>
         <script defer type="text/javascript" src="https://rc-pgjs.paygreen.dev/latest/paygreen.min.js"></script>
-    <link href="https://rc-pgjs.paygreen.dev/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
+        <link href="https://rc-pgjs.paygreen.dev/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
     <?php else: ?>
         <script defer type="text/javascript" src="https://sb-pgjs.paygreen.fr/latest/paygreen.min.js"></script>
-    <link href="https://sb-pgjs.paygreen.fr/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
+        <link href="https://sb-pgjs.paygreen.fr/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
     <?php endif; ?>
 </head>
 <body>
