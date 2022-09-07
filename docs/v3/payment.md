@@ -13,7 +13,7 @@ parentDoc: 62d66ab6fa37b4008aa6fa5c
 $client->getBuyer('buy_0000');
 ```
 
-## Get all buyers
+## List buyers
 
 ```php
 $client->listBuyer();
@@ -122,4 +122,39 @@ $response = $client->capturePaymentOrder('po_0000');
 
 ```php
 $response = $client->refundPaymentOrder('po_0000');
+```
+
+# Instruments
+
+## Get an instrument
+
+```php
+$client->getInstrument('ins_0000');
+```
+
+## List instruments
+
+```php
+$client->listInstrument();
+
+// You can also list instruments for a specific buyer
+$client->listInstrument('buy_0000');
+```
+
+## Create an instrument
+
+```php
+$instrument = new Paygreen\Sdk\Payment\V3\Model\Instrument();
+$instrument->setToken('card_token');
+$instrument->setType('bank_card');
+$instrument->setWithAuthorization(true); // Set to false if your instrument does not need authorization
+$instrument->setReference('custom_instrument_reference'); // Optional
+
+$client->createInstrument($instrument);
+```
+
+## Delete an instrument
+
+```php
+$client->deleteInstrument('ins_0000');
 ```
