@@ -158,3 +158,23 @@ $client->createInstrument($instrument);
 ```php
 $client->deleteInstrument('ins_0000');
 ```
+
+# Payment Configs
+
+## List payment configs
+
+```php
+$client->listPaymentConfig('sh_0000');
+```
+
+## Create a payment config
+
+```php
+$instrument = new Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
+$paymentConfig->setPlatform('bank_card');
+$paymentConfig->setSellingContractId('sel_0000');
+$paymentConfig->setCurrency('eur');
+$paymentConfig->setConfig(array('config1', 'config2')); // Optional
+
+$client->createInstrument($paymentConfig, 'sh_0000');
+```
