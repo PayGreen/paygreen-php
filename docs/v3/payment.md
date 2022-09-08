@@ -215,3 +215,17 @@ $client->updateListener('lis_0000', 'https://my-store.fr');
 ```php
 $client->deleteListener('lis_0000');
 ```
+
+# Notifications
+
+## List notifications
+
+```php
+$client->listNotification('lis_0000');
+```
+
+## Replay a notification
+
+```php
+$client->replayNotification('not_0000');
+```
