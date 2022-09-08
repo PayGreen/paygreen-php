@@ -229,3 +229,23 @@ $client->listNotification('lis_0000');
 ```php
 $client->replayNotification('not_0000');
 ```
+
+# Shop
+
+## List shop
+
+```php
+$client->listShop();
+```
+
+## Create a shop
+
+```php
+$client->createShop('my-shop-name', 'my-shop-national-id');
+```
+
+## Get a shop
+
+```php
+$client->getShop('sh_0000');
+```
