@@ -22,13 +22,13 @@ $client->listBuyer();
 ## Create a buyer
 
 ```php
-$address = new Paygreen\Sdk\Payment\V3\Model\Address();
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
 $address->setStreetLineOne('54 Crown Street');
 $address->setCity('London');
 $address->setCountryCode('UK');
 $address->setPostalCode('SW14 6ZG');
 
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setReference('my-customer-id');
 $buyer->setEmail('john.doe@customer.fr');
 $buyer->setFirstName('John');
@@ -41,7 +41,7 @@ $client->createBuyer($buyer);
 ## Update a buyer
 
 ```php
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setId('buy_0000');
 $buyer->setFirstName('Blank');
 $buyer->setLastName('Aux');
@@ -60,20 +60,20 @@ $client->deleteBuyer('buy_0000');
 ## Create a payment order
 
 ```php
-$address = new Paygreen\Sdk\Payment\V3\Model\Address();
-$address->setStreetLineOne('54 Crown Street');
-$address->setCity('London');
-$address->setCountryCode('UK');
-$address->setPostalCode('SW14 6ZG');
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
+$address->setStreetLineOne('1 rue de Paris');
+$address->setCity('Paris');
+$address->setCountryCode('FR');
+$address->setPostalCode('75000');
 
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setReference('my-customer-id');
 $buyer->setEmail('john.doe@customer.fr');
 $buyer->setFirstName('John');
 $buyer->setLastName('Doe');
 $buyer->setBillingAddress($address);
 
-$paymentOrder = new PaymentOrder();
+$paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
 $paymentOrder->setReference('my-order-id');
 $paymentOrder->setAmount(100);
 $paymentOrder->setAutoCapture(true);
@@ -87,16 +87,16 @@ $response = $client->createPaymentOrder($paymentOrder);
 ## Create a payment order with a buyer id
 
 ```php
-$address = new Paygreen\Sdk\Payment\V3\Model\Address();
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
 $address->setStreetLineOne('54 Crown Street');
 $address->setCity('London');
 $address->setCountryCode('UK');
 $address->setPostalCode('SW14 6ZG');
 
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setId('buy_0000');
 
-$paymentOrder = new PaymentOrder();
+$paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
 $paymentOrder->setReference('my-order-id');
 $paymentOrder->setAmount(100);
 $paymentOrder->setAutoCapture(true);
@@ -144,7 +144,7 @@ $client->listInstrument('buy_0000');
 ## Create an instrument
 
 ```php
-$instrument = new Paygreen\Sdk\Payment\V3\Model\Instrument();
+$instrument = new \Paygreen\Sdk\Payment\V3\Model\Instrument();
 $instrument->setToken('card_token');
 $instrument->setType('bank_card');
 $instrument->setWithAuthorization(true); // Set to false if your instrument does not need authorization
@@ -170,13 +170,13 @@ $client->listPaymentConfig('sh_0000');
 ## Create a payment config
 
 ```php
-$instrument = new Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
+$paymentConfig = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
 $paymentConfig->setPlatform('bank_card');
 $paymentConfig->setSellingContractId('sel_0000');
 $paymentConfig->setCurrency('eur');
 $paymentConfig->setConfig(array('config1', 'config2')); // Optional
 
-$client->createInstrument($paymentConfig, 'sh_0000');
+$client->createPaymentConfig($paymentConfig, 'sh_0000');
 ```
 
 # Listeners
@@ -190,7 +190,7 @@ $client->listListener('sh_0000');
 ## Create a listener
 
 ```php
-$instrument = new Paygreen\Sdk\Payment\V3\Model\Listener();
+$listener = new \Paygreen\Sdk\Payment\V3\Model\Listener();
 $listener->setType('webhook');
 $listener->setEvents(array('payment_order.authorized'));
 $listener->setUrl('https://my-store.fr');
