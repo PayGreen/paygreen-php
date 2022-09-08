@@ -249,3 +249,20 @@ $client->createShop('my-shop-name', 'my-shop-national-id');
 ```php
 $client->getShop('sh_0000');
 ```
+
+# Transaction
+
+## List transactions
+
+```php
+$client->listTransaction('sh_0000');
+
+// You can also specify a beneficiary shop id
+$client->listTransaction('sh_0000', 'sh_0001');
+```
+
+## Get transaction
+
+```php
+$client->getTransaction('tra_0000');
+```
