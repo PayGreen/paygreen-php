@@ -7,6 +7,7 @@ use Paygreen\Sdk\Climate\V2\Model\CartItem;
 use Paygreen\Sdk\Climate\V2\Model\DeliveryData;
 use Paygreen\Sdk\Climate\V2\Model\WebBrowsingData;
 use Paygreen\Sdk\Climate\V2\Request\AccountRequest;
+use Paygreen\Sdk\Climate\V2\Request\EmissionFactorRequest;
 use Paygreen\Sdk\Climate\V2\Request\FootprintRequest;
 use Paygreen\Sdk\Climate\V2\Request\LoginRequest;
 use Paygreen\Sdk\Climate\V2\Request\ProductRequest;
@@ -610,6 +611,71 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         if (201 === $response->getStatusCode()) {
             $this->logger->info('Carbon successfully reserved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param int $page Defines which page to query
+     * @param int $limit Defines how many elements to retrieve
+     * @param string|null $search Works as a case-sensitive search engine
+     * @param int|null $emissionType Limit results to a type of emission like digital (1), transportation(2), products(4), etc.
+     * @param int|null $category Limit results to emission factors that belongs to a specific Monetary Ratio.
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listEmissionFactor(
+        $page = 1,
+        $limit = 25,
+        $search = null,
+        $emissionType = null,
+        $category  = null
+    ) {
+        $this->logger->info("List emission factors.");
+
+        $request = (new EmissionFactorRequest($this->requestFactory, $this->environment))->getListRequest(
+            $page,
+            $limit,
+            $search,
+            $emissionType,
+            $category
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info('Emission factors successfully retrieved.');
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param string $emissionFactorId
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getEmissionFactor($emissionFactorId)
+    {
+        $this->logger->info("Get emission factor '$emissionFactorId'.");
+
+        $request = (new EmissionFactorRequest($this->requestFactory, $this->environment))->getGetRequest($emissionFactorId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        if (200 === $response->getStatusCode()) {
+            $this->logger->info("Emission factor '$emissionFactorId' successfully retrieved.");
         }
 
         return $response;

@@ -275,4 +275,23 @@ class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/carbon/footprints/footprint_id/contribution', $request->getUri()->getPath());
     }
+
+    public function testListEmissionFactor()
+    {
+        $this->client->listEmissionFactor();
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/carbon/emissionFactors', $request->getUri()->getPath());
+        $this->assertEquals('page=1&limit=25', $request->getUri()->getQuery());
+    }
+
+    public function testGetEmissionFactor()
+    {
+        $this->client->getEmissionFactor('emission_factor_id');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('GET', $request->getMethod());
+        $this->assertEquals('/carbon/emissionFactors/emission_factor_id', $request->getUri()->getPath());
+    }
 }
