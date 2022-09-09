@@ -179,26 +179,6 @@ $paymentConfig->setConfig(array('config1', 'config2')); // Optional
 $client->createPaymentConfig($paymentConfig, 'sh_0000');
 ```
 
-# Shop
-
-## List shop
-
-```php
-$client->listShop();
-```
-
-## Create a shop
-
-```php
-$client->createShop('my-shop-name', 'my-shop-national-id');
-```
-
-## Get a shop
-
-```php
-$client->getShop('sh_0000');
-```
-
 # Transaction
 
 ## List transactions
