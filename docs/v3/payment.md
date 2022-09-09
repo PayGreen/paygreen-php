@@ -179,57 +179,6 @@ $paymentConfig->setConfig(array('config1', 'config2')); // Optional
 $client->createPaymentConfig($paymentConfig, 'sh_0000');
 ```
 
-# Listeners
-
-## List listeners
-
-```php
-$client->listListener('sh_0000');
-```
-
-## Create a listener
-
-```php
-$listener = new \Paygreen\Sdk\Payment\V3\Model\Listener();
-$listener->setType('webhook');
-$listener->setEvents(array('payment_order.authorized'));
-$listener->setUrl('https://my-store.fr');
-
-$client->createListener($listener, 'sh_0000');
-```
-
-## Get a listener
-
-```php
-$client->getListener('lis_0000');
-```
-
-## Update a listener
-
-```php
-$client->updateListener('lis_0000', 'https://my-store.fr');
-```
-
-## Delete a listener
-
-```php
-$client->deleteListener('lis_0000');
-```
-
-# Notifications
-
-## List notifications
-
-```php
-$client->listNotification('lis_0000');
-```
-
-## Replay a notification
-
-```php
-$client->replayNotification('not_0000');
-```
-
 # Shop
 
 ## List shop
