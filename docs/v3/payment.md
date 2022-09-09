@@ -186,8 +186,12 @@ $client->createPaymentConfig($paymentConfig, 'sh_0000');
 ```php
 $client->listTransaction('sh_0000');
 
-// You can also specify a beneficiary shop id
-$client->listTransaction('sh_0000', 'sh_0001');
+// First parameter : the Shop ID that initiated the Transaction. In a Marketplace mode, this is the Marketplace Shop ID.
+// Second parameter : You can also specify the beneficiary Shop ID. In a Marketplace mode, this is the sub-entity ID.
+$client->listTransaction(
+    'sh_0000',
+    'sh_0001' // Optional
+);
 ```
 
 ## Get transaction
