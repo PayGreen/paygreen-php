@@ -13,7 +13,7 @@ parentDoc: 62d66ab6fa37b4008aa6fa5c
 $client->getBuyer('buy_0000');
 ```
 
-## Get all buyers
+## List buyers
 
 ```php
 $client->listBuyer();
@@ -22,13 +22,13 @@ $client->listBuyer();
 ## Create a buyer
 
 ```php
-$address = new Paygreen\Sdk\Payment\V3\Model\Address();
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
 $address->setStreetLineOne('54 Crown Street');
 $address->setCity('London');
 $address->setCountryCode('UK');
 $address->setPostalCode('SW14 6ZG');
 
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setReference('my-customer-id');
 $buyer->setEmail('john.doe@customer.fr');
 $buyer->setFirstName('John');
@@ -41,7 +41,7 @@ $client->createBuyer($buyer);
 ## Update a buyer
 
 ```php
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setId('buy_0000');
 $buyer->setFirstName('Blank');
 $buyer->setLastName('Aux');
@@ -60,20 +60,20 @@ $client->deleteBuyer('buy_0000');
 ## Create a payment order
 
 ```php
-$address = new Paygreen\Sdk\Payment\V3\Model\Address();
-$address->setStreetLineOne('54 Crown Street');
-$address->setCity('London');
-$address->setCountryCode('UK');
-$address->setPostalCode('SW14 6ZG');
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
+$address->setStreetLineOne('1 rue de Paris');
+$address->setCity('Paris');
+$address->setCountryCode('FR');
+$address->setPostalCode('75000');
 
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setReference('my-customer-id');
 $buyer->setEmail('john.doe@customer.fr');
 $buyer->setFirstName('John');
 $buyer->setLastName('Doe');
 $buyer->setBillingAddress($address);
 
-$paymentOrder = new PaymentOrder();
+$paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
 $paymentOrder->setReference('my-order-id');
 $paymentOrder->setAmount(100);
 $paymentOrder->setAutoCapture(true);
@@ -87,16 +87,16 @@ $response = $client->createPaymentOrder($paymentOrder);
 ## Create a payment order with a buyer id
 
 ```php
-$address = new Paygreen\Sdk\Payment\V3\Model\Address();
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
 $address->setStreetLineOne('54 Crown Street');
 $address->setCity('London');
 $address->setCountryCode('UK');
 $address->setPostalCode('SW14 6ZG');
 
-$buyer = new Paygreen\Sdk\Payment\V3\Model\Buyer();
+$buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setId('buy_0000');
 
-$paymentOrder = new PaymentOrder();
+$paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
 $paymentOrder->setReference('my-order-id');
 $paymentOrder->setAmount(100);
 $paymentOrder->setAutoCapture(true);
@@ -122,4 +122,80 @@ $response = $client->capturePaymentOrder('po_0000');
 
 ```php
 $response = $client->refundPaymentOrder('po_0000');
+```
+
+# Instruments
+
+## Get an instrument
+
+```php
+$client->getInstrument('ins_0000');
+```
+
+## List instruments
+
+```php
+$client->listInstrument();
+
+// You can also list instruments for a specific buyer
+$client->listInstrument('buy_0000');
+```
+
+## Create an instrument
+
+```php
+$instrument = new \Paygreen\Sdk\Payment\V3\Model\Instrument();
+$instrument->setToken('card_token');
+$instrument->setType('bank_card');
+$instrument->setWithAuthorization(true); // Set to false if your instrument does not need authorization
+$instrument->setReference('custom_instrument_reference'); // Optional
+
+$client->createInstrument($instrument);
+```
+
+## Delete an instrument
+
+```php
+$client->deleteInstrument('ins_0000');
+```
+
+# Payment Configs
+
+## List payment configs
+
+```php
+$client->listPaymentConfig('sh_0000');
+```
+
+## Create a payment config
+
+```php
+$paymentConfig = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
+$paymentConfig->setPlatform('bank_card');
+$paymentConfig->setSellingContractId('sel_0000');
+$paymentConfig->setCurrency('eur');
+$paymentConfig->setConfig(array('config1', 'config2')); // Optional
+
+$client->createPaymentConfig($paymentConfig, 'sh_0000');
+```
+
+# Transaction
+
+## List transactions
+
+```php
+$client->listTransaction('sh_0000');
+
+// First parameter : the Shop ID that initiated the Transaction. In a Marketplace mode, this is the Marketplace Shop ID.
+// Second parameter : You can also specify the beneficiary Shop ID. In a Marketplace mode, this is the sub-entity ID.
+$client->listTransaction(
+    'sh_0000',
+    'sh_0001' // Optional
+);
+```
+
+## Get transaction
+
+```php
+$client->getTransaction('tra_0000');
 ```
