@@ -5,23 +5,21 @@ ARG NGINX_VERSION=1.21
 FROM php:${PHP_VERSION}-fpm-alpine AS php
 
 RUN set -eux; \
-    apk add --no-cache \
-    	chromium \
+	apk add --no-cache \
+		chromium \
 		acl \
-        $PHPIZE_DEPS \
-    	; \
-    pecl install \
-        xdebug-2.5.5 \
-    	; \
-    docker-php-ext-install -j$(nproc) \
-        json \
-        ; \
-    docker-php-ext-enable \
-        xdebug \
-        ; \
-    dpkg --add-architecture amd64; \
-	wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb; \
-	dpkg -i google-chrome-stable_current_amd64.deb
+		libzip-dev \
+		$PHPIZE_DEPS \
+		; \
+	pecl install \
+		xdebug-2.5.5 \
+		; \
+	docker-php-ext-install -j$(nproc) \
+		json \
+		zip \
+		; \
+	docker-php-ext-enable \
+		xdebug
 
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
@@ -36,6 +34,7 @@ WORKDIR /srv/paygreen
 COPY composer.json composer.lock phpunit.xml.dist ./
 COPY lib lib/
 COPY tests tests/
+COPY features features/
 
 RUN set -eux; \
 	composer install --prefer-dist --no-scripts --no-progress; \

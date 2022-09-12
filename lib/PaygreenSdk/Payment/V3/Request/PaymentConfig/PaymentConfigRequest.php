@@ -5,6 +5,7 @@ namespace Paygreen\Sdk\Payment\V3\Request\PaymentConfig;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
+use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Psr\Http\Message\RequestInterface;
 
 class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -27,28 +28,23 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param string $platform
-     * @param string[] $config
-     * @param string|null $sellingContractId
+     * @param PaymentConfigInterface $paymentConfig
      * @param string|null $shopId
      *
      * @return RequestInterface
      */
-    public function getCreateRequest(
-        $platform,
-        array $config,
-        $sellingContractId = null,
-        $shopId = null
-    ) {
+    public function getCreateRequest(PaymentConfigInterface $paymentConfig, $shopId = null)
+    {
         if ($shopId === null) {
             $shopId = $this->environment->getShopId($shopId);
         }
 
         $body = [
             'shop_id' => $shopId,
-            'platform' => $platform,
-            'selling_contract' => $sellingContractId,
-            'config' => $config
+            'currency' => $paymentConfig->getCurrency(),
+            'platform' => $paymentConfig->getPlatform(),
+            'selling_contract' => $paymentConfig->getSellingContractId(),
+            'config' => $paymentConfig->getConfig()
         ];
 
         return $this->requestFactory->create(

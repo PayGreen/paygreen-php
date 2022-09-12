@@ -1,9 +1,10 @@
 <?php
 
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
-use DMore\ChromeDriver\ChromeDriver;
 use Behat\Behat\Tester\Exception\PendingException;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Facebook\WebDriver\WebDriverBy;
+use Facebook\WebDriver\WebDriverExpectedCondition;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use PHPUnit\Framework\Assert;
 
@@ -173,13 +174,8 @@ trait PaymentOrderDictionary
      */
     public function iAuthorizePaymentWithPgjs()
     {
-        $mink = new Mink(array(
-            'browser' => new Session(new ChromeDriver('http://localhost:9222', null, 'http://www.google.com'))
-        ));
-
-        $session = $mink->getSession('browser');
-        $session->start();
-        $session->visit('http://localhost/payment_v3_create_payment.html?' .
+        $driver = RemoteWebDriver::create('http://selenium:4444', DesiredCapabilities::firefox());
+        $driver->get('http://host.docker.internal/payment_v3_create_payment.php?' .
             http_build_query([
                 'publicKey' => getenv('PUBLIC_KEY'),
                 'paymentOrderId' => $this->paymentOrder->getId(),
@@ -187,45 +183,53 @@ trait PaymentOrderDictionary
                 'instrumentId' => $this->instrumentId,
             ]));
 
-        $page = $session->getPage();
+        if (null === $this->instrumentId) {
+            // Wait until iframe is loaded
+            $driver->wait()->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#paygreen-pan-frame iframe'))
+            );
 
-        // Wait until iframe is loaded
-        $page->waitFor(10, function () use ($page) {
-            return $page->find('css', '#paygreen-pan-frame iframe');
-        });
+            sleep(3);
 
-        // Fill pan field
-        $session->switchToIFrame('paygreen-pan');
-        $page->waitFor(10, function () use ($page) {
-            return $page->find('css', 'input[name="pan"]');
-        });
-        $page->fillField('pan', getenv('BANK_CARD_PAN'));
+            // Fill pan field
+            $iframe = $driver->findElement(WebDriverBy::id('cardNumberFrame'));
+            $driver->switchTo()->frame($iframe);
+            $driver->wait()->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="pan"]'))
+            );
+            $driver->findElement(WebDriverBy::name('pan'))->sendKeys(getenv('BANK_CARD_PAN'));
 
-        // Fill cvc field
-        $session->switchToIFrame();
-        $session->switchToIFrame('paygreen-cvv');
-        $page->waitFor(10, function () use ($page) {
-            return $page->find('css', 'input[name="cvv"]');
-        });
-        $page->fillField('cvv', getenv('BANK_CARD_CVV'));
+            // Fill cvv field
+            $driver->switchTo()->defaultContent();
+            $iframe = $driver->findElement(WebDriverBy::id('cvvFrame'));
+            $driver->switchTo()->frame($iframe);
+            $driver->wait()->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvv"]'))
+            );
+            $driver->findElement(WebDriverBy::name('cvv'))->sendKeys(getenv('BANK_CARD_CVV'));
 
-        // Fill expiration field
-        $session->switchToIFrame();
-        $session->switchToIFrame('paygreen-exp');
-        $page->waitFor(10, function () use ($page) {
-            return $page->find('css', 'input[name="exp"]');
-        });
-        $page->fillField('exp', getenv('BANK_CARD_EXP'));
+            // Fill expiration field
+            $driver->switchTo()->defaultContent();
+            $iframe = $driver->findElement(WebDriverBy::id('expFrame'));
+            $driver->switchTo()->frame($iframe);
+            $driver->wait()->until(
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp"]'))
+            );
+            $driver->findElement(WebDriverBy::name('exp'))->sendKeys(getenv('BANK_CARD_EXP'));
 
-        // Submit form
-        $session->switchToIFrame();
-        $session->executeScript('paygreenjs.submitPayment()');
+            // Submit form
+            $driver->switchTo()->defaultContent();
+            $driver->executeScript('paygreenjs.submitPayment()');
+        }
 
-        $session->wait(
-            5000,
-            "paymentDone === true"
+        $driver->wait()->until(
+            function ($driver) {
+                return $driver->executeScript('return paymentDone === true');
+            }
         );
-        $success = $session->evaluateScript('paymentDone');
+
+        $success = $driver->executeScript('return paymentDone');
+        $driver->quit();
 
         Assert::assertTrue($success);
     }

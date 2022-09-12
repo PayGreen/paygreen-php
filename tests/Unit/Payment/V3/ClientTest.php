@@ -7,6 +7,8 @@ use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
+use Paygreen\Sdk\Payment\V3\Model\Listener;
+use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use PHPUnit\Framework\TestCase;
@@ -55,12 +57,12 @@ final class ClientTest extends TestCase
 
     public function testRequestCreatePaymentConfig()
     {
-        $this->client->createPaymentConfig(
-            'bank_card',
-            array('config1', 'config2'),
-            'sel_0000',
-            'sh_0000'
-        );
+        $paymentConfig = new PaymentConfig();
+        $paymentConfig->setPlatform('bank_card');
+        $paymentConfig->setConfig(array('config1', 'config2'));
+        $paymentConfig->setSellingContractId('sel_0000');
+        $paymentConfig->setCurrency('eur');
+        $this->client->createPaymentConfig($paymentConfig, 'sh_0000');
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
@@ -374,11 +376,12 @@ final class ClientTest extends TestCase
 
     public function testRequestCreateListener()
     {
-        $this->client->createListener(
-            'webhook',
-            array('payment_order.authorized'),
-            'https://my-listener-url.fr'
-        );
+        $listener = new Listener();
+        $listener->setType('webhook');
+        $listener->setEvents(array('payment_order.authorized'));
+        $listener->setUrl('https://my-listener-url.fr');
+
+        $this->client->createListener($listener);
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
@@ -413,7 +416,7 @@ final class ClientTest extends TestCase
 
     public function testRequestGetListenerByShop()
     {
-        $this->client->listListenerByShop('sh_12345');
+        $this->client->listListener('sh_12345');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
@@ -434,7 +437,7 @@ final class ClientTest extends TestCase
 
     public function testRequestGetNotificationsByListener()
     {
-        $this->client->getNotificationsByListener('lis_12345');
+        $this->client->listNotification('lis_12345');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
