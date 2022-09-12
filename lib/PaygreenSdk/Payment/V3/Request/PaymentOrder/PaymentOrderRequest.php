@@ -10,7 +10,7 @@ use Paygreen\Sdk\Core\Serializer\Serializer;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Psr\Http\Message\RequestInterface;
 
-class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
+class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param int $id
@@ -33,27 +33,31 @@ class OrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(PaymentOrder $paymentOrder)
     {
-        if (null === $paymentOrder->getBuyer()->getId()) {
-            $buyer = [
-                'email' => $paymentOrder->getBuyer()->getEmail(),
-                'first_name' => $paymentOrder->getBuyer()->getFirstName(),
-                'last_name' => $paymentOrder->getBuyer()->getLastName(),
-                'reference' => $paymentOrder->getBuyer()->getReference(),
-                'phone_number' => $paymentOrder->getBuyer()->getPhoneNumber(),
-                'shop_id' => $paymentOrder->getShopId(),
-            ];
-            if (null !== $paymentOrder->getBuyer()->getBillingAddress()) {
-                $buyer['billing_address'] = [
-                    'city' => $paymentOrder->getBuyer()->getBillingAddress()->getCity(),
-                    'country' => $paymentOrder->getBuyer()->getBillingAddress()->getCountryCode(),
-                    'line1' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineOne(),
-                    'line2' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineTwo(),
-                    'postal_code' => $paymentOrder->getBuyer()->getBillingAddress()->getPostalCode(),
-                    'state' => $paymentOrder->getBuyer()->getBillingAddress()->getState(),
+        $buyer = null;
+
+        if ($paymentOrder->getBuyer()) {
+            if (null === $paymentOrder->getBuyer()->getId()) {
+                $buyer = [
+                    'email' => $paymentOrder->getBuyer()->getEmail(),
+                    'first_name' => $paymentOrder->getBuyer()->getFirstName(),
+                    'last_name' => $paymentOrder->getBuyer()->getLastName(),
+                    'reference' => $paymentOrder->getBuyer()->getReference(),
+                    'phone_number' => $paymentOrder->getBuyer()->getPhoneNumber(),
+                    'shop_id' => $paymentOrder->getShopId(),
                 ];
+                if (null !== $paymentOrder->getBuyer()->getBillingAddress()) {
+                    $buyer['billing_address'] = [
+                        'city' => $paymentOrder->getBuyer()->getBillingAddress()->getCity(),
+                        'country' => $paymentOrder->getBuyer()->getBillingAddress()->getCountryCode(),
+                        'line1' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineOne(),
+                        'line2' => $paymentOrder->getBuyer()->getBillingAddress()->getStreetLineTwo(),
+                        'postal_code' => $paymentOrder->getBuyer()->getBillingAddress()->getPostalCode(),
+                        'state' => $paymentOrder->getBuyer()->getBillingAddress()->getState(),
+                    ];
+                }
+            } else {
+                $buyer = $paymentOrder->getBuyer()->getId();
             }
-        } else {
-            $buyer = $paymentOrder->getBuyer()->getId();
         }
 
         $body = [
