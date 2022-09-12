@@ -14,7 +14,7 @@
     + $client->createListener(ListenerInterface $listener, $shopId = null);
     ```
 
-1. We have added a new [PaymentConfigInterface](./lib/PaygreenSdk/Payment/V3/Model/PaymentConfigInterface.php) to simplify the creation of a payment config.
+2. We have added a new [PaymentConfigInterface](./lib/PaygreenSdk/Payment/V3/Model/PaymentConfigInterface.php) to simplify the creation of a payment config.
    An object implementing this interface is included in our SDK [available here.](./lib/PaygreenSdk/Payment/V3/Model/PaymentConfig.php)
    Check your use of `$client->createPaymentConfig()`:
     ```diff

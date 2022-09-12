@@ -17,7 +17,7 @@ use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
-use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\OrderRequest;
+use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
 use Paygreen\Sdk\Payment\V3\Request\SellingContract\SellingContractRequest;
 use Paygreen\Sdk\Payment\V3\Request\Shop\ShopRequest;
@@ -207,7 +207,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function createPaymentOrder(PaymentOrder $paymentOrder)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -224,7 +224,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function getPaymentOrder($paymentOrderId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentOrderId);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getGetRequest($paymentOrderId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -245,7 +245,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function listPaymentOrder($reference = null, $shopId = null)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -261,7 +261,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function updatePaymentOrder(PaymentOrder $paymentOrder)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getUpdateRequest($paymentOrder);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getUpdateRequest($paymentOrder);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -278,7 +278,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function capturePaymentOrder($paymentOrderId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getCaptureRequest($paymentOrderId);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getCaptureRequest($paymentOrderId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -295,7 +295,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function refundPaymentOrder($paymentOrderId)
     {
-        $request = (new OrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentOrderId);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentOrderId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
