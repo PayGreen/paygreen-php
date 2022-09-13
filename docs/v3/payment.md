@@ -75,6 +75,7 @@ $buyer->setBillingAddress($address);
 
 $paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
 $paymentOrder->setReference('my-order-id');
+$paymentOrder->setBuyer($buyer);
 $paymentOrder->setAmount(100);
 $paymentOrder->setAutoCapture(true);
 $paymentOrder->setCurrency('eur');
@@ -88,21 +89,47 @@ $response = $client->createPaymentOrder($paymentOrder);
 
 ```php
 $address = new \Paygreen\Sdk\Payment\V3\Model\Address();
-$address->setStreetLineOne('54 Crown Street');
-$address->setCity('London');
-$address->setCountryCode('UK');
-$address->setPostalCode('SW14 6ZG');
+$address->setStreetLineOne('1 rue de Paris');
+$address->setCity('Paris');
+$address->setCountryCode('FR');
+$address->setPostalCode('75000');
 
 $buyer = new \Paygreen\Sdk\Payment\V3\Model\Buyer();
 $buyer->setId('buy_0000');
 
 $paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
 $paymentOrder->setReference('my-order-id');
+$paymentOrder->setBuyer($buyer);
 $paymentOrder->setAmount(100);
 $paymentOrder->setAutoCapture(true);
 $paymentOrder->setCurrency('eur');
 $paymentOrder->setShippingAddress($address);
 $paymentOrder->setDescription('A test payment');
+
+$response = $client->createPaymentOrder($paymentOrder);
+```
+
+## Create a payment order with an instrument id
+
+You must have a reusable id instrument.
+To create an instrument id, please refer to the [PaygreenJS documentation in instrument mode](https://developers.paygreen.fr/docs/modes#mode-instrument).
+
+```php
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
+$address->setStreetLineOne('1 rue de Paris');
+$address->setCity('Paris');
+$address->setCountryCode('FR');
+$address->setPostalCode('75000');
+
+$paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
+$paymentOrder->setReference('my-order-id');
+$paymentOrder->setInstrument('ins_0000');
+$paymentOrder->setAmount(100);
+$paymentOrder->setAutoCapture(true);
+$paymentOrder->setCurrency('eur');
+$paymentOrder->setShippingAddress($address);
+$paymentOrder->setDescription('A test payment');
+// For MIT : $paymentOrder->setMerchantInitiated(true);
 
 $response = $client->createPaymentOrder($paymentOrder);
 ```

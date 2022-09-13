@@ -24,9 +24,9 @@
     + $paymentConfig->setPlatform('bank_card');
     + $paymentConfig->setCurrency('eur');
     + $paymentConfig->setConfig([
-          'config1' => 1,
-          'config2' => 2
-       ]);
+    +     'config1' => 1,
+    +     'config2' => 2
+    + ]);
     + $paymentConfig->setSellingContractId('sel_0000');
     
     + $client->createPaymentConfig(PaymentConfigInterface $paymentConfig, $shopId = null);
