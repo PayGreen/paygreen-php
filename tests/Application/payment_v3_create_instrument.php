@@ -42,6 +42,7 @@ try {
     window.addEventListener("load", function () {
         const urlParams = new URLSearchParams(window.location.search);
         const publicKey = urlParams.get('publicKey');
+        const buyerId = urlParams.get('buyerId');
         window.instrumentId = null;
 
         paygreenjs.attachEventListener(paygreenjs.Events.INSTRUMENT_READY, (event) => {
@@ -56,6 +57,7 @@ try {
                 authorizedInstrument: false,
             },
             paymentMethod: 'bank_card',
+            buyer: buyerId,
         });
     });
 </script>
