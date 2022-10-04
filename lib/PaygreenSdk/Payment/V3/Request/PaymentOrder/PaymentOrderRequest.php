@@ -75,6 +75,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'platforms' => $paymentOrder->getPlatforms(),
             'reference' => $paymentOrder->getReference(),
             'shop_id' => $paymentOrder->getShopId(),
+            'metadata' => $paymentOrder->getMetadata()
         ];
 
         if (null !== $paymentOrder->getShippingAddress()) {
