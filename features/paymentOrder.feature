@@ -66,3 +66,15 @@ Feature: Manage payment order
     Given I authorize payment with pgjs
     When I refund partially a payment order
     Then I receive a 200 status code
+
+  @mit
+  Scenario: Make a Merchant Initialized Transaction
+    Given I create a buyer
+    And I add the buyer_id to the buyer object
+    Given I create a reusable instrument with pgjs
+    Given I add the instrument id to the payment order object
+    And I set auto_capture to true in the payment order object
+    And I set merchant_initiated to true in the payment order object
+    When I create a payment order
+    Then I receive a 200 status code
+    And I receive a response with the payment order

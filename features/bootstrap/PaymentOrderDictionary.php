@@ -112,11 +112,13 @@ trait PaymentOrderDictionary
         Assert::assertEquals($this->paymentOrder->getShippingAddress()->getState(), $data->shipping_address->state);
 
         // Buyer assertions
-        Assert::assertEquals($this->paymentOrder->getBuyer()->getEmail(), $data->buyer->email);
-        Assert::assertEquals($this->paymentOrder->getBuyer()->getFirstName(), $data->buyer->first_name);
-        Assert::assertEquals($this->paymentOrder->getBuyer()->getLastName(), $data->buyer->last_name);
-        Assert::assertEquals($this->paymentOrder->getBuyer()->getReference(), $data->buyer->reference);
-        // Assert::assertEquals($this->paymentOrder->getBuyer()->getPhoneNumber(), $data->buyer->phone_number);
+        if ($this->paymentOrder->getBuyer()) {
+            Assert::assertEquals($this->paymentOrder->getBuyer()->getEmail(), $data->buyer->email);
+            Assert::assertEquals($this->paymentOrder->getBuyer()->getFirstName(), $data->buyer->first_name);
+            Assert::assertEquals($this->paymentOrder->getBuyer()->getLastName(), $data->buyer->last_name);
+            Assert::assertEquals($this->paymentOrder->getBuyer()->getReference(), $data->buyer->reference);
+            // Assert::assertEquals($this->paymentOrder->getBuyer()->getPhoneNumber(), $data->buyer->phone_number);
+        }
     }
 
     /**
