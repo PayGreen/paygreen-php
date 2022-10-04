@@ -188,6 +188,7 @@ final class ClientTest extends TestCase
         $paymentOrder->setCurrency('eur');
         $paymentOrder->setReference('my-order-reference');
         $paymentOrder->setShippingAddress($address);
+        $paymentOrder->setMetadata(array('cart_id' => 15));
 
         $this->client->createPaymentOrder($paymentOrder);
 
@@ -205,6 +206,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getReference(), $content->reference);
         $this->assertEquals($paymentOrder->getAmount(), $content->amount);
         $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
+        $this->assertEquals($paymentOrder->getMetadata(), (array) $content->metadata);
     }
 
     public function testRequestCreateWithBuyerOrder()
