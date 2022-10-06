@@ -145,6 +145,12 @@ Otherwise, the capture will be done automatically, and you don't need to use thi
 $response = $client->capturePaymentOrder('po_0000');
 ```
 
+## Get a payment order
+
+```php
+$response = $client->getPaymentOrder('po_0000');
+```
+
 ## Refund a payment order
 
 ```php
