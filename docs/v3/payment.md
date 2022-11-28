@@ -134,6 +134,31 @@ $paymentOrder->setDescription('A test payment');
 $response = $client->createPaymentOrder($paymentOrder);
 ```
 
+## Create a payment order with a fee MarketPlace
+
+You just need the set the sub-shop id in the payment order creation among the fees needed.
+
+```php
+$address = new \Paygreen\Sdk\Payment\V3\Model\Address();
+$address->setStreetLineOne('1 rue de Paris');
+$address->setCity('Paris');
+$address->setCountryCode('FR');
+$address->setPostalCode('75000');
+
+$paymentOrder = new \Paygreen\Sdk\Payment\V3\Model\PaymentOrder();
+$paymentOrder->setReference('my-order-id');
+$paymentOrder->setInstrument('ins_0000');
+$paymentOrder->setAmount(100);
+$paymentOrder->setShopId("sh_xxx"); // sub shop id
+$paymentOrder->setFees(10); // set the fees value
+$paymentOrder->setAutoCapture(true);
+$paymentOrder->setCurrency('eur');
+$paymentOrder->setShippingAddress($address);
+$paymentOrder->setDescription('A test payment');
+
+$response = $client->createPaymentOrder($paymentOrder);
+```
+
 ## Capture a payment order
 
 To capture a payment order you must have set `auto_capture` to `false` during creation.

@@ -85,6 +85,11 @@ class PaymentOrder implements PaymentOrderInterface
      */
     private $shopId;
 
+    /**
+     * @var int
+     */
+    private $fees;
+
 
     /**
      * @var array
@@ -391,5 +396,21 @@ class PaymentOrder implements PaymentOrderInterface
     public function setMetadata($metadata)
     {
         $this->metadata = $metadata;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFees()
+    {
+        return $this->fees;
+    }
+
+    /**
+     * @param int $fees
+     */
+    public function setFees($fees)
+    {
+        $this->fees = $fees;
     }
 }

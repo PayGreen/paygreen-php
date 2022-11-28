@@ -209,6 +209,57 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getMetadata(), (array) $content->metadata);
     }
 
+    public function testRequestCreatePaymentOrderMarketPlace()
+    {
+        $buyer = new Buyer();
+        $buyer->setReference('my-user-reference');
+        $buyer->setFirstName('John');
+        $buyer->setLastName('Doe');
+        $buyer->setEmail('dev-module@paygreen.fr');
+        $buyer->setPhoneNumber('0102030405');
+
+        $address = new Address();
+        $address->setStreetLineOne("107 allée Francois Mitterrand");
+        $address->setPostalCode("76100");
+        $address->setCity("Rouen");
+        $address->setCountryCode("FR");
+        $address->setState("Normandie");
+
+        $buyer->setBillingAddress($address);
+
+        $paymentOrder = new PaymentOrder();
+        $paymentOrder->setAmount(1000);
+        $paymentOrder->setBuyer($buyer);
+        $paymentOrder->setCurrency('eur');
+        $paymentOrder->setReference('my-order-reference');
+        $paymentOrder->setInstrument('ins_0000');
+        $paymentOrder->setShippingAddress($address);
+        $paymentOrder->setMetadata(array('cart_id' => 15));
+        $paymentOrder->setFees(10);
+        $paymentOrder->setShopId("sh_xxx");
+
+        $this->client->createPaymentOrder($paymentOrder);
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
+        $this->assertEquals($buyer->getEmail(), $content->buyer->email);
+        $this->assertEquals($buyer->getFirstName(), $content->buyer->first_name);
+        $this->assertEquals($buyer->getLastName(), $content->buyer->last_name);
+        $this->assertEquals($buyer->getReference(), $content->buyer->reference);
+        $this->assertEquals($buyer->getPhoneNumber(), $content->buyer->phone_number);
+        $this->assertEquals($paymentOrder->getReference(), $content->reference);
+        $this->assertEquals($paymentOrder->getAmount(), $content->amount);
+        $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
+        $this->assertEquals($paymentOrder->getMetadata(), (array) $content->metadata);
+        $this->assertEquals($paymentOrder->getInstrument(), $content->instrument);
+        $this->assertEquals($paymentOrder->getFees(), $content->fees);
+        $this->assertEquals($paymentOrder->getShopId(), $content->shop_id);
+    }
+
     public function testRequestCreateWithBuyerOrder()
     {
         $buyer = new Buyer();

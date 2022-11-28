@@ -207,4 +207,14 @@ interface PaymentOrderInterface
      * @param array $metadata
      */
     public function setMetadata($metadata);
+
+    /**
+     * @return int
+     */
+    public function getFees();
+
+    /**
+     * @param int $fees
+     */
+    public function setFees($fees);
 }
