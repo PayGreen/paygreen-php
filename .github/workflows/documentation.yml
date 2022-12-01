@@ -4,7 +4,7 @@ name: Sync `documentation` directory to ReadMe
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   sync:
