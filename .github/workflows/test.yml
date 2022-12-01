@@ -32,13 +32,14 @@ jobs:
       - uses: actions/checkout@v2
       - name: Docker up
         env:
-          SHOP_ID: "sh_4f8c51d9a35941ed94356796e8c0bb20"
-          SECRET_KEY: "sk_b11870a0384146ae9c7b025da74416c1"
-          PUBLIC_KEY: "pk_f25794da1fc5400a86d42f1ef33075d6"
-          BANK_CARD_PAN: "4242424242424242"
+          SHOP_ID: "sh_eab202657e6f47b9b885c8448c4f1604"
+          SECRET_KEY: "sk_9d316b106af84d24932eac6cc30c0efa"
+          PUBLIC_KEY: "pk_d53790058c214eb6abbf9ddbc3805abe"
+          BANK_CARD_PAN: "4970105191919435"
           BANK_CARD_CVV: "123"
-          BANK_CARD_EXP: "12/27"
+          BANK_CARD_EXP: "0624"
           ENVIRONMENT: SANDBOX
+
         run: |
           docker-compose -f docker-compose.ci.yml up -d
 

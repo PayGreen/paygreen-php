@@ -128,9 +128,9 @@ trait InstrumentDictionary
         $iframe = $driver->findElement(WebDriverBy::id('consentFrame'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[type="checkbox"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('.chakra-checkbox'))
         );
-        $driver->findElement(WebDriverBy::cssSelector('input[type="checkbox"]'))->click();
+        $driver->findElement(WebDriverBy::cssSelector('.chakra-checkbox'))->click();
 
         // Submit form
         $driver->switchTo()->defaultContent();
