@@ -41,7 +41,7 @@ trait PaymentOrderDictionary
         $address->setState('London');
 
         $this->paymentOrder = new PaymentOrder();
-        $this->paymentOrder->setReference('sdk-behat-payment-order');
+        $this->paymentOrder->setReference('sdk-behat-payment-order-' . microtime());
         $this->paymentOrder->setAmount(100);
         $this->paymentOrder->setAutoCapture(false);
         $this->paymentOrder->setCurrency('eur');
