@@ -122,7 +122,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * 
      * @return Request|RequestInterface
      */
