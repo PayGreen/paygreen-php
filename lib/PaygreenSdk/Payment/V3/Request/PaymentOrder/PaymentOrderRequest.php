@@ -158,4 +158,16 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param string $id
+     *
+     * @return Request
+     */
+    public function getCancelRequest($id)
+    {
+        return $this->requestFactory->create(
+            "/payment/payment-orders/{$id}/cancel"
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
