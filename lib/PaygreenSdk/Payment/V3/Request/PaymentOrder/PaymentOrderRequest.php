@@ -122,7 +122,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * 
      * @return Request|RequestInterface
      */
@@ -156,6 +156,18 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
             "/payment/payment-orders",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string $id
+     *
+     * @return Request
+     */
+    public function getCancelRequest($id)
+    {
+        return $this->requestFactory->create(
+            "/payment/payment-orders/{$id}/cancel"
         )->withAuthorization()->isJson()->getRequest();
     }
 }

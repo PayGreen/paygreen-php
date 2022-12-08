@@ -305,6 +305,23 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param string $paymentOrderId
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function cancelPaymentOrder($paymentOrderId)
+    {
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getCancelRequest($paymentOrderId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
      * @param string $instrumentId
      * @throws Exception
      *
