@@ -67,6 +67,23 @@ Feature: Manage payment order
     When I refund partially a payment order
     Then I receive a 200 status code
 
+  Scenario: Cancel a pending payment order
+    Given I add the buyer object to the payment order object
+    When I create a payment order
+    Then I receive a 200 status code
+    And I receive a response with the payment order
+    When I cancel a payment order
+    Then I receive a 200 status code
+
+  Scenario: Cancel an authorized payment order
+    Given I add the buyer object to the payment order object
+    When I create a payment order
+    Then I receive a 200 status code
+    And I receive a response with the payment order
+    Given I authorize payment with pgjs
+    When I cancel a payment order
+    Then I receive a 422 status code
+
   @mit
   Scenario: Make a Merchant Initialized Transaction
     Given I create a buyer

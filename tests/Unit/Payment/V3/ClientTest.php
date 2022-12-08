@@ -427,6 +427,15 @@ final class ClientTest extends TestCase
         $this->assertEquals('/payment/payment-orders/po_0000/refund', $request->getUri()->getPath());
     }
 
+    public function testRequestCancelPaymentOrder()
+    {
+        $this->client->cancelPaymentOrder('po_0000');
+        $request = $this->client->getLastRequest();
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-orders/po_0000/cancel', $request->getUri()->getPath());
+    }
+
     public function testRequestCreateListener()
     {
         $listener = new Listener();

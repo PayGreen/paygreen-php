@@ -172,6 +172,14 @@ trait PaymentOrderDictionary
     }
 
     /**
+     * @When /^I cancel a payment order$/
+     */
+    public function iCancelAPaymentOrder()
+    {
+        $this->client->cancelPaymentOrder($this->paymentOrder->getId());
+    }
+
+    /**
      * @Given /^I authorize payment with pgjs$/
      */
     public function iAuthorizePaymentWithPgjs()
