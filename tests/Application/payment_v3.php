@@ -7,7 +7,7 @@ use Paygreen\Sdk\Payment\V3\Environment;
 use Paygreen\Sdk\Payment\V3\Model\Address;
 use Paygreen\Sdk\Payment\V3\Model\Buyer;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
-use Paygreen\Sdk\Payment\V3\Model\Order;
+use Paygreen\Sdk\Payment\V3\Model\Listener;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 
 $curl = new Client();
@@ -42,11 +42,26 @@ if ($data !== null && $data->revoked_at === null) {
     dump("Public key $publicKey invalid.");
 }
 
-$response = $client->listTransaction();
+/*$response = $client->listTransaction();
 dump($response);
 
 $data = json_decode($response->getBody()->getContents())->data;
-dump($data);
+dump($data);*/
+
+
+/*$response = $client->listPaymentOrder(null,"sh_dec7e3999339495795c88586d60a6396");
+$data = json_decode($response->getBody()->getContents())->data;
+dump($data);*/
+
+$listener = new Listener();
+$listener->setType('webhook');
+$listener->setEvents(["payment_order.authorized", "transaction.authorized"]);
+$listener->setUrl('http://localhost:80');
+
+
+$response = $client->createListener($listener);
+$data = json_decode($response->getBody()->getContents())->data;
+dump($response);
 
 //$buyer = new Buyer();
 //$buyer->setId(uniqid());
