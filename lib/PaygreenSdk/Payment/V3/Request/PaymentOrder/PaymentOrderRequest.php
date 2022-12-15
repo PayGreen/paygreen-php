@@ -143,18 +143,18 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getListRequest($reference = null, $shopId = null)
     {
-        if ($shopId === null) {
+        if (null === $shopId) {
             $shopId = $this->environment->getShopId();
         }
 
-        $body = [
-            'shop_id' => $shopId,
-            'reference' => $reference
-        ];
+        $referenceRequestParameter = "";
+        if (null !== $reference){
+            $referenceRequestParameter = "&reference=".$reference;
+        }
 
         return $this->requestFactory->create(
-            "/payment/payment-orders",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            "/payment/payment-orders?shop_id={$shopId}{$referenceRequestParameter}",
+            null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
