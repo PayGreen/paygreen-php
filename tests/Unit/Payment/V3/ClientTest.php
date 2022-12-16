@@ -308,12 +308,11 @@ final class ClientTest extends TestCase
         $this->client->listPaymentOrder('SDK-ORDER-123', 'sh_0000');
         $request = $this->client->getLastRequest();
 
-        $content = json_decode($request->getBody()->getContents());
-
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/payment-orders', $request->getUri()->getPath());
-        $this->assertEquals('SDK-ORDER-123', $content->reference);
-        $this->assertEquals('sh_0000', $content->shop_id);
+        $this->assertEquals(
+            '/payment/payment-orders?shop_id=sh_0000&reference=SDK-ORDER-123',
+            $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
+        );
     }
 
     public function testRequestUpdatePaymentOrder()
