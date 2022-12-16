@@ -65,7 +65,7 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then /^I receive '([\w ]+)' error message$/
+     * @Then /^I receive \'([^\']*)\' error message$/
      */
     public function iReceiveAnErrorMessage($arg1)
     {
