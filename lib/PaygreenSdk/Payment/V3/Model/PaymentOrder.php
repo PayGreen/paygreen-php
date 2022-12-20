@@ -90,6 +90,15 @@ class PaymentOrder implements PaymentOrderInterface
      */
     private $fees;
 
+    /**
+     * @var string
+     */
+    private $returnUrl;
+
+    /**
+     * @var string
+     */
+    private $cancelUrl;
 
     /**
      * @var array
@@ -412,5 +421,37 @@ class PaymentOrder implements PaymentOrderInterface
     public function setFees($fees)
     {
         $this->fees = $fees;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturnUrl()
+    {
+        return $this->returnUrl;
+    }
+
+    /**
+     * @param string $returnUrl
+     */
+    public function setReturnUrl($returnUrl)
+    {
+        $this->returnUrl = $returnUrl;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCancelUrl()
+    {
+        return $this->cancelUrl;
+    }
+
+    /**
+     * @param string $cancelUrl
+     */
+    public function setCancelUrl($cancelUrl)
+    {
+        $this->cancelUrl = $cancelUrl;
     }
 }
