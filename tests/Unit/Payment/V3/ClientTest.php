@@ -130,14 +130,13 @@ final class ClientTest extends TestCase
 
     public function testRequestListBuyer()
     {
-        $this->client->listBuyer('sh_0000');
+        $this->client->listBuyer();
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/buyers',  $request->getUri()->getPath());
-        $this->assertEquals('sh_0000', $content->shop_id);
     }
 
     public function testRequestUpdateBuyer()
@@ -404,8 +403,9 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/instruments',  $request->getUri()->getPath());
-        $this->assertEquals('buy_0000', $content->buyer_id);
+        $this->assertEquals('/payment/instruments?buyer_id=buy_0000',
+            $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
+        );
     }
 
     public function testRequestCaptureOrder()
@@ -589,11 +589,9 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/transactions',  $request->getUri()->getPath());
-        $this->assertEquals('sh_0000', $content->requester_shop_id);
-        $this->assertEquals('sh_0001', $content->shop_id);
-        $this->assertEquals(10, $content->max_per_page);
-        $this->assertEquals(2, $content->page);
+        $this->assertEquals('/payment/transactions?requester_shop_id=sh_0000&shop_id=sh_0001&max_per_page=10&page=2',
+            $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
+        );
     }
 
     public function testRequestGetShop()

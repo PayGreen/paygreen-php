@@ -147,15 +147,14 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $buyerId
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function getBuyer($buyerId, $shopId = null)
+    public function getBuyer($buyerId)
     {
-        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getGetRequest($buyerId, $shopId);
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getGetRequest($buyerId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -165,15 +164,13 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function listBuyer($shopId = null)
+    public function listBuyer()
     {
-        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getListRequest();
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

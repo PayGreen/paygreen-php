@@ -17,7 +17,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($shopId = null)
     {
         if ($shopId === null) {
-            $shopId = $this->environment->getShopId($shopId);
+            $shopId = $this->environment->getShopId();
         }
 
         return $this->requestFactory->create(
@@ -36,7 +36,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getCreateRequest(PaymentConfigInterface $paymentConfig, $shopId = null)
     {
         if ($shopId === null) {
-            $shopId = $this->environment->getShopId($shopId);
+            $shopId = $this->environment->getShopId();
         }
 
         $body = [

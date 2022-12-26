@@ -14,11 +14,10 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $buyerId
-     * @param string|null $shopId
      *
      * @return Request
      */
-    public function getGetRequest($buyerId, $shopId = null)
+    public function getGetRequest($buyerId)
     {
         return $this->requestFactory->create(
             "/payment/buyers/$buyerId",
@@ -100,24 +99,15 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param string|null $shopId
      * @throws Exception
      *
      * @return Request|RequestInterface
      */
-    public function getListRequest($shopId = null)
+    public function getListRequest()
     {
-        if ($shopId === null) {
-            $shopId = $this->environment->getShopId();
-        }
-
-        $body = [
-            'shop_id' => $shopId
-        ];
-
         return $this->requestFactory->create(
             "/payment/buyers",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
