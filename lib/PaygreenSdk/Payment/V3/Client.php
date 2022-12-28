@@ -69,6 +69,28 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param string $username
+     * @param string $password
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function authenticateWithCredentials($username, $password)
+    {
+        $request = (new AuthenticationRequest($this->requestFactory, $this->environment))->getCredentialsRequest(
+            $username,
+            $password
+        );
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
      * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
      * @throws Exception

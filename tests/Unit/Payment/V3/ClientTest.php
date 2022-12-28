@@ -46,6 +46,19 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
+    public function testRequestAuthenticateWithCredentials()
+    {
+        $this->client->authenticateWithCredentials('username', 'password');
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/auth/authentication', $request->getUri()->getPath());
+        $this->assertEquals('username', $content->username);
+        $this->assertEquals("password", $content->password);
+    }
+
     public function testRequestListPaymentConfig()
     {
         $this->client->listPaymentConfig();
