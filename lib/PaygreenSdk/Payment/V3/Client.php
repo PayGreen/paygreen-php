@@ -583,7 +583,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function getSellingContracts($shopId = null)
+    public function listSellingContract($shopId = null)
     {
         $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
 

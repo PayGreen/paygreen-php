@@ -545,14 +545,12 @@ final class ClientTest extends TestCase
 
     public function testRequestGetSellingContracts()
     {
-        $this->client->getSellingContracts('sh_0000');
+        $this->client->listSellingContract('sh_0000');
         $request = $this->client->getLastRequest();
-
-        $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals('/payment/selling-contracts',  $request->getUri()->getPath());
-        $this->assertEquals('sh_0000', $content->shop_id);
+        $this->assertEquals('shop_id=sh_0000', $request->getUri()->getQuery());
     }
 
     public function testRequestCreateSellingContract()

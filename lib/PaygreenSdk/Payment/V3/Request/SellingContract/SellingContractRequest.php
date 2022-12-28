@@ -21,14 +21,10 @@ class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
         if ($shopId === null) {
             $shopId = $this->environment->getShopId();
         }
-        
-        $body = [
-            'shop_id' => $shopId
-        ];
 
         return $this->requestFactory->create(
-            "/payment/selling-contracts",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            "/payment/selling-contracts?shop_id=$shopId",
+            null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }

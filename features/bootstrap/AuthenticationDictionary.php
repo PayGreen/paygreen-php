@@ -23,6 +23,23 @@ trait AuthenticationDictionary
     }
 
     /**
+     * @When /^I authenticate in AM the Client$/
+     */
+    public function iAuthenticateInAMTheClient()
+    {
+        $response = $this->client->authenticateWithCredentials(
+            getenv('ACCOUNT_MANAGER_USERNAME'),
+            getenv('ACCOUNT_MANAGER_PASSWORD')
+        );
+
+        Assert::assertEquals(200, $response->getStatusCode());
+
+        $data = json_decode($response->getBody()->getContents())->data;
+        $bearer = $data->token;
+        $this->client->setBearer($bearer);
+    }
+
+    /**
      * @Then /^I should be able to make authenticated requests$/
      */
     public function iShouldBeAbleToMakeAuthenticatedRequests()
