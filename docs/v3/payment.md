@@ -257,3 +257,22 @@ $client->listTransaction(
 ```php
 $client->getTransaction('tra_0000');
 ```
+
+# Selling Contract
+
+## List selling contracts
+
+```php
+$client->listSellingContract('sh_0000');
+
+## Create a selling contract
+
+```php
+$sellingContract = new \Paygreen\Sdk\Payment\V3\Model\SellingContract();
+$sellingContract->setNumber('123456');
+$sellingContract->setMcc(4555);
+$sellingContract->setMaxAmount(15000);
+$sellingContract->setType('vads'); // Optional (Only vads is supported at the moment)
+
+$client->createSellingContract($paymentConfig, 'sh_0000');
+```
