@@ -11,17 +11,12 @@ use Psr\Http\Message\RequestInterface;
 class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param string|null $shopId
      * @return RequestInterface
      */
-    public function getGetRequest($shopId = null)
+    public function getGetRequest()
     {
-        if ($shopId === null) {
-            $shopId = $this->environment->getShopId();
-        }
-
         return $this->requestFactory->create(
-            "/payment/payment-configs?shop_id={$shopId}",
+            "/payment/payment-configs",
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

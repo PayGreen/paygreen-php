@@ -53,7 +53,7 @@ trait PaymentConfigDictionary
      */
     public function iGetAllPaymentConfigs()
     {
-        $this->client->listPaymentConfig(getenv('SHOP_ID'));
+        $this->client->listPaymentConfig();
     }
 
     /**

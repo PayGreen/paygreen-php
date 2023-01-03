@@ -222,7 +222,7 @@ $client->deleteInstrument('ins_0000');
 ## List payment configs
 
 ```php
-$client->listPaymentConfig('sh_0000');
+$client->listPaymentConfig();
 ```
 
 ## Create a payment config

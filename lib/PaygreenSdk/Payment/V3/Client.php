@@ -69,15 +69,13 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function listPaymentConfig($shopId = null)
+    public function listPaymentConfig()
     {
-        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getGetRequest($shopId);
+        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getGetRequest();
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
