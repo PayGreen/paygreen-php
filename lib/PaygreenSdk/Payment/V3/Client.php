@@ -9,7 +9,6 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Event\EventRequest;
@@ -19,7 +18,6 @@ use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
-use Paygreen\Sdk\Payment\V3\Request\SellingContract\SellingContractRequest;
 use Paygreen\Sdk\Payment\V3\Request\Shop\ShopRequest;
 use Paygreen\Sdk\Payment\V3\Request\Transaction\TransactionRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -543,52 +541,6 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function createEvent($type, $content)
     {
         $request = (new EventRequest($this->requestFactory, $this->environment))->getCreateRequest($type, $content);
-
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @link https://developers.paygreen.fr/reference/get_list_selling_contracts
-     *
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function getSellingContracts($shopId = null)
-    {
-        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
-
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @link https://developers.paygreen.fr/reference/post_create_selling_contract
-     *
-     * @param SellingContractInterface $sellingContract
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function createSellingContract(SellingContractInterface $sellingContract, $shopId = null)
-    {
-        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest(
-            $sellingContract,
-            $shopId
-        );
 
         $this->setLastRequest($request);
 
