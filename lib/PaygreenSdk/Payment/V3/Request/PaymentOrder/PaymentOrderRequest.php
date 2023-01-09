@@ -66,6 +66,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'auto_capture' => $paymentOrder->isAutoCapture(),
             'buyer' => $buyer,
             'capture_on' => $paymentOrder->getCaptureOn(),
+            'cancel_url' => $paymentOrder->getCancelUrl(),
             'currency' => $paymentOrder->getCurrency(),
             'description' => $paymentOrder->getDescription(),
             'instrument' => $paymentOrder->getInstrument(),
@@ -74,6 +75,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
             'partial_allowed' => $paymentOrder->isPartialAllowed(),
             'platforms' => $paymentOrder->getPlatforms(),
             'reference' => $paymentOrder->getReference(),
+            'return_url' => $paymentOrder->getReturnUrl(),
             'shop_id' => $paymentOrder->getShopId(),
             'metadata' => $paymentOrder->getMetadata(),
             'fees' => $paymentOrder->getFees()
@@ -111,7 +113,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param int $id
-     * 
+     *
      * @return Request|RequestInterface
      */
     public function getCaptureRequest($id)
@@ -123,7 +125,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param string $id
-     * 
+     *
      * @return Request|RequestInterface
      */
     public function getRefundRequest($id)
@@ -148,8 +150,8 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         $referenceRequestParameter = "";
-        if (null !== $reference){
-            $referenceRequestParameter = "&reference=".$reference;
+        if (null !== $reference) {
+            $referenceRequestParameter = "&reference=" . $reference;
         }
 
         return $this->requestFactory->create(
