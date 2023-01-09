@@ -47,6 +47,8 @@ trait PaymentOrderDictionary
         $this->paymentOrder->setCurrency('eur');
         $this->paymentOrder->setShippingAddress($address);
         $this->paymentOrder->setDescription('Test payment order');
+        $this->paymentOrder->setCancelUrl('https://www.heypongo.com?cancel');
+        $this->paymentOrder->setReturnUrl('https://www.heypongo.com?success');
     }
 
     /**
@@ -102,6 +104,8 @@ trait PaymentOrderDictionary
         Assert::assertEquals($this->paymentOrder->getAmount(), $data->amount);
         Assert::assertEquals($this->paymentOrder->getCurrency(), $data->currency);
         Assert::assertEquals($this->paymentOrder->getDescription(), $data->description);
+        Assert::assertEquals($this->paymentOrder->getCancelUrl() . '&po_id=' . $data->id, $data->cancel_url);
+        Assert::assertEquals($this->paymentOrder->getReturnUrl() . '&po_id=' . $data->id, $data->return_url);
 
         // Shipping address assertions
         Assert::assertEquals($this->paymentOrder->getShippingAddress()->getCity(), $data->shipping_address->city);
