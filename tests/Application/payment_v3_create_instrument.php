@@ -21,10 +21,10 @@ try {
     <title>Document</title>
     <?php if (getenv('ENVIRONMENT') === 'RECETTE'): ?>
         <script defer type="text/javascript" src="https://rc-pgjs.paygreen.dev/latest/paygreen.min.js"></script>
-        <link href="https://rc-pgjs.paygreen.dev/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
+    <link href="https://rc-pgjs.paygreen.dev/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
     <?php else: ?>
         <script defer type="text/javascript" src="https://sb-pgjs.paygreen.fr/latest/paygreen.min.js"></script>
-        <link href="https://sb-pgjs.paygreen.fr/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
+    <link href="https://sb-pgjs.paygreen.fr/latest/paygreen.min.css" type="text/css" rel="stylesheet" />
     <?php endif; ?>
 </head>
 <body>
@@ -49,6 +49,11 @@ try {
             const instrument = event.detail.instrument;
             window.instrumentId = instrument.id;
         });
+
+        paygreenjs.attachEventListener(
+            paygreenjs.Events.ERROR,
+            (event) => console.log(event.detail),
+        );
 
         paygreenjs.init({
             publicKey: publicKey,
