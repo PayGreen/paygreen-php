@@ -206,6 +206,10 @@ $body = '<html lang="fr">
 		    paygreenjs.Events.REUSABLE_ALLOWED_CHANGE,
 		    (event) => console.log(event.detail.reusable_allowed),
 		  );
+      paygreenjs.attachEventListener(
+		    paygreenjs.Events.ERROR,
+		    (event) => console.log(event.detail),
+		  );
             ';
 $body .= "paygreenjs.init({paymentOrderID: '{$poReference}',objectSecret: '{$objectSecret}',publicKey: 'pk_209242bedfcd40febc1c9ec8808ee3f4',mode: 'payment',});";
 $body .= '});
