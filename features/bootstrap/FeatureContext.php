@@ -18,6 +18,7 @@ class FeatureContext implements Context
     use InstrumentDictionary;
     use NotificationDictionary;
     use PaymentConfigDictionary;
+    use TransactionDictionary;
 
     /**
      * @var Client
