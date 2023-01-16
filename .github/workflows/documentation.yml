@@ -6,7 +6,7 @@ on:
   push:
     branches:
       # This workflow will run every time you push code to the following branch: `master`
-      # Check out GitHub's docs for more info on configuring this :
+      # Check out GitHub's docs for more info on configuring this:
       # https://docs.github.com/actions/using-workflows/events-that-trigger-workflows
       - master
 
@@ -20,4 +20,4 @@ jobs:
       - name: Run `docs` command 🚀
         uses: readmeio/rdme@v8
         with:
-          rdme: docs docs/v3 --key=${{ secrets.README_API_KEY }} --version=3 --dryRun
+          rdme: docs docs/v3 --key=${{ secrets.README_API_KEY }} --version=3
