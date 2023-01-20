@@ -601,6 +601,8 @@ final class ClientTest extends TestCase
 
     public function testRequestCreateShopWithShop()
     {
+        date_default_timezone_set('UTC');
+
         $shop = (new Shop())
             ->setName('name')
             ->setNationalId('123456789')

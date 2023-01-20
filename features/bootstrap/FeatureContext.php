@@ -37,7 +37,6 @@ class FeatureContext implements Context
     public function __construct()
     {
         try {
-            date_default_timezone_set('UTC');
             (new Dotenv())->load(dirname(dirname(__DIR__)) . '/.env.behat');
         } catch (PathException $exception) {
             print "The .env.behat file does not exist. This is probably unintentional.\n";
