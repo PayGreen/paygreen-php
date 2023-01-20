@@ -13,7 +13,7 @@ Feature: Manage payment config
     Given A payment config object
     When I create a payment config
     Then I receive a 400 status code
-    And I receive 'Property national_id must be completed on your shop. Property postal_code must be completed on your shop address. ' error message
+    And I receive 'A payment config already exists for this platform' error message
 
   Scenario: Get all payment configs
     When I get all payment configs

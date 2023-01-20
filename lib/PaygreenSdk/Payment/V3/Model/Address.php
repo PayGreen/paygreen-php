@@ -44,10 +44,12 @@ class Address implements AddressInterface
 
     /**
      * @param string $postalCode
+     * @return Address
      */
     public function setPostalCode($postalCode)
     {
         $this->postalCode = $postalCode;
+        return $this;
     }
 
     /**
@@ -60,10 +62,30 @@ class Address implements AddressInterface
 
     /**
      * @param string $city
+     * @return Address
      */
     public function setCity($city)
     {
         $this->city = $city;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountryCode()
+    {
+        return $this->countryCode;
+    }
+
+    /**
+     * @param string $countryCode
+     * @return Address
+     */
+    public function setCountryCode($countryCode)
+    {
+        $this->countryCode = $countryCode;
+        return $this;
     }
 
     /**
@@ -76,10 +98,12 @@ class Address implements AddressInterface
 
     /**
      * @param string $streetLineOne
+     * @return Address
      */
     public function setStreetLineOne($streetLineOne)
     {
         $this->streetLineOne = $streetLineOne;
+        return $this;
     }
 
     /**
@@ -92,10 +116,12 @@ class Address implements AddressInterface
 
     /**
      * @param string $streetLineTwo
+     * @return Address
      */
     public function setStreetLineTwo($streetLineTwo)
     {
         $this->streetLineTwo = $streetLineTwo;
+        return $this;
     }
 
     /**
@@ -118,22 +144,6 @@ class Address implements AddressInterface
     /**
      * @return string
      */
-    public function getCountryCode()
-    {
-        return $this->countryCode;
-    }
-
-    /**
-     * @param string $countryCode
-     */
-    public function setCountryCode($countryCode)
-    {
-        $this->countryCode = $countryCode;
-    }
-
-    /**
-     * @return string
-     */
     public function getState()
     {
         return $this->state;
@@ -141,9 +151,11 @@ class Address implements AddressInterface
 
     /**
      * @param string $state
+     * @return Address
      */
     public function setState($state)
     {
         $this->state = $state;
+        return $this;
     }
 }
