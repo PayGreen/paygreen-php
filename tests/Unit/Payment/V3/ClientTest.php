@@ -585,7 +585,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('/account/shops', $request->getUri()->getPath());
     }
 
-    public function testRequestCreateShopWithDeprecatedPAramas()
+    public function testRequestCreateShopWithDeprecatedParams()
     {
         $this->client->createShop('my-shop', 'shop-national-id');
 
