@@ -98,10 +98,12 @@ class RequestFactory
      */
     private function buildUserAgentHeader()
     {
-        $userAgent = '';
+        $userAgent = [];
 
         $applicationName = $this->environment->getApplicationName();
         $applicationVersion = $this->environment->getApplicationVersion();
+        $cmsName = $this->environment->getCmsName();
+        $cmsVersion = $this->environment->getCmsVersion();
         $isPhpMajorVersionDefined = defined('PHP_MAJOR_VERSION');
         $isPhpMinorVersionDefined = defined('PHP_MINOR_VERSION');
         $isPhpReleaseVersionDefined = defined('PHP_RELEASE_VERSION');
@@ -112,14 +114,19 @@ class RequestFactory
             $phpVersion = phpversion();
         }
 
-        if (empty($applicationName) && empty($applicationVersion)) {
-            $userAgent .= "Application:$applicationName:$applicationVersion";
+        if (!empty($applicationName) && !empty($applicationVersion)) {
+            $userAgent[] = "application:$applicationName:$applicationVersion";
+        }
+
+        if (!empty($cmsName) && !empty($cmsVersion)) {
+            $userAgent[] = "cms:$cmsName:$cmsVersion";
         }
 
         $sdkVersion = \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
 
-        $userAgent .= " sdk:$sdkVersion php:$phpVersion;";
+        $userAgent[] = "sdk:$sdkVersion";
+        $userAgent[] = "php:$phpVersion;";
 
-        return $userAgent;
+        return implode($userAgent, ' ');
     }
 }

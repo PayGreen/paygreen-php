@@ -27,6 +27,12 @@ abstract class Environment implements EnvironmentInterface
 
     /** @var string */
     protected $applicationVersion;
+
+    /** @var string */
+    protected $cmsName;
+
+    /** @var string */
+    protected $cmsVersion;
     
     /** @var bool */
     protected $testMode = false;
@@ -76,6 +82,22 @@ abstract class Environment implements EnvironmentInterface
     public function getApplicationVersion()
     {
         return $this->applicationVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCmsName()
+    {
+        return $this->cmsName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCmsVersion()
+    {
+        return $this->cmsVersion;
     }
 
     /**
