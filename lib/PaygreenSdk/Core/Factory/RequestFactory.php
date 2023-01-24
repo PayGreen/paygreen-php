@@ -8,8 +8,6 @@ use Psr\Http\Message\StreamInterface;
 
 class RequestFactory
 {
-    const SDK_VERSION = '1.2.1';
-
     /** @var Request */
     public $request;
 
@@ -118,9 +116,9 @@ class RequestFactory
             $userAgent .= "Application:$applicationName:$applicationVersion";
         }
 
-        $sdkVersion = self::SDK_VERSION;
+        $sdkVersion = \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
 
-        $userAgent .= " sdk:{$sdkVersion} php:$phpVersion;";
+        $userAgent .= " sdk:$sdkVersion php:$phpVersion;";
 
         return $userAgent;
     }
