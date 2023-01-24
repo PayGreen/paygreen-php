@@ -100,6 +100,8 @@ class RequestFactory
      */
     private function buildUserAgentHeader()
     {
+        $userAgent = '';
+
         $applicationName = $this->environment->getApplicationName();
         $applicationVersion = $this->environment->getApplicationVersion();
         $isPhpMajorVersionDefined = defined('PHP_MAJOR_VERSION');
@@ -112,8 +114,14 @@ class RequestFactory
             $phpVersion = phpversion();
         }
 
+        if (empty($applicationName) && empty($applicationVersion)) {
+            $userAgent .= "Application:$applicationName:$applicationVersion";
+        }
+
         $sdkVersion = self::SDK_VERSION;
 
-        return "Application:$applicationName:$applicationVersion sdk:{$sdkVersion} php:$phpVersion;";
+        $userAgent .= " sdk:{$sdkVersion} php:$phpVersion;";
+
+        return $userAgent;
     }
 }

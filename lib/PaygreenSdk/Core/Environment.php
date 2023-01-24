@@ -23,10 +23,10 @@ abstract class Environment implements EnvironmentInterface
     protected $apiVersion;
 
     /** @var string */
-    protected $applicationName = 'sdk';
+    protected $applicationName;
 
     /** @var string */
-    protected $applicationVersion = '1.0.0';
+    protected $applicationVersion;
     
     /** @var bool */
     protected $testMode = false;
