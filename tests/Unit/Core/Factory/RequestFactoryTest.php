@@ -88,7 +88,8 @@ final class RequestFactoryTest extends TestCase
         $this->buildRequestFactory();
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "application:prestashop-payment:1.0.0 cms:prestashop:1.7 sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
+            "application:prestashop-payment:1.0.0 cms:prestashop:1.7 " .
+            "sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
