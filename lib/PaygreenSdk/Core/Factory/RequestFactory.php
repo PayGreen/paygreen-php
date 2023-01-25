@@ -124,7 +124,7 @@ class RequestFactory
             $userAgent[] = "cms:$cmsName:$cmsVersion";
         }
 
-        $sdkVersion = \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
+        $sdkVersion = $this->environment->getSdkVersion();
 
         $userAgent[] = "sdk:$sdkVersion";
         $userAgent[] = "api:$apiName:$apiVersion";

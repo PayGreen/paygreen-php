@@ -116,6 +116,14 @@ abstract class Environment implements EnvironmentInterface
     /**
      * @return string
      */
+    public function getSdkVersion()
+    {
+        return \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
+    }
+
+    /**
+     * @return string
+     */
     public function getBearer()
     {
         return $this->bearer;

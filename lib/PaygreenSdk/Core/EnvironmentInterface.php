@@ -42,6 +42,11 @@ interface EnvironmentInterface
     /**
      * @return string
      */
+    public function getSdkVersion();
+
+    /**
+     * @return string
+     */
     public function getBearer();
 
     /**

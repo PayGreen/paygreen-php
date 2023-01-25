@@ -25,23 +25,26 @@ final class RequestFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->environment = new Environment(
+        parent::setUp();
+
+        $this->environment = $this->getMockBuilder(Environment::class)->setConstructorArgs([
             'public_key',
             'private_key',
             'sandbox',
             3
-        );
+        ])->getMock();
     }
     public function testCreateRequest()
     {
         $this->buildRequestFactory();
         $this->assertInstanceOf(RequestFactory::class, $this->requestFactory);
 
-        $body = ['body' => 'content'];
-
         $request = $this->requestFactory->create(
             '/api/v3/transactions',
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize(
+                ['body' => 'content'],
+                'json'
+            ),
             'POST',
             ['Content-Type' => 'application/json']
         )->getRequest();
@@ -57,6 +60,8 @@ final class RequestFactoryTest extends TestCase
 
     public function testBuildUserAgentHeader()
     {
+        $this->buildRequestFactory();
+
         $isPhpMajorVersionDefined = defined('PHP_MAJOR_VERSION');
         $isPhpMinorVersionDefined = defined('PHP_MINOR_VERSION');
         $isPhpReleaseVersionDefined = defined('PHP_RELEASE_VERSION');
@@ -67,53 +72,40 @@ final class RequestFactoryTest extends TestCase
             $phpVersion = phpversion();
         }
 
-        $sdkVersion = \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
-        $apiName = $this->environment->getApiName();
-        $apiVersion = $this->environment->getApiVersion();
-
-        $this->buildRequestFactory();
+        $this->environment->method('getSdkVersion')->willReturn('1.3.6');
+        $this->environment->method('getApiName')->willReturn('payment');
+        $this->environment->method('getApiVersion')->willReturn('3');
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
+            "sdk:1.3.6 api:payment:3 php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
-        $this->environment->setApplicationName('prestashop-payment');
-        $this->environment->setApplicationVersion('1.0.0');
-        $this->environment->setCmsName('prestashop');
-        $this->environment->setCmsVersion('1.7');
-        $this->buildRequestFactory();
+        $this->environment->method('getApplicationName')->willReturn('prestashop-payment');
 
-        $this->buildRequestFactory();
+        $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
+        $this->assertEquals(
+            "sdk:1.3.6 api:payment:3 php:$phpVersion;",
+            $request->getHeader('User-Agent')[0]
+        );
+
+        $this->environment->method('getApplicationVersion')->willReturn('1.0.0');
+
+        $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
+        $this->assertEquals(
+            "application:prestashop-payment:1.0.0 " .
+            "sdk:1.3.6 api:payment:3 php:$phpVersion;",
+            $request->getHeader('User-Agent')[0]
+        );
+
+        $this->environment->method('getCmsName')->willReturn('prestashop');
+        $this->environment->method('getCmsVersion')->willReturn('1.7');
+
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
             "application:prestashop-payment:1.0.0 cms:prestashop:1.7 " .
-            "sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
-            $request->getHeader('User-Agent')[0]
-        );
-
-        $this->environment->setApplicationName('');
-        $this->environment->setApplicationVersion('');
-        $this->environment->setCmsName('prestashop');
-        $this->environment->setCmsVersion('1.7');
-        $this->buildRequestFactory();
-
-        $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
-        $this->assertEquals(
-            "cms:prestashop:1.7 sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
-            $request->getHeader('User-Agent')[0]
-        );
-
-        $this->environment->setApplicationName('prestashop-payment');
-        $this->environment->setApplicationVersion('1.0.0');
-        $this->environment->setCmsName('prestashop');
-        $this->environment->setCmsVersion('');
-        $this->buildRequestFactory();
-
-        $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
-        $this->assertEquals(
-            "application:prestashop-payment:1.0.0 sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
+            "sdk:1.3.6 api:payment:3 php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
     }
