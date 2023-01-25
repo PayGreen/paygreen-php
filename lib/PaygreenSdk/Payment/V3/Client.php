@@ -9,7 +9,7 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
+use Paygreen\Sdk\Payment\V3\Model\Shop;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Event\EventRequest;
@@ -19,7 +19,6 @@ use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
-use Paygreen\Sdk\Payment\V3\Request\SellingContract\SellingContractRequest;
 use Paygreen\Sdk\Payment\V3\Request\Shop\ShopRequest;
 use Paygreen\Sdk\Payment\V3\Request\Transaction\TransactionRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -53,9 +52,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function authenticate()
     {
@@ -109,9 +108,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @return ResponseInterface
      * @throws Exception
      *
-     *@return ResponseInterface
      */
     public function getPublicKey($publicKey)
     {
@@ -128,9 +127,9 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param BuyerInterface $buyer
      * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function createBuyer(BuyerInterface $buyer, $shopId = null)
     {
@@ -146,9 +145,8 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $buyerId
      *
-     * @throws Exception
-     *
      * @return ResponseInterface
+     * @throws Exception
      */
     public function getBuyer($buyerId)
     {
@@ -162,9 +160,8 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @throws Exception
-     *
      * @return ResponseInterface
+     * @throws Exception
      */
     public function listBuyer()
     {
@@ -180,9 +177,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param BuyerInterface $buyer
      *
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function updateBuyer(BuyerInterface $buyer)
     {
@@ -196,9 +193,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function createPaymentOrder(PaymentOrder $paymentOrder)
     {
@@ -213,9 +210,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $paymentOrderId A payment order id (format: po_0000)
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function getPaymentOrder($paymentOrderId)
     {
@@ -250,9 +247,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function updatePaymentOrder(PaymentOrder $paymentOrder)
     {
@@ -267,9 +264,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $paymentOrderId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function capturePaymentOrder($paymentOrderId)
     {
@@ -284,9 +281,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $paymentOrderId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function refundPaymentOrder($paymentOrderId)
     {
@@ -301,9 +298,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $paymentOrderId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function cancelPaymentOrder($paymentOrderId)
     {
@@ -318,9 +315,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $instrumentId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function deleteInstrument($instrumentId)
     {
@@ -335,9 +332,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param Instrument $instrument
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function createInstrument(Instrument $instrument)
     {
@@ -352,9 +349,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param Instrument $instrument
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function updateInstrument(Instrument $instrument)
     {
@@ -369,9 +366,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $instrumentId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function getInstrument($instrumentId)
     {
@@ -407,9 +404,9 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param ListenerInterface $listener
      * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function createListener(ListenerInterface $listener, $shopId = null)
     {
@@ -425,9 +422,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $listenerId
      * @param string $url
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function updateListener($listenerId, $url)
     {
@@ -442,9 +439,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $listenerId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function getListener($listenerId)
     {
@@ -460,9 +457,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string|null $shopId If not specified, the shop id of the environment will be used
      *
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function listListener($shopId = null)
     {
@@ -477,9 +474,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $listenerId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function deleteListener($listenerId)
     {
@@ -495,9 +492,9 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @param string $listenerId
      *
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function listNotification($listenerId)
     {
@@ -512,9 +509,9 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $notificationId
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function replayNotification($notificationId)
     {
@@ -531,59 +528,13 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @param string $type
      * @param string|array $content
      *
+     * @return ResponseInterface
      * @throws Exception
      *
-     * @return ResponseInterface
      */
     public function createEvent($type, $content)
     {
         $request = (new EventRequest($this->requestFactory, $this->environment))->getCreateRequest($type, $content);
-
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @link https://developers.paygreen.fr/reference/get_list_selling_contracts
-     *
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function getSellingContracts($shopId = null)
-    {
-        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getListRequest($shopId);
-
-        $this->setLastRequest($request);
-
-        $response = $this->sendRequest($request);
-        $this->setLastResponse($response);
-
-        return $response;
-    }
-
-    /**
-     * @link https://developers.paygreen.fr/reference/post_create_selling_contract
-     *
-     * @param SellingContractInterface $sellingContract
-     * @param string|null $shopId If not specified, the shop id of the environment will be used
-     *
-     * @throws Exception
-     *
-     * @return ResponseInterface
-     */
-    public function createSellingContract(SellingContractInterface $sellingContract, $shopId = null)
-    {
-        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest(
-            $sellingContract,
-            $shopId
-        );
 
         $this->setLastRequest($request);
 
@@ -690,16 +641,17 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @link https://developers.paygreen.fr/reference/post_create_shop
      *
-     * @param string $name
-     * @param string $nationalId
+     * @deprecated @param string $name
+     * @deprecated @param string $nationalId
+     * @param Shop $shop
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function createShop($name, $nationalId)
+    public function createShop($name = null, $nationalId = null, $shop = null)
     {
-        $request = (new ShopRequest($this->requestFactory, $this->environment))->getCreateRequest($name, $nationalId);
+        $request = (new ShopRequest($this->requestFactory, $this->environment))->getCreateRequest($name, $nationalId, $shop);
 
         $this->setLastRequest($request);
 

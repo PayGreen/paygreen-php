@@ -134,7 +134,7 @@ $paymentOrder->setDescription('A test payment');
 $response = $client->createPaymentOrder($paymentOrder);
 ```
 
-## Create a payment order with a fee MarketPlace
+## Create a payment order with a fee Marketplace
 
 You just need the set the sub-shop id in the payment order creation among the fees needed.
 

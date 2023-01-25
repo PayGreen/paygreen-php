@@ -18,6 +18,8 @@ class FeatureContext implements Context
     use InstrumentDictionary;
     use NotificationDictionary;
     use PaymentConfigDictionary;
+    use TransactionDictionary;
+    use ShopDictionary;
 
     /**
      * @var Client
@@ -48,6 +50,21 @@ class FeatureContext implements Context
     {
         $shopId = getenv('SHOP_ID');
         $secretKey = getenv('SECRET_KEY');
+        $endpoint = getenv('ENVIRONMENT');
+        $environment = new Environment($shopId, $secretKey, $endpoint);
+
+        $httpClient = new Http\Client\Curl\Client();
+
+        $this->client = new Client($httpClient, $environment);
+    }
+
+    /**
+     * @Given /^A ready to use marketplace Client$/
+     */
+    public function aReadyToUseMarketPlaceClient()
+    {
+        $shopId = getenv('SHOP_ID_MARKETPLACE');
+        $secretKey = getenv('SECRET_KEY_MARKETPLACE');
         $endpoint = getenv('ENVIRONMENT');
         $environment = new Environment($shopId, $secretKey, $endpoint);
 
