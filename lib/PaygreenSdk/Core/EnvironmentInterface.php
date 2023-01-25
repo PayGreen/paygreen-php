@@ -27,6 +27,16 @@ interface EnvironmentInterface
     /**
      * @return string
      */
+    public function getCmsName();
+
+    /**
+     * @return string
+     */
+    public function getCmsVersion();
+
+    /**
+     * @return string
+     */
     public function getBearer();
 
     /**
