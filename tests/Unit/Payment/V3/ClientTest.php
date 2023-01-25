@@ -10,6 +10,7 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\Listener;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V3\Model\Shop;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 
@@ -135,7 +136,7 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/buyers',  $request->getUri()->getPath());
+        $this->assertEquals('/payment/buyers', $request->getUri()->getPath());
         $this->assertEquals('sh_0000', $content->shop_id);
     }
 
@@ -207,7 +208,7 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getReference(), $content->reference);
         $this->assertEquals($paymentOrder->getAmount(), $content->amount);
         $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
-        $this->assertEquals($paymentOrder->getMetadata(), (array) $content->metadata);
+        $this->assertEquals($paymentOrder->getMetadata(), (array)$content->metadata);
         $this->assertEquals($paymentOrder->getCancelUrl(), 'https://www.heypongo.com?cancel');
         $this->assertEquals($paymentOrder->getReturnUrl(), 'https://www.heypongo.com?success');
     }
@@ -257,13 +258,13 @@ final class ClientTest extends TestCase
         $this->assertEquals($paymentOrder->getReference(), $content->reference);
         $this->assertEquals($paymentOrder->getAmount(), $content->amount);
         $this->assertEquals($paymentOrder->getCurrency(), $content->currency);
-        $this->assertEquals($paymentOrder->getMetadata(), (array) $content->metadata);
+        $this->assertEquals($paymentOrder->getMetadata(), (array)$content->metadata);
         $this->assertEquals($paymentOrder->getInstrument(), $content->instrument);
         $this->assertEquals($paymentOrder->getFees(), $content->fees);
         $this->assertEquals($paymentOrder->getShopId(), $content->shop_id);
     }
 
-    public function testRequestCreateWithBuyerOrder()
+    public function testRequestCreatePaymentOrderWithBuyerOrder()
     {
         $buyer = new Buyer();
         $buyer->setId('buy_0000');
@@ -407,7 +408,7 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/instruments',  $request->getUri()->getPath());
+        $this->assertEquals('/payment/instruments', $request->getUri()->getPath());
         $this->assertEquals('buy_0000', $content->buyer_id);
     }
 
@@ -517,7 +518,7 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/notifications/ntf_12345/replay',  $request->getUri()->getPath());
+        $this->assertEquals('/notifications/ntf_12345/replay', $request->getUri()->getPath());
     }
 
     public function testRequestCreateEvent()
@@ -528,7 +529,7 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/events',  $request->getUri()->getPath());
+        $this->assertEquals('/events', $request->getUri()->getPath());
         $this->assertEquals('log', $content->type);
         $this->assertEquals('log content', $content->content);
     }
@@ -540,7 +541,7 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/transactions/transaction-123',  $request->getUri()->getPath());
+        $this->assertEquals('/payment/transactions/transaction-123', $request->getUri()->getPath());
     }
 
     public function testRequestListTransaction()
@@ -557,7 +558,7 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/transactions',  $request->getUri()->getPath());
+        $this->assertEquals('/payment/transactions', $request->getUri()->getPath());
         $this->assertEquals('sh_0000', $content->requester_shop_id);
         $this->assertEquals('sh_0001', $content->shop_id);
         $this->assertEquals(10, $content->max_per_page);
@@ -571,7 +572,7 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/account/shops/shop-123',  $request->getUri()->getPath());
+        $this->assertEquals('/account/shops/shop-123', $request->getUri()->getPath());
     }
 
     public function testRequestListShop()
@@ -581,10 +582,10 @@ final class ClientTest extends TestCase
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+        $this->assertEquals('/account/shops', $request->getUri()->getPath());
     }
 
-    public function testRequestCreateShop()
+    public function testRequestCreateShopWithDeprecatedParams()
     {
         $this->client->createShop('my-shop', 'shop-national-id');
 
@@ -593,8 +594,103 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/account/shops',  $request->getUri()->getPath());
+        $this->assertEquals('/account/shops', $request->getUri()->getPath());
         $this->assertEquals('my-shop', $content->name);
         $this->assertEquals('shop-national-id', $content->national_id);
+    }
+
+    public function testRequestCreateShopWithShop()
+    {
+        date_default_timezone_set('UTC');
+
+        $shop = (new Shop())
+            ->setName('name')
+            ->setNationalId('123456789')
+            ->setMcc(123)
+            ->setAnnualProcessingVolume(111)
+            ->setAverageTransactionValue(222)
+            ->setHighestTransactionValue(333)
+            ->setActivityCategories(['FOOD'])
+            ->setActivityDescription('description')
+            ->setAddress((new Address())
+                ->setStreetLineOne('street')
+                ->setStreetLineTwo('street2')
+                ->setCity('city')
+                ->setPostalCode('76000')
+                ->setCountryCode('FR')
+            )
+            ->setCommercialName('commercial name')
+            ->setCreationDate(new \DateTime('2020-01-01'))
+            ->setEconomicModel(['B2B'])
+            ->setLegalCategory('artisan')
+            ->setPrimaryActivity('energie')
+            ->setProductType(['TYPE1'])
+            ->setWebsiteUrl('https://www.example.com')
+            ->setLegalNoticeUrl('https://www.example.com/legal');
+
+
+        $this->client->createShop(null, null, $shop);
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops', $request->getUri()->getPath());
+        $this->assertEquals('name', $content->name);
+        $this->assertEquals("123456789", $content->national_id);
+        $this->assertEquals(123, $content->mcc);
+        $this->assertEquals(111, $content->annual_processing_volume);
+        $this->assertEquals(222, $content->average_transaction_value);
+        $this->assertEquals(333, $content->highest_transaction_value);
+        $this->assertEquals(['FOOD'], $content->activity_categories);
+        $this->assertEquals('description', $content->activity_description);
+        $this->assertEquals('commercial name', $content->commercial_name);
+        $this->assertEquals('2020-01-01', $content->creation_date);
+        $this->assertEquals(['B2B'], $content->economic_model);
+        $this->assertEquals('artisan', $content->legal_category);
+        $this->assertEquals('energie', $content->primary_activity);
+        $this->assertEquals(['TYPE1'], $content->product_type);
+        $this->assertEquals('https://www.example.com', $content->website_url);
+        $this->assertEquals('https://www.example.com/legal', $content->legal_notice_url);
+        $this->assertEquals('street', $content->address->line_1);
+    }
+
+    public function testRequestCreateShopWithShopAndDeprecatedParamsUnused()
+    {
+        $shop = (new Shop())
+            ->setName('name')
+            ->setNationalId(123456789)
+            ->setMcc(123);
+
+        $this->client->createShop('deprecatedName', 'depreacatedNI', $shop);
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops', $request->getUri()->getPath());
+        $this->assertEquals('name', $content->name);
+        $this->assertEquals(123456789, $content->national_id);
+        $this->assertEquals(123, $content->mcc);
+    }
+
+    public function testRequestCreateShopWithShopAndDeprecatedParamsUsed()
+    {
+        $shop = (new Shop())
+            ->setMcc(123);
+
+        $this->client->createShop('deprecatedName', 'depreacatedNI', $shop);
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops', $request->getUri()->getPath());
+        $this->assertEquals('deprecatedName', $content->name);
+        $this->assertEquals('depreacatedNI', $content->national_id);
+        $this->assertEquals(123, $content->mcc);
     }
 }
