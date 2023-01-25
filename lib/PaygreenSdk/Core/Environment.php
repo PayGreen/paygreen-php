@@ -133,6 +133,22 @@ abstract class Environment implements EnvironmentInterface
     }
 
     /**
+     * @param string $cmsName
+     */
+    public function setCmsName($cmsName)
+    {
+        $this->cmsName = $cmsName;
+    }
+
+    /**
+     * @param string $cmsVersion
+     */
+    public function setCmsVersion($cmsVersion)
+    {
+        $this->cmsVersion = (string) $cmsVersion;
+    }
+
+    /**
      * @return bool
      */
     public function isTestMode()
