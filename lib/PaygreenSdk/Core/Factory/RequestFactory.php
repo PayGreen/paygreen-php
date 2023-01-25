@@ -100,6 +100,8 @@ class RequestFactory
     {
         $userAgent = [];
 
+        $apiName = (string) $this->environment->getApiName();
+        $apiVersion = (string) $this->environment->getApiVersion();
         $applicationName = $this->environment->getApplicationName();
         $applicationVersion = $this->environment->getApplicationVersion();
         $cmsName = $this->environment->getCmsName();
@@ -125,6 +127,7 @@ class RequestFactory
         $sdkVersion = \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
 
         $userAgent[] = "sdk:$sdkVersion";
+        $userAgent[] = "api:$apiName:$apiVersion";
         $userAgent[] = "php:$phpVersion;";
 
         return implode($userAgent, ' ');

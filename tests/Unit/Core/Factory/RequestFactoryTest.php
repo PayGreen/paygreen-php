@@ -29,7 +29,7 @@ final class RequestFactoryTest extends TestCase
             'public_key',
             'private_key',
             'sandbox',
-            2
+            3
         );
     }
     public function testCreateRequest()
@@ -68,12 +68,14 @@ final class RequestFactoryTest extends TestCase
         }
 
         $sdkVersion = \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
+        $apiName = $this->environment->getApiName();
+        $apiVersion = $this->environment->getApiVersion();
 
         $this->buildRequestFactory();
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "sdk:$sdkVersion php:$phpVersion;",
+            "sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
@@ -86,7 +88,7 @@ final class RequestFactoryTest extends TestCase
         $this->buildRequestFactory();
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "application:prestashop-payment:1.0.0 cms:prestashop:1.7 sdk:$sdkVersion php:$phpVersion;",
+            "application:prestashop-payment:1.0.0 cms:prestashop:1.7 sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
@@ -98,7 +100,7 @@ final class RequestFactoryTest extends TestCase
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "cms:prestashop:1.7 sdk:$sdkVersion php:$phpVersion;",
+            "cms:prestashop:1.7 sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
@@ -110,7 +112,7 @@ final class RequestFactoryTest extends TestCase
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "application:prestashop-payment:1.0.0 sdk:$sdkVersion php:$phpVersion;",
+            "application:prestashop-payment:1.0.0 sdk:$sdkVersion api:$apiName:$apiVersion php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
     }

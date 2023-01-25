@@ -19,6 +19,9 @@ abstract class Environment implements EnvironmentInterface
     /** @var string */
     protected $environment;
 
+    /** @var string */
+    protected $apiName;
+
     /** @var int */
     protected $apiVersion;
 
@@ -39,11 +42,13 @@ abstract class Environment implements EnvironmentInterface
 
     /**
      * @param string     $environment
+     * @param string     $apiName
      * @param int|string $apiVersion
      */
-    public function __construct($environment, $apiVersion)
+    public function __construct($environment, $apiName, $apiVersion)
     {
         $this->environment = strtoupper($environment);
+        $this->apiName = $apiName;
         $this->apiVersion = (int) $apiVersion;
         $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX, self::ENVIRONMENT_RECETTE];
 
@@ -58,6 +63,14 @@ abstract class Environment implements EnvironmentInterface
     public function getEnvironment()
     {
         return $this->environment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiName()
+    {
+        return $this->apiName;
     }
 
     /**

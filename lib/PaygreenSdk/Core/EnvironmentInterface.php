@@ -10,6 +10,11 @@ interface EnvironmentInterface
     public function getEnvironment();
 
     /**
+     * @return string
+     */
+    public function getApiName();
+
+    /**
      * @return int
      */
     public function getApiVersion();

@@ -19,7 +19,7 @@ class Environment extends \Paygreen\Sdk\Core\Environment
      */
     public function __construct($publicKey, $privateKey, $environment, $apiVersion)
     {
-        parent::__construct($environment, $apiVersion);
+        parent::__construct($environment, 'payment', $apiVersion);
         
         $this->publicKey = $publicKey;
         $this->privateKey = $privateKey;
