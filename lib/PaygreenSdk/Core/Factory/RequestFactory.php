@@ -130,6 +130,6 @@ class RequestFactory
         $userAgent[] = "api:$apiName:$apiVersion";
         $userAgent[] = "php:$phpVersion;";
 
-        return implode($userAgent, ' ');
+        return implode(' ', $userAgent);
     }
 }
