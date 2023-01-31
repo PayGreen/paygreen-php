@@ -631,13 +631,17 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @link https://developers.paygreen.fr/reference/get_list_shops
      *
+     * @param $filters
+     * @param $pagination
+     *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function listShop()
+    public function listShop($filters = [], $pagination = [])
     {
-        $request = (new ShopRequest($this->requestFactory, $this->environment))->getListRequest();
+        $request = (new ShopRequest($this->requestFactory, $this->environment))
+            ->getListRequest($filters, $pagination);
 
         $this->setLastRequest($request);
 
