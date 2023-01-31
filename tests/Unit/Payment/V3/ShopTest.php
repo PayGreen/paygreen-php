@@ -51,8 +51,8 @@ class ShopTest extends TestCase
         $this->client->listShop(
             null,
             [
+                'max_per_page' => 5,
                 'page' => 2,
-                'max_per_page' => 5
             ]
         );
 
