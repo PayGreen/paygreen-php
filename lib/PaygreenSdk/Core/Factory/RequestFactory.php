@@ -116,19 +116,23 @@ class RequestFactory
             $phpVersion = phpversion();
         }
 
+        if (!empty($applicationName)) {
+            $userAgent['application'] = "application:$applicationName";
+        }
+
         if (!empty($applicationName) && !empty($applicationVersion)) {
-            $userAgent[] = "application:$applicationName:$applicationVersion";
+            $userAgent['application'] .= ":$applicationVersion";
         }
 
         if (!empty($cmsName) && !empty($cmsVersion)) {
-            $userAgent[] = "cms:$cmsName:$cmsVersion";
+            $userAgent['cms'] = "cms:$cmsName:$cmsVersion";
         }
 
         $sdkVersion = $this->environment->getSdkVersion();
 
-        $userAgent[] = "sdk:$sdkVersion";
-        $userAgent[] = "api:$apiName:$apiVersion";
-        $userAgent[] = "php:$phpVersion;";
+        $userAgent['sdk'] = "sdk:$sdkVersion";
+        $userAgent['api'] = "api:$apiName:$apiVersion";
+        $userAgent['php'] = "php:$phpVersion;";
 
         return implode(' ', $userAgent);
     }
