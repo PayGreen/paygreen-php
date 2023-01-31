@@ -118,7 +118,9 @@ abstract class Environment implements EnvironmentInterface
      */
     public function getSdkVersion()
     {
-        return \Composer\InstalledVersions::getPrettyVersion('paygreen/paygreen-php');
+        $composerJson = json_decode(file_get_contents(__DIR__ . '/../../../composer.json'));
+
+        return $composerJson->version;
     }
 
     /**
