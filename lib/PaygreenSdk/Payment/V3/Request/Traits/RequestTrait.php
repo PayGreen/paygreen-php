@@ -7,7 +7,7 @@ trait RequestTrait
     /**
      * @return int[]
      */
-    protected function getDefautlPagination()
+    protected function getDefaultPagination()
     {
         return [
             'max_per_page' => 20,

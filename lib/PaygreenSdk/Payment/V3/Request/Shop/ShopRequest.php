@@ -22,7 +22,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         if (empty($pagination)) {
-            $pagination = $this->getDefautlPagination();
+            $pagination = $this->getDefaultPagination();
         }
 
         $parameters = http_build_query(

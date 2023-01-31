@@ -20,7 +20,7 @@ class ShopTest extends TestCase
         $this->assertEquals('/account/shops/shop-123', $request->getUri()->getPath());
     }
 
-    public function testRequestListShopWithouParams()
+    public function testRequestListShopWithoutParams()
     {
         $this->client->listShop();
 
