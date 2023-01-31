@@ -7,10 +7,38 @@ parentDoc: 62d66ab6fa37b4008aa6fa5c
 
 # Shop
 
+## Get a shop
+
+```php
+$client->getShop('sh_0000');
+```
+
 ## List shop
 
 ```php
-$client->listShop();
+
+// available filters
+$filters = [
+    'name' => 'My shop name', // string
+    'commercial_name' => 'My commercial shop name', // string
+    'national_id' => '25432169874563', // string
+    'marketplace' => false // boolean
+];
+
+// pagination settings
+$pagination = [
+    'max_per_page' => 5,
+    'page' => 2
+];
+
+// call
+$response = $client->listShop($filters, $pagination);
+
+// response
+$jsonResponse = json_decode($response->getBody()->getContents());
+$data = $jsonResponse->data;
+$pagination = $jsonResponse->pagination;
+
 ```
 
 ## Create a shop
@@ -29,10 +57,4 @@ $newShop = (new \Paygreen\Sdk\Payment\V3\Model\Shop())
     ->setProperty(value);
     
 $client->createShop(null, null, $newShop);
-```
-
-## Get a shop
-
-```php
-$client->getShop('sh_0000');
 ```
