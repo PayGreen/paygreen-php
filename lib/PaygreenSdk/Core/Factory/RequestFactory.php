@@ -8,8 +8,6 @@ use Psr\Http\Message\StreamInterface;
 
 class RequestFactory
 {
-    const SDK_VERSION = '1.2.1';
-
     /** @var Request */
     public $request;
 
@@ -100,8 +98,14 @@ class RequestFactory
      */
     private function buildUserAgentHeader()
     {
+        $userAgent = [];
+
+        $apiName = (string) $this->environment->getApiName();
+        $apiVersion = (string) $this->environment->getApiVersion();
         $applicationName = $this->environment->getApplicationName();
         $applicationVersion = $this->environment->getApplicationVersion();
+        $cmsName = $this->environment->getCmsName();
+        $cmsVersion = $this->environment->getCmsVersion();
         $isPhpMajorVersionDefined = defined('PHP_MAJOR_VERSION');
         $isPhpMinorVersionDefined = defined('PHP_MINOR_VERSION');
         $isPhpReleaseVersionDefined = defined('PHP_RELEASE_VERSION');
@@ -112,8 +116,24 @@ class RequestFactory
             $phpVersion = phpversion();
         }
 
-        $sdkVersion = self::SDK_VERSION;
+        if (!empty($applicationName)) {
+            $userAgent['application'] = "application:$applicationName";
+        }
 
-        return "Application:$applicationName:$applicationVersion sdk:{$sdkVersion} php:$phpVersion;";
+        if (!empty($applicationName) && !empty($applicationVersion)) {
+            $userAgent['application'] .= ":$applicationVersion";
+        }
+
+        if (!empty($cmsName) && !empty($cmsVersion)) {
+            $userAgent['cms'] = "cms:$cmsName:$cmsVersion";
+        }
+
+        $sdkVersion = $this->environment->getSdkVersion();
+
+        $userAgent['sdk'] = "sdk:$sdkVersion";
+        $userAgent['api'] = "api:$apiName:$apiVersion";
+        $userAgent['php'] = "php:$phpVersion;";
+
+        return implode(' ', $userAgent);
     }
 }

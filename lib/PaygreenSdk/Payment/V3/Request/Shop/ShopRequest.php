@@ -12,14 +12,25 @@ use Psr\Http\Message\RequestInterface;
 
 class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
 {
-    /**
+    /**     *
      * @return Request|RequestInterface
      */
-    public function getListRequest()
+    public function getListRequest($filters = [], $pagination = [])
     {
+        if($filters === null) {
+            $filters = [];
+        }
+
+        if (empty($pagination)) {
+            $pagination = $this->getDefaultPagination();
+        }
+
+        $parameters = http_build_query(
+            array_merge($filters, $pagination)
+        );
 
         return $this->requestFactory->create(
-            "/account/shops",
+            "/account/shops?" . $parameters,
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

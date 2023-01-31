@@ -5,9 +5,12 @@ namespace Paygreen\Sdk\Core\Request;
 use Exception;
 use Paygreen\Sdk\Core\Environment;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
+use Paygreen\Sdk\Payment\V3\Request\Traits\RequestTrait;
 
 abstract class Request
 {
+    use RequestTrait;
+
     /**
      * @var RequestFactory
      */

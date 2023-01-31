@@ -18,7 +18,7 @@ class Environment extends \Paygreen\Sdk\Core\Environment
      */
     public function __construct($clientId, $environment, $apiVersion)
     {
-        parent::__construct($environment, $apiVersion);
+        parent::__construct($environment, 'charity', $apiVersion);
         
         $this->clientId = $clientId;
         $availableApiVersions = [self::API_VERSION_2];
