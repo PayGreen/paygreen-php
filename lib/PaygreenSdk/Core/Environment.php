@@ -19,25 +19,36 @@ abstract class Environment implements EnvironmentInterface
     /** @var string */
     protected $environment;
 
+    /** @var string */
+    protected $apiName;
+
     /** @var int */
     protected $apiVersion;
 
     /** @var string */
-    protected $applicationName = 'sdk';
+    protected $applicationName;
 
     /** @var string */
-    protected $applicationVersion = '1.0.0';
+    protected $applicationVersion;
+
+    /** @var string */
+    protected $cmsName;
+
+    /** @var string */
+    protected $cmsVersion;
     
     /** @var bool */
     protected $testMode = false;
 
     /**
      * @param string     $environment
+     * @param string     $apiName
      * @param int|string $apiVersion
      */
-    public function __construct($environment, $apiVersion)
+    public function __construct($environment, $apiName, $apiVersion)
     {
         $this->environment = strtoupper($environment);
+        $this->apiName = $apiName;
         $this->apiVersion = (int) $apiVersion;
         $availableEnvironments = [self::ENVIRONMENT_PRODUCTION, self::ENVIRONMENT_SANDBOX, self::ENVIRONMENT_RECETTE];
 
@@ -52,6 +63,14 @@ abstract class Environment implements EnvironmentInterface
     public function getEnvironment()
     {
         return $this->environment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getApiName()
+    {
+        return $this->apiName;
     }
 
     /**
@@ -76,6 +95,32 @@ abstract class Environment implements EnvironmentInterface
     public function getApplicationVersion()
     {
         return $this->applicationVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCmsName()
+    {
+        return $this->cmsName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCmsVersion()
+    {
+        return $this->cmsVersion;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSdkVersion()
+    {
+        $composerJson = json_decode(file_get_contents(__DIR__ . '/../../../composer.json'));
+
+        return $composerJson->version;
     }
 
     /**
@@ -108,6 +153,22 @@ abstract class Environment implements EnvironmentInterface
     public function setApplicationVersion($applicationVersion)
     {
         $this->applicationVersion = (string) $applicationVersion;
+    }
+
+    /**
+     * @param string $cmsName
+     */
+    public function setCmsName($cmsName)
+    {
+        $this->cmsName = $cmsName;
+    }
+
+    /**
+     * @param string $cmsVersion
+     */
+    public function setCmsVersion($cmsVersion)
+    {
+        $this->cmsVersion = (string) $cmsVersion;
     }
 
     /**
