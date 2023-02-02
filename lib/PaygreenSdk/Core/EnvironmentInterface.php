@@ -10,6 +10,11 @@ interface EnvironmentInterface
     public function getEnvironment();
 
     /**
+     * @return string
+     */
+    public function getApiName();
+
+    /**
      * @return int
      */
     public function getApiVersion();
@@ -23,6 +28,21 @@ interface EnvironmentInterface
      * @return string
      */
     public function getApplicationVersion();
+
+    /**
+     * @return string
+     */
+    public function getCmsName();
+
+    /**
+     * @return string
+     */
+    public function getCmsVersion();
+
+    /**
+     * @return string
+     */
+    public function getSdkVersion();
 
     /**
      * @return string

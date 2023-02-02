@@ -13,8 +13,8 @@ use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 $curl = new Client();
 
 $environment = new Environment(
-    getenv('PG_PAYMENT_SHOP_ID'),
-    getenv('PG_PAYMENT_SECRET_KEY'),
+    getenv('SHOP_ID_MARKETPLACE'),
+    getenv('SECRET_KEY_MARKETPLACE'),
     getenv('PG_PAYMENT_API_SERVER'),
     getenv('PG_PAYMENT_API_VERSION')
 );
@@ -28,19 +28,24 @@ $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
 $client->setBearer($bearer);
 
-$response = $client->listPaymentConfig();
-$data = json_decode($response->getBody()->getContents())->data;
+$filters = [];
+
+// pagination settings
+$pagination = [
+    'max_per_page' => 5,
+    'page' => 1
+];
+
+// call
+$response = $client->listShop($filters, $pagination);
+
+// response
+$jsonResponse = json_decode($response->getBody()->getContents());
+$data = $jsonResponse->data;
+$pagination = $jsonResponse->pagination;
+
 dump($data);
-
-$publicKey = "pk_6018016627284e5d95d0e48103272a37";
-$response = $client->getPublicKey($publicKey);
-$data = json_decode($response->getBody()->getContents())->data;
-
-if ($data !== null && $data->revoked_at === null) {
-    dump("Public key $publicKey valid.");
-} else {
-    dump("Public key $publicKey invalid.");
-}
+die();
 
 /*$response = $client->listTransaction();
 dump($response);
@@ -53,15 +58,15 @@ dump($data);*/
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
-$listener = new Listener();
-$listener->setType('webhook');
-$listener->setEvents(["payment_order.authorized", "transaction.authorized"]);
-$listener->setUrl('http://localhost:80');
-
-
-$response = $client->createListener($listener);
-$data = json_decode($response->getBody()->getContents())->data;
-dump($response);
+//$listener = new Listener();
+//$listener->setType('webhook');
+//$listener->setEvents(["payment_order.authorized", "transaction.authorized"]);
+//$listener->setUrl('http://localhost:80');
+//
+//
+//$response = $client->createListener($listener);
+//$data = json_decode($response->getBody()->getContents())->data;
+//dump($response);
 
 //$buyer = new Buyer();
 //$buyer->setId(uniqid());
