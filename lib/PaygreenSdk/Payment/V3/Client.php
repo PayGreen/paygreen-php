@@ -673,4 +673,26 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/post_update_shop
+     *
+     * @param Shop $shop
+     * @param ?string $shopId
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function updateShop(Shop $shop, $shopId = null)
+    {
+        $request = (new ShopRequest($this->requestFactory, $this->environment))->getUpdateRequest($shop, $shopId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
 }

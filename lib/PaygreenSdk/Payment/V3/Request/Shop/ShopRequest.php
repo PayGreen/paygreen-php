@@ -111,4 +111,53 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
+
+    /**
+     * @param Shop $shop
+     * @param ?string $shopId
+     *
+     * @return Request|RequestInterface
+     */
+    public function getUpdateRequest($shop, $shopId = null)
+    {
+        if ($shopId === null) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $body = [
+            'name' => $shop->getName(),
+            'national_id' => $shop->getNationalId(),
+            'mcc' => $shop->getMcc(),
+            'annual_processing_volume' => $shop->getAnnualProcessingVolume(),
+            'average_transaction_value' => $shop->getAverageTransactionValue(),
+            'highest_transaction_value' => $shop->getHighestTransactionValue(),
+            'activity_categories' => $shop->getActivityCategories(),
+            'activity_description' => $shop->getActivityDescription(),
+            'commercial_name' => $shop->getCommercialName(),
+            'creation_date' => $shop->getCreationDate(),
+            'economic_model' => $shop->getEconomicModel(),
+            'legal_category' => $shop->getLegalCategory(),
+            'primary_activity' => $shop->getPrimaryActivity(),
+            'product_type' => $shop->getProductType(),
+            'website_url' => $shop->getWebsiteUrl(),
+            'legal_notice_url' => $shop->getLegalNoticeUrl(),
+            'address' => null
+        ];
+
+        if ($shop->getAddress() instanceof Address) {
+            $body['address'] = [
+                "line_1" => $shop->getAddress()->getStreetLineOne(),
+                "line_2" => $shop->getAddress()->getStreetLineTwo(),
+                "postal_code" => $shop->getAddress()->getPostalCode(),
+                "city" => $shop->getAddress()->getCity(),
+                "country" => $shop->getAddress()->getCountryCode(),
+                "state" => $shop->getAddress()->getState(),
+            ];
+        }
+
+        return $this->requestFactory->create(
+            "/account/shops/$shopId",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
 }
