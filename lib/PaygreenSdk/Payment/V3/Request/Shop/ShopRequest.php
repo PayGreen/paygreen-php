@@ -85,17 +85,13 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
+     * @param string $shopId
      * @param Shop $shop
-     * @param ?string $shopId
      *
      * @return Request|RequestInterface
      */
-    public function getUpdateRequest($shop, $shopId = null)
+    public function getUpdateRequest($shopId, $shop)
     {
-        if ($shopId === null) {
-            $shopId = $this->environment->getShopId();
-        }
-
         $body = $this->getBodyData($shop);
 
         return $this->requestFactory->create(

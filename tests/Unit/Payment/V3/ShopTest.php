@@ -190,7 +190,7 @@ class ShopTest extends TestCase
 
         $shop->setNationalId('987654321');
 
-        $this->client->updateShop($shop);
+        $this->client->updateShop($this->client->getEnvironment()->getShopId(), $shop);
 
         $request = $this->client->getLastRequest();
         $content = json_decode($request->getBody()->getContents());
