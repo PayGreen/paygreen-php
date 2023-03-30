@@ -12,9 +12,11 @@ use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 
 $curl = new Client();
 
+
+
 $environment = new Environment(
-    getenv('SHOP_ID_MARKETPLACE'),
-    getenv('SECRET_KEY_MARKETPLACE'),
+    getenv('PG_PAYMENT_SHOP_ID'), //PG_PAYMENT_SHOP_ID SHOP_ID_MARKETPLACE
+    getenv('PG_PAYMENT_SECRET_KEY'), //PG_PAYMENT_SECRET_KEY SECRET_KEY_MARKETPLACE
     getenv('PG_PAYMENT_API_SERVER'),
     getenv('PG_PAYMENT_API_VERSION')
 );
@@ -28,23 +30,52 @@ $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
 $client->setBearer($bearer);
 
-$filters = [];
+
+// List Payment Order
+$filters = [
+    'reference' => 'Lorem ipsum'
+];
+$pagination = [
+    'max_per_page' => 19,
+    'page' => 2
+];
+
+$response = $client->listPaymentOrder(null, null, $filters, $pagination);
+
+$jsonResponse = json_decode($response->getBody()->getContents());
+$data = $jsonResponse->data;
+$pagination = $jsonResponse->pagination;
+
+
+dump($data,$pagination); die();
+$filters = [
+    'email' => 'test@test.frsssqsq'
+];
 
 // pagination settings
 $pagination = [
-    'max_per_page' => 5,
+    'max_per_page' => 10,
     'page' => 1
 ];
 
 // call
-$response = $client->listShop($filters, $pagination);
+$response = $client->listBuyer($filters, $pagination);
 
 // response
 $jsonResponse = json_decode($response->getBody()->getContents());
 $data = $jsonResponse->data;
 $pagination = $jsonResponse->pagination;
 
-dump($data);
+dump("count buyer:" . count($data));
+
+foreach ($data as $index => $buyer) {
+    $responsePC = $client->getBuyer($buyer->id);
+    dump($responsePC);
+    $jsonResponsePC = json_decode($responsePC->getBody()->getContents());
+    $dataPC = $jsonResponsePC->data;
+    dump($dataPC);
+    die();
+}
 die();
 
 /*$response = $client->listTransaction();
@@ -54,7 +85,7 @@ $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 
 
-/*$response = $client->listPaymentOrder(null,"sh_dec7e3999339495795c88586d60a6396");
+/*$response = $client->listPaymentOrder(null,"");
 $data = json_decode($response->getBody()->getContents())->data;
 dump($data);*/
 

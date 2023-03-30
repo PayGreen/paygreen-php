@@ -290,7 +290,7 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals(
-            '/payment/payment-orders?shop_id=sh_0000&reference=SDK-ORDER-123',
+            '/payment/payment-orders?shop_id=sh_0000&reference=SDK-ORDER-123&max_per_page=20&page=1',
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
@@ -384,7 +384,8 @@ final class ClientTest extends TestCase
         $content = json_decode($request->getBody()->getContents());
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/instruments?buyer_id=buy_0000',
+        $this->assertEquals('/payment/instruments',  $request->getUri()->getPath());
+        $this->assertEquals('/payment/instruments?buyer_id=buy_0000&max_per_page=20&page=1',
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
@@ -463,7 +464,7 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals(
-            '/notifications/listeners?shop_id=sh_12345',
+            '/notifications/listeners?shop_id=sh_12345&max_per_page=20&page=1',
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
@@ -484,7 +485,7 @@ final class ClientTest extends TestCase
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals(
-            '/notifications/?listener_id=lis_12345',
+            '/notifications/?listener_id=lis_12345&max_per_page=20&page=1',
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }

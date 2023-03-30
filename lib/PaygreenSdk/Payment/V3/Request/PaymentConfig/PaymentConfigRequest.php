@@ -11,12 +11,27 @@ use Psr\Http\Message\RequestInterface;
 class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
+     * @param $idPaymentConfig
      * @return RequestInterface
      */
-    public function getGetRequest()
+    public function getGetRequest($idPaymentConfig)
     {
         return $this->requestFactory->create(
-            "/payment/payment-configs",
+            "/payment/payment-configs/" . $idPaymentConfig,
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param $filters
+     * @param $pagination
+     * @return RequestInterface
+     */
+    public function getListRequest($filters = [], $pagination = [])
+    {
+        return $this->requestFactory->create(
+            "/payment/payment-configs?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

@@ -16,7 +16,22 @@ $client->getBuyer('buy_0000');
 ## List buyers
 
 ```php
-$client->listBuyer();
+
+// available filters
+$filters = [
+    'shop_id' => 'sh_XXX', // string
+    'reference' => 'buyer_paygreen', // string
+    'email' => 'mail@paygreen.fr', // string
+];
+
+// pagination settings
+$pagination = [
+    'max_per_page' => 5,
+    'page' => 2
+];
+
+// call
+$response = $client->listBuyer($filters, $pagination);
 ```
 
 ## Create a buyer
@@ -195,8 +210,8 @@ $client->getInstrument('ins_0000');
 ```php
 $client->listInstrument();
 
-// You can also list instruments for a specific buyer
-$client->listInstrument('buy_0000');
+// You can also list instruments with filterS
+$client->listInstrument(['buyer_id' => $buyerId]);
 ```
 
 ## Create an instrument
@@ -223,6 +238,8 @@ $client->deleteInstrument('ins_0000');
 
 ```php
 $client->listPaymentConfig();
+
+$client->listPaymentConfig(['status' => $status]);
 ```
 
 ## Create a payment config
@@ -230,7 +247,7 @@ $client->listPaymentConfig();
 ```php
 $paymentConfig = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
 $paymentConfig->setPlatform('bank_card');
-$paymentConfig->setSellingContractId('sel_0000');
+$paymentConfig->setSellingContractId('sc_0000');
 $paymentConfig->setCurrency('eur');
 $paymentConfig->setConfig(array('config1', 'config2')); // Optional
 
@@ -255,5 +272,5 @@ $client->listTransaction(
 ## Get transaction
 
 ```php
-$client->getTransaction('tra_0000');
+$client->getTransaction('tr_0000');
 ```

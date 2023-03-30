@@ -13,15 +13,29 @@ use Psr\Http\Message\RequestInterface;
 class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param string $reference
+     * @param string $instrumentId
+     * @return Request|RequestInterface
      * @throws Exception
      *
-     * @return Request|RequestInterface
      */
-    public function getGetRequest($reference)
+    public function getGetRequest($instrumentId)
     {
         return $this->requestFactory->create(
-            "/payment/instruments/{$reference}",
+            "/payment/instruments/" . $instrumentId,
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @return Request|RequestInterface
+     * @throws Exception
+     *
+     */
+    public function getListRequest($filters = [], $pagination = [])
+    {
+        return $this->requestFactory->create(
+            "/payment/instruments?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -29,9 +43,9 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param Instrument $instrument
+     * @return Request|RequestInterface
      * @throws Exception
      *
-     * @return Request|RequestInterface
      */
     public function getCreateRequest($instrument)
     {
@@ -49,9 +63,9 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param Instrument $instrument
+     * @return Request|RequestInterface
      * @throws Exception
      *
-     * @return Request|RequestInterface
      */
     public function getUpdateRequest($instrument)
     {
@@ -71,9 +85,9 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param string $reference
+     * @return Request|RequestInterface
      * @throws Exception
      *
-     * @return Request|RequestInterface
      */
     public function getDeleteRequest($reference)
     {
@@ -81,26 +95,6 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
             "/payment/instruments/{$reference}",
             null,
             'DELETE'
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @param string|null $buyerId
-     * @throws Exception
-     *
-     * @return Request|RequestInterface
-     */
-    public function getListRequest($buyerId = null)
-    {
-        $buyerIdRequestParameter = "";
-        if (null !== $buyerId){
-            $buyerIdRequestParameter = "?buyer_id=".$buyerId;
-        }
-
-        return $this->requestFactory->create(
-            "/payment/instruments{$buyerIdRequestParameter}",
-            null,
-            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

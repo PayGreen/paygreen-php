@@ -68,13 +68,32 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @throws Exception
+     * @param string $paymentConfigId
      *
      * @return ResponseInterface
+     * @throws Exception
      */
-    public function listPaymentConfig()
+    public function getPaymentConfig($paymentConfigId)
     {
-        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))->getGetRequest();
+        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))
+            ->getGetRequest($paymentConfigId);
+
+        $this->setLastRequest($request);
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function listPaymentConfig($filters = [], $pagination = [])
+    {
+        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))
+            ->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -163,9 +182,10 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @return ResponseInterface
      * @throws Exception
      */
-    public function listBuyer()
+    public function listBuyer($filters = [], $pagination = [])
     {
-        $request = (new BuyerRequest($this->requestFactory, $this->environment))->getListRequest();
+        $request = (new BuyerRequest($this->requestFactory, $this->environment))
+            ->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -235,9 +255,19 @@ class Client extends \Paygreen\Sdk\Core\Client
      *
      * @return ResponseInterface
      */
-    public function listPaymentOrder($reference = null, $shopId = null)
+    public function listPaymentOrder($reference = null, $shopId = null, $filters = [], $pagination = [])
     {
-        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getListRequest($reference, $shopId);
+        if (null === $shopId) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $filters['shop_id'] = $shopId;
+
+        if (null !== $reference && empty($filters['reference'])) {
+            $filters['reference'] = $reference;
+        }
+
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -372,9 +402,10 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function getInstrument($instrumentId)
     {
-        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getGetRequest($instrumentId);
-        $this->setLastRequest($request);
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))
+            ->getGetRequest($instrumentId);
 
+        $this->setLastRequest($request);
         $response = $this->sendRequest($request);
         $this->setLastResponse($response);
 
@@ -384,14 +415,19 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @link https://developers.paygreen.fr/reference/get_list_instruments
      *
-     * @param string|null $buyerId
-     * @throws Exception
-     *
+     * @param $buyerId
+     * @param $filters
+     * @param $pagination
      * @return ResponseInterface
+     * @throws Exception
      */
-    public function listInstrument($buyerId = null)
+    public function listInstrument($buyerId = null, $filters = [], $pagination = [])
     {
-        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getListRequest($buyerId);
+        if (null !== $buyerId) {
+            $filters['buyer_id'] = $buyerId;
+        }
+
+        $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -461,9 +497,15 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @throws Exception
      *
      */
-    public function listListener($shopId = null)
+    public function listListener($shopId = null, $filters = [], $pagination = [])
     {
-        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getListByShopRequest($shopId);
+        if (null === $shopId) {
+            $shopId = $this->environment->getShopId();
+        }
+
+        $filters['shop_id'] = $shopId;
+
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -496,9 +538,13 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @throws Exception
      *
      */
-    public function listNotification($listenerId)
+    public function listNotification($listenerId = null, $filters = [], $pagination = [])
     {
-        $request = (new NotificationRequest($this->requestFactory, $this->environment))->getGetByListenerRequest($listenerId);
+        if ($listenerId !== null) {
+            $filters['listener_id'] = $listenerId;
+        }
+
+        $request = (new NotificationRequest($this->requestFactory, $this->environment))->getGetByListenerRequest($filters, $pagination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

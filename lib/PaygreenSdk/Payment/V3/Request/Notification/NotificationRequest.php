@@ -7,14 +7,28 @@ use Psr\Http\Message\RequestInterface;
 class NotificationRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param string $listenerId
-     *
+     * @param $filters
+     * @param $pagination
      * @return RequestInterface
      */
-    public function getGetByListenerRequest($listenerId)
+    public function getGetByListenerRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/notifications/?listener_id={$listenerId}",
+            "/notifications/?" . $this->getListParameters($filters, $pagination),
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**+
+     * @param $filters
+     * @param $pagination
+     * @return RequestInterface
+     */
+    public function getListRequest($filters = [], $pagination = [])
+    {
+        return $this->requestFactory->create(
+            "/notifications/listeners?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
