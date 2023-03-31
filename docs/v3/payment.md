@@ -31,7 +31,7 @@ $pagination = [
 ];
 
 // call
-$response = $client->listBuyer($filters, $pagination);
+$response = $client->listBuyer('sh_',$filters, $pagination);
 ```
 
 ## Create a buyer
@@ -239,7 +239,7 @@ $client->deleteInstrument('ins_0000');
 ```php
 $client->listPaymentConfig();
 
-$client->listPaymentConfig(['status' => $status]);
+$client->listPaymentConfig('sh_', ['status' => $status]);
 ```
 
 ## Create a payment config

@@ -90,8 +90,14 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @throws Exception
      *
      */
-    public function listPaymentConfig($filters = [], $pagination = [])
+    public function listPaymentConfig($shopId = null, $filters = [], $pagination = [])
     {
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
+        }
+
         $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))
             ->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
@@ -182,8 +188,14 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @return ResponseInterface
      * @throws Exception
      */
-    public function listBuyer($filters = [], $pagination = [])
+    public function listBuyer($shopId = null, $filters = [], $pagination = [])
     {
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
+        }
+
         $request = (new BuyerRequest($this->requestFactory, $this->environment))
             ->getListRequest($filters, $pagination);
         $this->setLastRequest($request);
@@ -257,11 +269,11 @@ class Client extends \Paygreen\Sdk\Core\Client
      */
     public function listPaymentOrder($reference = null, $shopId = null, $filters = [], $pagination = [])
     {
-        if (null === $shopId) {
-            $shopId = $this->environment->getShopId();
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
         }
-
-        $filters['shop_id'] = $shopId;
 
         if (null !== $reference && empty($filters['reference'])) {
             $filters['reference'] = $reference;
@@ -497,13 +509,13 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @throws Exception
      *
      */
-    public function listListener($shopId = null, $filters = [], $pagination = [])
+    public function listListener( $shopId = null, $filters = [], $pagination = [])
     {
-        if (null === $shopId) {
-            $shopId = $this->environment->getShopId();
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
         }
-
-        $filters['shop_id'] = $shopId;
 
         $request = (new ListenerRequest($this->requestFactory, $this->environment))->getListRequest($filters, $pagination);
         $this->setLastRequest($request);

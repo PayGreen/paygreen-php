@@ -31,6 +31,20 @@ $bearer = $data->token;
 $client->setBearer($bearer);
 
 
+//UPDATE SHOP
+
+$response = $client->updateShop(
+    $environment->getShopId(),
+    (new \Paygreen\Sdk\Payment\V3\Model\Shop())->setName('Nouveau Nom')
+);
+
+$jsonResponse = json_decode($response->getBody()->getContents());
+$data = $jsonResponse->data;
+
+
+dump($data); die();
+
+
 // List Payment Order
 $filters = [
     'reference' => 'Lorem ipsum'
