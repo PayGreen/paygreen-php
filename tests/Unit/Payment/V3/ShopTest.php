@@ -159,7 +159,7 @@ class ShopTest extends TestCase
         $shop = (new Shop())
             ->setMcc(123);
 
-        $this->client->createShop('deprecatedName', 'depreacatedNI', $shop);
+        $this->client->createShop('deprecatedName', 'deprecatedNI', $shop);
 
         $request = $this->client->getLastRequest();
 
@@ -168,7 +168,25 @@ class ShopTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/account/shops', $request->getUri()->getPath());
         $this->assertEquals('deprecatedName', $content->name);
-        $this->assertEquals('depreacatedNI', $content->national_id);
+        $this->assertEquals('deprecatedNI', $content->national_id);
         $this->assertEquals(123, $content->mcc);
+    }
+
+    public function testUpdateShop()
+    {
+        $shop = (new Shop())
+            ->setName('name')
+            ->setNationalId('123456789')
+        ;
+
+        $this->client->updateShop('sh_1234', $shop);
+
+        $request = $this->client->getLastRequest();
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/account/shops/sh_1234', $request->getUri()->getPath());
+        $this->assertEquals("name", $content->name);
+        $this->assertEquals("123456789", $content->national_id);
     }
 }

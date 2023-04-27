@@ -2,8 +2,6 @@
 
 namespace Paygreen\Sdk\Core\Normalizer;
 
-use Paygreen\Sdk\Core\Tool\ArrayTool;
-
 class CleanEmptyValueNormalizer implements NormalizerInterface
 {
     /**

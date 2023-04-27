@@ -17,20 +17,8 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getListRequest($filters = [], $pagination = [])
     {
-        if($filters === null) {
-            $filters = [];
-        }
-
-        if (empty($pagination)) {
-            $pagination = $this->getDefaultPagination();
-        }
-
-        $parameters = http_build_query(
-            array_merge($filters, $pagination)
-        );
-
         return $this->requestFactory->create(
-            "/account/shops?" . $parameters,
+            "/account/shops?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -75,6 +63,37 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
             $shop->setNationalId($nationalId);
         }
 
+        $body = $this->getBodyData($shop);
+        $body['creation_date'] = $shop->getCreationDate() ? $shop->getCreationDate()->format('Y-m-d') : null;
+
+        return $this->requestFactory->create(
+            "/account/shops",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param string $shopId
+     * @param Shop $shop
+     *
+     * @return Request|RequestInterface
+     */
+    public function getUpdateRequest($shopId, $shop)
+    {
+        $body = $this->getBodyData($shop);
+
+        return $this->requestFactory->create(
+            "/account/shops/$shopId",
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param Shop $shop
+     * @return array
+     */
+    private function getBodyData(Shop $shop)
+    {
         $body = [
             'name' => $shop->getName(),
             'national_id' => $shop->getNationalId(),
@@ -85,7 +104,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
             'activity_categories' => $shop->getActivityCategories(),
             'activity_description' => $shop->getActivityDescription(),
             'commercial_name' => $shop->getCommercialName(),
-            'creation_date' => $shop->getCreationDate() ? $shop->getCreationDate()->format('Y-m-d') : null,
+            'creation_date' => $shop->getCreationDate(),
             'economic_model' => $shop->getEconomicModel(),
             'legal_category' => $shop->getLegalCategory(),
             'primary_activity' => $shop->getPrimaryActivity(),
@@ -106,9 +125,6 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
             ];
         }
 
-        return $this->requestFactory->create(
-            "/account/shops",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
+        return $body;
     }
 }

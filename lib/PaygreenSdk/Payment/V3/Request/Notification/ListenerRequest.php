@@ -79,19 +79,15 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
         )->withAuthorization()->isJson()->getRequest();
     }
 
-    /**
-     * @param string|null $shopId
-     *
+    /**+
+     * @param $filters
+     * @param $pagination
      * @return RequestInterface
      */
-    public function getListByShopRequest($shopId = null)
+    public function getListRequest($filters = [], $pagination = [])
     {
-        if ($shopId === null) {
-            $shopId = $this->environment->getShopId();
-        }
-
         return $this->requestFactory->create(
-            "/notifications/listeners?shop_id=$shopId",
+            "/notifications/listeners?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
