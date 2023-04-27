@@ -134,6 +134,6 @@ class RequestFactory
         $userAgent['api'] = "api:$apiName:$apiVersion";
         $userAgent['php'] = "php:$phpVersion;";
 
-        return implode(' ', $userAgent);
+        return 'PGSDK - ' . implode(' ', $userAgent);
     }
 }

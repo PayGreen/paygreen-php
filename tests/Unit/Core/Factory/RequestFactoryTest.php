@@ -78,7 +78,7 @@ final class RequestFactoryTest extends TestCase
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "sdk:1.3.6 api:payment:3 php:$phpVersion;",
+            "PGSDK - sdk:1.3.6 api:payment:3 php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
@@ -86,7 +86,7 @@ final class RequestFactoryTest extends TestCase
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "application:prestashop-payment sdk:1.3.6 api:payment:3 php:$phpVersion;",
+            "PGSDK - application:prestashop-payment sdk:1.3.6 api:payment:3 php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
 
@@ -94,7 +94,7 @@ final class RequestFactoryTest extends TestCase
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "application:prestashop-payment:1.0.0 " .
+            "PGSDK - application:prestashop-payment:1.0.0 " .
             "sdk:1.3.6 api:payment:3 php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
@@ -104,7 +104,7 @@ final class RequestFactoryTest extends TestCase
 
         $request = $this->requestFactory->create('/api/v3/transactions')->getRequest();
         $this->assertEquals(
-            "application:prestashop-payment:1.0.0 cms:prestashop:1.7 " .
+            "PGSDK - application:prestashop-payment:1.0.0 cms:prestashop:1.7 " .
             "sdk:1.3.6 api:payment:3 php:$phpVersion;",
             $request->getHeader('User-Agent')[0]
         );
