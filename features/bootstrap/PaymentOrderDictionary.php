@@ -36,7 +36,7 @@ trait PaymentOrderDictionary
         $address = new Paygreen\Sdk\Payment\V3\Model\Address();
         $address->setStreetLineOne('54 Crown Street');
         $address->setCity('London');
-        $address->setCountryCode('UK');
+        $address->setCountryCode('GB');
         $address->setPostalCode('SW14 6ZG');
         $address->setState('London');
 

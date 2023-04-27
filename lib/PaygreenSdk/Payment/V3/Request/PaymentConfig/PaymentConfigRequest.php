@@ -11,17 +11,27 @@ use Psr\Http\Message\RequestInterface;
 class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param string|null $shopId
+     * @param $idPaymentConfig
      * @return RequestInterface
      */
-    public function getGetRequest($shopId = null)
+    public function getGetRequest($idPaymentConfig)
     {
-        if ($shopId === null) {
-            $shopId = $this->environment->getShopId($shopId);
-        }
-
         return $this->requestFactory->create(
-            "/payment/payment-configs?shop_id={$shopId}",
+            "/payment/payment-configs/" . $idPaymentConfig,
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param $filters
+     * @param $pagination
+     * @return RequestInterface
+     */
+    public function getListRequest($filters = [], $pagination = [])
+    {
+        return $this->requestFactory->create(
+            "/payment/payment-configs?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -36,7 +46,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getCreateRequest(PaymentConfigInterface $paymentConfig, $shopId = null)
     {
         if ($shopId === null) {
-            $shopId = $this->environment->getShopId($shopId);
+            $shopId = $this->environment->getShopId();
         }
 
         $body = [

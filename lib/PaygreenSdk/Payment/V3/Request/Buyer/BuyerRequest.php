@@ -14,14 +14,27 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $buyerId
-     * @param string|null $shopId
      *
      * @return Request
      */
-    public function getGetRequest($buyerId, $shopId = null)
+    public function getGetRequest($buyerId)
     {
         return $this->requestFactory->create(
-            "/payment/buyers/$buyerId",
+            "/payment/buyers/" . $buyerId,
+            null,
+            'GET'
+        )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param $filters
+     * @param $pagination
+     * @return RequestInterface
+     */
+    public function getListRequest($filters = [], $pagination = [])
+    {
+        return $this->requestFactory->create(
+            "/payment/buyers?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -31,9 +44,9 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
      * @param BuyerInterface $buyer
      * @param string|null $shopId
      *
+     * @return Request|RequestInterface
      * @throws Exception
      *
-     * @return Request|RequestInterface
      */
     public function getCreateRequest(BuyerInterface $buyer, $shopId = null)
     {
@@ -96,29 +109,6 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             "/payment/buyers/{$buyer->getId()}",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
-    }
-
-    /**
-     * @param string|null $shopId
-     * @throws Exception
-     *
-     * @return Request|RequestInterface
-     */
-    public function getListRequest($shopId = null)
-    {
-        if ($shopId === null) {
-            $shopId = $this->environment->getShopId();
-        }
-
-        $body = [
-            'shop_id' => $shopId
-        ];
-
-        return $this->requestFactory->create(
-            "/payment/buyers",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
-            'GET'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

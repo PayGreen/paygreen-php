@@ -28,7 +28,7 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
             $requesterShopId = $this->environment->getShopId();
         }
 
-        $body = [
+        $parameters = [
             'requester_shop_id' => $requesterShopId,
             'shop_id' => $beneficiaryShopId,
             'max_per_page' => $maxPerPage,
@@ -36,8 +36,8 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/payment/transactions",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
+            "/payment/transactions?".http_build_query($parameters),
+            null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
     }

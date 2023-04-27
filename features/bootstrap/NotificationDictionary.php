@@ -27,7 +27,7 @@ trait NotificationDictionary
         $this->listener = new Listener();
         $this->listener->setType('webhook');
         $this->listener->setEvents([\Paygreen\Sdk\Payment\V3\Enum\EventEnum::PAYMENT_ORDER_SUCCESSED]);
-        $this->listener->setUrl('http://localhost:80');
+        $this->listener->setUrl('https://localhost:80' . time());
     }
 
     /**
@@ -60,7 +60,7 @@ trait NotificationDictionary
      */
     public function iUpdateTheListener()
     {
-        $this->client->updateListener($this->listenerId, 'http://localhost:80');
+        $this->client->updateListener($this->listenerId, 'https://localhost:80' . time());
     }
 
     /**

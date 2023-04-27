@@ -17,20 +17,8 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getListRequest($filters = [], $pagination = [])
     {
-        if($filters === null) {
-            $filters = [];
-        }
-
-        if (empty($pagination)) {
-            $pagination = $this->getDefaultPagination();
-        }
-
-        $parameters = http_build_query(
-            array_merge($filters, $pagination)
-        );
-
         return $this->requestFactory->create(
-            "/account/shops?" . $parameters,
+            "/account/shops?" . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
