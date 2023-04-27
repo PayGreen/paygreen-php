@@ -61,7 +61,8 @@ try {
             publicKey: publicKey,
             objectSecret: objectSecret,
             paymentOrderID: paymentOrderId,
-            instrument: instrumentId
+            instrument: instrumentId,
+            urlParams: urlParams
         });
 
         paygreenjs.init({

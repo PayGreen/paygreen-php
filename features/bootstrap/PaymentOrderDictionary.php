@@ -36,7 +36,7 @@ trait PaymentOrderDictionary
         $address = new Paygreen\Sdk\Payment\V3\Model\Address();
         $address->setStreetLineOne('54 Crown Street');
         $address->setCity('London');
-        $address->setCountryCode('UK');
+        $address->setCountryCode('GB');
         $address->setPostalCode('SW14 6ZG');
         $address->setState('London');
 
@@ -189,6 +189,7 @@ trait PaymentOrderDictionary
     public function iAuthorizePaymentWithPgjs()
     {
         $driver = RemoteWebDriver::create('http://selenium:4444', DesiredCapabilities::firefox());
+
         $driver->get('http://host.docker.internal/payment_v3_create_payment.php?' .
             http_build_query([
                 'publicKey' => getenv('PUBLIC_KEY'),
