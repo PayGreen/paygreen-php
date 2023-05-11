@@ -438,7 +438,13 @@ final class ClientTest extends TestCase
 
     public function testRequestUpdateListener()
     {
-        $this->client->updateListener('lis_12345', 'https://my-listener-url.fr');
+        $this->client->updateListener(
+            'lis_12345',
+            'https://my-listener-url.fr',
+            array(
+                'events' => array('payment_order.authorized', 'payment_order.successed')
+            )
+        );
         $request = $this->client->getLastRequest();
 
         $content = json_decode($request->getBody()->getContents());
@@ -446,6 +452,7 @@ final class ClientTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/notifications/listeners/lis_12345', $request->getUri()->getPath());
         $this->assertEquals('https://my-listener-url.fr', $content->url);
+        $this->assertEquals(array('payment_order.authorized', 'payment_order.successed'), $content->events);
     }
 
     public function testRequestGetListener()

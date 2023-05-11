@@ -469,14 +469,19 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $listenerId
-     * @param string $url
+     * @param string|null $url
+     * @param array $params
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function updateListener($listenerId, $url)
+    public function updateListener($listenerId, $url = null, $params = [])
     {
-        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getUpdateRequest($listenerId, $url);
+        if ($url !== null) {
+            $params['url'] = $url;
+        }
+
+        $request = (new ListenerRequest($this->requestFactory, $this->environment))->getUpdateRequest($listenerId, $params);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);

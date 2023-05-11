@@ -51,17 +51,15 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param string $listenerId
-     * @param string $url
+     * @param array $params
      *
      * @return RequestInterface
      */
-    public function getUpdateRequest($listenerId, $url)
+    public function getUpdateRequest($listenerId, $params)
     {
-        $body = ['url' => $url];
-
         return $this->requestFactory->create(
             "/notifications/listeners/{$listenerId}",
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($params, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
 
