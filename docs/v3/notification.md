@@ -33,7 +33,16 @@ $client->getListener('lis_0000');
 ## Update a listener
 
 ```php
-$client->updateListener('lis_0000', 'https://my-store.fr');
+/**
+* The third argument $params is optional
+ * (Authorized values : url, events, type)
+ */
+$client->updateListener('lis_0000', 'https://my-store.fr', array(
+    'events' => array(
+        'payment_order.authorized',
+        'payment_order.refused'
+    )
+));
 ```
 
 ## Delete a listener
