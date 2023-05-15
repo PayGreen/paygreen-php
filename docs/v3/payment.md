@@ -274,3 +274,17 @@ $client->listTransaction(
 ```php
 $client->getTransaction('tr_0000');
 ```
+
+# Operation
+
+## List operations
+
+```php
+// You must specify an instrument ID to list the operations
+$client->listOperation('ins_0000');
+
+## Get operation
+
+```php
+$client->getOperation('op_0000');
+```
