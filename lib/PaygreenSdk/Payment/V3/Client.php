@@ -16,6 +16,7 @@ use Paygreen\Sdk\Payment\V3\Request\Event\EventRequest;
 use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
+use Paygreen\Sdk\Payment\V3\Request\Operation\OperationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
@@ -741,6 +742,53 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function updateShop($shopId, Shop $shop)
     {
         $request = (new ShopRequest($this->requestFactory, $this->environment))->getUpdateRequest($shopId, $shop);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /***
+     * @param string $operationId
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getOperation($operationId)
+    {
+        $request = (new OperationRequest($this->requestFactory, $this->environment))->getGetRequest($operationId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $instrumentId
+     * @param int $maxPerPage
+     * @param int $page
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listOperation(
+        $instrumentId = null,
+        $maxPerPage = 10,
+        $page = 1
+    ) {
+        $request = (new OperationRequest($this->requestFactory, $this->environment))->getListRequest(
+            $instrumentId,
+            $maxPerPage,
+            $page
+        );
 
         $this->setLastRequest($request);
 
