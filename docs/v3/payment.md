@@ -280,11 +280,31 @@ $client->getTransaction('tr_0000');
 ## List operations
 
 ```php
+// pagination settings
+$pagination = [
+    'max_per_page' => 5,
+    'page' => 1
+];
+
 // You must specify an instrument ID to list the operations
-$client->listOperation('ins_0000');
+$response = $client->listOperation('ins_0000', $pagination);
+
+// response
+$jsonResponse = json_decode($response->getBody()->getContents());
+$data = $jsonResponse->data;
+$pagination = $jsonResponse->pagination;
 
 ## Get operation
 
 ```php
 $client->getOperation('op_0000');
+```
+
+## Update operation
+
+```php
+// You must define amount or status to update an operation
+// Only authorized operations can be updated
+
+$client->update('op_0000', 2000, 'captured');
 ```
