@@ -772,22 +772,17 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $instrumentId
-     * @param int $maxPerPage
-     * @param int $page
+     * @param array $pagination
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function listOperation(
-        $instrumentId = null,
-        $maxPerPage = 10,
-        $page = 1
-    ) {
+    public function listOperation($instrumentId, $pagination = [])
+    {
         $request = (new OperationRequest($this->requestFactory, $this->environment))->getListRequest(
             $instrumentId,
-            $maxPerPage,
-            $page
+            $pagination
         );
 
         $this->setLastRequest($request);

@@ -9,24 +9,18 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
      * @param string $instrumentId
-     * @param int $maxPerPage
-     * @param int $page
+     * @param array $pagination
      *
      * @return Request|RequestInterface
      */
     public function getListRequest(
         $instrumentId,
-        $maxPerPage = 10,
-        $page = 1
+        $pagination = []
     ) {
-        $parameters = [
-            'instrument_id' => $instrumentId,
-            'max_per_page' => $maxPerPage,
-            'page' => $page
-        ];
+        $filters = ['instrument_id' => $instrumentId];
 
         return $this->requestFactory->create(
-            "/payment/operations?".http_build_query($parameters),
+            "/payment/operations?". $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

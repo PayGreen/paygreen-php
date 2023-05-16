@@ -22,14 +22,16 @@ class OperationTest extends TestCase
     {
         $this->client->listOperation(
             'ins_123456',
-            10,
-            2
+            [
+                'max_per_page' => 5,
+                'page' => 2,
+            ]
         );
 
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
-        $this->assertEquals('/payment/operations?instrument_id=ins_123456&max_per_page=10&page=2',
+        $this->assertEquals('/payment/operations?instrument_id=ins_123456&max_per_page=5&page=2',
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
