@@ -52,7 +52,6 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
     {
         $body = [
             'amount' => $operation->getAmount(),
-            'status' => $operation->getStatus()
         ];
 
         return $this->requestFactory->create(

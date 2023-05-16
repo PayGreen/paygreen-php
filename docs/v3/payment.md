@@ -308,14 +308,11 @@ $client->getOperation('op_0000');
 ## Update operation
 
 ```php
-// You must define amount or status to update an operation
+// You must define amount to update an operation
 // Only authorized operations can be updated
 
 $operation = new Operation();
-$operation
-    ->setAmount(2000)
-    ->setStatus('captured')
-;
+$operation->setAmount(2000);
 
 $client->update('op_0000', $operation);
 ```

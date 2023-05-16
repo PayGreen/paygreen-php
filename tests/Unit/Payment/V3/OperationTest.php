@@ -51,17 +51,5 @@ class OperationTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/operations/op_123456', $request->getUri()->getPath());
         $this->assertEquals(2000, $content->amount);
-        $this->assertEquals(null, $content->status);
-
-        $operation->setStatus('captured');
-
-        $this->client->updateOperation('op_123456', $operation);
-        $request = $this->client->getLastRequest();
-        $content = json_decode($request->getBody()->getContents());
-
-        $this->assertEquals('POST', $request->getMethod());
-        $this->assertEquals('/payment/operations/op_123456', $request->getUri()->getPath());
-        $this->assertEquals(2000, $content->amount);
-        $this->assertEquals('captured', $content->status);
     }
 }

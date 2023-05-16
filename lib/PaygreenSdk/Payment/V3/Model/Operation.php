@@ -10,11 +10,6 @@ class Operation
     private $amount = null;
 
     /**
-     * @var string|null
-     */
-    private $status = null;
-
-    /**
      * @return int|null
      */
     public function getAmount()
@@ -29,24 +24,6 @@ class Operation
     public function setAmount($amount)
     {
         $this->amount = $amount;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param string|null $status
-     * @return Operation
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
         return $this;
     }
 }
