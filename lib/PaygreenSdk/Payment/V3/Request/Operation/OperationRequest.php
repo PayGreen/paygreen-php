@@ -6,6 +6,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
+use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Psr\Http\Message\RequestInterface;
 
 class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -43,16 +44,15 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
 
     /**
      * @param string $operationId
-     * @param int|null $amount
-     * @param string|null $status
+     * @param Operation $operation
      *
      * @return Request|RequestInterface
      */
-    public function getUpdateRequest($operationId, $amount = null, $status = null)
+    public function getUpdateRequest($operationId, Operation $operation)
     {
         $body = [
-            'amount' => $amount,
-            'status' => $status
+            'amount' => $operation->getAmount(),
+            'status' => $operation->getStatus()
         ];
 
         return $this->requestFactory->create(

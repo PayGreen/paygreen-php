@@ -2,6 +2,7 @@
 
 namespace Paygreen\Tests\Unit\Payment\V3;
 
+use Paygreen\Sdk\Payment\V3\Model\Operation;
 use PHPUnit\Framework\TestCase;
 
 class OperationTest extends TestCase
@@ -40,11 +41,13 @@ class OperationTest extends TestCase
 
     public function testRequestUpdateOperation()
     {
-        $this->client->updateOperation(
-            'op_123456',
-            2000,
-            'captured'
-        );
+        $operation = new Operation();
+        $operation
+            ->setAmount(2000)
+            ->setStatus('captured')
+        ;
+
+        $this->client->updateOperation('op_123456', $operation);
 
         $request = $this->client->getLastRequest();
 

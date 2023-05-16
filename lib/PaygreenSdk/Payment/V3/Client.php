@@ -7,6 +7,7 @@ use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
+use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
@@ -795,19 +796,17 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $operationId
-     * @param int|null $amount
-     * @param string|null $status
+     * @param Operation $operation
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function updateOperation($operationId, $amount = null, $status = null)
+    public function updateOperation($operationId, Operation $operation)
     {
         $request = (new OperationRequest($this->requestFactory, $this->environment))->getUpdateRequest(
             $operationId,
-            $amount,
-            $status
+            $operation
         );
 
         $this->setLastRequest($request);
