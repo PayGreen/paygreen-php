@@ -7,6 +7,7 @@ use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
+use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
@@ -16,6 +17,7 @@ use Paygreen\Sdk\Payment\V3\Request\Event\EventRequest;
 use Paygreen\Sdk\Payment\V3\Request\Instrument\InstrumentRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
+use Paygreen\Sdk\Payment\V3\Request\Operation\OperationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
@@ -741,6 +743,71 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function updateShop($shopId, Shop $shop)
     {
         $request = (new ShopRequest($this->requestFactory, $this->environment))->getUpdateRequest($shopId, $shop);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /***
+     * @param string $operationId
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function getOperation($operationId)
+    {
+        $request = (new OperationRequest($this->requestFactory, $this->environment))->getGetRequest($operationId);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param array $filters
+     * @param array $pagination
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listOperation($filters = [], $pagination = [])
+    {
+        $request = (new OperationRequest($this->requestFactory, $this->environment))->getListRequest(
+            $filters,
+            $pagination
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param string $operationId
+     * @param Operation $operation
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function updateOperation($operationId, Operation $operation)
+    {
+        $request = (new OperationRequest($this->requestFactory, $this->environment))->getUpdateRequest(
+            $operationId,
+            $operation
+        );
 
         $this->setLastRequest($request);
 
