@@ -50,13 +50,22 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getUpdateRequest($operationId, Operation $operation)
     {
-        $body = [
-            'amount' => $operation->getAmount(),
-        ];
+        $body = $this->getBodyData($operation);
 
         return $this->requestFactory->create(
             "/payment/operations/$operationId",
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param Operation $operation
+     * @return array
+     */
+    private function getBodyData(Operation $operation)
+    {
+        return [
+            'amount' => $operation->getAmount(),
+        ];
     }
 }
