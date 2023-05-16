@@ -792,4 +792,29 @@ class Client extends \Paygreen\Sdk\Core\Client
 
         return $response;
     }
+
+    /**
+     * @param string $operationId
+     * @param int|null $amount
+     * @param string|null $status
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function updateOperation($operationId, $amount = null, $status = null)
+    {
+        $request = (new OperationRequest($this->requestFactory, $this->environment))->getUpdateRequest(
+            $operationId,
+            $amount,
+            $status
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
 }

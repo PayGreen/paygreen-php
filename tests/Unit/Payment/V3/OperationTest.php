@@ -35,4 +35,22 @@ class OperationTest extends TestCase
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
+
+    public function testRequestUpdateOperation()
+    {
+        $this->client->updateOperation(
+            'op_123456',
+            2000,
+            'captured'
+        );
+
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/operations/op_123456', $request->getUri()->getPath());
+        $this->assertEquals(2000, $content->amount);
+        $this->assertEquals('captured', $content->status);
+    }
 }
