@@ -21,7 +21,9 @@ class OperationTest extends TestCase
     public function testRequestListOperation()
     {
         $this->client->listOperation(
-            'ins_123456',
+            [
+                'instrument_id' => 'ins_123456'
+            ],
             [
                 'max_per_page' => 5,
                 'page' => 2,

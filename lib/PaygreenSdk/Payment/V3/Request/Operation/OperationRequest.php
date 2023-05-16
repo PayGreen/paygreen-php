@@ -11,17 +11,15 @@ use Psr\Http\Message\RequestInterface;
 class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param string $instrumentId
+     * @param array $filters
      * @param array $pagination
      *
      * @return Request|RequestInterface
      */
     public function getListRequest(
-        $instrumentId,
+        $filters = [],
         $pagination = []
     ) {
-        $filters = ['instrument_id' => $instrumentId];
-
         return $this->requestFactory->create(
             "/payment/operations?". $this->getListParameters($filters, $pagination),
             null,

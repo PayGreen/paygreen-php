@@ -771,17 +771,17 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param string $instrumentId
+     * @param array $filters
      * @param array $pagination
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function listOperation($instrumentId, $pagination = [])
+    public function listOperation($filters = [], $pagination = [])
     {
         $request = (new OperationRequest($this->requestFactory, $this->environment))->getListRequest(
-            $instrumentId,
+            $filters,
             $pagination
         );
 
