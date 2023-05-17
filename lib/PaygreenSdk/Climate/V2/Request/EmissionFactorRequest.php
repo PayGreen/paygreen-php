@@ -36,7 +36,7 @@ class EmissionFactorRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body);
 
         return $this->requestFactory->create(
-            "/carbon/emissionFactors?" . http_build_query($body),
+            '/carbon/emissionFactors?' . http_build_query($body),
             null,
             'GET'
         )->withAuthorization()->getRequest();
@@ -50,7 +50,7 @@ class EmissionFactorRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($emissionFactorId)
     {
         return $this->requestFactory->create(
-            "/carbon/emissionFactors/$emissionFactorId",
+            '/carbon/emissionFactors/' . urlencode($emissionFactorId),
             null,
             'GET'
         )->withAuthorization()->getRequest();

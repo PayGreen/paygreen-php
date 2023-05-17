@@ -42,7 +42,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         $detailed = ($detailed) ? 1 : 0;
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}?detailed={$detailed}",
+            '/carbon/footprints/' . urlencode($footprintId) . '?detailed=' . urlencode($detailed),
             null,
             'GET'
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
@@ -61,7 +61,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}",
+            '/carbon/footprints/' . urlencode($footprintId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'PATCH'
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
@@ -81,7 +81,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
         
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}",
+            '/carbon/footprints/' . urlencode($footprintId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'PATCH'
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
@@ -108,7 +108,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/web",
+            '/carbon/footprints/' . urlencode($footprintId) . '/web',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
@@ -142,7 +142,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/delivery",
+            '/carbon/footprints/' . urlencode($footprintId) . '/delivery',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
@@ -157,7 +157,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteDeliveryDataRequest($footprintId)
     {
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/delivery",
+            '/carbon/footprints/' . urlencode($footprintId) . '/delivery',
             null,
             'DELETE'
         )->withAuthorization()->withTestMode()->getRequest();
@@ -173,7 +173,7 @@ class FootprintRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getReserveCarbonRequest($footprintId)
     {
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/contribution"
+            '/carbon/footprints/' . urlencode($footprintId) . '/contribution'
         )->withAuthorization()->withTestMode()->getRequest();
     }
 }

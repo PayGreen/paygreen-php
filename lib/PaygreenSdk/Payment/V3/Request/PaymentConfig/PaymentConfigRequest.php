@@ -17,7 +17,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($idPaymentConfig)
     {
         return $this->requestFactory->create(
-            "/payment/payment-configs/" . $idPaymentConfig,
+            '/payment/payment-configs/' . urlencode($idPaymentConfig),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -31,7 +31,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getListRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/payment/payment-configs?" . $this->getListParameters($filters, $pagination),
+            '/payment/payment-configs?' . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -58,7 +58,7 @@ class PaymentConfigRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/payment/payment-configs",
+            '/payment/payment-configs',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

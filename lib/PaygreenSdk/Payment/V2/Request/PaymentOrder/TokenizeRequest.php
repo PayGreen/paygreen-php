@@ -68,7 +68,7 @@ class TokenizeRequest extends \Paygreen\Sdk\Core\Request\Request
         $body['eligibleAmount'][$paymentOrder->getPaymentType()] = $body['amount'];
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/tokenize",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/tokenize',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

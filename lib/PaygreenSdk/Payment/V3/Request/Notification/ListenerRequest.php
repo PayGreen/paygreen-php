@@ -18,7 +18,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($listenerId)
     {
         return $this->requestFactory->create(
-            "/notifications/listeners/{$listenerId}",
+            '/notifications/listeners/' . urlencode($listenerId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -44,7 +44,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/notifications/listeners",
+            '/notifications/listeners',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -58,7 +58,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getUpdateRequest($listenerId, $params)
     {
         return $this->requestFactory->create(
-            "/notifications/listeners/{$listenerId}",
+            '/notifications/listeners/' . urlencode($listenerId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($params, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -71,7 +71,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteRequest($listenerId)
     {
         return $this->requestFactory->create(
-            "/notifications/listeners/{$listenerId}",
+            '/notifications/listeners/' . urlencode($listenerId),
             null,
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();
@@ -85,7 +85,7 @@ class ListenerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getListRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/notifications/listeners?" . $this->getListParameters($filters, $pagination),
+            '/notifications/listeners?' . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

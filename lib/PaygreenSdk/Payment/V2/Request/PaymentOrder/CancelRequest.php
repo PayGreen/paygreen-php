@@ -26,7 +26,7 @@ class CancelRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/cancel",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/cancel',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

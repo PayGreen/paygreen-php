@@ -69,7 +69,7 @@ class CashRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/cash",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/cash',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

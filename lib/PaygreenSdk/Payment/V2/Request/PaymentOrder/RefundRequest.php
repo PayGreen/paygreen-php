@@ -28,7 +28,7 @@ class RefundRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/{$transactionId}",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/' . urlencode($transactionId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();

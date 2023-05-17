@@ -22,7 +22,7 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
         $pagination = []
     ) {
         return $this->requestFactory->create(
-            "/payment/operations?". $this->getListParameters($filters, $pagination),
+            '/payment/operations?'. $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -36,7 +36,7 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($operationId)
     {
         return $this->requestFactory->create(
-            "/payment/operations/$operationId",
+            '/payment/operations/' . urlencode($operationId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -53,7 +53,7 @@ class OperationRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = $this->getBodyData($operation);
 
         return $this->requestFactory->create(
-            "/payment/operations/$operationId",
+            '/payment/operations/' . urlencode($operationId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

@@ -14,7 +14,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/shop",
+            '/api/' . urlencode($publicKey) . '/shop',
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

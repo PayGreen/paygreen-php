@@ -14,7 +14,7 @@ class PaymentTypeRequest extends \Paygreen\Sdk\Core\Request\Request
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/availablepaymenttype",
+            '/api/' . urlencode($publicKey) . '/availablepaymenttype',
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
