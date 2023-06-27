@@ -15,7 +15,7 @@ class AuthenticationRequest extends \Paygreen\Sdk\Core\Request\Request
         $secretKey = $this->environment->getSecretKey();
 
         return $this->requestFactory->create(
-            "/auth/authentication/{$shopId}/secret-key"
+            '/auth/authentication/' . urlencode($shopId) . '/secret-key'
         )->isJson()->getRequest()->withAddedHeader('Authorization', $secretKey);
     }
 }

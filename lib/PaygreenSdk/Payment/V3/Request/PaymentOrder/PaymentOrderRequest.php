@@ -20,7 +20,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$id}",
+            '/payment/payment-orders/' . urlencode($id),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -106,7 +106,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = ['partial_allowed' => $paymentOrder->isPartialAllowed()];
 
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$paymentOrder->getId()}",
+            '/payment/payment-orders/' . urlencode($paymentOrder->getId()),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -119,7 +119,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getCaptureRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$id}/capture"
+            '/payment/payment-orders/' . urlencode($id) . '/capture'
         )->withAuthorization()->isJson()->getRequest();
     }
 
@@ -131,7 +131,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getRefundRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$id}/refund"
+            '/payment/payment-orders/' . urlencode($id) . '/refund'
         )->withAuthorization()->isJson()->getRequest();
     }
 
@@ -159,7 +159,7 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getCancelRequest($id)
     {
         return $this->requestFactory->create(
-            "/payment/payment-orders/{$id}/cancel"
+            '/payment/payment-orders/' . urlencode($id) . '/cancel'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

@@ -14,7 +14,7 @@ class TokenRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($footprintId)
     {
         return $this->requestFactory->create(
-            "/tokens/footprint/{$footprintId}",
+            '/tokens/footprint/' . urlencode($footprintId),
             null,
             'GET'
         )->withAuthorization()->getRequest();

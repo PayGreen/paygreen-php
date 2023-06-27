@@ -78,7 +78,7 @@ class RecurringRequest extends \Paygreen\Sdk\Core\Request\Request
         $body['eligibleAmount'][$paymentOrder->getPaymentType()] = $body['amount'];
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/subscription",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/subscription',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

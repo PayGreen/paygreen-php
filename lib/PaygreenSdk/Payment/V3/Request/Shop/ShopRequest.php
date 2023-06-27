@@ -18,7 +18,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getListRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/account/shops?" . $this->getListParameters($filters, $pagination),
+            '/account/shops?' . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -36,7 +36,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         return $this->requestFactory->create(
-            "/account/shops/$shopId",
+            '/account/shops/' . urlencode($shopId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -67,7 +67,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
         $body['creation_date'] = $shop->getCreationDate() ? $shop->getCreationDate()->format('Y-m-d') : null;
 
         return $this->requestFactory->create(
-            "/account/shops",
+            '/account/shops',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -83,7 +83,7 @@ class ShopRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = $this->getBodyData($shop);
 
         return $this->requestFactory->create(
-            "/account/shops/$shopId",
+            '/account/shops/' . urlencode($shopId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
