@@ -21,7 +21,7 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($instrumentId)
     {
         return $this->requestFactory->create(
-            "/payment/instruments/" . $instrumentId,
+            '/payment/instruments/' . urlencode($instrumentId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -35,7 +35,7 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getListRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/payment/instruments?" . $this->getListParameters($filters, $pagination),
+            '/payment/instruments?' . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -56,7 +56,7 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/payment/instruments",
+            '/payment/instruments',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -78,7 +78,7 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
         $reference = $instrument->getReference();
 
         return $this->requestFactory->create(
-            "/payment/instruments/{$reference}",
+            '/payment/instruments/' . urlencode($reference),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -92,7 +92,7 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteRequest($reference)
     {
         return $this->requestFactory->create(
-            "/payment/instruments/{$reference}",
+            '/payment/instruments/' . urlencode($reference),
             null,
             'DELETE'
         )->withAuthorization()->isJson()->getRequest();

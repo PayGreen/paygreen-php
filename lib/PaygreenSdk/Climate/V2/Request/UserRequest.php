@@ -15,7 +15,7 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($clientId, $username)
     {
         return $this->requestFactory->create(
-            "/account/{$clientId}/user/{$username}",
+            '/account/' . urlencode($clientId) . '/user/' . urlencode($username),
             null,
             'GET'
         )->withAuthorization()->getRequest();
@@ -27,7 +27,7 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetCurrentUserRequest()
     {
         return $this->requestFactory->create(
-            "/account/me/user/me",
+            '/account/me/user/me',
             null,
             'GET'
         )->withAuthorization()->getRequest();
@@ -41,7 +41,7 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetFavoriteProjectRequest($userId)
     {
         return $this->requestFactory->create(
-            "/carbon/public/projects?idUser={$userId}",
+            '/carbon/public/projects?idUser=' . urlencode($userId),
             null,
             'GET'
         )->getRequest();

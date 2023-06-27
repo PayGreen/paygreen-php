@@ -15,7 +15,7 @@ class AccountRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($clientId)
     {
         return $this->requestFactory->create(
-            "/account/{$clientId}",
+            '/account/' . urlencode($clientId),
             null,
             'GET'
         )->withAuthorization()->getRequest();

@@ -36,7 +36,7 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/payment/transactions?".http_build_query($parameters),
+            '/payment/transactions?' . http_build_query($parameters),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -50,7 +50,7 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($transactionId)
     {
         return $this->requestFactory->create(
-            "/payment/transactions/$transactionId",
+            '/payment/transactions/' . urlencode($transactionId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();

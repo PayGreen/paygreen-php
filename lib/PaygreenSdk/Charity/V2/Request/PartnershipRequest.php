@@ -12,7 +12,7 @@ class PartnershipRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGroupsRequest()
     {
         return $this->requestFactory->create(
-            "/partnership-group",
+            '/partnership-group',
             null,
             'GET'
         )->withAuthorization()->withTestMode()->getRequest();
@@ -26,7 +26,7 @@ class PartnershipRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGroupRequest($externalId)
     {
         return $this->requestFactory->create(
-            "/partnership-group/{$externalId}",
+            '/partnership-group/' . urlencode($externalId),
             null,
             'GET'
         )->withAuthorization()->withTestMode()->getRequest();
@@ -38,7 +38,7 @@ class PartnershipRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDefaultGroup()
     {
         return $this->requestFactory->create(
-            "/partnership-group?isDefault=1",
+            '/partnership-group?isDefault=1',
             null,
             'GET'
         )->withAuthorization()->withTestMode()->getRequest();

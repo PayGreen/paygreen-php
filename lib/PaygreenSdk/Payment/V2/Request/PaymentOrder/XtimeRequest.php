@@ -78,7 +78,7 @@ class XtimeRequest extends \Paygreen\Sdk\Core\Request\Request
         $body['eligibleAmount'][$paymentOrder->getPaymentType()] = $body['amount'];
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/xtime",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/xtime',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

@@ -19,7 +19,7 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/{$transactionId}",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/' . urlencode($transactionId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -35,7 +35,7 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
         $publicKey = $this->environment->getPublicKey();
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/{$transactionId}",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/' . urlencode($transactionId),
             null,
             'PUT'
         )->withAuthorization()->isJson()->getRequest();
@@ -56,7 +56,7 @@ class TransactionRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/api/{$publicKey}/payins/transaction/{$transactionId}",
+            '/api/' . urlencode($publicKey) . '/payins/transaction/' . urlencode($transactionId),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json'),
             'PATCH'
         )->withAuthorization()->isJson()->getRequest();

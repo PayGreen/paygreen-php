@@ -30,7 +30,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/products",
+            '/carbon/footprints/' . urlencode($footprintId) . '/products',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
@@ -58,7 +58,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         $body = ['products' => $products];
 
         return $this->requestFactory->create(
-            "/carbon/footprints/{$footprintId}/product-cart",
+            '/carbon/footprints/' . urlencode($footprintId) . '/product-cart',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
@@ -82,7 +82,7 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/carbon/products/references",
+            '/carbon/products/references',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
@@ -98,9 +98,9 @@ class ProductRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getDeleteProductDataRequest($footprintId, $productExternalReference = null)
     {
         if (!empty($productExternalReference)) {
-            $url = "/carbon/footprints/{$footprintId}/products/{$productExternalReference}";
+            $url = '/carbon/footprints/' . urlencode($footprintId) . '/products/' . urlencode($productExternalReference);
         } else {
-            $url = "/carbon/footprints/{$footprintId}/products";
+            $url = '/carbon/footprints/' . urlencode($footprintId) . '/products';
         }
 
         return $this->requestFactory->create(

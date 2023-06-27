@@ -19,7 +19,7 @@ class StatisticRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest()
     {
         return $this->requestFactory->create(
-            "/carbon/statistics/reports",
+            '/carbon/statistics/reports',
             null,
             'GET'
         )->withAuthorization()->withTestMode()->isJson()->getRequest();

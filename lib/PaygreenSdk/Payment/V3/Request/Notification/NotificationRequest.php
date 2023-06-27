@@ -14,7 +14,7 @@ class NotificationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetByListenerRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/notifications/?" . $this->getListParameters($filters, $pagination),
+            '/notifications/?' . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -28,7 +28,7 @@ class NotificationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getListRequest($filters = [], $pagination = [])
     {
         return $this->requestFactory->create(
-            "/notifications/listeners?" . $this->getListParameters($filters, $pagination),
+            '/notifications/listeners?' . $this->getListParameters($filters, $pagination),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -42,7 +42,7 @@ class NotificationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getReplayRequest($notificationId)
     {
         return $this->requestFactory->create(
-            "/notifications/{$notificationId}/replay"
+            '/notifications/' . urlencode($notificationId) . '/replay'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

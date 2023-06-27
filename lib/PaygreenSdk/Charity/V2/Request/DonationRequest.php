@@ -41,7 +41,7 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/donation",
+            '/donation',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->withTestMode()->isJson()->getRequest();
     }
@@ -54,7 +54,7 @@ class DonationRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($donationId)
     {
         return $this->requestFactory->create(
-            "/donation/{$donationId}",
+            '/donation/' . urlencode($donationId),
             null,
             'GET'
         )->withAuthorization()->withTestMode()->getRequest();

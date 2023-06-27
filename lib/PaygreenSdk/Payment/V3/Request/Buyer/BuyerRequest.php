@@ -20,7 +20,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($buyerId)
     {
         return $this->requestFactory->create(
-            "/payment/buyers/" . $buyerId,
+            '/payment/buyers/' . urlencode($buyerId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -72,7 +72,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         return $this->requestFactory->create(
-            "/payment/buyers",
+            '/payment/buyers',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
@@ -107,7 +107,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         }
 
         return $this->requestFactory->create(
-            "/payment/buyers/{$buyer->getId()}",
+            '/payment/buyers/' . urlencode($buyer->getId()),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }

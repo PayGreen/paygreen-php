@@ -15,7 +15,7 @@ class UserRequest extends \Paygreen\Sdk\Core\Request\Request
     public function getGetRequest($clientId, $username)
     {
         return $this->requestFactory->create(
-            "/account/{$clientId}/user/{$username}",
+            '/account/' . urlencode($clientId) . '/user/' . urlencode($username),
             null,
             'GET'
         )->withAuthorization()->getRequest();
