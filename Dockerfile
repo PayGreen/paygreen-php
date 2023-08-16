@@ -10,16 +10,23 @@ RUN set -eux; \
 		acl \
 		libzip-dev \
 		$PHPIZE_DEPS \
-		; \
-	pecl install \
-		xdebug-2.5.5 \
+		wget \
 		; \
 	docker-php-ext-install -j$(nproc) \
 		json \
 		zip \
-		; \
-	docker-php-ext-enable \
-		xdebug
+		;
+
+RUN wget https://xdebug.org/files/xdebug-2.5.5.tgz && \
+  tar -xzf xdebug-2.5.5.tgz && \
+  cd xdebug-2.5.5 && \
+  phpize && \
+  ./configure --enable-xdebug && \
+  make && \
+  make install && \
+  cd .. && \
+  rm xdebug-2.5.5.tgz && \
+  rm -rf xdebug-2.5.5
 
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
