@@ -35,30 +35,30 @@ trait InstrumentDictionary
         sleep(3);
 
         // Fill pan field
-        $iframe = $driver->findElement(WebDriverBy::id('cardNumberFrame'));
+        $iframe = $driver->findElement(WebDriverBy::id('cardNumber'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="pan"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cardnumber"]'))
         );
-        $driver->findElement(WebDriverBy::name('pan'))->sendKeys(getenv('BANK_CARD_PAN'));
+        $driver->findElement(WebDriverBy::name('cardnumber'))->sendKeys(getenv('BANK_CARD_PAN'));
 
         // Fill cvc field
         $driver->switchTo()->defaultContent();
-        $iframe = $driver->findElement(WebDriverBy::id('cvvFrame'));
+        $iframe = $driver->findElement(WebDriverBy::id('cvv'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvv"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvc"]'))
         );
-        $driver->findElement(WebDriverBy::name('cvv'))->sendKeys(getenv('BANK_CARD_CVV'));
+        $driver->findElement(WebDriverBy::name('cvc'))->sendKeys(getenv('BANK_CARD_CVV'));
 
         // Fill expiration field
         $driver->switchTo()->defaultContent();
-        $iframe = $driver->findElement(WebDriverBy::id('expFrame'));
+        $iframe = $driver->findElement(WebDriverBy::id('expiryDate'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp-date"]'))
         );
-        $driver->findElement(WebDriverBy::name('exp'))->sendKeys(getenv('BANK_CARD_EXP'));
+        $driver->findElement(WebDriverBy::name('exp-date'))->sendKeys(getenv('BANK_CARD_EXP'));
 
         // Submit form
         $driver->switchTo()->defaultContent();
@@ -98,30 +98,30 @@ trait InstrumentDictionary
         sleep(3);
 
         // Fill pan field
-        $iframe = $driver->findElement(WebDriverBy::id('cardNumberFrame'));
+        $iframe = $driver->findElement(WebDriverBy::id('cardNumber'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="pan"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cardnumber"]'))
         );
-        $driver->findElement(WebDriverBy::name('pan'))->sendKeys(getenv('BANK_CARD_PAN'));
+        $driver->findElement(WebDriverBy::name('cardnumber'))->sendKeys(getenv('BANK_CARD_PAN'));
 
         // Fill cvc field
         $driver->switchTo()->defaultContent();
-        $iframe = $driver->findElement(WebDriverBy::id('cvvFrame'));
+        $iframe = $driver->findElement(WebDriverBy::id('cvv'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvv"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvc"]'))
         );
-        $driver->findElement(WebDriverBy::name('cvv'))->sendKeys(getenv('BANK_CARD_CVV'));
+        $driver->findElement(WebDriverBy::name('cvc'))->sendKeys(getenv('BANK_CARD_CVV'));
 
         // Fill expiration field
         $driver->switchTo()->defaultContent();
-        $iframe = $driver->findElement(WebDriverBy::id('expFrame'));
+        $iframe = $driver->findElement(WebDriverBy::id('expiryDate'));
         $driver->switchTo()->frame($iframe);
         $driver->wait()->until(
-            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp"]'))
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp-date"]'))
         );
-        $driver->findElement(WebDriverBy::name('exp'))->sendKeys(getenv('BANK_CARD_EXP'));
+        $driver->findElement(WebDriverBy::name('exp-date'))->sendKeys(getenv('BANK_CARD_EXP'));
 
         // Check reusable card
         $driver->switchTo()->defaultContent();
