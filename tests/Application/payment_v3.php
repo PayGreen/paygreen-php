@@ -13,7 +13,6 @@ use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 $curl = new Client();
 
 
-
 $environment = new Environment(
     getenv('PG_PAYMENT_SHOP_ID'), //PG_PAYMENT_SHOP_ID SHOP_ID_MARKETPLACE
     getenv('PG_PAYMENT_SECRET_KEY'), //PG_PAYMENT_SECRET_KEY SECRET_KEY_MARKETPLACE
@@ -30,7 +29,23 @@ $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
 $client->setBearer($bearer);
 
+die();
+//LIST AND UPDATE PC
+$response = $client->listPaymentConfig('shop_id');
+$pcs = json_decode($response->getBody()->getContents());
 
+if(count($pcs->data) > 0) {
+    foreach ($pcs->data as $pc) {
+        $updatePc = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
+//    $updatePc->setStatus('enabled');
+        $updatePc->setConfig(['reuse_card_proposal' => true]);
+
+        $resp = $client->updatePaymentConfig($pc->id, $updatePc);
+        dump($resp->getStatusCode(), $resp->getBody()->getContents());
+    }
+}
+
+die();
 //UPDATE SHOP
 
 $response = $client->updateShop(
