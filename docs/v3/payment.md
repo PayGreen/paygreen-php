@@ -252,6 +252,17 @@ $paymentConfig->setCurrency('eur');
 $paymentConfig->setConfig(array('config1', 'config2')); // Optional
 
 $client->createPaymentConfig($paymentConfig, 'sh_0000');
+```  
+  
+
+## Create a payment config
+### :warning: Be careful, the `selling_contract` property cannot be updated with SDK
+```php
+$paymentConfig = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
+$paymentConfig->setStatus('value');
+$paymentConfig->setConfig(['key' => 'value']);
+
+$client->updatePaymentConfig('pc_0000', $paymentConfig);
 ```
 
 # Transaction
