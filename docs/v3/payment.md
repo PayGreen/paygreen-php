@@ -255,7 +255,7 @@ $client->createPaymentConfig($paymentConfig, 'sh_0000');
 ```  
   
 
-## Create a payment config
+## Update a payment config
 ### :warning: Be careful, the `selling_contract` property cannot be updated with SDK
 ```php
 $paymentConfig = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
