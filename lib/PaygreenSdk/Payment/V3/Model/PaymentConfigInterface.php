@@ -7,6 +7,21 @@ interface PaymentConfigInterface
     /**
      * @return string
      */
+    public function getId();
+
+    /**
+     * @return string
+     */
+    public function getStatus();
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status);
+
+    /**
+     * @return string
+     */
     public function getCurrency();
 
     /**

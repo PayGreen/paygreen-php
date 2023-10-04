@@ -12,8 +12,6 @@ use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 
 $curl = new Client();
 
-
-
 $environment = new Environment(
     getenv('PG_PAYMENT_SHOP_ID'), //PG_PAYMENT_SHOP_ID SHOP_ID_MARKETPLACE
     getenv('PG_PAYMENT_SECRET_KEY'), //PG_PAYMENT_SECRET_KEY SECRET_KEY_MARKETPLACE
@@ -30,67 +28,85 @@ $data = json_decode($response->getBody()->getContents())->data;
 $bearer = $data->token;
 $client->setBearer($bearer);
 
+die();
+
+//LIST AND UPDATE PC
+//$response = $client->listPaymentConfig('shop_id');
+//$pcs = json_decode($response->getBody()->getContents());
+//
+//if(count($pcs->data) > 0) {
+//    foreach ($pcs->data as $pc) {
+//        $updatePc = new \Paygreen\Sdk\Payment\V3\Model\PaymentConfig();
+////    $updatePc->setStatus('enabled');
+//        $updatePc->setConfig(['reuse_card_proposal' => true]);
+//
+//        $resp = $client->updatePaymentConfig($pc->id, $updatePc);
+//        dump($resp->getStatusCode(), $resp->getBody()->getContents());
+//    }
+//}
+//
+//die();
 
 //UPDATE SHOP
-
-$response = $client->updateShop(
-    $environment->getShopId(),
-    (new \Paygreen\Sdk\Payment\V3\Model\Shop())->setName('Nouveau Nom')
-);
-
-$jsonResponse = json_decode($response->getBody()->getContents());
-$data = $jsonResponse->data;
-
-
-dump($data); die();
+//$response = $client->updateShop(
+//    $environment->getShopId(),
+//    (new \Paygreen\Sdk\Payment\V3\Model\Shop())->setName('Nouveau Nom')
+//);
+//
+//$jsonResponse = json_decode($response->getBody()->getContents());
+//$data = $jsonResponse->data;
+//
+//dump($data); die();
 
 
 // List Payment Order
-$filters = [
-    'reference' => 'Lorem ipsum'
-];
-$pagination = [
-    'max_per_page' => 19,
-    'page' => 2
-];
+//$filters = [
+//    'reference' => 'Lorem ipsum'
+//];
+//$pagination = [
+//    'max_per_page' => 19,
+//    'page' => 2
+//];
+//
+//$response = $client->listPaymentOrder(null, null, $filters, $pagination);
+//
+//$jsonResponse = json_decode($response->getBody()->getContents());
+//$data = $jsonResponse->data;
+//$pagination = $jsonResponse->pagination;
+//
+//
+//dump($data,$pagination); die();
 
-$response = $client->listPaymentOrder(null, null, $filters, $pagination);
-
-$jsonResponse = json_decode($response->getBody()->getContents());
-$data = $jsonResponse->data;
-$pagination = $jsonResponse->pagination;
-
-
-dump($data,$pagination); die();
-$filters = [
-    'email' => 'test@test.frsssqsq'
-];
-
-// pagination settings
-$pagination = [
-    'max_per_page' => 10,
-    'page' => 1
-];
-
-// call
-$response = $client->listBuyer($filters, $pagination);
-
-// response
-$jsonResponse = json_decode($response->getBody()->getContents());
-$data = $jsonResponse->data;
-$pagination = $jsonResponse->pagination;
-
-dump("count buyer:" . count($data));
-
-foreach ($data as $index => $buyer) {
-    $responsePC = $client->getBuyer($buyer->id);
-    dump($responsePC);
-    $jsonResponsePC = json_decode($responsePC->getBody()->getContents());
-    $dataPC = $jsonResponsePC->data;
-    dump($dataPC);
-    die();
-}
-die();
+// List Buyer
+//$filters = [
+//    'email' => 'test@test.frsssqsq'
+//];
+//
+//// pagination settings
+//$pagination = [
+//    'max_per_page' => 10,
+//    'page' => 1
+//];
+//
+//// call
+//$response = $client->listBuyer($filters, $pagination);
+//
+//// response
+//$jsonResponse = json_decode($response->getBody()->getContents());
+//$data = $jsonResponse->data;
+//$pagination = $jsonResponse->pagination;
+//
+//dump("count buyer:" . count($data));
+//
+//foreach ($data as $index => $buyer) {
+//    $responsePC = $client->getBuyer($buyer->id);
+//    dump($responsePC);
+//    $jsonResponsePC = json_decode($responsePC->getBody()->getContents());
+//    $dataPC = $jsonResponsePC->data;
+//    dump($dataPC);
+//    die();
+//}
+//die();
 
 /*$response = $client->listTransaction();
 dump($response);

@@ -23,6 +23,15 @@ final class ClientTest extends TestCase
         $this->assertEquals('/auth/authentication/my_shop_id/secret-key', $request->getUri()->getPath());
     }
 
+    private function getPaymentConfig() {
+        $paymentConfig = new PaymentConfig();
+        $paymentConfig->setPlatform('bank_card');
+        $paymentConfig->setConfig(['config1' => 'test', 'config2' => 123]);
+        $paymentConfig->setSellingContractId('sel_0000');
+        $paymentConfig->setCurrency('eur');
+
+        return $paymentConfig;
+    }
     public function testRequestListPaymentConfig()
     {
         $this->client->listPaymentConfig();
@@ -34,22 +43,37 @@ final class ClientTest extends TestCase
 
     public function testRequestCreatePaymentConfig()
     {
-        $paymentConfig = new PaymentConfig();
-        $paymentConfig->setPlatform('bank_card');
-        $paymentConfig->setConfig(array('config1', 'config2'));
-        $paymentConfig->setSellingContractId('sel_0000');
-        $paymentConfig->setCurrency('eur');
-        $this->client->createPaymentConfig($paymentConfig, 'sh_0000');
+        $this->client->createPaymentConfig($this->getPaymentConfig(), 'sh_0000');
         $request = $this->client->getLastRequest();
 
-        $content = json_decode($request->getBody()->getContents());
+        $content = json_decode($request->getBody()->getContents(), JSON_OBJECT_AS_ARRAY);
 
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('/payment/payment-configs', $request->getUri()->getPath());
-        $this->assertEquals('bank_card', $content->platform);
-        $this->assertEquals(array('config1', 'config2'), $content->config);
-        $this->assertEquals('sel_0000', $content->selling_contract);
-        $this->assertEquals("sh_0000", $content->shop_id);
+        $this->assertEquals('bank_card', $content['platform']);
+        $this->assertArrayHasKey('config1', $content['config']);
+        $this->assertEquals('test', $content['config']['config1']);
+        $this->assertArrayHasKey('config2', $content['config']);
+        $this->assertEquals(123, $content['config']['config2']);
+        $this->assertEquals('sel_0000', $content['selling_contract']);
+        $this->assertEquals("sh_0000", $content['shop_id']);
+    }
+
+    public function testRequestUpdatePaymentConfig()
+    {
+        $paymentConfig = $this->getPaymentConfig();
+        $paymentConfig->setStatus('validated');
+        $paymentConfig->setConfig(['config1' => 'value1']);
+
+        $this->client->updatePaymentConfig("pc_123", $paymentConfig);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents(), JSON_OBJECT_AS_ARRAY);
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/payment-configs/pc_123', $request->getUri()->getPath());
+        $this->assertEquals(['config1' => 'value1'], $content['config']);
+        $this->assertEquals('validated', $content['status']);
     }
 
     public function testRequestGetPublicKey()
