@@ -7,6 +7,16 @@ class PaymentConfig implements PaymentConfigInterface
     /**
      * @var string
      */
+    private $id;
+
+    /**
+     * @var string
+     */
+    private $status;
+
+    /**
+     * @var string
+     */
     private $currency;
 
     /**
@@ -23,6 +33,38 @@ class PaymentConfig implements PaymentConfigInterface
      * @var array
      */
     private $config = array();
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
 
     /**
      * @return string

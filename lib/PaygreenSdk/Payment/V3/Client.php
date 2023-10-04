@@ -8,6 +8,7 @@ use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Operation;
+use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
@@ -61,6 +62,22 @@ class Client extends \Paygreen\Sdk\Core\Client
     public function authenticate()
     {
         $request = (new AuthenticationRequest($this->requestFactory, $this->environment))->getRequest();
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function getPublicKey($publicKey)
+    {
+        $request = (new PublicKeyRequest($this->requestFactory, $this->environment))->getGetRequest($publicKey);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
@@ -135,13 +152,19 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @link https://developers.paygreen.fr/reference/post_update_payment_config
+     *
+     * @param string $shopId
+     * @param PaymentConfig $shop
+     *
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function getPublicKey($publicKey)
+    public function updatePaymentConfig($paymentConfigId, PaymentConfigInterface $paymentConfig)
     {
-        $request = (new PublicKeyRequest($this->requestFactory, $this->environment))->getGetRequest($publicKey);
+        $request = (new PaymentConfigRequest($this->requestFactory, $this->environment))
+            ->getUpdateRequest($paymentConfigId, $paymentConfig);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
