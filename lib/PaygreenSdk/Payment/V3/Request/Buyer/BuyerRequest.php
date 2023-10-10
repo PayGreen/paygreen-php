@@ -94,15 +94,13 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
         ];
 
         if (null !== $buyer->getBillingAddress()) {
-            $body [] = [
-                'billing_address' => [
-                    'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
-                    'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
-                    'city' => $buyer->getBillingAddress()->getCity(),
-                    'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
-                    'country' => $buyer->getBillingAddress()->getCountryCode(),
-                    'state' => $buyer->getBillingAddress()->getState(),
-                ]
+            $body ['billing_address'] = [
+                'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
+                'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
+                'city' => $buyer->getBillingAddress()->getCity(),
+                'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
+                'country' => $buyer->getBillingAddress()->getCountryCode(),
+                'state' => $buyer->getBillingAddress()->getState(),
             ];
         }
 
