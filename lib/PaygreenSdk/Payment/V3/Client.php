@@ -348,13 +348,19 @@ class Client extends \Paygreen\Sdk\Core\Client
 
     /**
      * @param string $paymentOrderId
+     * @param ?string $operationId
+     * @param ?int $amount
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function refundPaymentOrder($paymentOrderId)
+    public function refundPaymentOrder($paymentOrderId, $operationId = null, $amount = null)
     {
-        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getRefundRequest($paymentOrderId);
+        $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getRefundRequest(
+            $paymentOrderId,
+            $operationId,
+            $amount
+        );
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
