@@ -184,7 +184,6 @@ trait PaymentOrderDictionary
             $partialAmount
         );
     }
-
     /**
      * @When /^I cancel a payment order$/
      */
