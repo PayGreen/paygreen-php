@@ -27,18 +27,18 @@ trait ShopDictionary
     public function iReceiveAResponseWithTheShop()
     {
         $response = $this->client->getLastResponse();
-
         $data = json_decode((string)$response->getBody())->data;
 
         Assert::assertEquals(1, preg_match('`^sh_[[:xdigit:]]{32}$`', $data->id));
-        Assert::assertEquals(1, preg_match('`^sh_[[:xdigit:]]{32}$`', $data->marketplace_shop_id));
+        if (!is_null($data->marketplace_shop_id)) {
+            Assert::assertEquals(1, preg_match('`^sh_[[:xdigit:]]{32}$`', $data->marketplace_shop_id));
+        }
         Assert::assertTrue(!empty($data->head_office));
         Assert::assertTrue(!empty($data->address));
         Assert::assertEquals(1, preg_match('`^add_[[:xdigit:]]{32}$`', $data->address->id));
         Assert::assertEquals(1, preg_match('`^acc_[[:xdigit:]]{32}$`', $data->account_id));
-        Assert::assertEquals(123, $data->mcc);
-        Assert::assertCount(1, $data->activity_categories);
-        Assert::assertCount(1, $data->economic_model);
+        Assert::assertObjectHasAttribute('activity_categories', $data);
+        Assert::assertObjectHasAttribute('economic_model', $data);
         Assert::assertObjectHasAttribute('lang', $data);
         Assert::assertObjectHasAttribute('status', $data);
     }

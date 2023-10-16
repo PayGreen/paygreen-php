@@ -49,36 +49,59 @@ trait TransactionDictionary
             sleep(3);
 
             // Fill pan field
-            $iframe = $driver->findElement(WebDriverBy::id('cardNumberFrame'));
+            $iframe = $driver->findElement(WebDriverBy::id('cardNumber'));
             $driver->switchTo()->frame($iframe);
             $driver->wait()->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="pan"]'))
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cardnumber"]'))
             );
-            $driver->findElement(WebDriverBy::name('pan'))->sendKeys(getenv('BANK_CARD_PAN'));
+            $driver->findElement(WebDriverBy::name('cardnumber'))->sendKeys(getenv('BANK_CARD_PAN'));
 
             // Fill cvv field
             $driver->switchTo()->defaultContent();
-            $iframe = $driver->findElement(WebDriverBy::id('cvvFrame'));
+            $iframe = $driver->findElement(WebDriverBy::id('cvv'));
             $driver->switchTo()->frame($iframe);
             $driver->wait()->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvv"]'))
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="cvc"]'))
             );
-            $driver->findElement(WebDriverBy::name('cvv'))->sendKeys(getenv('BANK_CARD_CVV'));
+            $driver->findElement(WebDriverBy::name('cvc'))->sendKeys(getenv('BANK_CARD_CVV'));
 
             // Fill expiration field
             $driver->switchTo()->defaultContent();
-            $iframe = $driver->findElement(WebDriverBy::id('expFrame'));
+            $iframe = $driver->findElement(WebDriverBy::id('expiryDate'));
             $driver->switchTo()->frame($iframe);
             $driver->wait()->until(
-                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp"]'))
+                WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="exp-date"]'))
             );
-            $driver->findElement(WebDriverBy::name('exp'))->sendKeys(getenv('BANK_CARD_EXP'));
+            $driver->findElement(WebDriverBy::name('exp-date'))->sendKeys(getenv('BANK_CARD_EXP'));
 
             // Submit form
             $driver->switchTo()->defaultContent();
             $driver->executeScript('paygreenjs.submitPayment()');
         }
 
+        // Wait until secure authentication frame is loaded
+        $driver->wait()->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('#secure_authentication'))
+        );
+        sleep(3);
+        $driver->switchTo()->defaultContent();
+        $iframe = $driver->findElement(WebDriverBy::cssSelector('#secure_authentication'));
+        $driver->switchTo()->frame($iframe);
+        // Fill 3dsecure
+        $driver->wait()->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('iframe[name="cko-3ds2-iframe"]'))
+        );
+        $iframe = $driver->findElement(WebDriverBy::cssSelector('iframe[name="cko-3ds2-iframe"]'));
+        $driver->switchTo()->frame($iframe);
+        $driver->wait()->until(
+            WebDriverExpectedCondition::presenceOfElementLocated(WebDriverBy::cssSelector('input[name="password"]'))
+        );
+        $driver->findElement(WebDriverBy::name('password'))->sendKeys('Checkout1!');
+        $driver->findElement(WebDriverBy::id('txtButton'))->click();
+
+        sleep(5);
+
+        $driver->switchTo()->defaultContent();
         $driver->wait()->until(
             function ($driver) {
                 return $driver->executeScript('return paymentDone === true');
