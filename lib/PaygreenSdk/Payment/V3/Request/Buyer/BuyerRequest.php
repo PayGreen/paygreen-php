@@ -61,15 +61,18 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getReference(),
             'phone_number' => $buyer->getPhoneNumber(),
-            'billing_address' => [
+        ];
+
+        if (null !== $buyer->getBillingAddress()) {
+            $body ['billing_address'] = [
                 'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
                 'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
                 'city' => $buyer->getBillingAddress()->getCity(),
                 'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
                 'country' => $buyer->getBillingAddress()->getCountryCode(),
                 'state' => $buyer->getBillingAddress()->getState(),
-            ]
-        ];
+            ];
+        }
 
         return $this->requestFactory->create(
             '/payment/buyers',
