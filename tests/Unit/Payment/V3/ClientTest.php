@@ -571,4 +571,36 @@ final class ClientTest extends TestCase
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
+
+    public function testCreateTransferFromSource()
+    {
+        $paymentConfigSource = new PaymentConfig();
+        $paymentConfigSource->setId('pc_0000');
+
+        $this->client->createTransfer(500, $paymentConfigSource);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/transfers', $request->getUri()->getPath());
+        $this->assertEquals(500, $content->amount);
+        $this->assertEquals($paymentConfigSource->getId(), $content->source);
+    }
+
+    public function testCreateTransferToDestination()
+    {
+        $paymentConfigDestination = new PaymentConfig();
+        $paymentConfigDestination->setId('pc_0000');
+
+        $this->client->createTransfer(500, null, $paymentConfigDestination);
+        $request = $this->client->getLastRequest();
+
+        $content = json_decode($request->getBody()->getContents());
+
+        $this->assertEquals('POST', $request->getMethod());
+        $this->assertEquals('/payment/transfers', $request->getUri()->getPath());
+        $this->assertEquals(500, $content->amount);
+        $this->assertEquals($paymentConfigDestination->getId(), $content->destination);
+    }
 }

@@ -24,6 +24,7 @@ use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
 use Paygreen\Sdk\Payment\V3\Request\Shop\ShopRequest;
 use Paygreen\Sdk\Payment\V3\Request\Transaction\TransactionRequest;
+use Paygreen\Sdk\Payment\V3\Request\Transfer\TransferRequest;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
@@ -832,6 +833,25 @@ class Client extends \Paygreen\Sdk\Core\Client
             $operation
         );
 
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param int $amount
+     * @param PaymentConfigInterface|null $paymentConfigSource
+     * @param PaymentConfigInterface|null $paymentConfigDestination
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     */
+    public function createTransfer($amount, PaymentConfigInterface $paymentConfigSource = null, PaymentConfigInterface $paymentConfigDestination = null)
+    {
+        $request = (new TransferRequest($this->requestFactory, $this->environment))->getCreateRequest($amount, $paymentConfigSource, $paymentConfigDestination);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
