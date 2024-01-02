@@ -13,14 +13,14 @@ use Psr\Http\Message\RequestInterface;
 class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
 {
     /**
-     * @param int $id
+     * @param int $paymentOrderId
      *
      * @return Request|RequestInterface
      */
-    public function getGetRequest($id)
+    public function getGetRequest($paymentOrderId)
     {
         return $this->requestFactory->create(
-            '/payment/payment-orders/' . urlencode($id),
+            '/payment/payment-orders/' . urlencode($paymentOrderId),
             null,
             'GET'
         )->withAuthorization()->isJson()->getRequest();
@@ -112,26 +112,34 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param int $id
+     * @param int $paymentOrderId
      *
      * @return Request|RequestInterface
      */
-    public function getCaptureRequest($id)
+    public function getCaptureRequest($paymentOrderId)
     {
         return $this->requestFactory->create(
-            '/payment/payment-orders/' . urlencode($id) . '/capture'
+            '/payment/payment-orders/' . urlencode($paymentOrderId) . '/capture'
         )->withAuthorization()->isJson()->getRequest();
     }
 
     /**
-     * @param string $id
+     * @param string $paymentOrderId
+     * @param ?string $operationId
+     * @param ?int $amount
      *
      * @return Request|RequestInterface
      */
-    public function getRefundRequest($id)
+    public function getRefundRequest($paymentOrderId, $operationId = null, $amount = null)
     {
+        $body = [
+            'operation_id' => $operationId,
+            'amount' => $amount
+        ];
+
         return $this->requestFactory->create(
-            '/payment/payment-orders/' . urlencode($id) . '/refund'
+            '/payment/payment-orders/' . urlencode($paymentOrderId) . '/refund',
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
     }
 
@@ -152,14 +160,14 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param string $id
+     * @param string $paymentOrderId
      *
      * @return Request
      */
-    public function getCancelRequest($id)
+    public function getCancelRequest($paymentOrderId)
     {
         return $this->requestFactory->create(
-            '/payment/payment-orders/' . urlencode($id) . '/cancel'
+            '/payment/payment-orders/' . urlencode($paymentOrderId) . '/cancel'
         )->withAuthorization()->isJson()->getRequest();
     }
 }

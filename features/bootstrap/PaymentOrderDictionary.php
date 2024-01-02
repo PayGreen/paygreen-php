@@ -172,9 +172,18 @@ trait PaymentOrderDictionary
      */
     public function iRefundPartiallyAPaymentOrder()
     {
-        throw new PendingException();
-    }
+        $response = $this->client->getPaymentOrder($this->paymentOrder->getId());
+        $responseData = json_decode($response->getBody()->getContents())->data;
+        $operation = $responseData->transactions['0']->operations['0'];
+        $operationId = $operation->id;
+        $partialAmount = $operation->amount / 2;
 
+        $this->client->refundPaymentOrder(
+            $this->paymentOrder->getId(),
+            $operationId,
+            $partialAmount
+        );
+    }
     /**
      * @When /^I cancel a payment order$/
      */
