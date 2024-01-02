@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
+use Paygreen\Sdk\Payment\V3\Model\AddressInterface;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
 use Psr\Http\Message\RequestInterface;
 
@@ -61,14 +62,7 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getReference(),
             'phone_number' => $buyer->getPhoneNumber(),
-            'billing_address' => [
-                'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
-                'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
-                'city' => $buyer->getBillingAddress()->getCity(),
-                'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
-                'country' => $buyer->getBillingAddress()->getCountryCode(),
-                'state' => $buyer->getBillingAddress()->getState(),
-            ]
+            'billing_address' => $this->handleBillingAddress($buyer->getBillingAddress())
         ];
 
         return $this->requestFactory->create(
@@ -90,23 +84,33 @@ class BuyerRequest extends \Paygreen\Sdk\Core\Request\Request
             'first_name' => $buyer->getFirstName(),
             'last_name' => $buyer->getLastName(),
             'reference' => $buyer->getReference(),
-            'phone_number' => $buyer->getPhoneNumber()
+            'phone_number' => $buyer->getPhoneNumber(),
+            'billing_address' => $this->handleBillingAddress($buyer->getBillingAddress())
         ];
-
-        if (null !== $buyer->getBillingAddress()) {
-            $body ['billing_address'] = [
-                'line1' => $buyer->getBillingAddress()->getStreetLineOne(),
-                'line2' => $buyer->getBillingAddress()->getStreetLineTwo(),
-                'city' => $buyer->getBillingAddress()->getCity(),
-                'postal_code' => $buyer->getBillingAddress()->getPostalCode(),
-                'country' => $buyer->getBillingAddress()->getCountryCode(),
-                'state' => $buyer->getBillingAddress()->getState(),
-            ];
-        }
 
         return $this->requestFactory->create(
             '/payment/buyers/' . urlencode($buyer->getId()),
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
         )->withAuthorization()->isJson()->getRequest();
+    }
+
+    /**
+     * @param AddressInterface|null $billingAddress
+     * @return array|null
+     */
+    private function handleBillingAddress($billingAddress)
+    {
+        if (null !== $billingAddress) {
+            $billingAddress =  [
+                'line1' => $billingAddress->getStreetLineOne(),
+                'line2' => $billingAddress->getStreetLineTwo(),
+                'city' => $billingAddress->getCity(),
+                'postal_code' => $billingAddress->getPostalCode(),
+                'country' => $billingAddress->getCountryCode(),
+                'state' => $billingAddress->getState(),
+            ];
+        }
+
+        return $billingAddress;
     }
 }
