@@ -39,15 +39,7 @@ final class RequestFactoryTest extends TestCase
         $this->buildRequestFactory();
         $this->assertInstanceOf(RequestFactory::class, $this->requestFactory);
 
-        $request = $this->requestFactory->create(
-            '/api/v3/transactions',
-            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize(
-                ['body' => 'content'],
-                'json'
-            ),
-            'POST',
-            ['Content-Type' => 'application/json']
-        )->getRequest();
+        $request = $this->buildRequest()->getRequest();
 
         $content = json_decode($request->getBody()->getContents());
 
@@ -56,6 +48,17 @@ final class RequestFactoryTest extends TestCase
         $this->assertEquals('content', $content->body);
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals('application/json', $request->getHeader('Content-Type')[0]);
+    }
+
+    public function testCreateRequestWithForwardedHost()
+    {
+        $this->buildRequestFactory();
+        $this->assertInstanceOf(RequestFactory::class, $this->requestFactory);
+
+        $request = $this->buildRequest()->withXForwardedHost()->getRequest();
+
+        $this->assertInstanceOf(RequestInterface::class, $request);
+        $this->assertEquals(true, $request->hasHeader('X-Forwarded-Host'));
     }
 
     public function testBuildUserAgentHeader()
@@ -113,5 +116,18 @@ final class RequestFactoryTest extends TestCase
     private function buildRequestFactory()
     {
         $this->requestFactory = new RequestFactory($this->environment);
+    }
+
+    private function buildRequest()
+    {
+        return $this->requestFactory->create(
+            '/api/v3/transactions',
+            (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize(
+                ['body' => 'content'],
+                'json'
+            ),
+            'POST',
+            ['Content-Type' => 'application/json']
+        );
     }
 }
