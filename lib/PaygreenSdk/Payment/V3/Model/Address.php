@@ -44,7 +44,7 @@ class Address implements AddressInterface
 
     /**
      * @param string $postalCode
-     * @return Address
+     * @return self
      */
     public function setPostalCode($postalCode)
     {
@@ -62,7 +62,7 @@ class Address implements AddressInterface
 
     /**
      * @param string $city
-     * @return Address
+     * @return self
      */
     public function setCity($city)
     {
@@ -80,7 +80,7 @@ class Address implements AddressInterface
 
     /**
      * @param string $countryCode
-     * @return Address
+     * @return self
      */
     public function setCountryCode($countryCode)
     {
@@ -98,7 +98,7 @@ class Address implements AddressInterface
 
     /**
      * @param string $streetLineOne
-     * @return Address
+     * @return self
      */
     public function setStreetLineOne($streetLineOne)
     {
@@ -116,7 +116,7 @@ class Address implements AddressInterface
 
     /**
      * @param string $streetLineTwo
-     * @return Address
+     * @return self
      */
     public function setStreetLineTwo($streetLineTwo)
     {
@@ -151,7 +151,7 @@ class Address implements AddressInterface
 
     /**
      * @param string $state
-     * @return Address
+     * @return self
      */
     public function setState($state)
     {

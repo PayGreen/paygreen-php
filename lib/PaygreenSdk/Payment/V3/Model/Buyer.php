@@ -51,10 +51,13 @@ class Buyer implements BuyerInterface
 
     /**
      * @param string $id
+     * @return self
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -67,10 +70,13 @@ class Buyer implements BuyerInterface
 
     /**
      * @param string $firstName
+     * @return self
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
@@ -83,10 +89,13 @@ class Buyer implements BuyerInterface
 
     /**
      * @param string $lastName
+     * @return self
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
     /**
@@ -99,10 +108,13 @@ class Buyer implements BuyerInterface
 
     /**
      * @param string $email
+     * @return self
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -115,10 +127,13 @@ class Buyer implements BuyerInterface
 
     /**
      * @param string $reference
+     * @return self
      */
     public function setReference($reference)
     {
         $this->reference = $reference;
+
+        return $this;
     }
 
     /**
@@ -131,10 +146,13 @@ class Buyer implements BuyerInterface
 
     /**
      * @param Address $billingAddress
+     * @return self
      */
     public function setBillingAddress($billingAddress)
     {
         $this->billingAddress = $billingAddress;
+
+        return $this;
     }
 
     /**
@@ -147,9 +165,12 @@ class Buyer implements BuyerInterface
 
     /**
      * @param string $phoneNumber
+     * @return self
      */
     public function setPhoneNumber($phoneNumber)
     {
         $this->phoneNumber = $phoneNumber;
+
+        return $this;
     }
 }
