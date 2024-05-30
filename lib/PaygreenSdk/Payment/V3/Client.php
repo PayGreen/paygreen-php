@@ -9,7 +9,7 @@ use Paygreen\Sdk\Payment\V3\Model\Instrument;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
-use Paygreen\Sdk\Payment\V3\Model\PaymentLinkInterface;
+use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
@@ -826,7 +826,7 @@ class Client extends \Paygreen\Sdk\Core\Client
      * @throws Exception
      *
      */
-    public function createPaymentLink(PaymentLinkInterface $paymentLink)
+    public function createPaymentLink(PaymentLink $paymentLink)
     {
         $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentLink);
         $this->setLastRequest($request);

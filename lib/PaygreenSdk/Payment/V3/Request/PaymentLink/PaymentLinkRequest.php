@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
-use Paygreen\Sdk\Payment\V3\Model\PaymentLinkInterface;
+use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
 use Psr\Http\Message\RequestInterface;
 
 class PaymentLinkRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -31,7 +31,7 @@ class PaymentLinkRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @return Request|RequestInterface
      */
-    public function getCreateRequest(PaymentLinkInterface $paymentLink)
+    public function getCreateRequest(PaymentLink $paymentLink)
     {
         $buyer = null;
 

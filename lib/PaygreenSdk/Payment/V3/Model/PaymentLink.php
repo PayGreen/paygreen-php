@@ -2,7 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-class PaymentLink implements PaymentLinkInterface
+class PaymentLink
 {
     /**
      * @var string
@@ -18,11 +18,6 @@ class PaymentLink implements PaymentLinkInterface
      * @var int
      */
     private $amount;
-
-    /**
-     * @var array
-     */
-    private $eligibleAmounts;
 
     /**
      * @var bool
@@ -69,10 +64,13 @@ class PaymentLink implements PaymentLinkInterface
 
     /**
      * @param string $id
+     * @return self
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -87,10 +85,13 @@ class PaymentLink implements PaymentLinkInterface
 
     /**
      * @param string $reference
+     * @return self
      */
     public function setReference($reference)
     {
         $this->reference = $reference;
+
+        return $this;
     }
 
     /**
@@ -105,10 +106,13 @@ class PaymentLink implements PaymentLinkInterface
      * The amount (in cts)
      *
      * @param int $amount
+     * @return self
      */
     public function setAmount($amount)
     {
         $this->amount = $amount;
+
+        return $this;
     }
 
     /**
@@ -124,10 +128,13 @@ class PaymentLink implements PaymentLinkInterface
      * Otherwise, you need to call the Capture endpoint. Default is true.
      *
      * @param bool $autoCapture
+     * @return self
      */
     public function setAutoCapture($autoCapture)
     {
         $this->autoCapture = $autoCapture;
+
+        return $this;
     }
 
     /**
@@ -142,10 +149,13 @@ class PaymentLink implements PaymentLinkInterface
      * Existing Buyer ID, or new Buyer entity
      *
      * @param BuyerInterface $buyer
+     * @return self
      */
     public function setBuyer($buyer)
     {
         $this->buyer = $buyer;
+
+        return $this;
     }
 
     /**
@@ -158,10 +168,13 @@ class PaymentLink implements PaymentLinkInterface
 
     /**
      * @param string $currency
+     * @return self
      */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
     }
 
     /**
@@ -176,10 +189,13 @@ class PaymentLink implements PaymentLinkInterface
      * An optional description to this Payment Order
      *
      * @param string $description
+     * @return self
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -195,10 +211,13 @@ class PaymentLink implements PaymentLinkInterface
      * If not set, all the validated Platforms of your Shop will be available.
      *
      * @param array $platforms
+     * @return self
      */
     public function setPlatforms($platforms)
     {
         $this->platforms = $platforms;
+
+        return $this;
     }
 
     /**
@@ -213,10 +232,13 @@ class PaymentLink implements PaymentLinkInterface
      * The beneficiary Shop ID. If you are a Marketplace, set the sub-entity ID here.
      *
      * @param string $shopId
+     * @return self
      */
     public function setShopId($shopId)
     {
         $this->shopId = $shopId;
+
+        return $this;
     }
 
     /**
@@ -229,9 +251,12 @@ class PaymentLink implements PaymentLinkInterface
 
     /**
      * @param string $expiresAt
+     * @return self
      */
     public function setExpiresAt($expiresAt)
     {
         $this->expiresAt = $expiresAt;
+
+        return $this;
     }
 }
