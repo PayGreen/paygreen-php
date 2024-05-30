@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
-use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
+use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use Psr\Http\Message\RequestInterface;
 
 class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -17,7 +17,7 @@ class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
      *
      * @return Request|RequestInterface
      */
-    public function getCreateRequest(SellingContractInterface $sellingContract)
+    public function getCreateRequest(SellingContract $sellingContract)
     {
         $body = [
             'shop_id' => $sellingContract->getShopId(),
@@ -38,7 +38,7 @@ class SellingContractRequest extends \Paygreen\Sdk\Core\Request\Request
     /**
      * @return Request|RequestInterface
      */
-    public function getUpdateRequest(SellingContractInterface $sellingContract)
+    public function getUpdateRequest(SellingContract $sellingContract)
     {
         $body = [
             'shop_id' => $sellingContract->getShopId(),

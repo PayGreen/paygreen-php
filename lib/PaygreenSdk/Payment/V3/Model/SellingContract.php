@@ -2,7 +2,7 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-class SellingContract implements SellingContractInterface
+class SellingContract
 {
     /**
      * @var string
@@ -54,10 +54,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param string $id
+     * @return self
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -70,10 +73,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param string $shopId
+     * @return self
      */
     public function setShopId($shopId)
     {
         $this->shopId = $shopId;
+
+        return $this;
     }
 
     /**
@@ -86,10 +92,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param string $number
+     * @return self
      */
     public function setNumber($number)
     {
         $this->number = $number;
+
+        return $this;
     }
 
     /**
@@ -102,10 +111,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param int $mcc
+     * @return self
      */
     public function setMcc($mcc)
     {
         $this->mcc = $mcc;
+
+        return $this;
     }
 
     /**
@@ -118,10 +130,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param int $maxAmount
+     * @return self
      */
     public function setMaxAmount($maxAmount)
     {
         $this->maxAmount = $maxAmount;
+
+        return $this;
     }
 
     /**
@@ -134,10 +149,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param string $type
+     * @return self
      */
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -150,10 +168,13 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param string $iban
+     * @return self
      */
     public function setIban($iban)
     {
         $this->iban = $iban;
+
+        return $this;
     }
 
     /**
@@ -166,9 +187,12 @@ class SellingContract implements SellingContractInterface
 
     /**
      * @param string $bic
+     * @return self
      */
     public function setBic($bic)
     {
         $this->bic = $bic;
+
+        return $this;
     }
 }

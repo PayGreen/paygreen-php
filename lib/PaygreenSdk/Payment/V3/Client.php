@@ -12,7 +12,7 @@ use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
-use Paygreen\Sdk\Payment\V3\Model\SellingContractInterface;
+use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
@@ -952,13 +952,13 @@ class Client extends \Paygreen\Sdk\Core\Client
     /**
      * @link https://developers.paygreen.fr/reference/post_create_selling_contract
      *
-     * @param SellingContractInterface $sellingContract
+     * @param SellingContract $sellingContract
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function createSellingContract(SellingContractInterface $sellingContract)
+    public function createSellingContract(SellingContract $sellingContract)
     {
         $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest($sellingContract);
 
@@ -971,13 +971,13 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param SellingContractInterface $sellingContract
+     * @param SellingContract $sellingContract
      *
      * @throws Exception
      *
      * @return ResponseInterface
      */
-    public function updateSellingContact(SellingContractInterface $sellingContract)
+    public function updateSellingContact(SellingContract $sellingContract)
     {
         $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getUpdateRequest($sellingContract);
 
