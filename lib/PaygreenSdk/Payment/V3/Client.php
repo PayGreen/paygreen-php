@@ -11,7 +11,6 @@ use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
-use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContract;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrderInterface;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
