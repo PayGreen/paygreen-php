@@ -10,6 +10,7 @@ use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
+use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
 use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
@@ -20,6 +21,7 @@ use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Operation\OperationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
+use Paygreen\Sdk\Payment\V3\Request\PaymentLink\PaymentLinkRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
 use Paygreen\Sdk\Payment\V3\Request\Shop\ShopRequest;
@@ -838,6 +840,105 @@ class Client extends \Paygreen\Sdk\Core\Client
             $operation
         );
 
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/post_create_payment_link
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function createPaymentLink(PaymentLink $paymentLink)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentLink);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_get_payment_link
+     *
+     * @param string $paymentLinkId A payment link id (format: pl_0000)
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function getPaymentLink($paymentLinkId)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getGetRequest($paymentLinkId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_payment_links
+     *
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listPaymentLink($shopId = null, $filters = [], $pagination = [])
+    {
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
+        }
+
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getListRequest($filters, $pagination);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * https://developers.paygreen.fr/reference/post_cancel_payment_link
+     *
+     * @param string $paymentLinkId
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function cancelPaymentLink($paymentLinkId)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getCancelRequest($paymentLinkId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /***
+     * @param string $paymentLinkId
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function activatePaymentLink($paymentLinkId)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getActivateRequest($paymentLinkId);
         $this->setLastRequest($request);
 
         $response = $this->sendRequest($request);
