@@ -56,12 +56,12 @@ class PaymentLinkTest extends TestCase
 
     public function testRequestListPaymentLink()
     {
-        $this->client->listPaymentLink('SDK-PAYMENT-LINK-123', 'sh_0000');
+        $this->client->listPaymentLink('sh_0000');
         $request = $this->client->getLastRequest();
 
         $this->assertEquals('GET', $request->getMethod());
         $this->assertEquals(
-            '/payment/payment-links?shop_id=sh_0000&reference=SDK-PAYMENT-LINK-123&max_per_page=20&page=1',
+            '/payment/payment-links?shop_id=sh_0000&max_per_page=20&page=1',
             $request->getUri()->getPath() . '?' . $request->getUri()->getQuery()
         );
     }
