@@ -99,7 +99,7 @@ class Shop
 
     /**
      * @param string $name
-     * @return Shop
+     * @return self
      */
     public function setName($name)
     {
@@ -117,7 +117,7 @@ class Shop
 
     /**
      * @param string $nationalId
-     * @return Shop
+     * @return self
      */
     public function setNationalId($nationalId)
     {
@@ -135,7 +135,7 @@ class Shop
 
     /**
      * @param string $mcc
-     * @return Shop
+     * @return self
      */
     public function setMcc($mcc)
     {
@@ -153,7 +153,7 @@ class Shop
 
     /**
      * @param int $annualProcessingVolume
-     * @return Shop
+     * @return self
      */
     public function setAnnualProcessingVolume($annualProcessingVolume)
     {
@@ -171,7 +171,7 @@ class Shop
 
     /**
      * @param int $averageTransactionValue
-     * @return Shop
+     * @return self
      */
     public function setAverageTransactionValue($averageTransactionValue)
     {
@@ -189,7 +189,7 @@ class Shop
 
     /**
      * @param int $highestTransactionValue
-     * @return Shop
+     * @return self
      */
     public function setHighestTransactionValue($highestTransactionValue)
     {
@@ -207,7 +207,7 @@ class Shop
 
     /**
      * @param array $activityCategories
-     * @return Shop
+     * @return self
      */
     public function setActivityCategories($activityCategories)
     {
@@ -225,7 +225,7 @@ class Shop
 
     /**
      * @param string $activityDescription
-     * @return Shop
+     * @return self
      */
     public function setActivityDescription($activityDescription)
     {
@@ -243,7 +243,7 @@ class Shop
 
     /**
      * @param Address|string $address
-     * @return Shop
+     * @return self
      */
     public function setAddress($address)
     {
@@ -261,7 +261,7 @@ class Shop
 
     /**
      * @param string $commercialName
-     * @return Shop
+     * @return self
      */
     public function setCommercialName($commercialName)
     {
@@ -279,7 +279,7 @@ class Shop
 
     /**
      * @param \DateTimeInterface $creationDate
-     * @return Shop
+     * @return self
      */
     public function setCreationDate($creationDate)
     {
@@ -297,7 +297,7 @@ class Shop
 
     /**
      * @param array $economicModel
-     * @return Shop
+     * @return self
      */
     public function setEconomicModel($economicModel)
     {
@@ -315,7 +315,7 @@ class Shop
 
     /**
      * @param string $legalCategory
-     * @return Shop
+     * @return self
      */
     public function setLegalCategory($legalCategory)
     {
@@ -333,7 +333,7 @@ class Shop
 
     /**
      * @param string $primaryActivity
-     * @return Shop
+     * @return self
      */
     public function setPrimaryActivity($primaryActivity)
     {
@@ -351,7 +351,7 @@ class Shop
 
     /**
      * @param array $productType
-     * @return Shop
+     * @return self
      */
     public function setProductType($productType)
     {
@@ -369,7 +369,7 @@ class Shop
 
     /**
      * @param string $websiteUrl
-     * @return Shop
+     * @return self
      */
     public function setWebsiteUrl($websiteUrl)
     {
@@ -387,7 +387,7 @@ class Shop
 
     /**
      * @param string $legalNoticeUrl
-     * @return Shop
+     * @return self
      */
     public function setLegalNoticeUrl($legalNoticeUrl)
     {

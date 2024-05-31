@@ -5,14 +5,14 @@ namespace Paygreen\Sdk\Payment\V3;
 use Exception;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
-use Paygreen\Sdk\Payment\V3\Model\Instrument;
+use Paygreen\Sdk\Payment\V3\Model\InstrumentInterface;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
 use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
-use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 use Paygreen\Sdk\Payment\V3\Model\SellingContract;
+use Paygreen\Sdk\Payment\V3\Model\PaymentOrderInterface;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
@@ -254,11 +254,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param PaymentOrderInterface $paymentOrder
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function createPaymentOrder(PaymentOrder $paymentOrder)
+    public function createPaymentOrder(PaymentOrderInterface $paymentOrder)
     {
         $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
         $this->setLastRequest($request);
@@ -318,11 +319,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param PaymentOrderInterface $paymentOrder
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function updatePaymentOrder(PaymentOrder $paymentOrder)
+    public function updatePaymentOrder(PaymentOrderInterface $paymentOrder)
     {
         $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getUpdateRequest($paymentOrder);
         $this->setLastRequest($request);
@@ -408,12 +410,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param Instrument $instrument
+     * @param InstrumentInterface $instrument
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function createInstrument(Instrument $instrument)
+    public function createInstrument(InstrumentInterface $instrument)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getCreateRequest($instrument);
         $this->setLastRequest($request);
@@ -425,12 +427,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param Instrument $instrument
+     * @param InstrumentInterface $instrument
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function updateInstrument(Instrument $instrument)
+    public function updateInstrument(InstrumentInterface $instrument)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getUpdateRequest($instrument);
         $this->setLastRequest($request);

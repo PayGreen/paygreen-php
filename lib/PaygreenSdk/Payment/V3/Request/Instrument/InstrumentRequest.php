@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
-use Paygreen\Sdk\Payment\V3\Model\Instrument;
+use Paygreen\Sdk\Payment\V3\Model\InstrumentInterface;
 use Psr\Http\Message\RequestInterface;
 
 class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -42,12 +42,12 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param Instrument $instrument
+     * @param InstrumentInterface $instrument
      * @return Request|RequestInterface
      * @throws Exception
      *
      */
-    public function getCreateRequest($instrument)
+    public function getCreateRequest(InstrumentInterface $instrument)
     {
         $body = [
             'token' => $instrument->getToken(),
@@ -62,12 +62,12 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
-     * @param Instrument $instrument
+     * @param InstrumentInterface $instrument
      * @return Request|RequestInterface
      * @throws Exception
      *
      */
-    public function getUpdateRequest($instrument)
+    public function getUpdateRequest(InstrumentInterface $instrument)
     {
         $body = [
             'token' => $instrument->getToken(),

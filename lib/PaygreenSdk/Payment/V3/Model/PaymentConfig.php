@@ -77,11 +77,13 @@ class PaymentConfig implements PaymentConfigInterface
     /**
      * @param string $currency
      *
-     * @return void
+     * @return self
      */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
     }
 
     /**
@@ -95,11 +97,13 @@ class PaymentConfig implements PaymentConfigInterface
     /**
      * @param string $platform
      *
-     * @return void
+     * @return self
      */
     public function setPlatform($platform)
     {
         $this->platform = $platform;
+
+        return $this;
     }
 
     /**
@@ -113,11 +117,13 @@ class PaymentConfig implements PaymentConfigInterface
     /**
      * @param string|null $sellingContractId
      *
-     * @return void
+     * @return self
      */
     public function setSellingContractId($sellingContractId)
     {
         $this->sellingContractId = $sellingContractId;
+
+        return $this;
     }
 
     /**
@@ -131,10 +137,12 @@ class PaymentConfig implements PaymentConfigInterface
     /**
      * @param array $config
      *
-     * @return void
+     * @return self
      */
     public function setConfig(array $config)
     {
         $this->config = $config;
+
+        return $this;
     }
 }

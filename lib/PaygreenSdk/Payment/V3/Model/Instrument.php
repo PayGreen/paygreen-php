@@ -39,10 +39,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $id
+     * @return self
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -55,10 +58,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $reference
+     * @return self
      */
     public function setReference($reference)
     {
         $this->reference = $reference;
+
+        return $this;
     }
 
     /**
@@ -71,10 +77,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $type
+     * @return self
      */
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -87,10 +96,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param bool $withAuthorization
+     * @return self
      */
     public function setWithAuthorization($withAuthorization)
     {
         $this->withAuthorization = $withAuthorization;
+
+        return $this;
     }
 
     /**
@@ -103,9 +115,12 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $token
+     * @return self
      */
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
     }
 }
