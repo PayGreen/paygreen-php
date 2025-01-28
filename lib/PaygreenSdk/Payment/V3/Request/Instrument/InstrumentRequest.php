@@ -49,10 +49,28 @@ class InstrumentRequest extends \Paygreen\Sdk\Core\Request\Request
      */
     public function getCreateRequest(InstrumentInterface $instrument)
     {
+        $buyer = null;
+
+        if ($instrument->getBuyer()) {
+            if (null === $instrument->getBuyer()->getId()) {
+                $buyer = [
+                    'email' => $instrument->getBuyer()->getEmail(),
+                    'first_name' => $instrument->getBuyer()->getFirstName(),
+                    'last_name' => $instrument->getBuyer()->getLastName(),
+                    'reference' => $instrument->getBuyer()->getReference(),
+                    'phone_number' => $instrument->getBuyer()->getPhoneNumber()
+                ];
+            } else {
+                $buyer = $instrument->getBuyer()->getId();
+            }
+        }
+
         $body = [
             'token' => $instrument->getToken(),
             'type' => $instrument->getType(),
-            'with_authorization' => $instrument->isWithAuthorization()
+            'with_authorization' => $instrument->isWithAuthorization(),
+            'reuse_allowed' => $instrument->isReuseAllowed(),
+            'buyer' => $buyer,
         ];
 
         return $this->requestFactory->create(
