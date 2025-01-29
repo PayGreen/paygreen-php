@@ -46,10 +46,10 @@ $buyer->setId($buyerId);
 
 $response =  $client->createInstrument(
     (new Instrument())
-        ->setBuyer($buyer)
-        ->setToken('tkn_e76cb9a27fa045e8aeb2f6957dc0591c')
-        ->setType('bank_card')
-        ->setWithAuthorization(true)
+//        ->setBuyer($buyer)
+        ->setToken('tkn_XXX')
+        ->setType('edenred')
+        ->setWithAuthorization(false)
 );
 
 dump(
