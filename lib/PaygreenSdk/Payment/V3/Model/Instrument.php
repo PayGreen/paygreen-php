@@ -30,6 +30,16 @@ class Instrument implements InstrumentInterface
     private $type;
 
     /**
+     * @var bool
+     */
+    private $reuseAllowed;
+
+    /**
+     * @var BuyerInterface
+     */
+    private $buyer;
+
+    /**
      * @return string
      */
     public function getId()
@@ -39,10 +49,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $id
+     * @return self
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -55,10 +68,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $reference
+     * @return self
      */
     public function setReference($reference)
     {
         $this->reference = $reference;
+
+        return $this;
     }
 
     /**
@@ -71,10 +87,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $type
+     * @return self
      */
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -87,10 +106,13 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param bool $withAuthorization
+     * @return self
      */
     public function setWithAuthorization($withAuthorization)
     {
         $this->withAuthorization = $withAuthorization;
+
+        return $this;
     }
 
     /**
@@ -103,9 +125,52 @@ class Instrument implements InstrumentInterface
 
     /**
      * @param string $token
+     * @return self
      */
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReuseAllowed()
+    {
+        return $this->reuseAllowed;
+    }
+
+    /**
+     * @param bool $withAuthorization
+     * @return self
+     */
+    public function setReuseAllowed($reuseAllowed)
+    {
+        $this->reuseAllowed = $reuseAllowed;
+
+        return $this;
+    }
+
+    /**
+     * @return BuyerInterface
+     */
+    public function getBuyer()
+    {
+        return $this->buyer;
+    }
+
+    /**
+     * Existing Buyer ID, or new Buyer entity
+     *
+     * @param BuyerInterface $buyer
+     * @return self
+     */
+    public function setBuyer($buyer)
+    {
+        $this->buyer = $buyer;
+
+        return $this;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Paygreen\Sdk\Payment\V3\Model;
 
-
 class PaymentOrder implements PaymentOrderInterface
 {
     /**
@@ -115,10 +114,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param string $id
+     * @return self
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -133,10 +135,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param string $reference
+     * @return self
      */
     public function setReference($reference)
     {
         $this->reference = $reference;
+
+        return $this;
     }
 
     /**
@@ -151,10 +156,13 @@ class PaymentOrder implements PaymentOrderInterface
      * The amount (in cts)
      *
      * @param int $amount
+     * @return self
      */
     public function setAmount($amount)
     {
         $this->amount = $amount;
+
+        return $this;
     }
 
     /**
@@ -167,10 +175,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param array $eligibleAmounts
+     * @return self
      */
     public function setEligibleAmounts($eligibleAmounts)
     {
         $this->eligibleAmounts = $eligibleAmounts;
+
+        return $this;
     }
 
     /**
@@ -186,10 +197,13 @@ class PaymentOrder implements PaymentOrderInterface
      * Otherwise, you need to call the Capture endpoint. Default is true.
      *
      * @param bool $autoCapture
+     * @return self
      */
     public function setAutoCapture($autoCapture)
     {
         $this->autoCapture = $autoCapture;
+
+        return $this;
     }
 
     /**
@@ -204,10 +218,13 @@ class PaymentOrder implements PaymentOrderInterface
      * Existing Buyer ID, or new Buyer entity
      *
      * @param BuyerInterface $buyer
+     * @return self
      */
     public function setBuyer($buyer)
     {
         $this->buyer = $buyer;
+
+        return $this;
     }
 
     /**
@@ -222,10 +239,13 @@ class PaymentOrder implements PaymentOrderInterface
      * If you need us to capture the operations on a specific day and hour.
      *
      * @param string $captureOn
+     * @return self
      */
     public function setCaptureOn($captureOn)
     {
         $this->captureOn = $captureOn;
+
+        return $this;
     }
 
     /**
@@ -238,10 +258,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param string $currency
+     * @return self
      */
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+
+        return $this;
     }
 
     /**
@@ -256,10 +279,13 @@ class PaymentOrder implements PaymentOrderInterface
      * An optional description to this Payment Order
      *
      * @param string $description
+     * @return self
      */
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -274,10 +300,13 @@ class PaymentOrder implements PaymentOrderInterface
      * Existing Instrument ID - Required for merchant initiated payments
      *
      * @param string $instrument
+     * @return self
      */
     public function setInstrument($instrument)
     {
         $this->instrument = $instrument;
+
+        return $this;
     }
 
     /**
@@ -294,10 +323,13 @@ class PaymentOrder implements PaymentOrderInterface
      * Default is null (no maximum).
      *
      * @param int $maxOperations
+     * @return self
      */
     public function setMaxOperations($maxOperations)
     {
         $this->maxOperations = $maxOperations;
+
+        return $this;
     }
 
     /**
@@ -310,10 +342,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param bool $merchantInitiated
+     * @return self
      */
     public function setMerchantInitiated($merchantInitiated)
     {
         $this->merchantInitiated = $merchantInitiated;
+
+        return $this;
     }
 
     /**
@@ -330,10 +365,13 @@ class PaymentOrder implements PaymentOrderInterface
      * Default is false.
      *
      * @param bool $partial_allowed
+     * @return self
      */
     public function setPartialAllowed($partial_allowed)
     {
         $this->partial_allowed = $partial_allowed;
+
+        return $this;
     }
 
     /**
@@ -349,10 +387,13 @@ class PaymentOrder implements PaymentOrderInterface
      * If not set, all the validated Platforms of your Shop will be available.
      *
      * @param array $platforms
+     * @return self
      */
     public function setPlatforms($platforms)
     {
         $this->platforms = $platforms;
+
+        return $this;
     }
 
     /**
@@ -367,10 +408,13 @@ class PaymentOrder implements PaymentOrderInterface
      * The Shipping Address associated with this order.
      *
      * @param AddressInterface $shippingAddress
+     * @return self
      */
     public function setShippingAddress($shippingAddress)
     {
         $this->shippingAddress = $shippingAddress;
+
+        return $this;
     }
 
     /**
@@ -385,10 +429,13 @@ class PaymentOrder implements PaymentOrderInterface
      * The beneficiary Shop ID. If you are a Marketplace, set the sub-entity ID here.
      *
      * @param string $shopId
+     * @return self
      */
     public function setShopId($shopId)
     {
         $this->shopId = $shopId;
+
+        return $this;
     }
 
     /**
@@ -401,10 +448,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param array $metadata
+     * @return self
      */
     public function setMetadata($metadata)
     {
         $this->metadata = $metadata;
+
+        return $this;
     }
 
     /**
@@ -417,10 +467,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param int $fees
+     * @return self
      */
     public function setFees($fees)
     {
         $this->fees = $fees;
+
+        return $this;
     }
 
     /**
@@ -433,10 +486,13 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param string $returnUrl
+     * @return self
      */
     public function setReturnUrl($returnUrl)
     {
         $this->returnUrl = $returnUrl;
+
+        return $this;
     }
 
     /**
@@ -449,9 +505,12 @@ class PaymentOrder implements PaymentOrderInterface
 
     /**
      * @param string $cancelUrl
+     * @return self
      */
     public function setCancelUrl($cancelUrl)
     {
         $this->cancelUrl = $cancelUrl;
+
+        return $this;
     }
 }

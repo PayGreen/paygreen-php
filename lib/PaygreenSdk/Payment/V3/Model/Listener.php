@@ -29,12 +29,15 @@ class Listener implements ListenerInterface
 
     /**
      * @param string $type
+     * @return self
      *
      * @return void
      */
     public function setType($type)
     {
         $this->type = $type;
+
+        return $this;
     }
 
     /**
@@ -48,11 +51,13 @@ class Listener implements ListenerInterface
     /**
      * @param array<string> $events
      *
-     * @return void
+     * @return self
      */
     public function setEvents($events)
     {
         $this->events = $events;
+
+        return $this;
     }
 
     /**
@@ -66,10 +71,12 @@ class Listener implements ListenerInterface
     /**
      * @param string $type
      *
-     * @return void
+     * @return self
      */
     public function setUrl($url)
     {
         $this->url = $url;
+
+        return $this;
     }
 }

@@ -19,7 +19,7 @@ class Operation
 
     /**
      * @param int|null $amount
-     * @return Operation
+     * @return self
      */
     public function setAmount($amount)
     {

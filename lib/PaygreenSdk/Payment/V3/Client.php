@@ -5,12 +5,14 @@ namespace Paygreen\Sdk\Payment\V3;
 use Exception;
 use Paygreen\Sdk\Core\Factory\RequestFactory;
 use Paygreen\Sdk\Payment\V3\Model\BuyerInterface;
-use Paygreen\Sdk\Payment\V3\Model\Instrument;
+use Paygreen\Sdk\Payment\V3\Model\InstrumentInterface;
 use Paygreen\Sdk\Payment\V3\Model\ListenerInterface;
 use Paygreen\Sdk\Payment\V3\Model\Operation;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfig;
 use Paygreen\Sdk\Payment\V3\Model\PaymentConfigInterface;
-use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V3\Model\PaymentLink;
+use Paygreen\Sdk\Payment\V3\Model\SellingContract;
+use Paygreen\Sdk\Payment\V3\Model\PaymentOrderInterface;
 use Paygreen\Sdk\Payment\V3\Model\Shop;
 use Paygreen\Sdk\Payment\V3\Request\Authentication\AuthenticationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Buyer\BuyerRequest;
@@ -20,8 +22,10 @@ use Paygreen\Sdk\Payment\V3\Request\Notification\ListenerRequest;
 use Paygreen\Sdk\Payment\V3\Request\Notification\NotificationRequest;
 use Paygreen\Sdk\Payment\V3\Request\Operation\OperationRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentConfig\PaymentConfigRequest;
+use Paygreen\Sdk\Payment\V3\Request\PaymentLink\PaymentLinkRequest;
 use Paygreen\Sdk\Payment\V3\Request\PaymentOrder\PaymentOrderRequest;
 use Paygreen\Sdk\Payment\V3\Request\PublicKey\PublicKeyRequest;
+use Paygreen\Sdk\Payment\V3\Request\SellingContract\SellingContractRequest;
 use Paygreen\Sdk\Payment\V3\Request\Shop\ShopRequest;
 use Paygreen\Sdk\Payment\V3\Request\Transaction\TransactionRequest;
 use Psr\Http\Message\ResponseInterface;
@@ -250,11 +254,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param PaymentOrderInterface $paymentOrder
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function createPaymentOrder(PaymentOrder $paymentOrder)
+    public function createPaymentOrder(PaymentOrderInterface $paymentOrder)
     {
         $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentOrder);
         $this->setLastRequest($request);
@@ -314,11 +319,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
+     * @param PaymentOrderInterface $paymentOrder
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function updatePaymentOrder(PaymentOrder $paymentOrder)
+    public function updatePaymentOrder(PaymentOrderInterface $paymentOrder)
     {
         $request = (new PaymentOrderRequest($this->requestFactory, $this->environment))->getUpdateRequest($paymentOrder);
         $this->setLastRequest($request);
@@ -404,12 +410,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param Instrument $instrument
+     * @param InstrumentInterface $instrument
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function createInstrument(Instrument $instrument)
+    public function createInstrument(InstrumentInterface $instrument)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getCreateRequest($instrument);
         $this->setLastRequest($request);
@@ -421,12 +427,12 @@ class Client extends \Paygreen\Sdk\Core\Client
     }
 
     /**
-     * @param Instrument $instrument
+     * @param InstrumentInterface $instrument
      * @return ResponseInterface
      * @throws Exception
      *
      */
-    public function updateInstrument(Instrument $instrument)
+    public function updateInstrument(InstrumentInterface $instrument)
     {
         $request = (new InstrumentRequest($this->requestFactory, $this->environment))->getUpdateRequest($instrument);
         $this->setLastRequest($request);
@@ -836,6 +842,177 @@ class Client extends \Paygreen\Sdk\Core\Client
         $request = (new OperationRequest($this->requestFactory, $this->environment))->getUpdateRequest(
             $operationId,
             $operation
+        );
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/post_create_payment_link
+     *
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function createPaymentLink(PaymentLink $paymentLink)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getCreateRequest($paymentLink);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_get_payment_link
+     *
+     * @param string $paymentLinkId A payment link id (format: pl_0000)
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function getPaymentLink($paymentLinkId)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getGetRequest($paymentLinkId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_payment_links
+     *
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listPaymentLink($shopId = null, $filters = [], $pagination = [])
+    {
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
+        }
+
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getListRequest($filters, $pagination);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * https://developers.paygreen.fr/reference/post_cancel_payment_link
+     *
+     * @param string $paymentLinkId
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function cancelPaymentLink($paymentLinkId)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getCancelRequest($paymentLinkId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /***
+     * @param string $paymentLinkId
+     * @return ResponseInterface
+     * @throws Exception
+     *
+     */
+    public function activatePaymentLink($paymentLinkId)
+    {
+        $request = (new PaymentLinkRequest($this->requestFactory, $this->environment))->getActivateRequest($paymentLinkId);
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/post_create_selling_contract
+     *
+     * @param SellingContract $sellingContract
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function createSellingContract(SellingContract $sellingContract)
+    {
+        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getCreateRequest($sellingContract);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @param SellingContract $sellingContract
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function updateSellingContact(SellingContract $sellingContract)
+    {
+        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getUpdateRequest($sellingContract);
+
+        $this->setLastRequest($request);
+
+        $response = $this->sendRequest($request);
+        $this->setLastResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * @link https://developers.paygreen.fr/reference/get_list_selling_contracts
+     *
+     * @param string|null $shopId If not specified, the shop id of the environment will be used
+     * @param array $filters
+     * @param array $pagination
+     *
+     * @throws Exception
+     *
+     * @return ResponseInterface
+     */
+    public function listSellingContract($shopId = null, $filters = [], $pagination = [])
+    {
+        if (!isset($filters['shop_id']) || $shopId !== null) {
+            $filters['shop_id'] = $shopId;
+        } else {
+            $filters['shop_id'] = $this->environment->getShopId();
+        }
+
+        $request = (new SellingContractRequest($this->requestFactory, $this->environment))->getListRequest(
+            $filters,
+            $pagination
         );
 
         $this->setLastRequest($request);

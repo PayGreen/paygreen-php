@@ -7,7 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use Paygreen\Sdk\Core\Encoder\JsonEncoder;
 use Paygreen\Sdk\Core\Normalizer\CleanEmptyValueNormalizer;
 use Paygreen\Sdk\Core\Serializer\Serializer;
-use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
+use Paygreen\Sdk\Payment\V3\Model\PaymentOrderInterface;
 use Psr\Http\Message\RequestInterface;
 
 class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
@@ -27,11 +27,13 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
     }
 
     /**
+     * @param PaymentOrderInterface $paymentOrder
+     *
      * @throws Exception
      *
      * @return Request|RequestInterface
      */
-    public function getCreateRequest(PaymentOrder $paymentOrder)
+    public function getCreateRequest(PaymentOrderInterface $paymentOrder)
     {
         $buyer = null;
 
@@ -95,13 +97,15 @@ class PaymentOrderRequest extends \Paygreen\Sdk\Core\Request\Request
         return $this->requestFactory->create(
             '/payment/payment-orders',
             (new Serializer([new CleanEmptyValueNormalizer()], [new JsonEncoder()]))->serialize($body, 'json')
-        )->withAuthorization()->isJson()->getRequest();
+        )->withAuthorization()->withXForwardedHost()->isJson()->getRequest();
     }
 
     /**
+     * @param PaymentOrderInterface
+     *
      * @return Request|RequestInterface
      */
-    public function getUpdateRequest(PaymentOrder $paymentOrder)
+    public function getUpdateRequest(PaymentOrderInterface $paymentOrder)
     {
         $body = ['partial_allowed' => $paymentOrder->isPartialAllowed()];
 

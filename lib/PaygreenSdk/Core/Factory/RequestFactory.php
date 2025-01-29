@@ -78,6 +78,16 @@ class RequestFactory
     /**
      * @return RequestFactory
      */
+    public function withXForwardedHost()
+    {
+        $this->request = $this->request->withAddedHeader('X-Forwarded-Host', $_SERVER['HTTP_HOST']);
+
+        return $this;
+    }
+
+    /**
+     * @return RequestFactory
+     */
     public function isJson()
     {
         $size = 0;

@@ -13,8 +13,8 @@ use Paygreen\Sdk\Payment\V3\Model\PaymentOrder;
 $curl = new Client();
 
 $environment = new Environment(
-    getenv('PG_PAYMENT_SHOP_ID'), //PG_PAYMENT_SHOP_ID SHOP_ID_MARKETPLACE
-    getenv('PG_PAYMENT_SECRET_KEY'), //PG_PAYMENT_SECRET_KEY SECRET_KEY_MARKETPLACE
+    getenv('PG_PAYMENT_SHOP_ID'),
+    getenv('PG_PAYMENT_SECRET_KEY'),
     getenv('PG_PAYMENT_API_SERVER'),
     getenv('PG_PAYMENT_API_VERSION')
 );
@@ -23,11 +23,41 @@ $environment->setApplicationVersion("1.0.0");
 
 $client = new \Paygreen\Sdk\Payment\V3\Client($curl, $environment);
 
-$response = $client->authenticate();
-$data = json_decode($response->getBody()->getContents())->data;
-$bearer = $data->token;
-$client->setBearer($bearer);
+$client->setBearer(
+    json_decode($client->authenticate()->getBody()->getContents())
+        ->data
+        ->token
+);
 
+$buyer =  (new Buyer())
+    ->setEmail('bank-card-sdk@mail.com')
+    ->setFirstName('bank')
+    ->setLastName('card');
+
+$buyerId = json_decode(
+            $client->createBuyer(
+                $buyer
+            )->getBody()->getContents()
+        )
+    ->data
+    ->id;
+
+$buyer->setId($buyerId);
+
+$response =  $client->createInstrument(
+    (new Instrument())
+//        ->setBuyer($buyer)
+        ->setToken('tkn_XXX')
+        ->setType('edenred')
+        ->setWithAuthorization(false)
+);
+
+dump(
+    $response,
+    json_decode(
+        $response->getBody()->getContents()
+    )->data
+);
 die();
 
 //LIST AND UPDATE PC
