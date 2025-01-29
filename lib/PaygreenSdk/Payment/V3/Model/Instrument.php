@@ -30,6 +30,16 @@ class Instrument implements InstrumentInterface
     private $type;
 
     /**
+     * @var bool
+     */
+    private $reuseAllowed;
+
+    /**
+     * @var BuyerInterface
+     */
+    private $buyer;
+
+    /**
      * @return string
      */
     public function getId()
@@ -120,6 +130,46 @@ class Instrument implements InstrumentInterface
     public function setToken($token)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReuseAllowed()
+    {
+        return $this->reuseAllowed;
+    }
+
+    /**
+     * @param bool $withAuthorization
+     * @return self
+     */
+    public function setReuseAllowed($reuseAllowed)
+    {
+        $this->reuseAllowed = $reuseAllowed;
+
+        return $this;
+    }
+
+    /**
+     * @return BuyerInterface
+     */
+    public function getBuyer()
+    {
+        return $this->buyer;
+    }
+
+    /**
+     * Existing Buyer ID, or new Buyer entity
+     *
+     * @param BuyerInterface $buyer
+     * @return self
+     */
+    public function setBuyer($buyer)
+    {
+        $this->buyer = $buyer;
 
         return $this;
     }
