@@ -1,4 +1,4 @@
-ARG PHP_VERSION=5.6
+ARG PHP_VERSION=8.0
 ARG PHPSTAN_PHP_VERSION=7.2
 ARG NGINX_VERSION=1.21
 
@@ -11,22 +11,9 @@ RUN set -eux; \
 		libzip-dev \
 		$PHPIZE_DEPS \
 		wget \
-		; \
-	docker-php-ext-install -j$(nproc) \
-		json \
-		zip \
 		;
 
-RUN wget https://xdebug.org/files/xdebug-2.5.5.tgz && \
-  tar -xzf xdebug-2.5.5.tgz && \
-  cd xdebug-2.5.5 && \
-  phpize && \
-  ./configure --enable-xdebug && \
-  make && \
-  make install && \
-  cd .. && \
-  rm xdebug-2.5.5.tgz && \
-  rm -rf xdebug-2.5.5
+RUN docker-php-ext-install -j$(nproc) zip
 
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
@@ -38,7 +25,7 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 WORKDIR /srv/paygreen
 
-COPY composer.json composer.lock phpunit.xml.dist ./
+COPY composer.json phpunit.xml.dist ./
 COPY lib lib/
 COPY tests tests/
 COPY features features/
@@ -66,7 +53,7 @@ ENV PATH="${PATH}:/root/.composer/vendor/bin"
 
 WORKDIR /srv/paygreen
 
-COPY composer.json composer.lock phpunit.xml.dist ./
+COPY composer.json phpunit.xml.dist ./
 COPY lib lib/
 COPY tests tests/
 COPY --from=php /srv/paygreen/vendor vendor/

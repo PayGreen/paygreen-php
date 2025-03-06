@@ -23,7 +23,7 @@ final class RequestFactoryTest extends TestCase
      */
     private $environment;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -52,6 +52,7 @@ final class RequestFactoryTest extends TestCase
 
     public function testCreateRequestWithForwardedHost()
     {
+        $_SERVER['HTTP_HOST'] = 'localhost';
         $this->buildRequestFactory();
         $this->assertInstanceOf(RequestFactory::class, $this->requestFactory);
 
