@@ -12,7 +12,7 @@ jobs:
       - name: Composer
         uses: php-actions/composer@v6
         with:
-          version: 2.3
+          version: 2.2
           php_version: 8.0
           php_extensions: zip
 
