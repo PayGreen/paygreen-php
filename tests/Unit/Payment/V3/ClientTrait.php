@@ -13,7 +13,7 @@ trait ClientTrait
      */
     private $client;
 
-    public function setUp()
+    public function setUp(): void
     {
         $client = new Client();
 

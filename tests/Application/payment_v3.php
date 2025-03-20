@@ -44,19 +44,8 @@ $buyerId = json_decode(
 
 $buyer->setId($buyerId);
 
-$response =  $client->createInstrument(
-    (new Instrument())
-//        ->setBuyer($buyer)
-        ->setToken('tkn_XXX')
-        ->setType('edenred')
-        ->setWithAuthorization(false)
-);
-
 dump(
-    $response,
-    json_decode(
-        $response->getBody()->getContents()
-    )->data
+    $buyer
 );
 die();
 

@@ -15,7 +15,7 @@ class ClientTest extends TestCase
     /** @var \Paygreen\Sdk\Charity\V2\Client */
     private $client;
 
-    public function setUp()
+    public function setUp():void
     {
         $client = new Client();
 
