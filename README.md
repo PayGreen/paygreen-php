@@ -11,7 +11,7 @@ composer require paygreen/paygreen-php
 ### Requirements
 
 - PHP 8.0 and above (à partir de la version 1.4.0 du sdk).  
-Ce changement fait suite à l'évolution de l'interface RequestInterface de php-http/message)  
+Ce changement fait suite à l'évolution de l'interface RequestInterface de php-http/message.  
 
 - PHP 5.6 to 8.0 (voir les versions inférieures à 1.4.0.
 - [PSR-18](https://www.php-fig.org/psr/psr-18/) HTTP Client like [Guzzle](https://github.com/guzzle/guzzle) or [curl-client](https://github.com/php-http/curl-client)
